@@ -2,21 +2,21 @@
 #define _THEATRE_X3D_TYPES_
 
 #include <string>
+#include <vector>
+#include <unistd.h>
 
 class SFNode {
 	// TODO
 };
 
 class SFColor {
-private:
-	unsigned char _unused;
 public:
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
-	SFColor(const SFColor& c) _unused(0), r(c.r), g(c.g), b(c.b) {}
-	SFColor(unsigned char r, unsigned char g, unsigned char b) _unused(0), r(r), g(g), b(b) {}
-	unsigned char* array() const { return &r; }
+	SFColor(const SFColor& c) : r(c.r), g(c.g), b(c.b) {}
+	SFColor(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
+	unsigned char* array() { return &r; }
 };
 
 class SFColorRGBA {
@@ -25,10 +25,11 @@ public:
 	unsigned char g;
 	unsigned char b;
 	unsigned char a;
-	SFColorRGBA(const SFColor& c) r(c.r), g(c.g), b(c.b), a(c.a) {}
-	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) r(r), g(g), b(b), a(a) {}
-	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b) r(r), g(g), b(b), a(255) {}
-	unsigned char* array() const { return &r; }
+	SFColorRGBA(const SFColor& c) : r(c.r), g(c.g), b(c.b), a(255) {}
+	SFColorRGBA(const SFColorRGBA& c) : r(c.r), g(c.g), b(c.b), a(c.a) {}
+	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : r(r), g(g), b(b), a(a) {}
+	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b), a(255) {}
+	unsigned char* array() { return &r; }
 };
 
 class SFRotation {
@@ -37,8 +38,8 @@ public:
 	float y;
 	float z;
 	float angle;
-	SFRotation(const SFRotation& r) x(r.x), y(r.y), z(r.z), angle(r.angle) {}
-	SFRotation(float x, float y, float z, float a) x(x), y(y), z(z), angle(a) {}
+	SFRotation(const SFRotation& r) : x(r.x), y(r.y), z(r.z), angle(r.angle) {}
+	SFRotation(float x, float y, float z, float a) : x(x), y(y), z(z), angle(a) {}
 	float* array() { return &x; }
 };
 
@@ -53,22 +54,20 @@ public:
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
 	~SFImage();
-	unsigned int get(int x, int y) const;
-	void set(int x, int y, unsigned int pixel);
-	unsigned int operator[](int index) const;
-	void operator[]=(int index, unsigned int pixel);
+	unsigned int getPixel(int x, int y) const;
+	void setPixel(int x, int y, unsigned int pixel);
 	SFColor getColor(int x, int y) const;
 	void setColor(int x, int y, SFColor c);
 	SFColorRGBA getColorRGBA(int x, int y) const;
 	void setColorRGBA(int x, int y, SFColorRGBA c);
-}
+};
 
 template <class T>
 class Vec2 {
 	T x;
 	T y;
-	template <class U> Vec2(Vec2<U> v) x(v.x), y(v.y) {}
-	Vec2(T x, T y) x(x), y(y) {}
+	template <class U> Vec2(Vec2<U> v) : x(v.x), y(v.y) {}
+	Vec2(T x, T y) : x(x), y(y) {}
 	T* array() { return &x; }
 };
 
@@ -77,8 +76,8 @@ class Vec3 {
 	T x;
 	T y;
 	T z;
-	template <class U> Vec3(Vec3<U> v) x(v.x), y(v.y), z(v.z) {}
-	Vec3(T x, T y, T z) x(x), y(y), z(z) {}
+	template <class U> Vec3(Vec3<U> v) : x(v.x), y(v.y), z(v.z) {}
+	Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
 	T* array() { return &x; }
 };
 
@@ -88,8 +87,8 @@ class Vec4 {
 	T y;
 	T z;
 	T w;
-	template <class U> Vec4(Vec4<U> v) x(v.x), y(v.y), z(v.z), w(v.w) {}
-	Vec4(T x, T y, T z, T w) x(x), y(y), z(z), w(w) {}
+	template <class U> Vec4(Vec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+	Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 	T* array() { return &x; }
 };
 
