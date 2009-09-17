@@ -6,12 +6,18 @@ SFImage::SFImage(const SFImage& i) {
 }
 
 SFImage::SFImage(int width, int height, int components) {
+	if (width < 0 || height < 0)
+		throw X3DError("size cannot be negative");
+	if (components < 1 || components > 4)
+		throw X3DError("components must be in range [1,4]");
 	size = width * height * components;
 	bytes = size ? new unsigned char[size] : NULL;
 }
 
 SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
 	SFImage(width, height, components);
+	if (bytes == NULL)
+		throw X3DError("trying to copy NULL bytes");
 	if (size)
 		memcpy(this->bytes, bytes, size);
 }
@@ -23,6 +29,8 @@ SFImage::~SFImage() {
 
 unsigned int SFImage::getPixel(int x, int y) const {
 	int index = y * width + x;
+	if (index < 0 || index >= width*height)
+		throw X3DError("pixel coordinates out-of-bounds");
 	unsigned char* ptr;
 	unsigned int value;
 	switch (components) {
@@ -43,6 +51,8 @@ unsigned int SFImage::getPixel(int x, int y) const {
 
 void SFImage::setPixel(int x, int y, unsigned int pixel) {
 	int index = y * width + x;
+	if (index < 0 || index >= width*height)
+		throw X3DError("pixel coordinates out-of-bounds");
 	unsigned char* ptr;
 	switch (components) {
 		case 1:
@@ -64,6 +74,7 @@ void SFImage::setPixel(int x, int y, unsigned int pixel) {
 }
 
 SFColor SFImage::getColor(int x, int y) const {
+	int index;
 	unsigned char* ptr;
 	unsigned int pixel;
 	unsigned char r, g, b;
@@ -75,7 +86,10 @@ SFColor SFImage::getColor(int x, int y) const {
 			pixel = (unsigned char) (getPixel(x, y) >> 8);
 			return SFColor(pixel, pixel, pixel);
 		case 3:
-			ptr = &bytes[(y * width + x) * 3];
+			index = y * width + x;
+			if (index < 0 || index >= width*height)
+				throw X3DError("pixel coordinates out-of-bounds");
+			ptr = &bytes[index * 3];
 			return SFColor(*ptr++, *ptr++, *ptr);
 		case 4:
 			pixel = getPixel(x, y);
@@ -88,6 +102,7 @@ SFColor SFImage::getColor(int x, int y) const {
 }
 
 void SFImage::setColor(int x, int y, const SFColor c) {
+	int index;
 	unsigned int pixel;
 	unsigned char* ptr;
 	switch (components) {
@@ -100,7 +115,10 @@ void SFImage::setColor(int x, int y, const SFColor c) {
 			setPixel(x, y, (pixel << 8) | 255);
 			break;
 		case 3:
-			ptr = &bytes[(y * width + x) * 3];
+			index = y * width + x;
+			if (index < 0 || index >= width*height)
+				throw X3DError("pixel coordinates out-of-bounds");
+			ptr = &bytes[index * 3];
 			*ptr++ = c.r;
 			*ptr++ = c.g;
 			*ptr   = c.b;
@@ -113,6 +131,7 @@ void SFImage::setColor(int x, int y, const SFColor c) {
 }
 
 SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
+	int index;
 	unsigned char c_pixel, alpha, value;
 	unsigned short s_pixel;
 	unsigned int i_pixel;
@@ -128,7 +147,10 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 			value = (unsigned char) ((s_pixel >> 8) & 255);
 			return SFColorRGBA(value, value, value, alpha);
 		case 3:
-			ptr = &bytes[(y * width + x) * 3];
+			index = y * width + x;
+			if (index < 0 || index >= width*height)
+				throw X3DError("pixel coordinates out-of-bounds");
+			ptr = &bytes[index * 3];
 			return SFColorRGBA(*ptr++, *ptr++, *ptr, 255);
 		case 4:
 			i_pixel = getPixel(x, y);
@@ -141,6 +163,7 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 }
 
 void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
+	int index;
 	unsigned int pixel;
 	unsigned char* ptr;
 	switch (components) {
@@ -154,7 +177,10 @@ void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
 			setPixel(x, y, pixel);
 			break;
 		case 3:
-			ptr = &bytes[(y * width + x) * 3];
+			index = y * width + x;
+			if (index < 0 || index >= width*height)
+				throw X3DError("pixel coordinates out-of-bounds");
+			ptr = &bytes[index * 3];
 			*ptr++ = c.r;
 			*ptr++ = c.g;
 			*ptr   = c.b;
