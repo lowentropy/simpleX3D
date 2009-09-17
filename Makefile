@@ -3,16 +3,18 @@ DEFINES = $(INCLUDES)
 CXX = g++
 LD = g++
 CXXFLAGS = $(DEFINES) -fPIC
-LDFLAGS = --shared
+LDFLAGS = 
 
 OBJS = src/SFImage.o
 
-all: $(OBJS)
-	$(LD) -o libsimpleX3D.so $(LDFLAGS) $(OBJS)
+all: libsimpleX3D.so
+
+libsimpleX3D.so: $(OBJS)
+	$(LD) -o libsimpleX3D.so --shared $(LDFLAGS) $(OBJS)
 
 .PHONY: again clean
 
 again: clean all
 
 clean:
-	rm -f libsimpleX3D.so src/*.o
+	rm -f libsimpleX3D.so test src/*.o

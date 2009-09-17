@@ -57,9 +57,9 @@ public:
 	unsigned int getPixel(int x, int y) const;
 	void setPixel(int x, int y, unsigned int pixel);
 	SFColor getColor(int x, int y) const;
-	void setColor(int x, int y, SFColor c);
+	void setColor(int x, int y, const SFColor c);
 	SFColorRGBA getColorRGBA(int x, int y) const;
-	void setColorRGBA(int x, int y, SFColorRGBA c);
+	void setColorRGBA(int x, int y, const SFColorRGBA c);
 };
 
 template <class T>

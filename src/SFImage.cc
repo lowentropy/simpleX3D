@@ -34,7 +34,7 @@ unsigned int SFImage::getPixel(int x, int y) const {
 			ptr = &bytes[index*3];
 			value = *ptr++;
 			value = value << 8 | *ptr++;
-			value = value << 8 | *ptr++;
+			value = value << 8 | *ptr;
 			return value;
 		case 4:
 			return ((uint32_t*) bytes)[index];
@@ -55,7 +55,7 @@ void SFImage::setPixel(int x, int y, unsigned int pixel) {
 			ptr = &bytes[index*3+2];
 			*ptr-- = pixel & 255; pixel >>= 8;
 			*ptr-- = pixel & 255; pixel >>= 8;
-			*ptr-- = pixel & 255;
+			*ptr   = pixel & 255;
 			break;
 		case 4:
 			((uint32_t*) bytes)[index] = (uint32_t) pixel;
@@ -87,6 +87,31 @@ SFColor SFImage::getColor(int x, int y) const {
 	}
 }
 
+void SFImage::setColor(int x, int y, const SFColor c) {
+	unsigned int pixel;
+	unsigned char* ptr;
+	switch (components) {
+		case 1:
+			pixel = (c.r + c.g + c.b) / 3;
+			setPixel(x, y, pixel);
+			break;
+		case 2:
+			pixel = (c.r + c.g + c.b) / 3;
+			setPixel(x, y, (pixel << 8) | 255);
+			break;
+		case 3:
+			ptr = &bytes[(y * width + x) * 3];
+			*ptr++ = c.r;
+			*ptr++ = c.g;
+			*ptr   = c.b;
+			break;
+		case 4:
+			pixel = (c.r << 24) | (c.g << 16) | (c.b << 8) | 255;
+			setPixel(x, y, pixel);
+			break;
+	}
+}
+
 SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 	unsigned char c_pixel, alpha, value;
 	unsigned short s_pixel;
@@ -112,5 +137,31 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 			g = i_pixel & 255; i_pixel >>= 8;
 			r = i_pixel;
 			return SFColorRGBA(r, g, b, a);
+	}
+}
+
+void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
+	unsigned int pixel;
+	unsigned char* ptr;
+	switch (components) {
+		case 1:
+			pixel = (c.r + c.g + c.b) / 3;
+			setPixel(x, y, pixel);
+			break;
+		case 2:
+			pixel = (c.r + c.g + c.b) / 3;
+			pixel = (pixel << 8) | c.a;
+			setPixel(x, y, pixel);
+			break;
+		case 3:
+			ptr = &bytes[(y * width + x) * 3];
+			*ptr++ = c.r;
+			*ptr++ = c.g;
+			*ptr   = c.b;
+			break;
+		case 4:
+			pixel = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
+			setPixel(x, y, pixel);
+			break;
 	}
 }
