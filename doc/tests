@@ -1,0 +1,30 @@
+- expected errors
+	- passing a NULL array into the constructor should produce an error
+	- giving negative values for width or height should produce errors
+	- giving a components value that is not 1, 2, 3, or 4 should produce an error
+	- trying to get or set a pixel that is out of bounds should produce an error
+- memory management
+	- a zero-sized image should have NULL bytes
+	- automatic image destructor should never kill things
+	- the image copy constructor should result in identical bytes arrays,
+	  but with different pointers (i.e. not shared memory)
+	- the constructor with a char array passed should result in an identical
+	  bytes array, but with different pointers
+- arithmetic
+	- 'size' should always be equal to 'width * height * components'
+	- setting a large pixel value should only affect the correct bytes
+- get/set pairs
+	- pixel/pixel
+		- getPixel should return the value that setPixel put there, with the caveat
+		  that the high (4-components) bytes should be zeroed.
+	- color/color
+		- (same as above for xxColor w/ component=3, and xxColorRGBA w/ component=4)
+	- pixel/color, components=3/4
+		- setting a pixel value for components=3/4 and then getting a color value
+		  should return the correct color (default alpha value should be 255)
+		- (same as above, but vice-versa)
+	- pixel/color, components=1/2
+		- getting a Color[RGBA] from a components=1 image should produce r,g,b
+		  values all equal to the single char pixel value (and alpha=255)
+		- (same as above for components=2, but ColorRGBA values should have the
+		  correct stored alpha value)
