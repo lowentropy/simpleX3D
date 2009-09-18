@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.63])
 AC_INIT(simpleX3D, 0.0.1, lowentropy@gmail.com)
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 AC_CONFIG_SRCDIR([src/SFImage.cc])
