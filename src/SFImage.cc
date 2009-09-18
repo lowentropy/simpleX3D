@@ -8,8 +8,10 @@ SFImage::SFImage(const SFImage& i) {
 SFImage::SFImage(int width, int height, int components) {
 	if (width < 0 || height < 0)
 		throw X3DError("size cannot be negative");
-	if (components < 1 || components > 4)
-		throw X3DError("components must be in range [1,4]");
+	if (components < 0 || components > 4)
+		throw X3DError("components must be in range [0,4]");
+	if (components == 0 && (width !=0 || height != 0))
+		throw X3DError("for non-empty image, components must be in range [1,4]");
 	size = width * height * components;
 	bytes = size ? new unsigned char[size] : NULL;
 }
