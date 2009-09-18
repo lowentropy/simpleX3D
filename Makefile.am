@@ -1,2 +1,2 @@
-SUBDIRS = src
+SUBDIRS = src test
 AM_CPPFLAGS = $(DEPS_CFLAGS)

@@ -36,5 +36,6 @@ AC_HEADER_STDC
 AC_CONFIG_FILES([
 	Makefile
     src/Makefile
+    test/Makefile
 ])
 AC_OUTPUT
