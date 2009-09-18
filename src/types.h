@@ -3,7 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <stdexcept>
 #include <unistd.h>
+
+class X3DError : public std::runtime_error {
+public:
+	X3DError(const char* message) : std::runtime_error(message) {}
+};
 
 class SFNode {
 	// TODO
