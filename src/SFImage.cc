@@ -1,10 +1,27 @@
 #include "types.h"
 #include <string.h>
 
+/**
+ * Copy constructor.
+ *
+ * @param i the image to copy
+ */
 SFImage::SFImage(const SFImage& i) {
 	SFImage(i.width, i.height, i.components, i.bytes);
 }
 
+/**
+ * Empty image constructor.
+ * 
+ * The total size of the image will be
+ * #width * #height * #components. If all
+ * three parameters are zero, the bytes
+ * array will be NULL.
+
+ * @param width image width
+ * @param height image height
+ * @param components image depth (0-4)
+ */
 SFImage::SFImage(int width, int height, int components) {
 	if (width < 0 || height < 0)
 		throw X3DError("size cannot be negative");
@@ -16,6 +33,17 @@ SFImage::SFImage(int width, int height, int components) {
 	bytes = size ? new unsigned char[size] : NULL;
 }
 
+/**
+ * Raw copy constructor.
+ * 
+ * This constructor creates a blank image as in SFImage(),
+ * then copies image bytes directly between the #bytes pointers.
+ * 
+ * @param width image width
+ * @param height image height
+ * @param components image depth (0-4)
+ * @param bytes array to copy data from
+ */
 SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
 	SFImage(width, height, components);
 	if (bytes == NULL)
@@ -24,11 +52,27 @@ SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
 		memcpy(this->bytes, bytes, size);
 }
 
+/**
+ * Image destructor. If bytes is not NULL,
+ * it is freed.
+ */
 SFImage::~SFImage() {
 	if (bytes != NULL)
 		delete[] bytes;
 }
 
+/**
+ * Extract a raw pixel value.
+ * 
+ * The value returned is an unsigned int, but will only
+ * have a number of lower bytes set equal to #components.
+ * The high bytes are always set to zero.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @returns raw (packed) pixel
+ * @see setPixel
+ */
 unsigned int SFImage::getPixel(int x, int y) const {
 	int index = y * width + x;
 	if (index < 0 || index >= width*height)
