@@ -84,6 +84,20 @@ public:
 	SFVec3(T x, T y, T z) : x(x), y(y), z(z) {}
 	T* array() { return &x; }
 	T mag() const { return sqrt(x*x + y*y + z*z); }
+	SFVec3<T> norm() const {
+		T m = mag();
+		if (m != 0.0)
+			return *this / m;
+		else
+			return SFVec3<T>();
+	}
+	SFVec3<T>& normalize() {
+		T m = mag();
+		if (m != 0.0)
+			return *this /= m;
+		else
+			return *this = SFVec3<T>();
+	}
 	template <typename U> SFVec3<T> operator+(const SFVec3<U>& v) const {
 		return SFVec3<T>(x + v.x, y + v.y, z + v.z);
 	}
@@ -163,7 +177,6 @@ public:
 	template <typename U> SFVec4(SFVec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	SFVec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 	T* array() { return &x; }
-	T mag() const { return sqrt(x*x + y*y + z*z + w*w); }
 	template <typename U> SFVec4<T> operator+(const SFVec4<U>& v) const {
 		return SFVec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
 	}
@@ -171,13 +184,10 @@ public:
 		return SFVec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
 	}
 	template <typename U> SFVec4<T> operator*(U s) const {
-		return SFVec4<T>(x * s, y * s, z * s, w * s);
+		return SFVec4<T>(x * s, y * s, z * s, w);
 	}
 	template <typename U> SFVec4<T> operator/(U s) const {
-		return SFVec4<T>(x / s, y / s, z / s, w / s);
-	}
-	template <typename U> T operator*(SFVec4<U>& v) const {
-		return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w);
+		return SFVec4<T>(x / s, y / s, z / s, w);
 	}
 	template <typename U> SFVec4<T> operator*(const SFMatrix4<U>& m) const {
 		SFVec4<T> v(0,0,0,0);
@@ -216,14 +226,12 @@ public:
 		x *= s;
 		y *= s;
 		z *= s;
-		w *= s;
 		return *this;
 	}
 	template <typename U> SFVec4<T>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		z /= s;
-		w /= s;
 		return *this;
 	}
 };
