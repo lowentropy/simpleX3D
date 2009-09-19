@@ -50,16 +50,22 @@ public:
 };
 
 class SFImage {
-public:
+protected:
 	int width;
 	int height;
 	int components;
 	int size;
 	unsigned char* bytes;
+public:
 	SFImage(const SFImage& i);
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
 	~SFImage();
+	int getWidth() { return width; }
+	int getHeight() { return height; }
+	int getComponents() { return components; }
+	int getSize() { return size; }
+	unsigned char* array() { return bytes; }
 	unsigned int getPixel(int x, int y) const;
 	void setPixel(int x, int y, unsigned int pixel);
 	SFColor getColor(int x, int y) const;
@@ -68,17 +74,54 @@ public:
 	void setColorRGBA(int x, int y, const SFColorRGBA c);
 };
 
-template <class T>
+template <typename T>
 class Vec2 {
+public:
 	T x;
 	T y;
-	template <class U> Vec2(Vec2<U> v) : x(v.x), y(v.y) {}
+	template <typename U> Vec2(Vec2<U> v) : x(v.x), y(v.y) {}
 	Vec2(T x, T y) : x(x), y(y) {}
 	T* array() { return &x; }
+	template <typename U> Vec2<T> operator+(const Vec2<U>& v) {
+		return Vec2<T>(x + v.x, y + v.y);
+	}
+	template <typename U> Vec2<T> operator-(const Vec2<U>& v) {
+		return Vec2<T>(x - v.x, y - v.y);
+	}
+	template <typename U> Vec2<T> operator*(U s) {
+		return Vec2<T>(x * s, y * s);
+	}
+	template <typename U> Vec2<T> operator/(U s) {
+		return Vec2<T>(x / s, y / s);
+	}
+	template <typename U> T operator*(Vec2<U> v) {
+		return (x * v.x) + (y * v.y);
+	}
+	template <typename U> Vec2<T>& operator+=(const Vec2<U>& v) {
+		x += v.x;
+		y += v.y;
+		return *this;
+	}
+	template <typename U> Vec2<T>& operator-=(const Vec2<U>& v) {
+		x -= v.x;
+		y -= v.y;
+		return *this;
+	}
+	template <typename U> Vec2<T>& operator*=(U s) {
+		x *= s;
+		y *= s;
+		return *this;
+	}
+	template <typename U> Vec2<T>& operator/=(U s) {
+		x /= s;
+		y /= s;
+		return *this;
+	}
 };
 
 template <class T>
 class Vec3 {
+public:
 	T x;
 	T y;
 	T z;
@@ -89,6 +132,7 @@ class Vec3 {
 
 template <class T>
 class Vec4 {
+public:
 	T x;
 	T y;
 	T z;
@@ -100,6 +144,7 @@ class Vec4 {
 
 template <class T>
 class Matrix3 {
+public:
 	Vec3<T> vec[3];
 	template <class U> Matrix3(const Matrix3<U> m);
 	template <class U> Matrix3(U* a);
@@ -109,6 +154,7 @@ class Matrix3 {
 
 template <class T>
 class Matrix4 {
+public:
 	Vec4<T> vec[4];
 	template <class U> Matrix4(const Matrix4<U> m);
 	template <class U> Matrix4(U* a);
