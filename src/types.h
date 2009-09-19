@@ -76,82 +76,82 @@ public:
 };
 
 template <typename T>
-class Vec2 {
+class SFVec2 {
 public:
 	T x;
 	T y;
-	Vec2() : x(0), y(0) {}
-	template <typename U> Vec2(Vec2<U> v) : x(v.x), y(v.y) {}
-	Vec2(T x, T y) : x(x), y(y) {}
+	SFVec2() : x(0), y(0) {}
+	template <typename U> SFVec2(SFVec2<U> v) : x(v.x), y(v.y) {}
+	SFVec2(T x, T y) : x(x), y(y) {}
 	T* array() { return &x; }
-	template <typename U> Vec2<T> operator+(const Vec2<U>& v) const {
-		return Vec2<T>(x + v.x, y + v.y);
+	template <typename U> SFVec2<T> operator+(const SFVec2<U>& v) const {
+		return SFVec2<T>(x + v.x, y + v.y);
 	}
-	template <typename U> Vec2<T> operator-(const Vec2<U>& v) const {
-		return Vec2<T>(x - v.x, y - v.y);
+	template <typename U> SFVec2<T> operator-(const SFVec2<U>& v) const {
+		return SFVec2<T>(x - v.x, y - v.y);
 	}
-	template <typename U> Vec2<T> operator*(U s) const {
-		return Vec2<T>(x * s, y * s);
+	template <typename U> SFVec2<T> operator*(U s) const {
+		return SFVec2<T>(x * s, y * s);
 	}
-	template <typename U> Vec2<T> operator/(U s) const {
-		return Vec2<T>(x / s, y / s);
+	template <typename U> SFVec2<T> operator/(U s) const {
+		return SFVec2<T>(x / s, y / s);
 	}
-	template <typename U> T operator*(Vec2<U>& v) const {
+	template <typename U> T operator*(SFVec2<U>& v) const {
 		return (x * v.x) + (y * v.y);
 	}
-	template <typename U> Vec2<T>& operator=(const Vec2<U>& v) {
+	template <typename U> SFVec2<T>& operator=(const SFVec2<U>& v) {
 		x = v.x;
 		y = v.y;
 		return *this;
 	}
-	template <typename U> Vec2<T>& operator+=(const Vec2<U>& v) {
+	template <typename U> SFVec2<T>& operator+=(const SFVec2<U>& v) {
 		x += v.x;
 		y += v.y;
 		return *this;
 	}
-	template <typename U> Vec2<T>& operator-=(const Vec2<U>& v) {
+	template <typename U> SFVec2<T>& operator-=(const SFVec2<U>& v) {
 		x -= v.x;
 		y -= v.y;
 		return *this;
 	}
-	template <typename U> Vec2<T>& operator*=(U s) {
+	template <typename U> SFVec2<T>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		return *this;
 	}
-	template <typename U> Vec2<T>& operator/=(U s) {
+	template <typename U> SFVec2<T>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		return *this;
 	}
 };
 
-template <typename T> class Matrix3;
+template <typename T> class SFMatrix3;
 
 template <typename T>
-class Vec3 {
+class SFVec3 {
 public:
 	T x;
 	T y;
 	T z;
-	Vec3() : x(0), y(0), z(0) {}
-	template <typename U> Vec3(Vec3<U> v) : x(v.x), y(v.y), z(v.z) {}
-	Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
+	SFVec3() : x(0), y(0), z(0) {}
+	template <typename U> SFVec3(SFVec3<U> v) : x(v.x), y(v.y), z(v.z) {}
+	SFVec3(T x, T y, T z) : x(x), y(y), z(z) {}
 	T* array() { return &x; }
-	template <typename U> Vec3<T> operator+(const Vec3<U>& v) const {
-		return Vec3<T>(x + v.x, y + v.y, z + v.z);
+	template <typename U> SFVec3<T> operator+(const SFVec3<U>& v) const {
+		return SFVec3<T>(x + v.x, y + v.y, z + v.z);
 	}
-	template <typename U> Vec3<T> operator-(const Vec3<U>& v) const {
-		return Vec3<T>(x - v.x, y - v.y, z - v.z);
+	template <typename U> SFVec3<T> operator-(const SFVec3<U>& v) const {
+		return SFVec3<T>(x - v.x, y - v.y, z - v.z);
 	}
-	template <typename U> Vec3<T> operator*(U s) const {
-		return Vec3<T>(x * s, y * s, z * s);
+	template <typename U> SFVec3<T> operator*(U s) const {
+		return SFVec3<T>(x * s, y * s, z * s);
 	}
-	template <typename U> Vec3<T> operator/(U s) const {
-		return Vec3<T>(x / s, y / s, z / s);
+	template <typename U> SFVec3<T> operator/(U s) const {
+		return SFVec3<T>(x / s, y / s, z / s);
 	}
-	template <typename U> Vec3<T> operator*(const Matrix3<U>& m) const {
-		Vec3<T> v;
+	template <typename U> SFVec3<T> operator*(const SFMatrix3<U>& m) const {
+		SFVec3<T> v;
 		T* p1 = &x;
 		U* p2 = m.array();
 		for (int i = 0; i < 3; i++, p1++) {
@@ -161,44 +161,44 @@ public:
 		}
 		return v;
 	}
-	template <typename U> T operator*(Vec3<U>& v) const {
+	template <typename U> T operator*(SFVec3<U>& v) const {
 		return (x * v.x) + (y * v.y) + (z * v.z);
 	}
-	template <typename U> Vec3<T>& operator=(const Vec3<U>& v) {
+	template <typename U> SFVec3<T>& operator=(const SFVec3<U>& v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
 		return *this;
 	}
-	template <typename U> Vec3<T>& operator+=(const Vec3<U>& v) {
+	template <typename U> SFVec3<T>& operator+=(const SFVec3<U>& v) {
 		x += v.x;
 		y += v.y;
 		z += v.z;
 		return *this;
 	}
-	template <typename U> Vec3<T>& operator-=(const Vec3<U>& v) {
+	template <typename U> SFVec3<T>& operator-=(const SFVec3<U>& v) {
 		x -= v.x;
 		y -= v.y;
 		z -= v.z;
 		return *this;
 	}
-	template <typename U> Vec3<T>& operator*=(U s) {
+	template <typename U> SFVec3<T>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		z *= s;
 		return *this;
 	}
-	template <typename U> Vec3<T>& operator*=(const Matrix3<U>& m) {
+	template <typename U> SFVec3<T>& operator*=(const SFMatrix3<U>& m) {
 		return this->operator=(*this * m);
 	}
-	template <typename U> Vec3<T>& operator/=(U s) {
+	template <typename U> SFVec3<T>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		z /= s;
 		return *this;
 	}
-	template <typename U> Vec3<T>& operator^(const Vec3<U>& v) const {
-		return Vec3<T>(
+	template <typename U> SFVec3<T>& operator^(const SFVec3<U>& v) const {
+		return SFVec3<T>(
 			y * v.z - z * v.y,
 			z * v.x - x * v.z,
 			x * v.y - y * v.x
@@ -206,36 +206,36 @@ public:
 	}
 };
 
-template <typename T> class Matrix4;
+template <typename T> class SFMatrix4;
 
 template <typename T>
-class Vec4 {
+class SFVec4 {
 public:
 	T x;
 	T y;
 	T z;
 	T w;
-	Vec4() : x(0), y(0), z(0), w(1) {}
-	template <typename U> Vec4(Vec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
-	Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+	SFVec4() : x(0), y(0), z(0), w(1) {}
+	template <typename U> SFVec4(SFVec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+	SFVec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 	T* array() { return &x; }
-	template <typename U> Vec4<T> operator+(const Vec4<U>& v) const {
-		return Vec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
+	template <typename U> SFVec4<T> operator+(const SFVec4<U>& v) const {
+		return SFVec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
 	}
-	template <typename U> Vec4<T> operator-(const Vec4<U>& v) const {
-		return Vec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
+	template <typename U> SFVec4<T> operator-(const SFVec4<U>& v) const {
+		return SFVec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
 	}
-	template <typename U> Vec4<T> operator*(U s) const {
-		return Vec4<T>(x * s, y * s, z * s, w * s);
+	template <typename U> SFVec4<T> operator*(U s) const {
+		return SFVec4<T>(x * s, y * s, z * s, w * s);
 	}
-	template <typename U> Vec4<T> operator/(U s) const {
-		return Vec4<T>(x / s, y / s, z / s, w / s);
+	template <typename U> SFVec4<T> operator/(U s) const {
+		return SFVec4<T>(x / s, y / s, z / s, w / s);
 	}
-	template <typename U> T operator*(Vec4<U>& v) const {
+	template <typename U> T operator*(SFVec4<U>& v) const {
 		return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w);
 	}
-	template <typename U> Vec4<T> operator*(const Matrix4<U>& m) const {
-		Vec4<T> v;
+	template <typename U> SFVec4<T> operator*(const SFMatrix4<U>& m) const {
+		SFVec4<T> v;
 		T* p1 = &x;
 		U* p2 = m.array();
 		for (int i = 0; i < 4; i++, p1++) {
@@ -246,35 +246,35 @@ public:
 		}
 		return v;
 	}
-	template <typename U> Vec4<T>& operator=(const Vec4<U>& v) {
+	template <typename U> SFVec4<T>& operator=(const SFVec4<U>& v) {
 		x = v.x;
 		y = v.y;
 		z = v.z;
 		w = v.w;
 		return *this;
 	}
-	template <typename U> Vec4<T>& operator+=(const Vec4<U>& v) {
+	template <typename U> SFVec4<T>& operator+=(const SFVec4<U>& v) {
 		x += v.x;
 		y += v.y;
 		z += v.z;
 		w += v.w;
 		return *this;
 	}
-	template <typename U> Vec4<T>& operator-=(const Vec4<U>& v) {
+	template <typename U> SFVec4<T>& operator-=(const SFVec4<U>& v) {
 		x -= v.x;
 		y -= v.y;
 		z -= v.z;
 		w -= v.w;
 		return *this;
 	}
-	template <typename U> Vec4<T>& operator*=(U s) {
+	template <typename U> SFVec4<T>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		z *= s;
 		w *= s;
 		return *this;
 	}
-	template <typename U> Vec4<T>& operator/=(U s) {
+	template <typename U> SFVec4<T>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		z /= s;
@@ -284,26 +284,26 @@ public:
 };
 
 template <typename T>
-class Matrix3 {
+class SFMatrix3 {
 private:
 	T data[9];
 public:
-	Matrix3();
-	template <typename U> Matrix3(const Matrix3<U>& m);
-	template <typename U> Matrix3(U* a);
+	SFMatrix3();
+	template <typename U> SFMatrix3(const SFMatrix3<U>& m);
+	template <typename U> SFMatrix3(U* a);
 	T& operator[](int index) { return data[index]; }
 	const T& operator[](int index) const { return data[index]; }
 	T* array() { return data; }
 };
 
 template <typename T>
-class Matrix4 {
+class SFMatrix4 {
 private:
 	T data[16];
 public:
-	Matrix4();
-	template <typename U> Matrix4(const Matrix4<U>& m);
-	template <typename U> Matrix4(U* a);
+	SFMatrix4();
+	template <typename U> SFMatrix4(const SFMatrix4<U>& m);
+	template <typename U> SFMatrix4(U* a);
 	T& operator[](int index) { return data[index]; }
 	const T& operator[](int index) const { return data[index]; }
 	T* array() { return data; }
@@ -313,18 +313,18 @@ typedef bool SFBool;
 typedef double SFDouble;
 typedef float SFFloat;
 typedef int32_t SFInt32;
-typedef Matrix3<SFFloat> SFMatrix3f;
-typedef Matrix3<SFDouble> SFMatrix3d;
-typedef Matrix4<SFFloat> SFMatrix4f;
-typedef Matrix4<SFDouble> SFMatrix4d;
+typedef SFMatrix3<SFFloat> SFMatrix3f;
+typedef SFMatrix3<SFDouble> SFMatrix3d;
+typedef SFMatrix4<SFFloat> SFMatrix4f;
+typedef SFMatrix4<SFDouble> SFMatrix4d;
 typedef std::string SFString;
 typedef double SFTime;
-typedef Vec2<SFFloat> SFVec2f;
-typedef Vec2<SFDouble> SFVec2d;
-typedef Vec3<SFFloat> SFVec3f;
-typedef Vec3<SFDouble> SFVec3d;
-typedef Vec4<SFFloat> SFVec4f;
-typedef Vec4<SFDouble> SFVec4d;
+typedef SFVec2<SFFloat> SFVec2f;
+typedef SFVec2<SFDouble> SFVec2d;
+typedef SFVec3<SFFloat> SFVec3f;
+typedef SFVec3<SFDouble> SFVec3d;
+typedef SFVec4<SFFloat> SFVec4f;
+typedef SFVec4<SFDouble> SFVec4d;
 
 typedef std::vector<SFBool> MFBool;
 typedef std::vector<SFColor> MFColor;
