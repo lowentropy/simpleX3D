@@ -1,15 +1,16 @@
 #include "types.h"
 #include <assert.h>
+#include <stdio.h>
 
 int main(int argc, char** argv) {
 	SFImage* image = new SFImage(0,0,0);
 	delete image;
-	SFVec2f a(1,2);
-	SFVec2d b(2,4);
-	a -= b;
-	assert(b.x == 2);
-	assert(b.y == 4);
-	assert(a.x == -1);
-	assert(a.y == -2);
+	SFVec4d v(1,2,3,4);
+	SFMatrix4f m;
+	SFVec4f r(v * m);
+	assert(r.x == 1);
+	assert(r.y == 2);
+	assert(r.z == 3);
+	assert(r.w == 4);
 	return 0;
 }

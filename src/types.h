@@ -145,8 +145,8 @@ public:
 	}
 	template <typename U> SFVec3<T> operator*(const SFMatrix3<U>& m) const {
 		SFVec3<T> v;
-		T* p1 = &x;
-		U* p2 = m.array();
+		const T* p1 = &x;
+		const U* p2 = m.array();
 		for (int i = 0; i < 3; i++, p1++) {
 			v.x += *p1 * *p2++;
 			v.y += *p1 * *p2++;
@@ -226,9 +226,9 @@ public:
 		return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w);
 	}
 	template <typename U> SFVec4<T> operator*(const SFMatrix4<U>& m) const {
-		SFVec4<T> v;
-		T* p1 = &x;
-		U* p2 = m.array();
+		SFVec4<T> v(0,0,0,0);
+		const T* p1 = &x;
+		const U* p2 = m.array();
 		for (int i = 0; i < 4; i++, p1++) {
 			v.x += *p1 * *p2++;
 			v.y += *p1 * *p2++;
@@ -279,12 +279,19 @@ class SFMatrix3 {
 private:
 	T data[9];
 public:
-	SFMatrix3();
-	template <typename U> SFMatrix3(const SFMatrix3<U>& m);
-	template <typename U> SFMatrix3(U* a);
+	SFMatrix3() { static T i[] = {1,0,0,0,1,0,0,0,1}; *this = i; }
+	template <typename U> SFMatrix3(const SFMatrix3<U>& m) { *this = m.array(); }
+	template <typename U> SFMatrix3(U* a) { *this = a; }
 	T& operator[](int index) { return data[index]; }
 	const T& operator[](int index) const { return data[index]; }
 	T* array() { return data; }
+	const T* array() const { return data; }
+	template <typename U> SFMatrix3<T>& operator=(U* a) {
+		T* p = data;
+		for (int i = 0; i < 9; i++)
+			*p++ = *a++;
+		return *this;
+	}
 };
 
 template <typename T>
@@ -292,12 +299,19 @@ class SFMatrix4 {
 private:
 	T data[16];
 public:
-	SFMatrix4();
-	template <typename U> SFMatrix4(const SFMatrix4<U>& m);
-	template <typename U> SFMatrix4(U* a);
+	SFMatrix4() { static T i[] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}; *this = i; }
+	template <typename U> SFMatrix4(const SFMatrix4<U>& m) { *this = m.array(); }
+	template <typename U> SFMatrix4(U* a) { *this = a; }
 	T& operator[](int index) { return data[index]; }
 	const T& operator[](int index) const { return data[index]; }
 	T* array() { return data; }
+	const T* array() const { return data; }
+	template <typename U> SFMatrix4<T>& operator=(U* a) {
+		T* p = data;
+		for (int i = 0; i < 16; i++)
+			*p++ = *a++;
+		return *this;
+	}
 };
 
 class SFRotation {
