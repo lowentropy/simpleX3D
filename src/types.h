@@ -57,6 +57,7 @@ protected:
 	int size;
 	unsigned char* bytes;
 public:
+	explicit SFImage() { SFImage(0,0,0); }
 	SFImage(const SFImage& i);
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
@@ -79,23 +80,29 @@ class Vec2 {
 public:
 	T x;
 	T y;
+	Vec2() : x(0), y(0) {}
 	template <typename U> Vec2(Vec2<U> v) : x(v.x), y(v.y) {}
 	Vec2(T x, T y) : x(x), y(y) {}
 	T* array() { return &x; }
-	template <typename U> Vec2<T> operator+(const Vec2<U>& v) {
+	template <typename U> Vec2<T> operator+(const Vec2<U>& v) const {
 		return Vec2<T>(x + v.x, y + v.y);
 	}
-	template <typename U> Vec2<T> operator-(const Vec2<U>& v) {
+	template <typename U> Vec2<T> operator-(const Vec2<U>& v) const {
 		return Vec2<T>(x - v.x, y - v.y);
 	}
-	template <typename U> Vec2<T> operator*(U s) {
+	template <typename U> Vec2<T> operator*(U s) const {
 		return Vec2<T>(x * s, y * s);
 	}
-	template <typename U> Vec2<T> operator/(U s) {
+	template <typename U> Vec2<T> operator/(U s) const {
 		return Vec2<T>(x / s, y / s);
 	}
-	template <typename U> T operator*(Vec2<U> v) {
+	template <typename U> T operator*(Vec2<U>& v) const {
 		return (x * v.x) + (y * v.y);
+	}
+	template <typename U> Vec2<T>& operator=(const Vec2<U>& v) {
+		x = v.x;
+		y = v.y;
+		return *this;
 	}
 	template <typename U> Vec2<T>& operator+=(const Vec2<U>& v) {
 		x += v.x;
@@ -119,47 +126,187 @@ public:
 	}
 };
 
-template <class T>
+template <typename T> class Matrix3;
+
+template <typename T>
 class Vec3 {
 public:
 	T x;
 	T y;
 	T z;
-	template <class U> Vec3(Vec3<U> v) : x(v.x), y(v.y), z(v.z) {}
+	Vec3() : x(0), y(0), z(0) {}
+	template <typename U> Vec3(Vec3<U> v) : x(v.x), y(v.y), z(v.z) {}
 	Vec3(T x, T y, T z) : x(x), y(y), z(z) {}
 	T* array() { return &x; }
+	template <typename U> Vec3<T> operator+(const Vec3<U>& v) const {
+		return Vec3<T>(x + v.x, y + v.y, z + v.z);
+	}
+	template <typename U> Vec3<T> operator-(const Vec3<U>& v) const {
+		return Vec3<T>(x - v.x, y - v.y, z - v.z);
+	}
+	template <typename U> Vec3<T> operator*(U s) const {
+		return Vec3<T>(x * s, y * s, z * s);
+	}
+	template <typename U> Vec3<T> operator/(U s) const {
+		return Vec3<T>(x / s, y / s, z / s);
+	}
+	template <typename U> Vec3<T> operator*(const Matrix3<U>& m) const {
+		Vec3<T> v;
+		T* p1 = &x;
+		U* p2 = m.array();
+		for (int i = 0; i < 3; i++, p1++) {
+			v.x += *p1 * *p2++;
+			v.y += *p1 * *p2++;
+			v.z += *p1 * *p2++;
+		}
+		return v;
+	}
+	template <typename U> T operator*(Vec3<U>& v) const {
+		return (x * v.x) + (y * v.y) + (z * v.z);
+	}
+	template <typename U> Vec3<T>& operator=(const Vec3<U>& v) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
+		return *this;
+	}
+	template <typename U> Vec3<T>& operator+=(const Vec3<U>& v) {
+		x += v.x;
+		y += v.y;
+		z += v.z;
+		return *this;
+	}
+	template <typename U> Vec3<T>& operator-=(const Vec3<U>& v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		return *this;
+	}
+	template <typename U> Vec3<T>& operator*=(U s) {
+		x *= s;
+		y *= s;
+		z *= s;
+		return *this;
+	}
+	template <typename U> Vec3<T>& operator*=(const Matrix3<U>& m) {
+		return this->operator=(*this * m);
+	}
+	template <typename U> Vec3<T>& operator/=(U s) {
+		x /= s;
+		y /= s;
+		z /= s;
+		return *this;
+	}
+	template <typename U> Vec3<T>& operator^(const Vec3<U>& v) const {
+		return Vec3<T>(
+			y * v.z - z * v.y,
+			z * v.x - x * v.z,
+			x * v.y - y * v.x
+		);
+	}
 };
 
-template <class T>
+template <typename T> class Matrix4;
+
+template <typename T>
 class Vec4 {
 public:
 	T x;
 	T y;
 	T z;
 	T w;
-	template <class U> Vec4(Vec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+	Vec4() : x(0), y(0), z(0), w(1) {}
+	template <typename U> Vec4(Vec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 	Vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 	T* array() { return &x; }
+	template <typename U> Vec4<T> operator+(const Vec4<U>& v) const {
+		return Vec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
+	}
+	template <typename U> Vec4<T> operator-(const Vec4<U>& v) const {
+		return Vec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
+	}
+	template <typename U> Vec4<T> operator*(U s) const {
+		return Vec4<T>(x * s, y * s, z * s, w * s);
+	}
+	template <typename U> Vec4<T> operator/(U s) const {
+		return Vec4<T>(x / s, y / s, z / s, w / s);
+	}
+	template <typename U> T operator*(Vec4<U>& v) const {
+		return (x * v.x) + (y * v.y) + (z * v.z) + (w * v.w);
+	}
+	template <typename U> Vec4<T> operator*(const Matrix4<U>& m) const {
+		Vec4<T> v;
+		T* p1 = &x;
+		U* p2 = m.array();
+		for (int i = 0; i < 4; i++, p1++) {
+			v.x += *p1 * *p2++;
+			v.y += *p1 * *p2++;
+			v.z += *p1 * *p2++;
+			v.w += *p1 * *p2++;
+		}
+		return v;
+	}
+	template <typename U> Vec4<T>& operator=(const Vec4<U>& v) {
+		x = v.x;
+		y = v.y;
+		z = v.z;
+		w = v.w;
+		return *this;
+	}
+	template <typename U> Vec4<T>& operator+=(const Vec4<U>& v) {
+		x += v.x;
+		y += v.y;
+		z += v.z;
+		w += v.w;
+		return *this;
+	}
+	template <typename U> Vec4<T>& operator-=(const Vec4<U>& v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		w -= v.w;
+		return *this;
+	}
+	template <typename U> Vec4<T>& operator*=(U s) {
+		x *= s;
+		y *= s;
+		z *= s;
+		w *= s;
+		return *this;
+	}
+	template <typename U> Vec4<T>& operator/=(U s) {
+		x /= s;
+		y /= s;
+		z /= s;
+		w /= s;
+		return *this;
+	}
 };
 
-template <class T>
+template <typename T>
 class Matrix3 {
+private:
+	T data[9];
 public:
-	Vec3<T> vec[3];
-	template <class U> Matrix3(const Matrix3<U> m);
-	template <class U> Matrix3(U* a);
-	template <class U> Matrix3(Vec3<U>* v);
-	T* array() { return &vec[0].x; }
+	Matrix3();
+	template <typename U> Matrix3(const Matrix3<U>& m);
+	template <typename U> Matrix3(U* a);
+	T& operator[](int index) { return data[index]; }
+	const T& operator[](int index) const { return data[index]; }
+	T* array() { return data; }
 };
 
-template <class T>
+template <typename T>
 class Matrix4 {
+private:
+	T data[16];
 public:
-	Vec4<T> vec[4];
-	template <class U> Matrix4(const Matrix4<U> m);
-	template <class U> Matrix4(U* a);
-	template <class U> Matrix4(Vec4<U>* v);
-	T* array() { return &vec[0].x; }
+	Matrix4();
+	template <typename U> Matrix4(const Matrix4<U>& m);
+	template <typename U> Matrix4(U* a);
+	T& operator[](int index) { return data[index]; }
+	const T& operator[](int index) const { return data[index]; }
+	T* array() { return data; }
 };
 
 typedef bool SFBool;
