@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 #include <unistd.h>
+#include <math.h>
 
 class X3DError : public std::runtime_error {
 public:
@@ -15,11 +16,15 @@ class SFNode {
 	// TODO
 };
 
+template <typename T> class SFMatrix3;
+template <typename T> class SFMatrix4;
+
 class SFColor {
 public:
 	unsigned char r;
 	unsigned char g;
 	unsigned char b;
+	SFColor() : r(0), g(0), b(0) {}
 	SFColor(const SFColor& c) : r(c.r), g(c.g), b(c.b) {}
 	SFColor(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
 	unsigned char* array() { return &r; }
@@ -31,22 +36,12 @@ public:
 	unsigned char g;
 	unsigned char b;
 	unsigned char a;
+	SFColorRGBA() : r(0), g(0), b(0), a(0) {}
 	SFColorRGBA(const SFColor& c) : r(c.r), g(c.g), b(c.b), a(255) {}
 	SFColorRGBA(const SFColorRGBA& c) : r(c.r), g(c.g), b(c.b), a(c.a) {}
 	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : r(r), g(g), b(b), a(a) {}
 	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b), a(255) {}
 	unsigned char* array() { return &r; }
-};
-
-class SFRotation {
-public:
-	float x;
-	float y;
-	float z;
-	float angle;
-	SFRotation(const SFRotation& r) : x(r.x), y(r.y), z(r.z), angle(r.angle) {}
-	SFRotation(float x, float y, float z, float a) : x(x), y(y), z(z), angle(a) {}
-	float* array() { return &x; }
 };
 
 class SFImage {
@@ -126,8 +121,6 @@ public:
 	}
 };
 
-template <typename T> class SFMatrix3;
-
 template <typename T>
 class SFVec3 {
 public:
@@ -205,8 +198,6 @@ public:
 		);
 	}
 };
-
-template <typename T> class SFMatrix4;
 
 template <typename T>
 class SFVec4 {
@@ -308,6 +299,31 @@ public:
 	const T& operator[](int index) const { return data[index]; }
 	T* array() { return data; }
 };
+
+class SFRotation {
+public:
+	float x;
+	float y;
+	float z;
+	float a;
+	SFRotation() : x(0), y(0), z(1), a(0) {}
+	SFRotation(const SFRotation& r) : x(r.x), y(r.y), z(r.z), a(r.a) {}
+	SFRotation(float x, float y, float z, float a) : x(x), y(y), z(z), a(a) {}
+	SFMatrix3<float> matrix() const {
+		float c = cos(a), s = sin(a), t = 1-c;
+		float tx = t * x, ty = t * y, tz = t * z;
+		float txy = tx * y, tyz = ty * z, txz = tx * z;
+		float sx = s * x, sy = s * y, sz = s * z;
+		float m[9] = {
+			tx * x + c, txy + sz, txz - sy,
+			txy - sz, ty * y + c, tyz + sx,
+			txz + sy, tyz - sx, tz * z + c
+		};
+		return SFMatrix3<float>(m);
+	}
+	float* array() { return &x; }
+};
+
 
 typedef bool SFBool;
 typedef double SFDouble;
