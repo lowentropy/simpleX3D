@@ -44,7 +44,7 @@ public:
 	/**
 	 * Index operator (mutable version).
 	 * 
-	 * @params index element index
+	 * @param index element index
 	 * @returns mutable pointer into the array elements
 	 */
 	T& operator[](int index) { return &data[index]; }
@@ -52,7 +52,7 @@ public:
 	/**
 	 * Index operator (const version).
      *
-	 * @params index element index
+	 * @param index element index
 	 * @returns const pointer into the array elements
 	 */
 	const T& operator[](int index) const { return data[index]; }
@@ -199,7 +199,7 @@ public:
 	/**
 	 * Index operator (mutable version).
 	 * 
-	 * @params index element index
+	 * @param index element index
 	 * @returns mutable pointer into the array elements
 	 */
 	T& operator[](int index) { return &data[index]; }
@@ -207,7 +207,7 @@ public:
 	/**
 	 * Index operator (const version).
      *
-	 * @params index element index
+	 * @param index element index
 	 * @returns const pointer into the array elements
 	 */
 	const T& operator[](int index) const { return data[index]; }
