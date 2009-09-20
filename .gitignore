@@ -18,3 +18,4 @@ configure
 data
 libtool
 m4
+test/test_should_create_SFImage
