@@ -95,6 +95,11 @@ public:
 	void setColor(int x, int y, const SFColor c);
 	SFColorRGBA getColorRGBA(int x, int y) const;
 	void setColorRGBA(int x, int y, const SFColorRGBA c);
+
+private:
+	
+	unsigned char* locate(int x, int y);
+	const unsigned char* locate(int x, int y) const;
 };
 
 #endif // #ifndef _X3D_SFIMAGE_H_

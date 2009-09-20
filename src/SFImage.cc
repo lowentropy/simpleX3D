@@ -74,10 +74,7 @@ SFImage::~SFImage() {
  * @see setPixel
  */
 unsigned int SFImage::getPixel(int x, int y) const {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
+	const unsigned char* ptr = locate(x, y);
 	unsigned int pixel = 0;
 	for (int i = 0; i < components; i++)
 		pixel = (pixel << 8) | *ptr++;
@@ -96,10 +93,7 @@ unsigned int SFImage::getPixel(int x, int y) const {
  * @see getPixel
  */
 void SFImage::setPixel(int x, int y, unsigned int pixel) {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
+	unsigned char* ptr = locate(x, y);
 	for (int i = 0; i < components; i++) {
 		*ptr++ = pixel & 255;
 		pixel >>= 8;
@@ -119,11 +113,8 @@ void SFImage::setPixel(int x, int y, unsigned int pixel) {
  * @see setColor
  */
 SFColor SFImage::getColor(int x, int y) const {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
 	SFColor c;
+	const unsigned char* ptr = locate(x, y);
 	if (components < 3) {
 		c.r = c.g = c.b = *ptr;
 	} else {
@@ -147,10 +138,7 @@ SFColor SFImage::getColor(int x, int y) const {
  * @see getColor
  */
 void SFImage::setColor(int x, int y, const SFColor c) {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
+	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
 		*ptr = (c.r + c.g + c.b) / 3;
 	} else {
@@ -173,11 +161,8 @@ void SFImage::setColor(int x, int y, const SFColor c) {
  * @see setColorRGBA
  */
 SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
 	SFColorRGBA c;
+	const unsigned char* ptr = locate(x, y);
 	if (components < 3) {
 		c.r = c.g = c.b = *ptr++;
 	} else {
@@ -203,10 +188,7 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
  * @see getColorRGBA
  */
 void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
-	int index = (y * width + x) * components;
-	if (index < 0 || index >= size)
-		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr = &bytes[index];
+	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
 		*ptr++ = (c.r + c.g + c.b) / 3;
 	} else {
@@ -216,4 +198,20 @@ void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
 	}
 	if (components % 2 == 0)
 		*ptr = c.a;
+}
+
+// PRIVATE STUFF HERE
+
+unsigned char* SFImage::locate(int x, int y) {
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("coordinates out of bounds");
+	return &bytes[index];
+}
+
+const unsigned char* SFImage::locate(int x, int y) const {
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("coordinates out of bounds");
+	return &bytes[index];
 }
