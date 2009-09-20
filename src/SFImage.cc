@@ -74,166 +74,146 @@ SFImage::~SFImage() {
  * @see setPixel
  */
 unsigned int SFImage::getPixel(int x, int y) const {
-	int index = y * width + x;
-	if (index < 0 || index >= width*height)
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
 		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr;
-	unsigned int value;
-	switch (components) {
-		case 1:
-			return ((uint8_t*) bytes)[index];
-		case 2:
-			return ((uint16_t*) bytes)[index];
-		case 3:
-			ptr = &bytes[index*3];
-			value = *ptr++;
-			value = value << 8 | *ptr++;
-			value = value << 8 | *ptr;
-			return value;
-		case 4:
-			return ((uint32_t*) bytes)[index];
-	}
+	unsigned char* ptr = &bytes[index];
+	unsigned int pixel = 0;
+	for (int i = 0; i < components; i++)
+		pixel = (pixel << 8) | *ptr++;
+	return pixel;
 }
 
+/**
+ * Inject a raw pixel value.
+ * 
+ * The unsigned int argument should only have a number of lower
+ * bytes set equal to #components. The upper bytes will be ignored.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @param pixel packed pixel value
+ * @see getPixel
+ */
 void SFImage::setPixel(int x, int y, unsigned int pixel) {
-	int index = y * width + x;
-	if (index < 0 || index >= width*height)
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
 		throw X3DError("pixel coordinates out-of-bounds");
-	unsigned char* ptr;
-	switch (components) {
-		case 1:
-			((uint8_t*) bytes)[index] = (uint8_t) pixel;
-			break;
-		case 2:
-			((uint16_t*) bytes)[index] = (uint16_t) pixel;
-			break;
-		case 3:
-			ptr = &bytes[index*3+2];
-			*ptr-- = pixel & 255; pixel >>= 8;
-			*ptr-- = pixel & 255; pixel >>= 8;
-			*ptr   = pixel & 255;
-			break;
-		case 4:
-			((uint32_t*) bytes)[index] = (uint32_t) pixel;
-			break;
+	unsigned char* ptr = &bytes[index];
+	for (int i = 0; i < components; i++) {
+		*ptr++ = pixel & 255;
+		pixel >>= 8;
 	}
 }
 
+/**
+ * Retrieve a pixel's RGB color.
+ * 
+ * The alpha channel, if present, is not returned. If the image
+ * is grayscale, all three color channels are set equal to the
+ * grayscale value.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @returns RGB color for pixel
+ * @see setColor
+ */
 SFColor SFImage::getColor(int x, int y) const {
-	int index;
-	unsigned char* ptr;
-	unsigned int pixel;
-	unsigned char r, g, b;
-	switch (components) {
-		case 1:
-			pixel = (unsigned char) getPixel(x, y);
-			return SFColor(pixel, pixel, pixel);
-		case 2:
-			pixel = (unsigned char) (getPixel(x, y) >> 8);
-			return SFColor(pixel, pixel, pixel);
-		case 3:
-			index = y * width + x;
-			if (index < 0 || index >= width*height)
-				throw X3DError("pixel coordinates out-of-bounds");
-			ptr = &bytes[index * 3];
-			return SFColor(*ptr++, *ptr++, *ptr);
-		case 4:
-			pixel = getPixel(x, y);
-			pixel >>= 8;
-			b = pixel & 255; pixel >>= 8;
-			g = pixel & 255; pixel >>= 8;
-			r = pixel;
-			return SFColor(r, g, b);
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("pixel coordinates out-of-bounds");
+	unsigned char* ptr = &bytes[index];
+	SFColor c;
+	if (components < 3) {
+		c.r = c.g = c.b = *ptr;
+	} else {
+		c.r = *ptr++;
+		c.g = *ptr++;
+		c.b = *ptr;
 	}
+	return c;
 }
 
+/**
+ * Updates a pixel's RGB color.
+ * 
+ * If the image has an alpha channel, it is not changed. If the image
+ * is grayscale, then the updated value will be the average intensity
+ * of the given color.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @param c RGB color to set
+ * @see getColor
+ */
 void SFImage::setColor(int x, int y, const SFColor c) {
-	int index;
-	unsigned int pixel;
-	unsigned char* ptr;
-	switch (components) {
-		case 1:
-			pixel = (c.r + c.g + c.b) / 3;
-			setPixel(x, y, pixel);
-			break;
-		case 2:
-			pixel = (c.r + c.g + c.b) / 3;
-			setPixel(x, y, (pixel << 8) | 255);
-			break;
-		case 3:
-			index = y * width + x;
-			if (index < 0 || index >= width*height)
-				throw X3DError("pixel coordinates out-of-bounds");
-			ptr = &bytes[index * 3];
-			*ptr++ = c.r;
-			*ptr++ = c.g;
-			*ptr   = c.b;
-			break;
-		case 4:
-			pixel = (c.r << 24) | (c.g << 16) | (c.b << 8) | 255;
-			setPixel(x, y, pixel);
-			break;
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("pixel coordinates out-of-bounds");
+	unsigned char* ptr = &bytes[index];
+	if (components < 3) {
+		*ptr = (c.r + c.g + c.b) / 3;
+	} else {
+		*ptr++ = c.r;
+		*ptr++ = c.g;
+		*ptr++ = c.b;
 	}
 }
 
+/**
+ * Retrieve a pixel's RGBA color.
+ * 
+ * If the image does not have an alpha channel, the returned alpha will
+ * be 255 (opaque). If the image is grayscale, all three color channels
+ * will be set equal to the intensity value.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @returns RGBA color for pixel
+ * @see setColorRGBA
+ */
 SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
-	int index;
-	unsigned char c_pixel, alpha, value;
-	unsigned short s_pixel;
-	unsigned int i_pixel;
-	unsigned char* ptr;
-	unsigned char r, g, b, a;
-	switch (components) {
-		case 1:
-			c_pixel = (unsigned char) getPixel(x, y);
-			return SFColorRGBA(c_pixel, c_pixel, c_pixel, 255);
-		case 2:
-			s_pixel = (unsigned short) getPixel(x, y);
-			alpha = (unsigned char) (s_pixel & 255);
-			value = (unsigned char) ((s_pixel >> 8) & 255);
-			return SFColorRGBA(value, value, value, alpha);
-		case 3:
-			index = y * width + x;
-			if (index < 0 || index >= width*height)
-				throw X3DError("pixel coordinates out-of-bounds");
-			ptr = &bytes[index * 3];
-			return SFColorRGBA(*ptr++, *ptr++, *ptr, 255);
-		case 4:
-			i_pixel = getPixel(x, y);
-			a = i_pixel & 255; i_pixel >>= 8;
-			b = i_pixel & 255; i_pixel >>= 8;
-			g = i_pixel & 255; i_pixel >>= 8;
-			r = i_pixel;
-			return SFColorRGBA(r, g, b, a);
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("pixel coordinates out-of-bounds");
+	unsigned char* ptr = &bytes[index];
+	SFColorRGBA c;
+	if (components < 3) {
+		c.r = c.g = c.b = *ptr++;
+	} else {
+		c.r = *ptr++;
+		c.g = *ptr++;
+		c.b = *ptr++;
 	}
+	if (components % 2 == 0)
+		c.a = *ptr;
+	return c;
 }
 
+/**
+ * Update a pixel's RGBA color.
+ * 
+ * If the image does not have an alpha channel, the alpha color value
+ * is ignored. If the image is grayscale, the updated value will be
+ * the average intensity of the color.
+ * 
+ * @param x X coordinate
+ * @param y Y coordinate
+ * @param c RGBA color to set
+ * @see getColorRGBA
+ */
 void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
-	int index;
-	unsigned int pixel;
-	unsigned char* ptr;
-	switch (components) {
-		case 1:
-			pixel = (c.r + c.g + c.b) / 3;
-			setPixel(x, y, pixel);
-			break;
-		case 2:
-			pixel = (c.r + c.g + c.b) / 3;
-			pixel = (pixel << 8) | c.a;
-			setPixel(x, y, pixel);
-			break;
-		case 3:
-			index = y * width + x;
-			if (index < 0 || index >= width*height)
-				throw X3DError("pixel coordinates out-of-bounds");
-			ptr = &bytes[index * 3];
-			*ptr++ = c.r;
-			*ptr++ = c.g;
-			*ptr   = c.b;
-			break;
-		case 4:
-			pixel = (c.r << 24) | (c.g << 16) | (c.b << 8) | c.a;
-			setPixel(x, y, pixel);
-			break;
+	int index = (y * width + x) * components;
+	if (index < 0 || index >= size)
+		throw X3DError("pixel coordinates out-of-bounds");
+	unsigned char* ptr = &bytes[index];
+	if (components < 3) {
+		*ptr++ = (c.r + c.g + c.b) / 3;
+	} else {
+		*ptr++ = c.r;
+		*ptr++ = c.g;
+		*ptr++ = c.b;
 	}
+	if (components % 2 == 0)
+		*ptr = c.a;
 }

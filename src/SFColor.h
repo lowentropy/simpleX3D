@@ -42,9 +42,9 @@ public:
 	 * Array accessor (mutable version).
 	 * 
 	 * Returns a pointer into the packed RGB values. This pointer
-	 * is mutable, so you can write new values int othe color.
+	 * is mutable, so you can write new values into the color.
 	 * 
-	 * @return mutable pointer to RGB array
+	 * @returns mutable pointer to RGB array
 	 */
 	unsigned char* array() { return &r; }
 
@@ -54,7 +54,7 @@ public:
 	 * Returns a pointer into the packed RGB values. This pointer
 	 * is not mutable, so it's safe to use on colors declared const.
 	 * 
-	 * @return const pointer to RGB array
+	 * @returns const pointer to RGB array
 	 */
 	const unsigned char* array() const { return &r; }
 };
@@ -124,7 +124,7 @@ public:
 	 * Returns a pointer into the packed RGBA values. This pointer
 	 * is mutable, so you can write new values int othe color.
 	 * 
-	 * @return mutable pointer to RGBA array
+	 * @returns mutable pointer to RGBA array
 	 */
 	unsigned char* array() { return &r; }
 
@@ -134,7 +134,7 @@ public:
 	 * Returns a pointer into the packed RGBA values. This pointer
 	 * is not mutable, so it's safe to use on colors declared const.
 	 * 
-	 * @return const pointer to RGBA array
+	 * @returns const pointer to RGBA array
 	 */
 	const unsigned char* array() const { return &r; }
 };
