@@ -69,7 +69,20 @@ public:
 		};
 		return SFMatrix3<float>(m);
 	}
+
+	/**
+	 * Array accessor (mutable version).
+	 * 
+	 * @returns mutable pointer to rotation component array
+	 */
 	float* array() { return &x; }
+
+	/**
+	 * Array accessor (const version).
+	 * 
+	 * @returns const pointer to rotation component array
+	 */
+	const float* array() const { return &x; }
 };
 
 #endif // #ifndef _X3D_ROTATION_H_
