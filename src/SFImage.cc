@@ -93,9 +93,9 @@ unsigned int SFImage::getPixel(int x, int y) const {
  * @see getPixel
  */
 void SFImage::setPixel(int x, int y, unsigned int pixel) {
-	unsigned char* ptr = locate(x, y);
+	unsigned char* ptr = locate(x, y) + components;
 	for (int i = 0; i < components; i++) {
-		*ptr++ = pixel & 255;
+		*--ptr = pixel & 255;
 		pixel >>= 8;
 	}
 }
