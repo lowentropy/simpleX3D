@@ -1,3 +1,12 @@
+/**
+ * \file types.h
+ * 
+ * Describes abstract field types as defined in
+ * ISO-IEC-19775-1.2 Part 5: Field type reference.
+ * 
+ * \see http://www.web3d.org/x3d/specifications/ISO-IEC-19775-1.2-X3D-AbstractSpecification/index.html
+ */
+
 #ifndef _X3D_TYPES_H_
 #define _X3D_TYPES_H_
 
@@ -12,43 +21,43 @@
 #include <string>
 #include <vector>
 
-typedef bool SFBool;
-typedef double SFDouble;
-typedef float SFFloat;
-typedef int32_t SFInt32;
-typedef SFMatrix3<SFFloat> SFMatrix3f;
-typedef SFMatrix3<SFDouble> SFMatrix3d;
-typedef SFMatrix4<SFFloat> SFMatrix4f;
-typedef SFMatrix4<SFDouble> SFMatrix4d;
-typedef std::string SFString;
-typedef double SFTime;
-typedef SFVec2<SFFloat> SFVec2f;
-typedef SFVec2<SFDouble> SFVec2d;
-typedef SFVec3<SFFloat> SFVec3f;
-typedef SFVec3<SFDouble> SFVec3d;
-typedef SFVec4<SFFloat> SFVec4f;
-typedef SFVec4<SFDouble> SFVec4d;
+typedef bool SFBool; ///< boolean type
+typedef double SFDouble; ///< double-precision float
+typedef float SFFloat; ///< single-precision float
+typedef int32_t SFInt32; ///< 32-bit signed integer
+typedef SFMatrix3<SFFloat> SFMatrix3f; ///< 3x3 matrix of SFFloat
+typedef SFMatrix3<SFDouble> SFMatrix3d; ///< 3x3 matrix of SFDouble
+typedef SFMatrix4<SFFloat> SFMatrix4f; ///< 4x4 matrix of SFFloat
+typedef SFMatrix4<SFDouble> SFMatrix4d; ///< 4x4 matrix of SFDouble
+typedef std::string SFString; ///< UTF-8 string
+typedef double SFTime; ///< seconds since midnight of Jan 1, 1970
+typedef SFVec2<SFFloat> SFVec2f; ///< 2-dimensional vector of SFFloat
+typedef SFVec2<SFDouble> SFVec2d; ///< 2-dimensional vector of SFDouble
+typedef SFVec3<SFFloat> SFVec3f; ///< 3-dimensional vector of SFFloat
+typedef SFVec3<SFDouble> SFVec3d; ///< 3-dimensional vector of SFDouble
+typedef SFVec4<SFFloat> SFVec4f; ///< 4-dimensional vector of SFFloat
+typedef SFVec4<SFDouble> SFVec4d; ///< 4-dimensional vector of SFDouble
 
-typedef std::vector<SFBool> MFBool;
-typedef std::vector<SFColor> MFColor;
-typedef std::vector<SFColorRGBA> MFColorRGBA;
-typedef std::vector<SFDouble> MFDouble;
-typedef std::vector<SFFloat> MFFloat;
-typedef std::vector<SFImage> MFImage;
-typedef std::vector<SFInt32> MFInt32;
-typedef std::vector<SFMatrix3f> MFMatrix3f;
-typedef std::vector<SFMatrix3d> MFMatrix3d;
-typedef std::vector<SFMatrix4f> MFMatrix4f;
-typedef std::vector<SFMatrix4d> MFMatrix4d;
-typedef std::vector<SFNode> MFNode;
-typedef std::vector<SFRotation> MFRotation;
-typedef std::vector<SFString> MFString;
-typedef std::vector<SFTime> MFTime;
-typedef std::vector<SFVec2f> MFVec2f;
-typedef std::vector<SFVec2d> MFVec2d;
-typedef std::vector<SFVec3f> MFVec3f;
-typedef std::vector<SFVec3d> MFVec3d;
-typedef std::vector<SFVec4f> MFVec4f;
-typedef std::vector<SFVec4d> MFVec4d;
+typedef std::vector<SFBool> MFBool; ///< list of SFBool values
+typedef std::vector<SFColor> MFColor; ///< list of SFColor values
+typedef std::vector<SFColorRGBA> MFColorRGBA; ///< list of SFColorRGBA values
+typedef std::vector<SFDouble> MFDouble; ///< list of SFDouble values
+typedef std::vector<SFFloat> MFFloat; ///< list of SFFloat values
+typedef std::vector<SFImage> MFImage; ///< list of SFImage values
+typedef std::vector<SFInt32> MFInt32; ///< list of SFInt32 values
+typedef std::vector<SFMatrix3f> MFMatrix3f; ///< list of SFMatrix3f values
+typedef std::vector<SFMatrix3d> MFMatrix3d; ///< list of SFMatrix3d values
+typedef std::vector<SFMatrix4f> MFMatrix4f; ///< list of SFMatrix4f values
+typedef std::vector<SFMatrix4d> MFMatrix4d; ///< list of SFMatrix4d values
+typedef std::vector<SFNode> MFNode; ///< list of SFNode values
+typedef std::vector<SFRotation> MFRotation; ///< list of SFRotation values
+typedef std::vector<SFString> MFString; ///< list of SFString values
+typedef std::vector<SFTime> MFTime; ///< list of SFTime values
+typedef std::vector<SFVec2f> MFVec2f; ///< list of SFVec2f values
+typedef std::vector<SFVec2d> MFVec2d; ///< list of SFVec2d values
+typedef std::vector<SFVec3f> MFVec3f; ///< list of SFVec3f values
+typedef std::vector<SFVec3d> MFVec3d; ///< list of SFVec3d values
+typedef std::vector<SFVec4f> MFVec4f; ///< list of SFVec4f values
+typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 
 #endif // #ifndef _X3D_TYPES_H_
