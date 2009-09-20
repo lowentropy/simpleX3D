@@ -12,7 +12,7 @@ template <typename T> class SFMatrix4;
  * 
  * This is the base class for SFVec2f and SFVec2d, having template parameters
  * SFFloat and SFDouble, respectively. In either instance, the vector can generally
- * interoperate with both types as arguments, and generally returns values and
+ * accept both types as arguments, and generally returns values and
  * vectors of its own type.
  * 
  * 2D vectors do not have matrix operations, as there are no 2x2 matrices in
@@ -224,7 +224,7 @@ public:
  * 
  * This is the base class for SFVec3f and SFVec3d, having template parameters
  * SFFloat and SFDouble, respectively. In either instance, the vector can generally
- * interoperate with both types as arguments, and generally returns values and
+ * accept both types as arguments, and generally returns values and
  * vectors of its own type.
  * 
  * 3D vectors define matrix operations and a cross-product operator.
@@ -506,7 +506,7 @@ public:
  * 
  * This is the base class for SFVec4f and SFVec4d, having template parameters
  * SFFloat and SFDouble, respectively. In either instance, the vector can generally
- * interoperate with both types as arguments, and generally returns values and
+ * accept both types as arguments, and generally returns values and
  * vectors of its own type.
  * 
  * This class represents a homogeneous coordinate in three dimensions (so it has

@@ -5,7 +5,7 @@
 #include <stdexcept>
 
 /**
- * Root class for exceptions in simpleX3D.
+ * Root class for X3D exceptions.
  */
 class X3DError : public std::runtime_error {
 public:
