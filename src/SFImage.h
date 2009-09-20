@@ -107,13 +107,13 @@ public:
 	SFImage(const SFImage& i);
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
-	~SFImage();
-	unsigned int getPixel(int x, int y) const;
-	void setPixel(int x, int y, unsigned int pixel);
-	SFColor getColor(int x, int y) const;
-	void setColor(int x, int y, const SFColor c);
-	SFColorRGBA getColorRGBA(int x, int y) const;
-	void setColorRGBA(int x, int y, const SFColorRGBA c);
+	virtual ~SFImage();
+	virtual unsigned int getPixel(int x, int y) const;
+	virtual void setPixel(int x, int y, unsigned int pixel);
+	virtual SFColor getColor(int x, int y) const;
+	virtual void setColor(int x, int y, const SFColor c);
+	virtual SFColorRGBA getColorRGBA(int x, int y) const;
+	virtual void setColorRGBA(int x, int y, const SFColorRGBA c);
 
 private:
 	
