@@ -20,7 +20,7 @@
 #include "types.h"
 #include <assert.h>
 #include <stdio.h>
-#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 TEST(ImageTests, EmptyImageHasNullBytes) {
 	SFImage image(0,0,0);
@@ -38,6 +38,6 @@ TEST(MatrixTests, MatrixTimesVector) {
 }
 
 int main(int argc, char** argv) {
-	::testing::InitGoogleTest(&argc, argv);
+	::testing::InitGoogleMock(&argc, argv);
 	return RUN_ALL_TESTS();
 }

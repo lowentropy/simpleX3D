@@ -20,8 +20,9 @@ AC_CHECK_TOOL(LD,ld)
 AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LDFLAGS)
 
-# Checks for header files.
-#AC_CHECK_HEADERS([types.h])
+# Check for google mocks
+AC_CHECK_HEADER(gmock/gmock.h)
+AC_CHECK_LIB(gmock, testing::InitGoogleMock)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
