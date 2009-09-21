@@ -20,16 +20,24 @@
 #include "types.h"
 #include <assert.h>
 #include <stdio.h>
+#include <gtest/gtest.h>
 
-int main(int argc, char** argv) {
-	SFImage* image = new SFImage(0,0,0);
-	delete image;
+TEST(ImageTests, EmptyImageHasNullBytes) {
+	SFImage image(0,0,0);
+	EXPECT_EQ(NULL, image.array()) << "Empty image has bytes.";
+}
+
+TEST(MatrixTests, MatrixTimesVector) {
 	SFVec4d v(1,2,3,4);
 	SFMatrix4f m;
 	SFVec4f r(m * v);
-	assert(r.x == 1);
-	assert(r.y == 2);
-	assert(r.z == 3);
-	assert(r.w == 4);
-	return 0;
+	EXPECT_FLOAT_EQ(1, r.x);
+	EXPECT_FLOAT_EQ(2, r.y);
+	EXPECT_FLOAT_EQ(3, r.z);
+	EXPECT_FLOAT_EQ(4, r.w);
+}
+
+int main(int argc, char** argv) {
+	::testing::InitGoogleTest(&argc, argv);
+	return RUN_ALL_TESTS();
 }
