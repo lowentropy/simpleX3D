@@ -34,12 +34,13 @@
 #include "SFMatrix.h"
 #include "SFColor.h"
 #include "SFImage.h"
-#include "SFNode.h"
+#include "X3DNode.h"
 #include "SFRotation.h"
 
 #include <string>
 #include <vector>
 
+typedef X3DNode* SFNode; ///< pointer to an X3DNode
 typedef bool SFBool; ///< boolean type
 typedef double SFDouble; ///< double-precision float
 typedef float SFFloat; ///< single-precision float

@@ -17,13 +17,13 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_SFNODE_H_
-#define _X3D_SFNODE_H_
+#ifndef _X3D_X3DNODE_H_
+#define _X3D_X3DNODE_H_
 
 #include "types.h"
 
-class SFNode {
+class X3DNode {
 	// TODO
 };
 
-#endif // #ifndef _X3D_SFNODE_H_
+#endif // #ifndef _X3D_X3DNODE_H_
