@@ -21,9 +21,30 @@ AC_SUBST(DEPS_CFLAGS)
 AC_SUBST(DEPS_LDFLAGS)
 
 # Check for google mocks
-AC_CHECK_HEADER(gmock/gmock.h)
-AC_CHECK_LIB(gmock, testing::InitGoogleMock)
-AC_CHECK_LIB(gtest, testing::InitGoogleTest)
+AC_CHECK_PROG(GTEST_CONFIG, gtest-config, "yes")
+if test x"$GTEST_CONFIG" = "xyes"; then
+  GTEST_CFLAGS=`gtest-config --cppflags --cxxflags`
+  GTEST_LIBS=`gtest-config --ldflags --libs`
+  AC_DEFINE(HAVE_LIB_GTEST, 1, [define if you have google gtest library])
+
+  # Check if there is Google Mocking library installed.
+  AC_CHECK_PROG(GMOCK_CONFIG, gmock-config, "yes")
+  if test x"$GMOCK_CONFIG" = "xyes"; then
+    GMOCK_CFLAGS=`gmock-config --cppflags --cxxflags`
+    GMOCK_LIBS=`gmock-config --ldflags --libs`
+    AC_DEFINE(HAVE_LIB_GMOCK, 1, [define if you have google gmock library])
+  else
+    # We don't run test cases which use Google Mocking framework.
+    GMOCK_CFLAGS=
+    GMOCK_LIBS=
+  fi
+else
+  # We'll use src/googletest.h for our unittests.
+  GTEST_CFLAGS=
+  GTEST_LIBS=
+fi
+AM_CONDITIONAL(HAVE_GMOCK, test x"$GMOCK_CONFIG" = "xyes")
+
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -34,6 +55,11 @@ AC_TYPE_SIZE_T
 # Checks for library functions.
 AC_HEADER_STDC
 #AC_CHECK_FUNCS([memset memcpy snprintf])
+
+AC_SUBST(GTEST_CFLAGS)
+AC_SUBST(GTEST_LIBS)
+AC_SUBST(GMOCK_CFLAGS)
+AC_SUBST(GMOCK_LIBS)
 
 AC_CONFIG_FILES([
 	Makefile
