@@ -22,19 +22,43 @@
 #include <stdio.h>
 #include <gmock/gmock.h>
 
+using ::testing::NotNull;
+
 TEST(ImageTests, EmptyImageHasNullBytes) {
 	SFImage image(0,0,0);
 	EXPECT_EQ(NULL, image.array()) << "Empty image has bytes.";
 }
 
-TEST(MatrixTests, MatrixTimesVector) {
-	SFVec4d v(1,2,3,4);
-	SFMatrix4f m;
-	SFVec4f r(m * v);
-	EXPECT_FLOAT_EQ(1, r.x);
-	EXPECT_FLOAT_EQ(2, r.y);
-	EXPECT_FLOAT_EQ(3, r.z);
-	EXPECT_FLOAT_EQ(4, r.w);
+TEST(ImageTests, NonEmptyImageShouldHaveBytes) {
+	SFImage image(1,1,1);
+	EXPECT_THAT(image.array(), NotNull());
+}
+
+TEST(ImageTests, ShouldThrowOnNegativeDims) {
+    SFImage* image;
+	ASSERT_ANY_THROW(image = new SFImage(-1,1,1));
+	ASSERT_ANY_THROW(image = new SFImage(1,-1,1));
+}
+
+TEST(ImageTests, ShouldThrowWhenAccessingOutOfBoundsCoord) {
+    SFImage image(1,1,1);
+	EXPECT_ANY_THROW(image.getPixel(1,1));
+	EXPECT_ANY_THROW(image.setPixel(1,1, 0));
+	EXPECT_ANY_THROW(image.getColorRGBA(1,1));
+	EXPECT_ANY_THROW(image.setColorRGBA(1,1, SFColorRGBA()));
+	EXPECT_ANY_THROW(image.getColor(1,1));
+	EXPECT_ANY_THROW(image.setColor(1,1, SFColor()));
+}
+ 
+TEST(ImageTests, ShouldAllowOnlyCorrectComponentsValues) {
+	SFImage* image;
+	ASSERT_NO_THROW(image = new SFImage(0,0,0)); // empty, default
+	ASSERT_NO_THROW(image = new SFImage(1,1,1));
+	ASSERT_NO_THROW(image = new SFImage(1,1,2));
+	ASSERT_NO_THROW(image = new SFImage(1,1,3));
+	ASSERT_NO_THROW(image = new SFImage(1,1,4));
+	ASSERT_ANY_THROW(image = new SFImage(1,1,0));
+	ASSERT_ANY_THROW(image = new SFImage(1,1,5));
 }
 
 int main(int argc, char** argv) {
