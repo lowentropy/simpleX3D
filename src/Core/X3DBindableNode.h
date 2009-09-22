@@ -23,6 +23,9 @@
 #include "types.h"
 #include "Core/X3DChildNode.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DBindableNode : public X3DChildNode {
 public:
 
@@ -64,5 +67,7 @@ public:
 		ROUTE_IN(set_bind);
 	}
 };
+
+}}
 
 #endif // #ifndef _X3D_X3DBINDABLENODE_H_

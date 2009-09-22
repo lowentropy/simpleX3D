@@ -23,6 +23,8 @@
 #include "types.h"
 #include <stdexcept>
 
+namespace X3D {
+
 /**
  * Root class for X3D exceptions.
  */
@@ -35,5 +37,7 @@ public:
 	 */
 	X3DError(const char* message) : std::runtime_error(message) {}
 };
+
+}
 
 #endif // #ifndef _X3D_ERRORS_H_

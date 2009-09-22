@@ -23,6 +23,8 @@
 #include "types.h"
 #include <math.h>
 
+namespace X3D {
+
 template <typename T> class SFMatrix3;
 template <typename T> class SFMatrix4;
 
@@ -733,5 +735,7 @@ public:
 		return this->operator=(*this * m);
 	}
 };
+
+}
 
 #endif // #ifndef _X3D_SFVEC_H_

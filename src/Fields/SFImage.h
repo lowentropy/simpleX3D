@@ -22,6 +22,8 @@
 
 #include "types.h"
 
+namespace X3D {
+
 /**
  * Generic image class. Image can be of arbitrary size. The pixel depth is
  * constrained to four modes, which defines how pixel values are structured:
@@ -120,5 +122,7 @@ private:
 	unsigned char* locate(int x, int y);
 	const unsigned char* locate(int x, int y) const;
 };
+
+}
 
 #endif // #ifndef _X3D_SFIMAGE_H_

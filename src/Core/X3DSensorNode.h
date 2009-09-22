@@ -23,6 +23,9 @@
 #include "types.h"
 #include "Core/X3DChildNode.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DSensorNode : public X3DChildNode {
 	/// sensor is dormant or active
 	X3D_INOUT_CUSTOM(SFBool, enabled) {
@@ -32,5 +35,7 @@ class X3DSensorNode : public X3DChildNode {
 	/// signaled when sensor becomes active
 	X3D_OUT(SFBool, isActive)
 };
+
+}}
 
 #endif // #ifndef _X3D_X3DSENSORNODE_H_

@@ -31,6 +31,6 @@ class MetadataDouble : public X3DNode, public X3DMetadataObject {
 	X3D_INOUT(MFDouble, value)
 };
 
-}} // namespace X3D::Core
+}}
 
 #endif // #ifndef _X3D_METADATADOUBLE_H_

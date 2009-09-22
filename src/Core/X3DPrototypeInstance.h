@@ -23,7 +23,12 @@
 #include "types.h"
 #include "Core/X3DNode.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DPrototypeInstance : public X3DNode {
 };
+
+}}
 
 #ifndef // #ifndef _X3D_X3DPROTOTYPEINSTANCE_H_

@@ -22,6 +22,8 @@
 
 #include "types.h"
 
+namespace X3D {
+
 /**
  * RGB color value.
  * 
@@ -157,5 +159,7 @@ public:
 	 */
 	const unsigned char* array() const { return &r; }
 };
+
+}
 
 #endif // #ifndef _X3D_SFCOLOR_H_

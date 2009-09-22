@@ -22,6 +22,8 @@
 
 #include "types.h"
 
+namespace X3D {
+
 /**
  * 3x3 Matrix.
  * 
@@ -345,5 +347,7 @@ private:
 		return *this;
 	}
 };
+
+}
 
 #endif // #ifndef _X3D_SFMATRIX_H_

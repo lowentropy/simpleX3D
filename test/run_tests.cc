@@ -20,6 +20,8 @@
 #include "types.h"
 #include <gmock/gmock.h>
 
+using namespace X3D;
+
 // here's the list of tests
 #include "Fields/SFImageTests.h"
 

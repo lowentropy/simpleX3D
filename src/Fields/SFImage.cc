@@ -20,6 +20,8 @@
 #include "types.h"
 #include <string.h>
 
+using namespace X3D;
+
 /**
  * Copy constructor.
  *

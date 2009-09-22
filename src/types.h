@@ -39,6 +39,8 @@
 #include <string>
 #include <vector>
 
+namespace X3D {
+
 typedef bool SFBool; ///< boolean type
 typedef double SFDouble; ///< double-precision float
 typedef float SFFloat; ///< single-precision float
@@ -76,6 +78,8 @@ typedef std::vector<SFVec3f> MFVec3f; ///< list of SFVec3f values
 typedef std::vector<SFVec3d> MFVec3d; ///< list of SFVec3d values
 typedef std::vector<SFVec4f> MFVec4f; ///< list of SFVec4f values
 typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
+
+}
 
 #define X3D_INIT(type, name) \
 	public: type name;
@@ -137,7 +141,9 @@ typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 	protected: virtual void _##name##_changed(type value) = 0;
 
 #include "Core/X3DNode.h"
-typedef X3DNode* SFNode; ///< pointer to an X3DNode
-typedef std::vector<SFNode> MFNode; ///< list of SFNode values
+namespace X3D {
+	typedef Core::X3DNode* SFNode; ///< pointer to an X3DNode
+	typedef std::vector<SFNode> MFNode; ///< list of SFNode values
+}
 
 #endif // #ifndef _X3D_TYPES_H_

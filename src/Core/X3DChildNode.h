@@ -23,7 +23,12 @@
 #include "types.h"
 #include "Core/X3DNode.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DChildNode : public X3DNode {
 };
+
+}}
 
 #endif // #ifndef _X3D_X3DCHILDNODE_H_

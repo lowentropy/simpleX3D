@@ -22,6 +22,9 @@
 
 #include "types.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DMetadataObject;
 
 class X3DNode {
@@ -35,6 +38,8 @@ protected:
 		// TODO
 	}
 };
+
+}}
 
 #include "Core/X3DMetadataObject.h"
 

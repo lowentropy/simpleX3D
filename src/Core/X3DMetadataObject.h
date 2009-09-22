@@ -22,6 +22,9 @@
 
 #include "types.h"
 
+namespace X3D {
+namespace Core {
+
 class X3DMetadataObject : public X3DNode {
 public:
 
@@ -31,5 +34,7 @@ public:
 	/// metadata standard for 'name'
 	X3D_INOUT(SFString, reference) 
 };
+
+}}
 
 #endif // #ifndef _X3D_X3DMETADATAOBJECT_H_

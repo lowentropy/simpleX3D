@@ -23,6 +23,8 @@
 #include "types.h"
 #include <math.h>
 
+namespace X3D {
+
 /**
  * Rotation around an arbitrary axis.
  * 
@@ -103,5 +105,7 @@ public:
 	 */
 	const float* array() const { return &x; }
 };
+
+}
 
 #endif // #ifndef _X3D_ROTATION_H_
