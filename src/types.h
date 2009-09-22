@@ -30,17 +30,15 @@
 #define _X3D_TYPES_H_
 
 #include "errors.h"
-#include "SFVec.h"
-#include "SFMatrix.h"
-#include "SFColor.h"
-#include "SFImage.h"
-#include "X3DNode.h"
-#include "SFRotation.h"
+#include "Fields/SFVec.h"
+#include "Fields/SFMatrix.h"
+#include "Fields/SFColor.h"
+#include "Fields/SFImage.h"
+#include "Fields/SFRotation.h"
 
 #include <string>
 #include <vector>
 
-typedef X3DNode* SFNode; ///< pointer to an X3DNode
 typedef bool SFBool; ///< boolean type
 typedef double SFDouble; ///< double-precision float
 typedef float SFFloat; ///< single-precision float
@@ -69,7 +67,6 @@ typedef std::vector<SFMatrix3f> MFMatrix3f; ///< list of SFMatrix3f values
 typedef std::vector<SFMatrix3d> MFMatrix3d; ///< list of SFMatrix3d values
 typedef std::vector<SFMatrix4f> MFMatrix4f; ///< list of SFMatrix4f values
 typedef std::vector<SFMatrix4d> MFMatrix4d; ///< list of SFMatrix4d values
-typedef std::vector<SFNode> MFNode; ///< list of SFNode values
 typedef std::vector<SFRotation> MFRotation; ///< list of SFRotation values
 typedef std::vector<SFString> MFString; ///< list of SFString values
 typedef std::vector<SFTime> MFTime; ///< list of SFTime values
@@ -79,5 +76,68 @@ typedef std::vector<SFVec3f> MFVec3f; ///< list of SFVec3f values
 typedef std::vector<SFVec3d> MFVec3d; ///< list of SFVec3d values
 typedef std::vector<SFVec4f> MFVec4f; ///< list of SFVec4f values
 typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
+
+#define X3D_INIT(type, name) \
+	public: type name;
+
+#define X3D_IN(type, name) \
+	protected: virtual _##name(type value) {} \
+	public: void name(type value)
+
+#define X3D_IN_ABSTRACT(type, name) \
+	protected: virtual _##name(type, value) = 0; \
+	public: void name(type value)
+
+#define X3D_OUT(type, name) \
+	public: void name(type value) { \
+			_##name(value); \
+			output(#name, value); } \
+	protected: virtual void _##name(type value) {}
+
+#define X3D_OUT_ABSTRACT(type, name) \
+	public: void name(type value) { \
+			_##name(value); \
+			output(#name, value); } \
+	protected: virtual void _##name(type value) = 0;
+
+#define X3D_OUT_CUSTOM(type, name) \
+	protected: virtual void _##name(type value) {} \
+	public: void name(type value)
+
+#define X3D_OUT_CUSTOM_ABSTRACT(type, name) \
+	protected: virtual void _##name(type value) = 0; \
+	public: void name(type value)
+
+#define X3D_INOUT(type, name) \
+	public: type name; \
+	public: void set_##name(type value) { name##_changed(value); } \
+	public: void name##_changed(type value) { \
+		_##name##_changed(value); \
+		name = value; output(#name, value); } \
+	protected: virtual void _##name##_changed(type value) {}
+
+#define X3D_INOUT_ABSTRACT(type, name) \
+	public: type name; \
+	public: void set_##name(type value) { name##_changed(value); } \
+	public: void name##_changed(type value) { \
+		_##name##_changed(value); \
+		name = value; output(#name, value); } \
+	protected: virtual void _##name##_changed(type value) = 0;
+
+#define X3D_INOUT_CUSTOM(type, name) \
+	public: type name; \
+	public: void set_##name(type value) { name##_changed(value); } \
+	public: void name##_changed(type value) \
+	protected: virtual void _##name##_changed(type value) {}
+
+#define X3D_INOUT_CUSTOM_ABSTRACT(type, name) \
+	public: type name; \
+	public: void set_##name(type value) { name##_changed(value); } \
+	public: void name##_changed(type value) \
+	protected: virtual void _##name##_changed(type value) = 0;
+
+#include "Core/X3DNode.h"
+typedef X3DNode* SFNode; ///< pointer to an X3DNode
+typedef std::vector<SFNode> MFNode; ///< list of SFNode values
 
 #endif // #ifndef _X3D_TYPES_H_

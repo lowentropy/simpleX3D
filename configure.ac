@@ -6,7 +6,7 @@ AC_INIT(simpleX3D, 0.0.1, lowentropy@gmail.com)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
-AC_CONFIG_SRCDIR([src/SFImage.cc])
+AC_CONFIG_SRCDIR([src/Fields/SFImage.cc])
 
 # Checks for programs.
 AC_LANG([C++])
@@ -23,6 +23,7 @@ AC_SUBST(DEPS_LDFLAGS)
 # Check for google mocks
 AC_CHECK_HEADER(gmock/gmock.h)
 AC_CHECK_LIB(gmock, testing::InitGoogleMock)
+AC_CHECK_LIB(gtest, testing::InitGoogleTest)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
