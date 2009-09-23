@@ -105,15 +105,6 @@ public:
 	 */
 	const unsigned char* array() const { return bytes; }
 
-	/**
-	 * Direct memory assignment.
-	 * 
-	 * Replaces the image bytes with a COPY of the input array.
-	 * 
-	 * @params array array of bytes to copy
-	 * @returns reference to this
-	 */
-	SFImage& setBytes(const unsigned char* array) { if (size) memcpy(this->bytes, array, size); }
 
 	// the rest are documented in SFImage.cc
 
@@ -121,6 +112,7 @@ public:
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
 	virtual ~SFImage();
+	SFImage& setBytes(const unsigned char* array);
 	virtual unsigned int getPixel(int x, int y) const;
 	virtual void setPixel(int x, int y, unsigned int pixel);
 	virtual SFColor getColor(int x, int y) const;

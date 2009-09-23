@@ -35,6 +35,11 @@ TEST(SFImage, ShouldThrowOnNegativeDims) {
 	ASSERT_ANY_THROW(image = new SFImage(1,-1,1));
 }
 
+TEST(SFImage, ShouldThrowOnNullConstructorBytes) {
+	SFImage* image;
+	ASSERT_ANY_THROW(image = new SFImage(100,100,4,NULL));
+}
+
 TEST(SFImage, ShouldThrowWhenAccessingOutOfBoundsCoord) {
     SFImage image(1,1,1);
 	EXPECT_ANY_THROW(image.getPixel(1,1));
@@ -65,4 +70,48 @@ TEST(SFImage, CopyConstructorShouldCopyBytes) {
 	ASSERT_NE(orig.array(), copy.array());
 	for (int i = 0; i < 8; i++)
 		ASSERT_EQ(orig.array()[i], copy.array()[i]);
+}
+
+TEST(SFImage, SizeShouldHaveCorrectValue) {
+	for (int i = 0; i < 10; i++) {
+		int w = rand() % 0xff;
+		int h = rand() % 0xff;
+		int c = rand() % 3 + 1;
+		SFImage img(w,h,c);
+		EXPECT_EQ(w*h*c, img.getSize());
+	}
+}
+
+TEST(SFImage, SetPixelShouldOnlyAffectCorrectBytes) {
+	unsigned char bytes[36];
+	for (int i = 0; i < 36; i++)
+		bytes[i] = i;
+	SFImage i1(3,3,1,bytes);
+	SFImage i2(3,3,2,bytes);
+	SFImage i3(3,3,3,bytes);
+	SFImage i4(3,3,4,bytes);
+	i1.setPixel(1,1,0);
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(i == 4 ? 0 : bytes[i], i1.array()[i]);
+	i1.setPixel(1,1,0xff);
+	for (int i = 0; i < 9; i++)
+		EXPECT_EQ(i == 4 ? 0xff : bytes[i], i1.array()[i]);
+	i2.setPixel(1,1,0);
+	for (int i = 0; i < 18; i++)
+		EXPECT_EQ((i<8||i>9) ? bytes[i] : 0, i2.array()[i]);
+	i2.setPixel(1,1,0xffff);
+	for (int i = 0; i < 18; i++)
+		EXPECT_EQ((i<8||i>9) ? bytes[i] : 0xff, i2.array()[i]);
+	i3.setPixel(1,1,0);
+	for (int i = 0; i < 27; i++)
+		EXPECT_EQ((i<12||i>14) ? bytes[i] : 0, i3.array()[i]);
+	i3.setPixel(1,1,0xffffff);
+	for (int i = 0; i < 27; i++)
+		EXPECT_EQ((i<12||i>14) ? bytes[i] : 0xff, i3.array()[i]);
+	i4.setPixel(1,1,0);
+	for (int i = 0; i < 36; i++)
+		EXPECT_EQ((i<16||i>19) ? bytes[i] : 0, i4.array()[i]);
+	i4.setPixel(1,1,0xffffffff);
+	for (int i = 0; i < 36; i++)
+		EXPECT_EQ((i<16||i>19) ? bytes[i] : 0xff, i4.array()[i]);
 }

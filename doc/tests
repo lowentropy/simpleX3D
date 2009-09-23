@@ -2,17 +2,18 @@
 	- OK giving negative values for width or height should produce errors
 	- OK giving a components value that is not 1, 2, 3, or 4 should produce an error
 	- OK trying to get or set a pixel that is out of bounds should produce an error
+	- OK trying to pass in NULL bytes to constructor should produce an error
 - memory management
+	- automatic image destructor should never kill things
 	- OK a zero-sized image should have NULL bytes
 	- OK non-zero-sized image should have non-NULL bytes
-	- automatic image destructor should never kill things
 	- OK the image copy constructor should result in identical bytes arrays,
 	  but with different pointers (i.e. not shared memory)
 	- OK the constructor with a char array passed should result in an identical
 	  bytes array, but with different pointers
 - arithmetic
-	- 'size' should always be equal to 'width * height * components'
-	- setting a large pixel value should only affect the correct bytes
+	- OK 'size' should always be equal to 'width * height * components'
+	- OK setting a large pixel value should only affect the correct bytes
 - get/set pairs
 	- pixel/pixel
 		- getPixel should return the value that setPixel put there, with the caveat

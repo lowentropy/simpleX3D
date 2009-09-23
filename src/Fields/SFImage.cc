@@ -87,6 +87,23 @@ SFImage::~SFImage() {
 }
 
 /**
+ * Direct memory assignment.
+ * 
+ * Replaces the image bytes with a COPY of the input array.
+ * 
+ * @params array array of bytes to copy
+ * @returns reference to this
+ */
+SFImage& SFImage::setBytes(const unsigned char* array) {
+	if (size) {
+		if (array == NULL)
+			throw X3DError("tried to assign NULL");
+		memcpy(this->bytes, array, size);
+	}
+	return *this;
+}
+
+/**
  * Extract a raw pixel value.
  * 
  * The value returned is an unsigned int, but will only

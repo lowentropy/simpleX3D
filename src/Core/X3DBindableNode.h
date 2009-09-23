@@ -63,7 +63,7 @@ public:
 			if (top)
 				top->isBound(true);
 		}
-		_set_bind(value);
+		on_set_bind(value);
 	}
 	
 
