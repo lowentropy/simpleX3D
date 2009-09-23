@@ -29,13 +29,13 @@ namespace Core {
 class X3DBindableNode : public X3DChildNode {
 public:
 
-	/// last known bind time? TODO find out
+	/// Signals the time the node was last bound.
 	X3D_OUT(SFTime, bindTime) 
 
-	/// signals [un]binding of node
+	/// Signals that the node has been bound or unbound.
 	X3D_OUT(SFBool, isBound) 
 
-	/// binds or removes/detaches node
+	/// Called when node is bound or unbound.
 	X3D_IN(SFBool, set_bind) {
 		if (value) {
 			if (isBound)
@@ -56,6 +56,7 @@ public:
 		}
 		_set_bind(value);
 	}
+	
 
 public:
 
@@ -71,3 +72,6 @@ public:
 }}
 
 #endif // #ifndef _X3D_X3DBINDABLENODE_H_
+//foo
+//foo
+//foo

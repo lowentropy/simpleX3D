@@ -29,6 +29,7 @@
 #ifndef _X3D_TYPES_H_
 #define _X3D_TYPES_H_
 
+#include "macros.h"
 #include "errors.h"
 #include "Fields/SFVec.h"
 #include "Fields/SFMatrix.h"
@@ -80,65 +81,6 @@ typedef std::vector<SFVec4f> MFVec4f; ///< list of SFVec4f values
 typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 
 }
-
-#define X3D_INIT(type, name) \
-	public: type name;
-
-#define X3D_IN(type, name) \
-	protected: virtual _##name(type value) {} \
-	public: void name(type value)
-
-#define X3D_IN_ABSTRACT(type, name) \
-	protected: virtual _##name(type, value) = 0; \
-	public: void name(type value)
-
-#define X3D_OUT(type, name) \
-	public: void name(type value) { \
-			_##name(value); \
-			output(#name, value); } \
-	protected: virtual void _##name(type value) {}
-
-#define X3D_OUT_ABSTRACT(type, name) \
-	public: void name(type value) { \
-			_##name(value); \
-			output(#name, value); } \
-	protected: virtual void _##name(type value) = 0;
-
-#define X3D_OUT_CUSTOM(type, name) \
-	protected: virtual void _##name(type value) {} \
-	public: void name(type value)
-
-#define X3D_OUT_CUSTOM_ABSTRACT(type, name) \
-	protected: virtual void _##name(type value) = 0; \
-	public: void name(type value)
-
-#define X3D_INOUT(type, name) \
-	public: type name; \
-	public: void set_##name(type value) { name##_changed(value); } \
-	public: void name##_changed(type value) { \
-		_##name##_changed(value); \
-		name = value; output(#name, value); } \
-	protected: virtual void _##name##_changed(type value) {}
-
-#define X3D_INOUT_ABSTRACT(type, name) \
-	public: type name; \
-	public: void set_##name(type value) { name##_changed(value); } \
-	public: void name##_changed(type value) { \
-		_##name##_changed(value); \
-		name = value; output(#name, value); } \
-	protected: virtual void _##name##_changed(type value) = 0;
-
-#define X3D_INOUT_CUSTOM(type, name) \
-	public: type name; \
-	public: void set_##name(type value) { name##_changed(value); } \
-	public: void name##_changed(type value) \
-	protected: virtual void _##name##_changed(type value) {}
-
-#define X3D_INOUT_CUSTOM_ABSTRACT(type, name) \
-	public: type name; \
-	public: void set_##name(type value) { name##_changed(value); } \
-	public: void name##_changed(type value) \
-	protected: virtual void _##name##_changed(type value) = 0;
 
 #include "Core/X3DNode.h"
 namespace X3D {
