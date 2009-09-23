@@ -26,7 +26,16 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * X3DChildNode is the base class for any node which
+ * can be the child of another node. Note that X3D nodes
+ * do not form strict trees, but are actually directed
+ * acyclic graphs.
+ */
 class X3DChildNode : public X3DNode {
+protected:
+	/** list of parent nodes */
+	MFNode parents;
 };
 
 }}

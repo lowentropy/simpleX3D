@@ -26,8 +26,9 @@
 namespace X3D {
 namespace Core {
 
+/** Metadata value containing a list of floats (MFFloat). */
 class MetadataDouble : public X3DNode, public X3DMetadataObject {
-	/// double-precision value
+	/// Double-precision float.
 	X3D_INOUT(MFDouble, value)
 };
 

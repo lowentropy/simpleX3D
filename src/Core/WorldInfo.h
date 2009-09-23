@@ -26,10 +26,16 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * This node contains basic information about the X3D world.
+ * It consists of the world's "title", followed by any number
+ * of strings, such as author name, copyright, and usage
+ * instructions.
+ */
 class WorldInfo : public X3DInfoNode {
-	/// world information metadata
+	/// World information metadata.
 	X3D_INIT(MFString, info) 
-	/// world title
+	/// Title of the world.
 	X3D_INIT(SFString, title) 
 };
 

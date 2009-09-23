@@ -26,13 +26,19 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * Sensor nodes represent interactive or automated triggers
+ * which respond dynamically to the user and the scene to
+ * change some behavior of the scene.
+ */
 class X3DSensorNode : public X3DChildNode {
-	/// sensor is dormant or active
+
+	/// Whether the sensor is enabled.
 	X3D_INOUT_CUSTOM(SFBool, enabled) {
 		// TODO: action to take when enabled is changed
 	}
 
-	/// signaled when sensor becomes active
+	/// Signaled when sensor becomes active.
 	X3D_OUT(SFBool, isActive)
 };
 

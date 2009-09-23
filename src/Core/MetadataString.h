@@ -26,8 +26,9 @@
 namespace X3D {
 namespace Core {
 
+/** Metadata value containing a list of strings (MFString). */
 class MetadataString : public X3DNode, public X3DMetadataObject {
-	///< integer value
+	/// String value.
 	X3D_INOUT(MFString, value)
 };
 

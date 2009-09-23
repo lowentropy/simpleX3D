@@ -26,6 +26,10 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * This node is an abstract type which is used
+ * for nodes instantiated from PROTOs.
+ */
 class X3DPrototypeInstance : public X3DNode {
 };
 

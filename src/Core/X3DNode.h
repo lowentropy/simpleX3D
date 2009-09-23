@@ -27,12 +27,17 @@ namespace Core {
 
 class X3DMetadataObject;
 
+/**
+ * X3DNode is the root of all node types in the X3D
+ * scene hierarchy. The only actual field contained
+ * by X3DNode is the #metadata field, which contains
+ * a single X3DMetadataObject value (if you want to
+ * have a mapping of metadata values, use a MetadataSet,
+ * which contains multiple metadata children nodes).
+ */
 class X3DNode {
+	/** Arbitrary etadata information. */
 	X3D_INOUT(X3DMetadataObject*, metadata)
-public:
-	X3DNode() {
-		/// metadata for all nodes
-	}
 protected:
 	template <typename T> void output(const std::string name, T value) {
 		// TODO

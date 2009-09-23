@@ -26,6 +26,10 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * This is the base node for any nodes which containy purely
+ * semantic (i.e. non-visual) information.
+ */
 class X3DInfoNode : public X3DChildNode {
 };
 

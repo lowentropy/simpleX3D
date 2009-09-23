@@ -26,8 +26,9 @@
 namespace X3D {
 namespace Core {
 
+/** Metadata value containing a list of ints (MFInt32). */
 class MetadataInteger : public X3DNode, public X3DMetadataObject {
-	/// integer value
+	/// Integer value.
 	X3D_INOUT(MFInt32, value) 
 };
 

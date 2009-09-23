@@ -26,6 +26,15 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * This node is the parent of any nodes which can be
+ * bound to the scene. They include Background, TextureBackground,
+ * Fog, NavigationInfo, and Viewpoint nodes. For each of these
+ * types, only one node of that type can be bound to a particular
+ * layer at any given time.
+ *
+ * \see ISO-IEC-19775-1.2 Part 5, 7.2.2 "Bindable children nodes"
+ */
 class X3DBindableNode : public X3DChildNode {
 public:
 
@@ -60,18 +69,15 @@ public:
 
 public:
 
+	/**
+	 * Destroying a bindable node has the same effect as
+	 * sending false to #set_bind.
+	 */
 	virtual ~X3DBindableNode() {
 		set_bind(false);
-	}
-
-	X3DBindableNode() {
-		ROUTE_IN(set_bind);
 	}
 };
 
 }}
 
 #endif // #ifndef _X3D_X3DBINDABLENODE_H_
-//foo
-//foo
-//foo

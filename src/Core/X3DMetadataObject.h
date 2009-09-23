@@ -25,13 +25,18 @@
 namespace X3D {
 namespace Core {
 
+/**
+ * This abstract type is the parent for any node
+ * which provides a metadata value. The node must
+ * provide both a name and value.
+ */
 class X3DMetadataObject : public X3DNode {
 public:
 
-	/// metadata name 
+	/// Metadata name.
 	X3D_INOUT(SFString, name) 
 
-	/// metadata standard for 'name'
+	/// Metadata reference standard for #name.
 	X3D_INOUT(SFString, reference) 
 };
 
