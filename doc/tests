@@ -6,9 +6,9 @@
 	- OK a zero-sized image should have NULL bytes
 	- OK non-zero-sized image should have non-NULL bytes
 	- automatic image destructor should never kill things
-	- the image copy constructor should result in identical bytes arrays,
+	- OK the image copy constructor should result in identical bytes arrays,
 	  but with different pointers (i.e. not shared memory)
-	- the constructor with a char array passed should result in an identical
+	- OK the constructor with a char array passed should result in an identical
 	  bytes array, but with different pointers
 - arithmetic
 	- 'size' should always be equal to 'width * height * components'

@@ -21,6 +21,7 @@
 #define _X3D_SFIMAGE_H_
 
 #include "types.h"
+#include <string.h>
 
 namespace X3D {
 
@@ -104,6 +105,16 @@ public:
 	 */
 	const unsigned char* array() const { return bytes; }
 
+	/**
+	 * Direct memory assignment.
+	 * 
+	 * Replaces the image bytes with a COPY of the input array.
+	 * 
+	 * @params array array of bytes to copy
+	 * @returns reference to this
+	 */
+	SFImage& setBytes(const unsigned char* array) { if (size) memcpy(this->bytes, array, size); }
+
 	// the rest are documented in SFImage.cc
 
 	SFImage(const SFImage& i);
@@ -117,8 +128,10 @@ public:
 	virtual SFColorRGBA getColorRGBA(int x, int y) const;
 	virtual void setColorRGBA(int x, int y, const SFColorRGBA c);
 
+
 private:
 	
+	void alloc(int width, int height, int components);
 	unsigned char* locate(int x, int y);
 	const unsigned char* locate(int x, int y) const;
 };

@@ -36,3 +36,14 @@ TEST(SFImage, ShouldAllowOnlyCorrectComponentsValues) {
 	ASSERT_ANY_THROW(image = new SFImage(1,1,0));
 	ASSERT_ANY_THROW(image = new SFImage(1,1,5));
 }
+
+TEST(SFImage, CopyConstructorShouldCopyBytes) {
+	SFImage orig(2,2,2);
+	for (int i = 0; i < 8; i++)
+		orig.array()[i] = rand();
+	ASSERT_EQ(8, orig.getSize());
+	SFImage copy(orig);
+	ASSERT_NE(orig.array(), copy.array());
+	for (int i = 0; i < 8; i++)
+		ASSERT_EQ(orig.array()[i], copy.array()[i]);
+}

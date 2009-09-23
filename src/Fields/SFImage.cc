@@ -18,7 +18,6 @@
  */
 
 #include "types.h"
-#include <string.h>
 
 using namespace X3D;
 
@@ -28,7 +27,8 @@ using namespace X3D;
  * @param i the image to copy
  */
 SFImage::SFImage(const SFImage& i) {
-	SFImage(i.width, i.height, i.components, i.bytes);
+	alloc(i.width, i.height, i.components);
+	setBytes(i.bytes);
 }
 
 /**
@@ -44,14 +44,21 @@ SFImage::SFImage(const SFImage& i) {
  * @param components image depth (0-4)
  */
 SFImage::SFImage(int width, int height, int components) {
+	alloc(width, height, components);
+}
+
+void SFImage::alloc(int width, int height, int components) {
 	if (width < 0 || height < 0)
 		throw X3DError("size cannot be negative");
 	if (components < 0 || components > 4)
 		throw X3DError("components must be in range [0,4]");
 	if (components == 0 && (width !=0 || height != 0))
 		throw X3DError("for non-empty image, components must be in range [1,4]");
-	size = width * height * components;
-	bytes = size ? new unsigned char[size] : NULL;
+	this->width = width;
+	this->height = height;
+	this->components = components;
+	this->size = width * height * components;
+	bytes = this->size ? new unsigned char[size] : NULL;
 }
 
 /**
@@ -66,11 +73,8 @@ SFImage::SFImage(int width, int height, int components) {
  * @param bytes array to copy data from
  */
 SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
-	SFImage(width, height, components);
-	if (bytes == NULL)
-		throw X3DError("trying to copy NULL bytes");
-	if (size)
-		memcpy(this->bytes, bytes, size);
+	alloc(width, height, components);
+	setBytes(bytes);
 }
 
 /**
