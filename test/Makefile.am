@@ -2,5 +2,5 @@ AM_CPPFLAGS = $(DEPS_CFLAGS) $(GTEST_CFLAGS) $(GMOCK_CFLAGS)
 TESTS = $(check_PROGRAMS)
 check_PROGRAMS = run_tests
 run_tests_SOURCES = run_tests.cc
-run_tests_CPPFLAGS = -I$(top_srcdir)/src -I$(top_srcdir)/test
+run_tests_CPPFLAGS = -I$(top_srcdir)/src -I$(top_srcdir)/test $(AM_CPPFLAGS)
 run_tests_LDADD = $(top_srcdir)/src/libsimpleX3D.la $(GTEST_LIBS) $(GMOCK_LIBS)
