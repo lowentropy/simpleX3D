@@ -24,6 +24,7 @@ using namespace X3D;
 
 // here's the list of tests
 #include "Fields/SFImageTests.h"
+#include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {
 	::testing::InitGoogleMock(&argc, argv);

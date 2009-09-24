@@ -36,7 +36,6 @@ namespace Core {
  * \see ISO-IEC-19775-1.2 Part 5, 7.2.2 "Bindable children nodes"
  */
 class X3DBindableNode : public X3DChildNode {
-public:
 
 	/// Signals the time the node was last bound.
 	X3D_OUT(SFTime, bindTime) 
@@ -46,17 +45,18 @@ public:
 
 	/// Called when node is bound or unbound.
 	X3D_IN(SFBool, set_bind) {
+		Stack* stack = this->stack();
 		if (value) {
-			if (isBound)
+			if (_isBound)
 				return;
 			X3DBindableNode* top = stack->top();
 			if (top)
 				top->isBound(false);
-			stack.remove(this);
-			stack.push(this);
+			stack->remove(this);
+			stack->push(this);
 			isBound(true);
 		} else {
-			if (isBound)
+			if (_isBound)
 				isBound(false);
 			stack->remove(this);
 			X3DBindableNode* top = stack->top();
@@ -66,7 +66,6 @@ public:
 		on_set_bind(value);
 	}
 	
-
 public:
 
 	/**
@@ -75,6 +74,35 @@ public:
 	 */
 	virtual ~X3DBindableNode() {
 		set_bind(false);
+	}
+
+public:
+
+	class Stack {
+	public:
+		X3DBindableNode* top() {
+			// TODO
+			return NULL;
+		}
+		X3DBindableNode* remove(X3DBindableNode* node) {
+			// TODO
+			return NULL;
+		}
+		void push(X3DBindableNode* node) {
+			// TODO
+		}
+	};
+
+private:
+	
+	/**
+	 * Return the stack associated with this bindable node.
+	 * 
+	 * @returns bindable stack
+     */
+	Stack* stack() {
+		// TODO
+		return NULL;
 	}
 };
 
