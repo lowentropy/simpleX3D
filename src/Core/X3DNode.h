@@ -30,7 +30,7 @@ class X3DMetadataObject;
 /**
  * X3DNode is the root of all node types in the X3D
  * scene hierarchy. The only actual field contained
- * by X3DNode is the #metadata field, which contains
+ * by X3DNode is the #_metadata field, which contains
  * a single X3DMetadataObject value (if you want to
  * have a mapping of metadata values, use a MetadataSet,
  * which contains multiple metadata children nodes).

@@ -36,7 +36,7 @@ public:
 	/// Metadata name.
 	X3D_INOUT(SFString, name) 
 
-	/// Metadata reference standard for #name.
+	/// Metadata reference standard for #_name.
 	X3D_INOUT(SFString, reference) 
 };
 

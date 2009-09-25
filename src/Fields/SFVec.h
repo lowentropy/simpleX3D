@@ -90,7 +90,7 @@ public:
 	/**
 	 * Vector length (magnitude).
 	 * 
-	 * Calculates magnitude as \f$ \sqrt(x^2 + y^2) \f$.
+	 * Calculates magnitude as \f$ \sqrt{x^2 + y^2)} \f$.
 	 * 
 	 * @returns vector length
 	 */
@@ -303,7 +303,7 @@ public:
 	/**
 	 * Vector length (magnitude).
 	 * 
-	 * Calculates magnitude as \f$ \sqrt(x^2 + y^2 + z^2) \f$.
+	 * Calculates magnitude as \f$ \sqrt{x^2 + y^2 + z^2} \f$.
 	 * 
 	 * @returns vector length
 	 */
@@ -513,7 +513,7 @@ public:
 	 * @param v other vector in cross-product
 	 * @returns result of cross-product
 	 */
-	template <typename U> SFVec3<T>& operator^(const SFVec3<U>& v) const {
+	template <typename U> SFVec3<T> operator^(const SFVec3<U>& v) const {
 		return SFVec3<T>(
 			y * v.z - z * v.y,
 			z * v.x - x * v.z,

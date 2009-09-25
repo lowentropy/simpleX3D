@@ -91,7 +91,7 @@ SFImage::~SFImage() {
  * 
  * Replaces the image bytes with a COPY of the input array.
  * 
- * @params array array of bytes to copy
+ * @param array array of bytes to copy
  * @returns reference to this
  */
 SFImage& SFImage::setBytes(const unsigned char* array) {

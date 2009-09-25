@@ -21,12 +21,12 @@
 #define _X3D_STUBS_H_
 
 #define X3D_VAR(type, name, var) \
-	/** Holds the last type value sent to name */ \
+	/** Holds the last type value sent to name##() */ \
 	protected: type _##var; \
 	/**
-	   Public accessor for _##var.
+	   Public accessor for #_##var.
 
-	   @returns value of _##var
+	   @returns value of #_##var
 	 */ \
 	public: type get_##var() { return _##var; }
 
