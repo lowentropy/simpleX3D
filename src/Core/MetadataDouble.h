@@ -28,8 +28,25 @@ namespace Core {
 
 /** Metadata value containing a list of floats (MFFloat). */
 class MetadataDouble : public X3DNode, public X3DMetadataObject {
-	/// Double-precision float.
-	X3D_INOUT(MFDouble, value)
+private:
+	MFDouble _value;
+
+public:
+	const InOutField<MetadataDouble, MFDouble> value;
+
+	MetadataDouble(SFString name, const MFDouble& value) :
+		X3DNode(),
+		X3DMetadataObject(name),
+		_value(value),
+		value(this, &_value)
+		{}
+
+	MetadataDouble(const SFString& name, const SFString& ref, const MFDouble& value) :
+		X3DNode(),
+		X3DMetadataObject(name, ref),
+		_value(value),
+		value(this, &_value)
+		{}
 };
 
 }}

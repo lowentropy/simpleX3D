@@ -17,38 +17,34 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_METADATASTRING_H_
-#define _X3D_METADATASTRING_H_
+#ifndef _X3D_POINTER_H_
+#define _X3D_POINTER_H_
 
-#include "types.h"
-#include "Core/X3DMetadataObject.h"
+#include <typeinfo>
+#include <sstream>
+#include "errors.h"
 
 namespace X3D {
-namespace Core {
 
-/** Metadata value containing a list of strings (MFString). */
-class MetadataString : public X3DNode, public X3DMetadataObject {
+class SafePointer {
 private:
-	MFString _value;
-
+	const std::type_info* type;
 public:
-	const InOutField<MetadataString, MFString> value;
-
-	MetadataString(const SFString& name, const MFString& value) :
-		X3DNode(),
-		X3DMetadataObject(name),
-		_value(value),
-		value(this, &_value)
-		{}
-
-	MetadataString(const SFString& name, const SFString& ref, const MFString& value) :
-		X3DNode(),
-		X3DMetadataObject(name, ref),
-		_value(value),
-		value(this, &_value)
-		{}
+	const void* const ptr;
+	template <typename T> SafePointer(const T& value) : ptr(&value), type(&typeid(T)) {}
+	template <typename T> SafePointer(T* const ptr) : ptr(ptr), type(&typeid(T)) {}
+	template <typename T> T* const cast() const {
+#if SAFE_POINTER
+		if (type != &typeid(T)) {
+			std::ostringstream os;
+			os << "bad cast from " << type->name() << " to " << typeid(T).name();
+			throw X3DError(os.str().c_str());
+		}
+#endif
+		return (T* const) ptr;
+	}
 };
 
-}} // namespace X3D::Core
+}
 
-#endif // #ifndef _X3D_METADATASTRING_H_
+#endif // #ifndef _X3D_POINTER_H_

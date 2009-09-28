@@ -32,14 +32,23 @@ namespace Core {
  * change some behavior of the scene.
  */
 class X3DSensorNode : public X3DChildNode {
+private:
+	SFBool _enabled;
+	SFBool _active;
 
-	/// Whether the sensor is enabled.
-	X3D_INOUT_CUSTOM(SFBool, enabled) {
-		// TODO: action to take when enabled is changed
-	}
+public:
+	const InOutField<X3DSensorNode, SFBool> enabled;
+	const OutField<X3DSensorNode, SFBool> isActive;
 
-	/// Signaled when sensor becomes active.
-	X3D_OUT(SFBool, isActive)
+	X3DSensorNode() :
+		_enabled(true),
+		_active(false),
+		enabled(this, &_enabled, NULL, &on_enabled),
+		isActive(this, &_active, &on_isActive)
+		{}
+	
+	virtual void on_enabled(SFBool enabled) = 0;
+	virtual void on_isActive(SFBool active) = 0;
 };
 
 }}

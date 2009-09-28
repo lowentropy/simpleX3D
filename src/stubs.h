@@ -99,4 +99,28 @@
 		  */ \
 		virtual void on_##name(type value) = 0;
 
+#define X3D_IN_FIELD(node_type, field_type, field_name) \
+	protected: \
+		class InField_##field_name : public InField { \
+		public: \
+			void set(X3DNode* in_node, AnyField value) { \
+				CAST_FIELD(value, field_type) \
+				CAST_NODE(in_node, out_node, node_type) \
+				out_node->field_name(value.value.field_type##Value); \
+			} \
+		} field_name##_field;
+
+#define X3D_OUT_FIELD(node_type, field_type, field_name) \
+	protected: \
+		class OutField_##field_name : public OutField { \
+		public: \
+			AnyField get(X3DNode* in_node) { \
+				CAST_NODE(in_node, out_node, node_type) \
+				AnyField value; \
+				value.type = field_type##Type; \
+				value.value.field_type##Value = out_node->field_name(); \
+				return value; \
+			} \
+		} field_name##_field;
+
 #endif // #ifndef _X3D_STUBS_H_

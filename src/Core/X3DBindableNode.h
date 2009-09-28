@@ -22,6 +22,8 @@
 
 #include "types.h"
 #include "Core/X3DChildNode.h"
+#include <sstream>
+#include <list>
 
 namespace X3D {
 namespace Core {
@@ -36,38 +38,45 @@ namespace Core {
  * \see ISO-IEC-19775-1.2 Part 5, 7.2.2 "Bindable children nodes"
  */
 class X3DBindableNode : public X3DChildNode {
+private:
+	SFTime _bindTime;
+	SFBool _isBound;
 
-	/// Signals the time the node was last bound.
-	X3D_OUT(SFTime, bindTime) 
+protected:
+	virtual void on_isBound(const SFBool& value) {}
 
-	/// Signals that the node has been bound or unbound.
-	X3D_OUT(SFBool, isBound) 
+public:
+	const OutField<X3DBindableNode, SFTime> bindTime;
+	const OutField<X3DBindableNode, SFBool> isBound;
+	const InField<X3DBindableNode, SFBool> set_bind;
 
-	/// Called when node is bound or unbound.
-	X3D_IN(SFBool, set_bind) {
+	X3DBindableNode() : 
+		_isBound(false),
+		bindTime(this, &_bindTime),
+		isBound(this, &_isBound, &X3DBindableNode::on_isBound),
+		set_bind(this, &X3DBindableNode::on_set_bind)
+		{}
+
+	void on_set_bind(const SFBool& bound) {
 		Stack* stack = this->stack();
-		if (value) {
+		X3DBindableNode* top = stack->front();
+		if (bound) {
 			if (_isBound)
 				return;
-			X3DBindableNode* top = stack->top();
 			if (top)
-				top->isBound(false);
+				top->isBound = false;
 			stack->remove(this);
-			stack->push(this);
-			isBound(true);
+			stack->push_front(this);
+			isBound = true;
 		} else {
 			if (_isBound)
-				isBound(false);
+				isBound = false;
 			stack->remove(this);
-			X3DBindableNode* top = stack->top();
 			if (top)
-				top->isBound(true);
+				top->isBound = true;
 		}
-		on_set_bind(value);
 	}
 	
-public:
-
 	/**
 	 * Destroying a bindable node has the same effect as
 	 * sending false to #set_bind.
@@ -76,31 +85,14 @@ public:
 		set_bind(false);
 	}
 
-public:
+	class Stack : public std::list<X3DBindableNode*> {};
 
-	class Stack {
-	public:
-		X3DBindableNode* top() {
-			// TODO
-			return NULL;
-		}
-		X3DBindableNode* remove(X3DBindableNode* node) {
-			// TODO
-			return NULL;
-		}
-		void push(X3DBindableNode* node) {
-			// TODO
-		}
-	};
-
-private:
-	
 	/**
 	 * Return the stack associated with this bindable node.
 	 * 
 	 * @returns bindable stack
      */
-	Stack* stack() {
+	Stack* stack() const {
 		// TODO
 		return NULL;
 	}

@@ -20,12 +20,16 @@
 #ifndef _X3D_MACROS_H_
 #define _X3D_MACROS_H_
 
+#include "config.h"
 #include "stubs.h"
 
-#define X3D_INIT(type, name) \
+#define X3D_NODE_HEADER \
+	private: static NodeDefinition* definition;
+
+#define X3D_INIT(node, type, name) \
 	X3D_VAR(type, name, name)
 
-#define X3D_IN(type, name) \
+#define X3D_IN(node, type, name) \
 	protected: \
 		/**
 		   Default virtual action to take on the
@@ -34,9 +38,10 @@
 		   @param value type value received with event
 		 */ \
 		virtual void on_##name(type value) {} \
-	X3D_IN_HEAD_CUSTOM(type, name)
+	X3D_IN_HEAD_CUSTOM(type, name) \
+	X3D_IN_FIELD(node, type, name)
 
-#define X3D_IN_ABSTRACT(type, name) \
+#define X3D_IN_ABSTRACT(node, type, name) \
 	protected: \
 		/**
 		   Abstract action to take on the
@@ -46,50 +51,63 @@
 		   @param value type value received with event
 		 */ \
 		virtual on_##name(type, value) = 0; \
-	X3D_IN_HEAD_CUSTOM(type, name)
+	X3D_IN_HEAD_CUSTOM(type, name) \
+	X3D_IN_FIELD(node, type, name)
 
-#define X3D_OUT(type, name) \
+#define X3D_OUT(node, type, name) \
 	X3D_VAR(type, name, name) \
 	X3D_OUT_HEAD_AUTO(type, name, name, virtual) \
-	X3D_OUT_STUB_VIRTUAL(type, name, name)
+	X3D_OUT_STUB_VIRTUAL(type, name, name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_OUT_ABSTRACT(type, name) \
+#define X3D_OUT_ABSTRACT(node, type, name) \
 	X3D_VAR(type, name, name) \
 	X3D_OUT_HEAD_AUTO(type, name, name, abstract) \
-	X3D_OUT_STUB_ABSTRACT(type, name, name)
+	X3D_OUT_STUB_ABSTRACT(type, name, name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_OUT_CUSTOM(type, name) \
+#define X3D_OUT_CUSTOM(node, type, name) \
 	X3D_VAR(type, name, name) \
 	X3D_OUT_STUB_VIRTUAL(type, name, name) \
-	X3D_OUT_HEAD_CUSTOM(type, name, name, virtual)
+	X3D_OUT_HEAD_CUSTOM(type, name, name, virtual) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_OUT_CUSTOM_ABSTRACT(type, name) \
+#define X3D_OUT_CUSTOM_ABSTRACT(node, type, name) \
 	X3D_VAR(type, name, name) \
 	X3D_OUT_STUB_ABSTRACT(type, name, name) \
-	X3D_OUT_HEAD_CUSTOM(type, name, name, abstract)
+	X3D_OUT_HEAD_CUSTOM(type, name, name, abstract) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_INOUT(type, name) \
+#define X3D_INOUT(node, type, name) \
 	X3D_VAR(type, name##_changed, name) \
 	X3D_IN_HEAD_AUTO(type, name) \
 	X3D_OUT_STUB_VIRTUAL(type, name##_changed, name) \
-	X3D_OUT_HEAD_AUTO(type, name##_changed, name, virtual)
+	X3D_OUT_HEAD_AUTO(type, name##_changed, name, virtual) \
+	X3D_IN_FIELD(node, type, set_##name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_INOUT_ABSTRACT(type, name) \
+#define X3D_INOUT_ABSTRACT(node, type, name) \
 	X3D_VAR(type, name##_changed, name) \
 	X3D_IN_HEAD_AUTO(type, name) \
 	X3D_OUT_STUB_ABSTRACT(type, name##_changed, name) \
-	X3D_OUT_HEAD_AUTO(type, name##_changed, name, abstract)
+	X3D_OUT_HEAD_AUTO(type, name##_changed, name, abstract) \
+	X3D_IN_FIELD(node, type, set_##name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_INOUT_CUSTOM(type, name) \
+#define X3D_INOUT_CUSTOM(node, type, name) \
 	X3D_VAR(type, name##_changed, name) \
 	X3D_IN_HEAD_AUTO(type, name) \
 	X3D_OUT_STUB_VIRTUAL(type, name##_changed, name) \
-	X3D_OUT_HEAD_CUSTOM(type, name##_changed, name, virtual)
+	X3D_OUT_HEAD_CUSTOM(type, name##_changed, name, virtual) \
+	X3D_IN_FIELD(node, type, set_##name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
-#define X3D_INOUT_CUSTOM_ABSTRACT(type, name) \
+#define X3D_INOUT_CUSTOM_ABSTRACT(node, type, name) \
 	X3D_VAR(type, name##_changed, name) \
 	X3D_IN_HEAD_AUTO(type, name) \
 	X3D_OUT_STUB_ABSTRACT(type, name##_changed, name) \
-	X3D_OUT_HEAD_CUSTOM(type, name##_changed, name, abstract)
+	X3D_OUT_HEAD_CUSTOM(type, name##_changed, name, abstract) \
+	X3D_IN_FIELD(node, type, set_##name) \
+	X3D_OUT_FIELD(node, type, get_##name)
 
 #endif // #ifndef _X3D_MACROS_H_

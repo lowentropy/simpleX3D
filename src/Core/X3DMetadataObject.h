@@ -31,13 +31,20 @@ namespace Core {
  * provide both a name and value.
  */
 class X3DMetadataObject : public X3DNode {
+private:
+	SFString _name;
+	SFString _reference;
+
 public:
+	const InOutField<X3DMetadataObject, SFString> name;
+	const InOutField<X3DMetadataObject, SFString> reference;
 
-	/// Metadata name.
-	X3D_INOUT(SFString, name) 
-
-	/// Metadata reference standard for #_name.
-	X3D_INOUT(SFString, reference) 
+	X3DMetadataObject(const SFString& name, const SFString& ref="") :
+		_name(name),
+		_reference(ref),
+		name(this, &_name),
+		reference(this, &_reference)
+		{}
 };
 
 }}

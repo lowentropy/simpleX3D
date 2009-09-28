@@ -33,10 +33,26 @@ namespace Core {
  * instructions.
  */
 class WorldInfo : public X3DInfoNode {
-	/// World information metadata.
-	X3D_INIT(MFString, info) 
-	/// Title of the world.
-	X3D_INIT(SFString, title) 
+private:
+	SFString _title;
+	MFString _info;
+
+public:
+	const InitField<WorldInfo, SFString> title;
+	const InitField<WorldInfo, MFString> info;
+
+	WorldInfo(const SFString& title) :
+		_title(title),
+		title(&_title),
+		info(this, &_info)
+		{}
+	
+	WorldInfo(const SFString& title, const MFString& info) :
+		_title(title),
+		_info(info),
+		title(&_title),
+		info(this, &_info)
+		{}
 };
 
 }} // namespace X3D::Core

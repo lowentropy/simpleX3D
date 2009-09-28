@@ -29,7 +29,9 @@
 #ifndef _X3D_TYPES_H_
 #define _X3D_TYPES_H_
 
+#include "config.h"
 #include "macros.h"
+#include "pointer.h"
 #include "errors.h"
 #include "Fields/SFVec.h"
 #include "Fields/SFMatrix.h"
@@ -82,10 +84,50 @@ typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 
 }
 
+#include "fields.h"
 #include "Core/X3DNode.h"
+
 namespace X3D {
+
 	typedef Core::X3DNode* SFNode; ///< pointer to an X3DNode
-	typedef std::vector<SFNode> MFNode; ///< list of SFNode values
+	typedef std::vector<SFNode>* MFNode; ///< list of SFNode values
+
+	typedef enum {
+		SFBoolType,
+		SFDoubleType,
+		SFFloatType,
+		SFInt32Type,
+		SFMatrix3fType,
+		SFMatrix3dType,
+		SFMatrix4fType,
+		SFMatrix4dType,
+		SFStringType,
+		SFTimeType,
+		SFVec2fType,
+		SFVec2dType,
+		SFVec3fType,
+		SFVec3dType,
+		SFVec4fType,
+		SFVec4dType,
+		SFNodeType,
+		MFBoolType,
+		MFDoubleType,
+		MFFloatType,
+		MFInt32Type,
+		MFMatrix3fType,
+		MFMatrix3dType,
+		MFMatrix4fType,
+		MFMatrix4dType,
+		MFStringType,
+		MFTimeType,
+		MFVec2fType,
+		MFVec2dType,
+		MFVec3fType,
+		MFVec3dType,
+		MFVec4fType,
+		MFVec4dType,
+		MFNodeType
+	} FieldType;
 }
 
 #endif // #ifndef _X3D_TYPES_H_

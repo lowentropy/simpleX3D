@@ -20,7 +20,6 @@
 #ifndef _X3D_ERRORS_H_
 #define _X3D_ERRORS_H_
 
-#include "types.h"
 #include <stdexcept>
 
 namespace X3D {

@@ -28,8 +28,25 @@ namespace Core {
 
 /** Metadata value containing a list of ints (MFInt32). */
 class MetadataInteger : public X3DNode, public X3DMetadataObject {
-	/// Integer value.
-	X3D_INOUT(MFInt32, value) 
+private:
+	MFInt32 _value;
+
+public:
+	const InOutField<MetadataInteger, MFInt32> value;
+
+	MetadataInteger(const SFString& name, const MFInt32& value) :
+		X3DNode(),
+		X3DMetadataObject(name),
+		_value(value),
+		value(this, &_value)
+		{}
+
+	MetadataInteger(const SFString& name, const SFString& ref, const MFInt32& value) :
+		X3DNode(),
+		X3DMetadataObject(name, ref),
+		_value(value),
+		value(this, &_value)
+		{}
 };
 
 }} // namespace X3D::Core
