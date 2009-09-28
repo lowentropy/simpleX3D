@@ -30,7 +30,6 @@
 #define _X3D_TYPES_H_
 
 #include "config.h"
-#include "macros.h"
 #include "pointer.h"
 #include "errors.h"
 #include "Fields/SFVec.h"
