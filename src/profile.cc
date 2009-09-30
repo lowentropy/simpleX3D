@@ -29,7 +29,7 @@ void foo() {
 			core->createNode<X3DNode>("X3DNode");
 		{
 			// SFNode [in,out] metadata NULL [X3DMetadataObject]
-			node->createInitField<const X3DMetadataObject*>(
+			node->createInitField(
 				"metadata", SFNodeType,
 				&X3DNode::metadata);			// last set value
 		}
@@ -48,17 +48,17 @@ void foo() {
 			bind->inherits("X3DChildNode");
 
 			// SFBool [in] set_bind
-			bind->createInputField<SFBool>(
+			bind->createInputField(
 				"set_bind", SFBoolType,
 				&X3DBindableNode::set_bind);	// input action
 
 			// SFTime [out] bindTime
-			bind->createOutputField<SFTime>(
+			bind->createOutputField(
 				"bindTime", SFTimeType,
 				&X3DBindableNode::bindTime);	// last set value
 
 			// SFBool [out] isBound
-			bind->createOutputField<SFBool>(
+			bind->createOutputField(
 				"isBound", SFBoolType,
 				&X3DBindableNode::isBound,		// last set value
 				&X3DBindableNode::on_isBound);	// output action
@@ -79,12 +79,12 @@ void foo() {
 			meta_obj->inherits("X3DNode");
 
 			// SFString [in,out] name ""
-			meta_obj->createInputOutputField<SFString>(
+			meta_obj->createInputOutputField(
 				"name", SFStringType,
 				&X3DMetadataObject::name);		// last set value
 
 			// SFString [in,out] reference ""
-			meta_obj->createInputOutputField<SFString>(
+			meta_obj->createInputOutputField(
 				"reference", SFStringType,
 				&X3DMetadataObject::reference);	// last set value
 		}
@@ -109,7 +109,7 @@ void foo() {
 				&X3DSensorNode::on_enabled);	// output action
 
 			// SFBool [out] isActive
-			sensor->createOutputField<SFBool>(
+			sensor->createOutputField(
 				"isActive", SFBoolType,
 				&X3DSensorNode::active,			// last set value
 				&X3DSensorNode::on_isActive);	// output action
@@ -123,7 +123,7 @@ void foo() {
 			meta_double->inherits("X3DMetadataObject");
 
 			// MFDouble [in,out] value []
-			meta_double->createInputOutputField<MFDouble>(
+			meta_double->createInputOutputField(
 				"value", MFDoubleType,
 				&MetadataDouble::value);		// last set value
 		}
@@ -136,7 +136,7 @@ void foo() {
 			meta_float->inherits("X3DMetadataObject");
 
 			// MFFloat [in,out] value []
-			meta_float->createInputOutputField<MFFloat>(
+			meta_float->createInputOutputField(
 				"value", MFFloatType,
 				&MetadataFloat::value);			// last set value
 		}
@@ -149,7 +149,7 @@ void foo() {
 			meta_int->inherits("X3DMetadataObject");
 
 			// MFInteger [in,out] value []
-			meta_int->createInputOutputField<MFInt32>(
+			meta_int->createInputOutputField(
 				"value", MFInt32Type,
 				&MetadataInteger::value);		// last set value
 		}
@@ -162,7 +162,7 @@ void foo() {
 			meta_set->inherits("X3DMetadataObject");
 
 			// MFNode [in,out] value [] [X3DMetadataObject]
-			meta_set->createInputOutputField<vector<X3DMetadataObject*> >(
+			meta_set->createInputOutputField(
 				"value", MFNodeType,
 				&MetadataSet::value);			// last set value
 		}
@@ -175,7 +175,7 @@ void foo() {
 			meta_str->inherits("X3DMetadataObject");
 
 			// MFString [in,out] value []
-			meta_str->createInputOutputField<MFString>(
+			meta_str->createInputOutputField(
 				"value", MFStringType,
 				&MetadataString::value);		// last set value
 		}
@@ -187,12 +187,12 @@ void foo() {
 			world->inherits("X3DInfoNode");
 			
 			// MFString [] info []
-			world->createInitField<MFString>(
+			world->createInitField(
 				"info", MFStringType,
 				&WorldInfo::info);				// last set value
 
 			// SFString [] title ""
-			world->createInitField<SFString>(
+			world->createInitField(
 				"title", SFStringType,
 				&WorldInfo::title);				// last set value
 		}
