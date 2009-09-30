@@ -38,42 +38,27 @@ namespace Core {
  * \see ISO-IEC-19775-1.2 Part 5, 7.2.2 "Bindable children nodes"
  */
 class X3DBindableNode : public X3DChildNode {
-private:
-	SFTime _bindTime;
-	SFBool _isBound;
-
-protected:
-	virtual void on_isBound(const SFBool& value) {}
-
 public:
-	const OutField<X3DBindableNode, SFTime> bindTime;
-	const OutField<X3DBindableNode, SFBool> isBound;
-	const InField<X3DBindableNode, SFBool> set_bind;
+	const SFTime bindTime;
+	const SFBool isBound;
 
-	X3DBindableNode() : 
-		_isBound(false),
-		bindTime(this, &_bindTime),
-		isBound(this, &_isBound, &X3DBindableNode::on_isBound),
-		set_bind(this, &X3DBindableNode::on_set_bind)
-		{}
+	X3DBindableNode() : isBound(false), bindTime(0) {}
 
-	void on_set_bind(const SFBool& bound) {
+	void set_bind(const SFBool& bound) {
 		Stack* stack = this->stack();
-		X3DBindableNode* top = stack->front();
 		if (bound) {
-			if (_isBound)
+			if (isBound)
 				return;
+			X3DBindableNode* top = stack->front();
 			if (top)
-				top->isBound = false;
+				top->signal("isBound", false);
 			stack->remove(this);
 			stack->push_front(this);
-			isBound = true;
 		} else {
-			if (_isBound)
-				isBound = false;
 			stack->remove(this);
+			X3DBindableNode* top = stack->front();
 			if (top)
-				top->isBound = true;
+				top->signal("isBound", true);
 		}
 	}
 	
@@ -96,6 +81,9 @@ public:
 		// TODO
 		return NULL;
 	}
+
+	virtual void on_isBound(const SFBool& value) {}
+
 };
 
 }}

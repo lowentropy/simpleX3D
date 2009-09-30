@@ -83,7 +83,7 @@ typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 
 }
 
-#include "fields.h"
+//#include "fields.h"
 #include "Core/X3DNode.h"
 
 namespace X3D {

@@ -27,26 +27,17 @@ namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of floats (MFFloat). */
-class MetadataDouble : public X3DNode, public X3DMetadataObject {
-private:
-	MFDouble _value;
-
+class MetadataDouble : public X3DMetadataObject {
 public:
-	const InOutField<MetadataDouble, MFDouble> value;
+	const MFDouble value;
 
 	MetadataDouble(SFString name, const MFDouble& value) :
-		X3DNode(),
 		X3DMetadataObject(name),
-		_value(value),
-		value(this, &_value)
-		{}
+		value(value) {}
 
 	MetadataDouble(const SFString& name, const SFString& ref, const MFDouble& value) :
-		X3DNode(),
 		X3DMetadataObject(name, ref),
-		_value(value),
-		value(this, &_value)
-		{}
+		value(value) {}
 };
 
 }}

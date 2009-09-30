@@ -17,30 +17,34 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_WORLDINFO_H_
-#define _X3D_WORLDINFO_H_
+#ifndef _X3D_METADATASET_H
+#define _X3D_METADATASET_H
 
+#include <vector>
 #include "types.h"
-#include "Core/X3DInfoNode.h"
+#include "Core/X3DMetadataObject.h"
+
+using std::vector;
 
 namespace X3D {
 namespace Core {
 
-/**
- * This node contains basic information about the X3D world.
- * It consists of the world's "title", followed by any number
- * of strings, such as author name, copyright, and usage
- * instructions.
- */
-class WorldInfo : public X3DInfoNode {
+/** Metadata value containing a list of metadata nodes (MFNode). */
+class MetadataSet : public X3DMetadataObject {
 public:
-	const SFString title;
-	const MFString info;
 
-	WorldInfo(const SFString& title) : 	title(title) {}
-	WorldInfo(const SFString& title, const MFString& info) : title(title), info(info) {}
+	typedef vector<X3DMetadataObject*> MFMetaNode;
+	const MFMetaNode value;
+
+	MetadataSet(const SFString& name, const MFMetaNode& value) :
+		X3DMetadataObject(name),
+		value(value) {}
+
+	MetadataSet(const SFString& name, const SFString& ref, const MFMetaNode& value) :
+		X3DMetadataObject(name, ref),
+		value(value) {}
 };
 
 }} // namespace X3D::Core
 
-#endif // #ifndef _X3D_WORLDINFO_H_
+#endif // #ifndef _X3D_METADATASET_H

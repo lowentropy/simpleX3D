@@ -32,8 +32,8 @@ private:
 public:
 	const void* const ptr;
 	template <typename T> SafePointer(const T& value) : ptr(&value), type(&typeid(T)) {}
-	template <typename T> SafePointer(T* const ptr) : ptr(ptr), type(&typeid(T)) {}
-	template <typename T> T* const cast() const {
+	template <typename T> SafePointer(const T* ptr) : ptr(ptr), type(&typeid(T)) {}
+	template <typename T> const T* cast() const {
 #if SAFE_POINTER
 		if (type != &typeid(T)) {
 			std::ostringstream os;

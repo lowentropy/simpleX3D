@@ -21,6 +21,7 @@
 #define _X3D_X3DNODE_H_
 
 #include "types.h"
+//#include "Core/X3DMetadataObject.h"
 
 namespace X3D {
 namespace Core {
@@ -36,16 +37,37 @@ class X3DMetadataObject;
  * which contains multiple metadata children nodes).
  */
 class X3DNode {
-private:
-	X3DMetadataObject* _metadata;
-	
 public:
-	const InOutField<X3DNode, X3DMetadataObject*> metadata;
 
-	X3DNode() :
-		_metadata(NULL),
-		metadata(this, &_metadata)
-		{}
+	const X3DMetadataObject* metadata;
+
+	X3DNode() : metadata(NULL) {}
+
+	template <typename T> void signal(const std::string& name, const T& value) {
+		// TODO
+	}
+
+	template <class T> const T* cast() const {
+#if SAFE_CAST
+		const T* node = dynamic_cast<const T*>(this);
+		if (node == NULL)
+			throw X3DError("illegal node cast");
+#else
+		const T* node = static_cast<const T*>(this);
+#endif
+		return node;
+	}
+
+	template <class T> T* cast() {
+#if SAFE_CAST
+		T* node = dynamic_cast<T*>(this);
+		if (node == NULL)
+			throw X3DError("illegal node cast");
+#else
+		T* node = static_cast<T*>(this);
+#endif
+		return node;
+	}
 };
 
 }}

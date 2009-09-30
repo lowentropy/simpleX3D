@@ -27,26 +27,17 @@ namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of strings (MFString). */
-class MetadataString : public X3DNode, public X3DMetadataObject {
-private:
-	MFString _value;
-
+class MetadataString : public X3DMetadataObject {
 public:
-	const InOutField<MetadataString, MFString> value;
+	const MFString value;
 
 	MetadataString(const SFString& name, const MFString& value) :
-		X3DNode(),
 		X3DMetadataObject(name),
-		_value(value),
-		value(this, &_value)
-		{}
+		value(value) {}
 
 	MetadataString(const SFString& name, const SFString& ref, const MFString& value) :
-		X3DNode(),
 		X3DMetadataObject(name, ref),
-		_value(value),
-		value(this, &_value)
-		{}
+		value(value) {}
 };
 
 }} // namespace X3D::Core

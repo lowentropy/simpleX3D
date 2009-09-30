@@ -35,4 +35,4 @@ class X3DPrototypeInstance : public X3DNode {
 
 }}
 
-#ifndef // #ifndef _X3D_X3DPROTOTYPEINSTANCE_H_
+#endif // #ifndef _X3D_X3DPROTOTYPEINSTANCE_H_

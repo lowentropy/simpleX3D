@@ -20,150 +20,297 @@
 #ifndef _X3D_FIELDS_H_
 #define _X3D_FIELDS_H_
 
+#include "types.h"
+
 namespace X3D {
 
-namespace Core {
-	class X3DNode;
-}
+class NodeDefinition;
 
 class Field {
 public:
-	Core::X3DNode* const node;
-public:
-	Field(Core::X3DNode* node) : node(node) {}
+
+	const NodeDefinition* node;
+	const std::string name;
+	const FieldType type;
+
+	Field(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type) : 
+		node(node), name(name), type(type) {
+	}
 };
 
-class InitFieldBase : public Field {
+
+class InitField : public Field {
 public:
-	InitFieldBase(Core::X3DNode* node) : Field(node) {}
+
+	InitField(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type) : 
+		Field(node, name, type) {
+	}
+
+	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+};
+
+
+template <class N, typename T>
+class InitFieldImpl : public InitField {
+private:
+
+	typedef const T (N::*Variable);
+	typedef T& (N::*Getter)() const;
+
+	Variable var;
+	Getter getter;
+
+public:
+
+	InitFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Variable var) :
+		InitField(node, name, type),
+		var(var), getter(NULL) {
+	}
+
+	InitFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Getter getter) :
+		InitField(node, name, type),
+		var(NULL), getter(getter) {
+	}
+
+	SafePointer get(const Core::X3DNode* node) const {
+		return SafePointer(get_native(node->cast<N>()));
+	}
+
+	const T& get_native(const N* node) const {
+		if (getter == NULL)
+			return (node->*var);
+		else
+			return (node->*getter)();
+	}
+};
+
+
+class InField : public Field {
+public:
+
+	InField(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type) :
+		Field(node, name, type) {
+	}
+
+	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+};
+
+
+template <class N, class T>
+class InFieldImpl : public InField {
+private:
+	
+	typedef void (N::*Receiver)(const T&);
+	Receiver receive;
+
+public:
+
+	InFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Receiver receive) :
+		InField(node, name, type),
+		receive(receive) {
+	}
+
+	void set(Core::X3DNode* node, const SafePointer& ptr) const {
+		set_native(node->cast<N>(), *ptr.cast<T>());
+	}
+
+	void set_native(N* node, const T& value) const {
+		(node->*receive)(value);
+	}
+};
+
+
+class OutField : public Field {
+public:
+
+	OutField(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type) :
+		Field(node, name, type) {}
+	
+	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+
+protected:
+
+	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+};
+
+
+template <class N, class T>
+class OutFieldImpl : public OutField {
+private:
+	
+	typedef T (N::*Variable);
+	typedef T& (N::*Getter)() const;
+	typedef void (N::*Setter)(const T&);
+
+	Variable var;
+	Getter getter;
+	Setter setter;
+	Setter changed;
+
+public:
+
+	OutFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Variable var,
+			Setter changed=NULL) :
+		OutField(node, name, type),
+		var(var), getter(NULL), setter(NULL), changed(changed) {
+	}
+	
+	OutFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Getter getter,
+			Setter setter,
+			Setter changed=NULL) :
+		OutField(node, name, type),
+		var(NULL), getter(getter), setter(setter), changed(changed) {
+	}
+
+	SafePointer get(const Core::X3DNode* node) const {
+		return SafePointer(get_native(node->cast<N>()));
+	}
+
+	const T& get_native(const N* node) const {
+		if (getter == NULL)
+			return (node->*var);
+		else
+			return (node->*getter)();
+	}
+
+	void signal(Core::X3DNode* node, const SafePointer& ptr) const {
+		signal_native(node->cast<N>(), *ptr.cast<T>());
+	}
+
+	void signal_native(N* node, const T& value) const {
+		// signal action, if any
+		if (changed != NULL)
+			(node->*changed)(value);
+		// set last known value
+		if (setter == NULL)
+			(node->*var) = value;
+		else
+			(node->*setter)(value);
+	}
+};
+
+
+class InOutField : public Field {
+public:
+
+	InOutField(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type) :
+		Field(node, name, type) {
+	}
+
+	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
 };
 
 template <class N, class T>
-class InitField : public InitFieldBase {
+class InOutFieldImpl : public InOutField {
 private:
-	T* const last;
-public:
-	InitField(N* node, T* ptr) :
-		InitFieldBase(node),
-		last(last)
-		{}
-	const T& operator*() const {
-		return *last;
-	}
-};
 
-class InFieldBase : public Field {
-public:
-	InFieldBase(Core::X3DNode* node) : Field(node) {}
-	virtual void operator()(const SafePointer& ptr) const = 0;
-};
+	typedef T (N::*Variable);
+	typedef T& (N::*Getter)() const;
+	typedef void (N::*Setter)(const T&);
+	typedef void (N::*Receiver)(const T&);
 
-template <class N, class T>
-class InField : public InFieldBase {
-private:
-	void (N::*const set_fp)(const T&);
-public:
-	InField(N* node, void (N::*fp)(const T&)) :
-		InFieldBase(node),
-		set_fp(fp)
-		{}
-	void operator()(const T& value) const {
-		N* node = static_cast<N*>(this->node);
-		(node->*set_fp)(value);
-	}
-	void operator()(const SafePointer& ptr) const {
-		N* node = static_cast<N*>(this->node);
-		(node->*set_fp)(*ptr.cast<T>());
-	}
-};
+	Variable var;
+	Getter getter;
+	Setter setter;
+	Receiver receive;
+	Setter changed;
 
-class OutFieldBase : public Field {
 public:
-	OutFieldBase(Core::X3DNode* node) : Field(node) {}
-	virtual const SafePointer& operator=(const SafePointer& ptr) const = 0;
-};
 
-template <class N, class T>
-class OutField : public OutFieldBase {
-private:
-	void (N::*const changed_fp)(const T&);
-public:
-	T* const last;
-	OutField(N* node, T* ptr, void (N::*fp)(const T&)=NULL) :
-		OutFieldBase(node),
-		last(ptr),
-		changed_fp(fp)
-		{}
-	const T& operator=(const T& value) const {
-		N* node = static_cast<N*>(this->node);
-		if (changed_fp != NULL)
-			(node->*changed_fp)(value);
-		*last = value;
-		return value;
+	InOutFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Variable var,
+			Receiver receive,
+			Setter changed) :
+		InOutField(node, name, type),
+		var(var), getter(NULL), setter(NULL),
+		receive(receive), changed(changed) {
 	}
-	const SafePointer& operator=(const SafePointer& ptr) const {
-		N* node = static_cast<N*>(this->node);
-		const T& value = *ptr.cast<T>();
-		if (changed_fp != NULL)
-			(node->*changed_fp)(value);
-		*last = value;
-		return ptr;
-	}
-	const T& operator*() const {
-		return *last;
-	}
-};
 
-class InOutFieldBase : public Field {
-public:
-	InOutFieldBase(Core::X3DNode* node) : Field(node) {}
-	virtual const SafePointer& operator=(const SafePointer& ptr) const = 0;
-	virtual void operator()(const SafePointer& ptr) const = 0;
-};
+	InOutFieldImpl(
+			NodeDefinition* node,
+			const std::string& name,
+			FieldType type,
+			Getter getter,
+			Setter setter,
+			Receiver receive,
+			Setter changed) :
+		InOutField(node, name, type),
+		var(NULL), getter(getter), setter(setter),
+		receive(receive), changed(changed) {
+	}
 
-template <class N, class T>
-class InOutField : public InOutFieldBase {
-private:
-	void (N::*const set_fp)(const T&);
-	void (N::*const changed_fp)(const T&);
-public:
-	T* const last;
-	InOutField(N* node, T* ptr, void (N::*fp1)(const T&)=NULL, void (N::*fp2)(const T&)=NULL) :
-		InOutFieldBase(node),
-		last(ptr),
-		set_fp(fp1),
-		changed_fp(fp2)
-		{}
-	void operator()(const T& value) const {
-		N* node = static_cast<N*>(this->node);
-		if (set_fp != NULL)
-			(node->*set_fp)(value);
-		*this = value;
+	void set(Core::X3DNode* node, const SafePointer& ptr) const {
+		set_native(node->cast<N>(), *ptr.cast<T>());
 	}
-	void operator()(const SafePointer& ptr) const {
-		N* node = static_cast<N*>(this->node);
-		const T& value = *ptr.cast<T>();
-		if (set_fp != NULL)
-			(node->*set_fp)(value);
-		*this = value;
+
+	void set_native(N* node, const T& value) const {
+		(node->*receive)(value);
 	}
-	const T& operator=(const T& value) const {
-		N* node = static_cast<N*>(this->node);
-		if (changed_fp != NULL)
-			(node->*changed_fp)(value);
-		*last = value;
-		return value;
+
+	SafePointer get(const Core::X3DNode* node) const {
+		return SafePointer(get_native(node->cast<N>()));
 	}
-	const SafePointer& operator=(const SafePointer& ptr) const {
-		N* node = static_cast<N*>(this->node);
-		const T& value = *ptr.cast<T>();
-		if (changed_fp != NULL)
-			(node->*changed_fp)(value);
-		*last = value;
-		return ptr;
+
+	const T& get_native(const N* node) const {
+		if (getter == NULL)
+			return (node->*var);
+		else
+			return (node->*getter)();
 	}
-	const T& operator*() const {
-		return *last;
+
+	void signal(Core::X3DNode* node, const SafePointer& ptr) const {
+		signal_native(node->cast<N>(), *ptr.cast<T>());
+	}
+
+	void signal_native(N* node, const T& value) const {
+		// signal action, if any
+		if (changed != NULL)
+			(node->*changed)(value);
+		// set last known value
+		if (setter == NULL)
+			(node->*var) = value;
+		else
+			(node->*setter)(value);
 	}
 };
 
