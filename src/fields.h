@@ -20,7 +20,7 @@
 #ifndef _X3D_FIELDS_H_
 #define _X3D_FIELDS_H_
 
-#include <iostream> // XXX
+#include <iostream>
 #include "types.h"
 
 using std::cout;
@@ -61,7 +61,7 @@ public:
 	virtual SafePointer get(const Core::X3DNode* node) const = 0;
 
 	virtual void print() {
-		cout << "\t\t" << type << " [] " << name << endl;
+		cout << "\t\t" << FieldTypeNames[type] << " [] " << name << endl;
 	}
 };
 
@@ -122,7 +122,7 @@ public:
 	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
 
 	virtual void print() {
-		cout << "\t\t" << type << " [in] " << name << endl;
+		cout << "\t\t" << FieldTypeNames[type] << " [in] " << name << endl;
 	}
 };
 
@@ -167,7 +167,7 @@ public:
 	virtual SafePointer get(const Core::X3DNode* node) const = 0;
 
 	virtual void print() {
-		cout << "\t\t" << type << " [out] " << name << endl;
+		cout << "\t\t" << FieldTypeNames[type] << " [out] " << name << endl;
 	}
 
 protected:
@@ -257,7 +257,7 @@ public:
 	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
 
 	virtual void print() {
-		cout << "\t\t" << type << " [in,out] " << name << endl;
+		cout << "\t\t" << FieldTypeNames[type] << " [in,out] " << name << endl;
 	}
 };
 

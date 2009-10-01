@@ -92,7 +92,7 @@ namespace X3D {
 	typedef std::vector<SFNode>* MFNode; ///< list of SFNode values
 
 	typedef enum {
-		SFBoolType,
+		SFBoolType = 0,
 		SFDoubleType,
 		SFFloatType,
 		SFInt32Type,
@@ -127,6 +127,8 @@ namespace X3D {
 		MFVec4dType,
 		MFNodeType
 	} FieldType;
+
+	extern const char* FieldTypeNames[];
 }
 
 #endif // #ifndef _X3D_TYPES_H_
