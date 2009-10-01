@@ -21,6 +21,7 @@
 #define _X3D_ERRORS_H_
 
 #include <stdexcept>
+#include <string>
 
 namespace X3D {
 
@@ -35,6 +36,13 @@ public:
 	 * @param message error message
 	 */
 	X3DError(const char* message) : std::runtime_error(message) {}
+
+	/**
+	 * Constructor (takes std::string rather than char*).
+	 * 
+	 * @param message error message
+	 */
+	X3DError(const std::string& message) : std::runtime_error(message) {}
 };
 
 }

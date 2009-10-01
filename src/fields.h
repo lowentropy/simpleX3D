@@ -20,7 +20,11 @@
 #ifndef _X3D_FIELDS_H_
 #define _X3D_FIELDS_H_
 
+#include <iostream> // XXX
 #include "types.h"
+
+using std::cout;
+using std::endl;
 
 namespace X3D {
 
@@ -39,6 +43,8 @@ public:
 			FieldType type) : 
 		node(node), name(name), type(type) {
 	}
+
+	virtual void print() = 0;
 };
 
 
@@ -53,6 +59,10 @@ public:
 	}
 
 	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+
+	virtual void print() {
+		cout << "\t\t" << type << " [] " << name << endl;
+	}
 };
 
 
@@ -110,6 +120,10 @@ public:
 	}
 
 	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+
+	virtual void print() {
+		cout << "\t\t" << type << " [in] " << name << endl;
+	}
 };
 
 
@@ -151,6 +165,10 @@ public:
 		Field(node, name, type) {}
 	
 	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+
+	virtual void print() {
+		cout << "\t\t" << type << " [out] " << name << endl;
+	}
 
 protected:
 
@@ -231,10 +249,16 @@ public:
 			FieldType type) :
 		Field(node, name, type) {
 	}
+	
+	virtual ~InOutField() {}
 
 	virtual SafePointer get(const Core::X3DNode* node) const = 0;
 	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
 	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+
+	virtual void print() {
+		cout << "\t\t" << type << " [in,out] " << name << endl;
+	}
 };
 
 template <class N, class T>
