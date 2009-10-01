@@ -107,9 +107,9 @@ public:
 	template <typename T> InitFieldImpl<N,T>* createInitField(
 			const string& name,
 			FieldType type,
-			void (N::*set_var)(const T&)) {
+			T& (N::*get_var)() const) {
 		InitFieldImpl<N,T>* field = new InitFieldImpl<N,T>(
-			this, name, type, set_var);
+			this, name, type, get_var);
 		addInitField(field);
 		return field;
 	}
