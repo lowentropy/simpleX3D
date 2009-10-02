@@ -115,3 +115,13 @@ TEST(SFImage, SetPixelShouldOnlyAffectCorrectBytes) {
 	for (int i = 0; i < 36; i++)
 		EXPECT_EQ((i<16||i>19) ? bytes[i] : 0xff, i4.array()[i]);
 }
+
+
+// getPixel should return the value that setPixel put there, with the caveat that the high (4-components) bytes should be zeroed.
+
+TEST(SFImage, ShouldGetPixel) {
+	unsigned char bytes[36];
+	SFImage i(3,3,1,bytes);
+	i.setPixel(1,1,0);
+	ASSERT_EQ(0, i.getPixel(1,1));
+}
