@@ -42,7 +42,10 @@ public:
 	const SFTime bindTime;
 	const SFBool isBound;
 
-	X3DBindableNode() : isBound(false), bindTime(0) {}
+	X3DBindableNode(NodeDefinition* def) : 
+		X3DChildNode(def), isBound(false), bindTime(0) {}
+
+	virtual void on_isBound(const SFBool& value) {}
 
 	void set_bind(const SFBool& bound) {
 		Stack* stack = this->stack();
@@ -81,8 +84,6 @@ public:
 		// TODO
 		return NULL;
 	}
-
-	virtual void on_isBound(const SFBool& value) {}
 
 };
 

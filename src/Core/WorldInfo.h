@@ -34,11 +34,12 @@ namespace Core {
  */
 class WorldInfo : public X3DInfoNode {
 public:
+
 	const SFString title;
 	const MFString info;
 
-	WorldInfo(const SFString& title) : 	title(title) {}
-	WorldInfo(const SFString& title, const MFString& info) : title(title), info(info) {}
+	WorldInfo(NodeDefinition* def) :
+		X3DInfoNode(def), title("") {}
 };
 
 }} // namespace X3D::Core

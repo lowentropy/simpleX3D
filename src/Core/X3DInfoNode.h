@@ -31,6 +31,9 @@ namespace Core {
  * semantic (i.e. non-visual) information.
  */
 class X3DInfoNode : public X3DChildNode {
+public:
+
+	X3DInfoNode(NodeDefinition* def) : X3DChildNode(def) {}
 };
 
 }}

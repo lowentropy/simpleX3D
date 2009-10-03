@@ -36,10 +36,11 @@ public:
 	const SFBool enabled;
 	const SFBool active;
 
-	X3DSensorNode() : enabled(true), active(false) {}
+	X3DSensorNode(NodeDefinition* def) :
+		X3DChildNode(def), enabled(true), active(false) {}
 	
-	virtual void on_enabled(const SFBool& enabled) = 0;
-	virtual void on_isActive(const SFBool& active) = 0;
+	virtual void on_enabled(const SFBool& enabled) {};
+	virtual void on_isActive(const SFBool& active) {};
 };
 
 }}

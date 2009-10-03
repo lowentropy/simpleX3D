@@ -29,15 +29,11 @@ namespace Core {
 /** Metadata value containing a list of ints (MFInt32). */
 class MetadataInteger : public X3DMetadataObject {
 public:
+
 	const MFInt32 value;
 
-	MetadataInteger(const SFString& name, const MFInt32& value) :
-		X3DMetadataObject(name),
-		value(value) {}
-
-	MetadataInteger(const SFString& name, const SFString& ref, const MFInt32& value) :
-		X3DMetadataObject(name, ref),
-		value(value) {}
+	MetadataInteger(NodeDefinition* def) :
+		X3DMetadataObject(def) {}
 };
 
 }} // namespace X3D::Core

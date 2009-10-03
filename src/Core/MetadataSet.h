@@ -34,15 +34,11 @@ class MetadataSet : public X3DMetadataObject {
 public:
 
 	typedef vector<X3DMetadataObject*> MFMetaNode;
+
 	const MFMetaNode value;
 
-	MetadataSet(const SFString& name, const MFMetaNode& value) :
-		X3DMetadataObject(name),
-		value(value) {}
-
-	MetadataSet(const SFString& name, const SFString& ref, const MFMetaNode& value) :
-		X3DMetadataObject(name, ref),
-		value(value) {}
+	MetadataSet(NodeDefinition* def) :
+		X3DMetadataObject(def) {}
 };
 
 }} // namespace X3D::Core

@@ -20,8 +20,13 @@
 #ifndef _X3D_BROWSER_H_
 #define _X3D_BROWSER_H_
 
+#include "types.h"
 #include "profile.h"
 #include "builtin.h"
+#include <list>
+
+using std::list;
+using Core::X3DNode;
 
 namespace X3D {
 
@@ -36,6 +41,10 @@ namespace X3D {
  * party plugins.
  */
 class Browser {
+private:
+
+	list<X3DNode*> nodes;
+
 public:
 
 	Profile* const profile;
@@ -44,7 +53,22 @@ public:
 		Builtin::init(profile);
 	}
 
+	template <class N>
+	N* createNode(const std::string& name) {
+		NodeDefinition* def = profile->getNode(name);
+		if (def == NULL)
+			return NULL;
+		X3DNode* node = def->create();
+		if (node == NULL)
+			return NULL;
+		nodes.push_back(node);
+		return node->cast<N>();
+	}
+
 	virtual ~Browser() {
+		list<X3DNode*>::iterator it = nodes.begin();
+		for (; it != nodes.end(); it++)
+			delete *it;
 		delete profile;
 	}
 };

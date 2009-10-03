@@ -49,7 +49,7 @@ public:
 
 			// X3DNode
 			NodeDefinitionImpl<X3DNode>* node =
-				core->createNode<X3DNode>("X3DNode");
+				core->createNode<X3DNode>("X3DNode", true);
 			{
 				// SFNode [in,out] metadata NULL [X3DMetadataObject]
 				node->createInputOutputField(
@@ -59,14 +59,14 @@ public:
 
 			// X3DChildNode : X3DNode
 			NodeDefinition* child =
-				core->createNode<X3DChildNode>("X3DChildNode");
+				core->createNode<X3DChildNode>("X3DChildNode", true);
 			{
 				child->inherits("X3DNode");
 			}
 
 			// X3DBindableNode : X3DChildNode
 			NodeDefinitionImpl<X3DBindableNode>* bind =
-				core->createNode<X3DBindableNode>("X3DBindableNode");
+				core->createNode<X3DBindableNode>("X3DBindableNode", true);
 			{
 				bind->inherits("X3DChildNode");
 
@@ -89,14 +89,14 @@ public:
 
 			// X3DInfoNode : X3DChildNode
 			NodeDefinition* info =
-				core->createNode<X3DInfoNode>("X3DInfoNode");
+				core->createNode<X3DInfoNode>("X3DInfoNode", true);
 			{
 				info->inherits("X3DChildNode");
 			}
 
 			// X3DMetadataObject
 			NodeDefinitionImpl<X3DMetadataObject>* meta_obj =
-				core->createNode<X3DMetadataObject>("X3DMetadataObject");
+				core->createNode<X3DMetadataObject>("X3DMetadataObject", true);
 			{
 				// XXX according to the spec, X3DMetadataObject is abstract
 				meta_obj->inherits("X3DNode");
@@ -114,13 +114,13 @@ public:
 
 			// X3DPrototypeInstance : X3DNode
 			NodeDefinition* prof_inst =
-				core->createNode<X3DPrototypeInstance>("X3DPrototypeInstance");
+				core->createNode<X3DPrototypeInstance>("X3DPrototypeInstance", true);
 			{
 			}
 
 			// X3DSensorNode : X3DChildNode
 			NodeDefinitionImpl<X3DSensorNode>* sensor =
-				core->createNode<X3DSensorNode>("X3DSensorNode");
+				core->createNode<X3DSensorNode>("X3DSensorNode", true);
 			{
 				sensor->inherits("X3DChildNode");
 

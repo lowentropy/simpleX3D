@@ -21,12 +21,15 @@
 #define _X3D_X3DNODE_H_
 
 #include "types.h"
-//#include "Core/X3DMetadataObject.h"
 
 namespace X3D {
+
+class NodeDefinition;
+
 namespace Core {
 
 class X3DMetadataObject;
+using ::X3D::NodeDefinition;
 
 /**
  * X3DNode is the root of all node types in the X3D
@@ -39,9 +42,11 @@ class X3DMetadataObject;
 class X3DNode {
 public:
 
+	const NodeDefinition* definition;
 	const X3DMetadataObject* metadata;
 
-	X3DNode() : metadata(NULL) {}
+	X3DNode(NodeDefinition* def) : definition(def), metadata(NULL) {}
+	virtual ~X3DNode() {}
 
 	template <typename T> void signal(const std::string& name, const T& value) {
 		// TODO

@@ -45,6 +45,7 @@ public:
 	virtual ~Profile();
 
 	Component* createComponent(const string& name);
+	NodeDefinition* getNode(const string& name);
 	virtual void print();
 };
 
@@ -61,13 +62,15 @@ private:
 public:
 	Component* const component;
 	const string name;
+	const bool abstract;
 
-	NodeDefinition(Component* component, const string& name) :
-		component(component), name(name), parent(NULL) {}
+	NodeDefinition(Component* component, const string& name, bool abstract) :
+		component(component), name(name), parent(NULL), abstract(abstract) {}
 	virtual ~NodeDefinition();
 
 	void inherits(const string& name);
 	virtual void print(bool full = true);
+	virtual Core::X3DNode* create() = 0;
 
 protected:
 	void addInitField(InitField* field);
@@ -82,7 +85,14 @@ template <class N>
 class NodeDefinitionImpl : public NodeDefinition {
 public:
 
-	NodeDefinitionImpl(Component* comp, const string& name) : NodeDefinition(comp, name) {}
+	NodeDefinitionImpl(Component* comp, const string& name, bool abstract) :
+		NodeDefinition(comp, name, abstract) {}
+
+	N* create() {
+		if (abstract)
+			throw X3DError("can't instantiate abstract nodes");
+		return new N(this);
+	}
 
 	template <typename T> InitFieldImpl<N,T>* createInitField(
 			const string& name, 
@@ -211,8 +221,8 @@ public:
 	NodeDefinition* getNode(const string& name);
 	virtual void print();
 
-	template <class T> NodeDefinitionImpl<T>* createNode(const string& name) {
-		NodeDefinitionImpl<T>* def = new NodeDefinitionImpl<T>(this, name);
+	template <class T> NodeDefinitionImpl<T>* createNode(const string& name, bool abstract=false) {
+		NodeDefinitionImpl<T>* def = new NodeDefinitionImpl<T>(this, name, abstract);
 		node_map[name] = def;
 		node_list.push_back(def);
 		return def;

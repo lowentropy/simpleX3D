@@ -31,6 +31,9 @@ namespace Core {
  * for nodes instantiated from PROTOs.
  */
 class X3DPrototypeInstance : public X3DNode {
+public:
+//	const X3DPrototype* prototype;
+	X3DPrototypeInstance(NodeDefinition* def) : X3DNode(def) {}
 };
 
 }}

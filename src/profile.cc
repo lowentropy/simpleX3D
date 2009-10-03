@@ -99,6 +99,16 @@ Profile::~Profile() {
 		delete *it;
 }
 
+NodeDefinition* Profile::getNode(const string& name) {
+	vector<Component*>::iterator it = comp_list.begin();
+	for (; it != comp_list.end(); it++) {
+		NodeDefinition* def = (*it)->getNode(name);
+		if (def != NULL)
+			return def;
+	}
+	return NULL;
+}
+
 Component* Profile::createComponent(const string& name) {
 	Component* comp = new Component(name);
 	comp_map[name] = comp;

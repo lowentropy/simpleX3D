@@ -53,7 +53,7 @@ public:
 	const SFString name;
 	const SFString reference;
 
-	X3DMetadataObject(const SFString& name, const SFString& ref="") : name(name), reference(ref) {}
+	X3DMetadataObject(NodeDefinition* def) : X3DNode(def) {}
 };
 
 }}

@@ -29,15 +29,11 @@ namespace Core {
 /** Metadata value containing a list of floats (MFFloat). */
 class MetadataFloat : public X3DMetadataObject {
 public:
+	
 	const MFFloat value;
 
-	MetadataFloat(const SFString& name, const MFFloat& value) :
-		X3DMetadataObject(name),
-		value(value) {}
-		
-	MetadataFloat(const SFString& name, const SFString& ref, const MFFloat& value) :
-		X3DMetadataObject(name, ref),
-		value(value) {}
+	MetadataFloat(NodeDefinition* def) :
+		X3DMetadataObject(def) {}
 };
 
 }} // namespace X3D::Core

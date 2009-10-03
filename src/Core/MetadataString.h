@@ -29,15 +29,11 @@ namespace Core {
 /** Metadata value containing a list of strings (MFString). */
 class MetadataString : public X3DMetadataObject {
 public:
+
 	const MFString value;
 
-	MetadataString(const SFString& name, const MFString& value) :
-		X3DMetadataObject(name),
-		value(value) {}
-
-	MetadataString(const SFString& name, const SFString& ref, const MFString& value) :
-		X3DMetadataObject(name, ref),
-		value(value) {}
+	MetadataString(NodeDefinition* def) :
+		X3DMetadataObject(def) {}
 };
 
 }} // namespace X3D::Core
