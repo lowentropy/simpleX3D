@@ -59,6 +59,8 @@ private:
 	vector<Field*> fields;
 	NodeDefinition* parent;
 
+	friend class Browser;
+
 public:
 	Component* const component;
 	const string name;
@@ -70,9 +72,16 @@ public:
 
 	void inherits(const string& name);
 	virtual void print(bool full = true);
-	virtual Core::X3DNode* create() = 0;
 
 protected:
+
+	virtual Core::X3DNode* create() = 0;
+	template <class N> N* create() {
+		if (abstract)
+			throw X3DError("can't instantiate abstract nodes");
+		return new N(this);
+	}
+
 	void addInitField(InitField* field);
 	void addInField(InField* field);
 	void addOutField(OutField* field);
@@ -85,14 +94,18 @@ template <class N>
 class NodeDefinitionImpl : public NodeDefinition {
 public:
 
+	friend class Browser;
+
 	NodeDefinitionImpl(Component* comp, const string& name, bool abstract) :
 		NodeDefinition(comp, name, abstract) {}
 
+protected:
+
 	N* create() {
-		if (abstract)
-			throw X3DError("can't instantiate abstract nodes");
-		return new N(this);
+		return NodeDefinition::create<N>();
 	}
+
+public:
 
 	template <typename T> InitFieldImpl<N,T>* createInitField(
 			const string& name, 

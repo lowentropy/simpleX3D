@@ -53,8 +53,7 @@ public:
 		Builtin::init(profile);
 	}
 
-	template <class N>
-	N* createNode(const std::string& name) {
+	X3DNode* createNode(const std::string& name) {
 		NodeDefinition* def = profile->getNode(name);
 		if (def == NULL)
 			return NULL;
@@ -62,7 +61,19 @@ public:
 		if (node == NULL)
 			return NULL;
 		nodes.push_back(node);
-		return node->cast<N>();
+		return node;
+	}
+
+	template <class N>
+	N* createNode(const std::string& name) {
+		NodeDefinition* def = profile->getNode(name);
+		if (def == NULL)
+			return NULL;
+		N* node = def->create<N>();
+		if (node == NULL)
+			return NULL;
+		nodes.push_back(node);
+		return node;
 	}
 
 	virtual ~Browser() {
