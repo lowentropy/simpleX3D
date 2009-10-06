@@ -17,12 +17,13 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
-#include "profile.h"
+#include "internal/types.h"
+#include "internal/profile.h"
 #include <iostream>
 
 using std::cout;
 using std::endl;
+using X3D::Core::X3DNode;
 
 namespace X3D {
 
@@ -53,6 +54,28 @@ void NodeDefinition::print_fields(bool full) {
 	vector<Field*>::iterator it = fields.begin();
 	for (; it != fields.end(); it++)
 		(*it)->print();
+}
+
+SafePointer NodeDefinition::get(const X3DNode* node, const string& field_name) const {
+	map<string,OutField*>* fields = const_cast<map<string,OutField*>*>(&out_fields);
+	const OutField* field = (*fields)[field_name];
+	if (field == NULL)
+		throw X3DError("invalid field");
+	return field->get(node);
+}
+
+void NodeDefinition::set(X3DNode* node, const string& field_name, const SafePointer& value, bool quiet) const {
+	map<string,InField*>* fields = const_cast<map<string,InField*>*>(&in_fields);
+	const InField* field = (*fields)[field_name];
+	if (field == NULL)
+		throw X3DError("invalid field");
+	field->set(node, value);
+	if (!quiet)
+		changed(node, field_name);
+}
+
+void NodeDefinition::changed(const X3DNode* node, const string& field_name) const {
+	// TODO: routing system goes here
 }
 
 void NodeDefinition::addInitField(InitField* field) {

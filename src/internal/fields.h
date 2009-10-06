@@ -21,7 +21,7 @@
 #define _X3D_FIELDS_H_
 
 #include <iostream>
-#include "types.h"
+#include "internal/types.h"
 
 using std::cout;
 using std::endl;

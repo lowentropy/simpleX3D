@@ -22,7 +22,7 @@
 
 #include <typeinfo>
 #include <sstream>
-#include "errors.h"
+#include "internal/errors.h"
 
 namespace X3D {
 

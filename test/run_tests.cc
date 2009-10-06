@@ -17,14 +17,14 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "types.h"
+#include "internal/types.h"
 #include <gmock/gmock.h>
 
 using namespace X3D;
 
 // here's the list of tests
-#include "BrowserTests.h"
-#include "Fields/SFImageTests.h"
+#include "internal/BrowserTests.h"
+#include "internal/SFImageTests.h"
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {

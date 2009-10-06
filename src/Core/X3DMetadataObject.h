@@ -20,8 +20,11 @@
 #ifndef _X3D_X3DMETADATAOBJECT_H_
 #define _X3D_X3DMETADATAOBJECT_H_
 
-#include "types.h"
+#include "internal/types.h"
 #include "Core/X3DNode.h"
+#include <string>
+
+using std::string;
 
 namespace X3D {
 namespace Core {
@@ -54,6 +57,14 @@ public:
 	const SFString reference;
 
 	X3DMetadataObject(NodeDefinition* def) : X3DNode(def) {}
+
+	virtual void assignFromMap(const map<string,string>& meta, bool quiet=false) {
+		throw X3DError("not implemented in this metadata class");
+	}
+
+	virtual void assignFromString(const string& value, bool quiet=false) {
+		throw X3DError("not implemented in this metadata class");
+	}
 };
 
 }}

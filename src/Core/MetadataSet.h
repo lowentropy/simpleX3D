@@ -20,11 +20,15 @@
 #ifndef _X3D_METADATASET_H
 #define _X3D_METADATASET_H
 
-#include <vector>
-#include "types.h"
+#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
+#include <vector>
+#include <string>
+#include <map>
 
 using std::vector;
+using std::string;
+using std::map;
 
 namespace X3D {
 namespace Core {
@@ -33,12 +37,14 @@ namespace Core {
 class MetadataSet : public X3DMetadataObject {
 public:
 
-	typedef vector<X3DMetadataObject*> MFMetaNode;
-
-	const MFMetaNode value;
+	vector<X3DMetadataObject*> value;
 
 	MetadataSet(NodeDefinition* def) :
 		X3DMetadataObject(def) {}
+
+	virtual void assignFromMap(const map<string,string>& meta, bool quiet=false);
+	virtual void assignFromString(const string& value, bool quiet=false);
+	void addMetadata(X3DMetadataObject* entry, bool quiet=false);
 };
 
 }} // namespace X3D::Core

@@ -20,15 +20,16 @@
 #ifndef _X3D_BROWSER_H_
 #define _X3D_BROWSER_H_
 
-#include "types.h"
-#include "profile.h"
-#include "builtin.h"
+#include "internal/types.h"
+#include "internal/profile.h"
+#include "internal/builtin.h"
 #include <list>
 
 using std::list;
-using Core::X3DNode;
 
 namespace X3D {
+
+using Core::X3DNode;
 
 /**
  * This is the main X3D instance class. The browser controls
@@ -44,25 +45,15 @@ class Browser {
 private:
 
 	list<X3DNode*> nodes;
+	static Browser* _inst;
 
 public:
 
 	Profile* const profile;
 
-	Browser() : profile(new Profile()) {
-		Builtin::init(profile);
-	}
-
-	X3DNode* createNode(const std::string& name) {
-		NodeDefinition* def = profile->getNode(name);
-		if (def == NULL)
-			return NULL;
-		X3DNode* node = def->create();
-		if (node == NULL)
-			return NULL;
-		nodes.push_back(node);
-		return node;
-	}
+	Browser();
+	virtual ~Browser();
+	X3DNode* createNode(const std::string& name);
 
 	template <class N>
 	N* createNode(const std::string& name) {
@@ -76,12 +67,10 @@ public:
 		return node;
 	}
 
-	virtual ~Browser() {
-		list<X3DNode*>::iterator it = nodes.begin();
-		for (; it != nodes.end(); it++)
-			delete *it;
-		delete profile;
+	static Browser* getSingleton() {
+		return _inst;
 	}
+
 };
 
 }

@@ -20,7 +20,7 @@
 #ifndef _X3D_METADATAINTEGER_H_
 #define _X3D_METADATAINTEGER_H_
 
-#include "types.h"
+#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
 
 namespace X3D {

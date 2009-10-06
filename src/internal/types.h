@@ -29,14 +29,14 @@
 #ifndef _X3D_TYPES_H_
 #define _X3D_TYPES_H_
 
-#include "config.h"
-#include "pointer.h"
-#include "errors.h"
-#include "Fields/SFVec.h"
-#include "Fields/SFMatrix.h"
-#include "Fields/SFColor.h"
-#include "Fields/SFImage.h"
-#include "Fields/SFRotation.h"
+#include "internal/config.h"
+#include "internal/SafePointer.h"
+#include "internal/errors.h"
+#include "internal/SFVec.h"
+#include "internal/SFMatrix.h"
+#include "internal/SFColor.h"
+#include "internal/SFImage.h"
+#include "internal/SFRotation.h"
 
 #include <string>
 #include <vector>
@@ -83,7 +83,6 @@ typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
 
 }
 
-//#include "fields.h"
 #include "Core/X3DNode.h"
 
 namespace X3D {

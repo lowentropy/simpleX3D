@@ -22,7 +22,7 @@
 
 #include <map>
 #include <vector>
-#include "fields.h"
+#include "internal/fields.h"
 
 using std::map;
 using std::vector;
@@ -72,6 +72,10 @@ public:
 
 	void inherits(const string& name);
 	virtual void print(bool full = true);
+
+	virtual SafePointer get(const Core::X3DNode* node, const string& field) const;
+	virtual void set(Core::X3DNode* node, const string& field, const SafePointer& value, bool quiet=false) const;
+	virtual void changed(const Core::X3DNode* node, const string& field) const;
 
 protected:
 

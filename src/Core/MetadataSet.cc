@@ -17,34 +17,33 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_METADATADOUBLE_H_
-#define _X3D_METADATADOUBLE_H_
-
-#include "internal/types.h"
-#include "Core/X3DMetadataObject.h"
+#include "Core/MetadataSet.h"
+#include "Core/MetadataString.h"
+#include "internal/Browser.h"
 
 namespace X3D {
 namespace Core {
 
-/** Metadata value containing a list of floats (MFFloat). */
-class MetadataDouble : public X3DMetadataObject {
-public:
-
-	const MFDouble value;
-
-	MetadataDouble(NodeDefinition* def) :
-		X3DMetadataObject(def) {}
-
-	virtual void assignFromString(const string& str, bool quiet=false) {
-		// TODO
-/*		value.clear();
-		value.append(Convert.toSFDouble(str));
-		if (!quiet)
-			changed("value");
-			*/
+void MetadataSet::assignFromMap(const map<string,string>& meta, bool quiet) {
+	map<string,string>::const_iterator it = meta.begin();
+	for (; it != meta.end(); it++) {
+		X3DMetadataObject* entry = browser()->createNode<MetadataString>("MetadataString");
+		entry->set("name", it->first, true);
+		entry->set("value", it->second, true);
+		addMetadata(entry, true);
 	}
-};
+	if (!quiet && meta.size() > 0)
+		changed("value");
+}
+
+void MetadataSet::assignFromString(const string& value, bool quiet) {
+	throw X3DError("assigning metadata set from string not supported");
+}
+
+void MetadataSet::addMetadata(X3DMetadataObject* entry, bool quiet) {
+	value.push_back(entry);
+	if (!quiet)
+		changed("value");
+}
 
 }}
-
-#endif // #ifndef _X3D_METADATADOUBLE_H_

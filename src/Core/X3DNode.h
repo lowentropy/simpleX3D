@@ -20,16 +20,26 @@
 #ifndef _X3D_X3DNODE_H_
 #define _X3D_X3DNODE_H_
 
-#include "types.h"
+//#include "internal/types.h"
+#include "internal/SafePointer.h"
+#include <string>
+#include <map>
+
+using std::string;
+using std::map;
 
 namespace X3D {
 
+// forward declarations
 class NodeDefinition;
+class Browser;
 
 namespace Core {
 
+// forward declarations
 class X3DMetadataObject;
 using ::X3D::NodeDefinition;
+using ::X3D::Browser;
 
 /**
  * X3DNode is the root of all node types in the X3D
@@ -42,14 +52,24 @@ using ::X3D::NodeDefinition;
 class X3DNode {
 public:
 
-	const NodeDefinition* definition;
-	const X3DMetadataObject* metadata;
+	NodeDefinition* const definition;
+	X3DMetadataObject* const metadata;
 
 	X3DNode(NodeDefinition* def) : definition(def), metadata(NULL) {}
 	virtual ~X3DNode() {}
 
-	template <typename T> void signal(const std::string& name, const T& value) {
-		// TODO
+	virtual void assignMetadata(const map<string,string>& meta, bool quiet=false);
+	virtual Browser* browser();
+	virtual void set(const string& field, const SafePointer& value, bool quiet=false);
+	virtual SafePointer get(const string& field) const;
+	virtual void changed(const string& field) const;
+
+	template <typename T> void set(const string& field, const T& value, bool quiet=false) {
+		this->set(field, SafePointer(value));
+	}
+
+	template <typename T> T get(const string& field) const {
+		return *(this->get(field).cast<T>());
 	}
 
 	template <class T> const T* cast() const {

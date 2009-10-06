@@ -20,7 +20,7 @@
 #ifndef _X3D_X3DINFONODE_H_
 #define _X3D_X3DINFONODE_H_
 
-#include "types.h"
+#include "internal/types.h"
 #include "Core/X3DChildNode.h"
 
 namespace X3D {

@@ -20,7 +20,7 @@
 #ifndef _X3D_X3DBINDABLENODE_H_
 #define _X3D_X3DBINDABLENODE_H_
 
-#include "types.h"
+#include "internal/types.h"
 #include "Core/X3DChildNode.h"
 #include <sstream>
 #include <list>
@@ -54,14 +54,14 @@ public:
 				return;
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->signal("isBound", false);
+				top->set("isBound", false);
 			stack->remove(this);
 			stack->push_front(this);
 		} else {
 			stack->remove(this);
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->signal("isBound", true);
+				top->set("isBound", true);
 		}
 	}
 	

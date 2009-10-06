@@ -20,7 +20,7 @@
 #ifndef _X3D_SFVEC_H_
 #define _X3D_SFVEC_H_
 
-#include "types.h"
+#include "internal/types.h"
 #include <math.h>
 
 namespace X3D {
