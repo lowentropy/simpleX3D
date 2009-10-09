@@ -20,7 +20,6 @@
 #ifndef _X3D_METADATAINTEGER_H_
 #define _X3D_METADATAINTEGER_H_
 
-#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
 
 namespace X3D {
@@ -34,8 +33,7 @@ public:
 	const MFInt32 value;
 
 	/// Default node constructor.
-	MetadataInteger(NodeDefinition* def) :
-		X3DMetadataObject(def) {}
+	MetadataInteger(NodeDefinition* def) : Node(def) {}
 };
 
 }} // namespace X3D::Core

@@ -85,7 +85,7 @@ public:
 		Field(node, name, type) {
 	}
 
-	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+	virtual SafePointer get(const Node* node) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [] " << name << endl;
@@ -123,7 +123,7 @@ public:
 		var(NULL), getter(getter) {
 	}
 
-	SafePointer get(const Core::X3DNode* node) const {
+	SafePointer get(const Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
@@ -153,7 +153,7 @@ public:
 		Field(node, name, type) {
 	}
 
-	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+	virtual void set(Node* node, const SafePointer& ptr) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [in] " << name << endl;
@@ -179,7 +179,7 @@ public:
 		receive(receive) {
 	}
 
-	void set(Core::X3DNode* node, const SafePointer& ptr) const {
+	void set(Node* node, const SafePointer& ptr) const {
 		set_native(node->cast<N>(), *ptr.cast<T>());
 	}
 
@@ -205,7 +205,7 @@ public:
 			FieldType type) :
 		Field(node, name, type) {}
 	
-	virtual SafePointer get(const Core::X3DNode* node) const = 0;
+	virtual SafePointer get(const Node* node) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [out] " << name << endl;
@@ -213,7 +213,7 @@ public:
 
 protected:
 
-	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+	virtual void signal(Node* node, const SafePointer& ptr) const = 0;
 };
 
 
@@ -254,7 +254,7 @@ public:
 		var(NULL), getter(getter), setter(setter), changed(changed) {
 	}
 
-	SafePointer get(const Core::X3DNode* node) const {
+	SafePointer get(const Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
@@ -265,7 +265,7 @@ public:
 			return (node->*getter)();
 	}
 
-	void signal(Core::X3DNode* node, const SafePointer& ptr) const {
+	void signal(Node* node, const SafePointer& ptr) const {
 		signal_native(node->cast<N>(), *ptr.cast<T>());
 	}
 
@@ -301,9 +301,9 @@ public:
 	
 	virtual ~InOutField() {}
 
-	virtual SafePointer get(const Core::X3DNode* node) const = 0;
-	virtual void set(Core::X3DNode* node, const SafePointer& ptr) const = 0;
-	virtual void signal(Core::X3DNode* node, const SafePointer& ptr) const = 0;
+	virtual SafePointer get(const Node* node) const = 0;
+	virtual void set(Node* node, const SafePointer& ptr) const = 0;
+	virtual void signal(Node* node, const SafePointer& ptr) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [in,out] " << name << endl;
@@ -353,7 +353,7 @@ public:
 		receive(receive), changed(changed) {
 	}
 
-	void set(Core::X3DNode* node, const SafePointer& ptr) const {
+	void set(Node* node, const SafePointer& ptr) const {
 		set_native(node->cast<N>(), *ptr.cast<T>());
 	}
 
@@ -361,7 +361,7 @@ public:
 		(node->*receive)(value);
 	}
 
-	SafePointer get(const Core::X3DNode* node) const {
+	SafePointer get(const Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
@@ -372,7 +372,7 @@ public:
 			return (node->*getter)();
 	}
 
-	void signal(Core::X3DNode* node, const SafePointer& ptr) const {
+	void signal(Node* node, const SafePointer& ptr) const {
 		signal_native(node->cast<N>(), *ptr.cast<T>());
 	}
 

@@ -20,7 +20,6 @@
 #ifndef _X3D_X3DSENSORNODE_H_
 #define _X3D_X3DSENSORNODE_H_
 
-#include "internal/types.h"
 #include "Core/X3DChildNode.h"
 
 namespace X3D {
@@ -31,7 +30,7 @@ namespace Core {
  * which respond dynamically to the user and the scene to
  * change some behavior of the scene.
  */
-class X3DSensorNode : public X3DChildNode {
+class X3DSensorNode : virtual public X3DChildNode {
 public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
@@ -41,8 +40,13 @@ public:
 	const SFBool isActive;
 
 	/// Default node constructor.
+	X3DSensorNode() : enabled(true), isActive(false) {}
+
+	/// DO NOT USE
 	X3DSensorNode(NodeDefinition* def) :
-		X3DChildNode(def), enabled(true), isActive(false) {}
+		enabled(true), isActive(false) {
+		throw X3DError("BUG - should not be called");
+	}
 
 	/**
 	 * Default action to take on input event to #enabled.

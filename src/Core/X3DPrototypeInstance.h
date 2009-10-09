@@ -20,7 +20,6 @@
 #ifndef _X3D_X3DPROTOTYPEINSTANCE_H_
 #define _X3D_X3DPROTOTYPEINSTANCE_H_
 
-#include "internal/types.h"
 #include "Core/X3DNode.h"
 
 namespace X3D {
@@ -30,11 +29,13 @@ namespace Core {
  * This node is an abstract type which is used
  * for nodes instantiated from PROTOs.
  */
-class X3DPrototypeInstance : public X3DNode {
+class X3DPrototypeInstance : virtual public X3DNode {
 public:
-
 	/// Default node constructor.
-	X3DPrototypeInstance(NodeDefinition* def) : X3DNode(def) {}
+	X3DPrototypeInstance() {}
+
+	/// DO NOT USE
+	X3DPrototypeInstance(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 };
 
 }}

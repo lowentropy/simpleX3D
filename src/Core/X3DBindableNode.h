@@ -20,9 +20,7 @@
 #ifndef _X3D_X3DBINDABLENODE_H_
 #define _X3D_X3DBINDABLENODE_H_
 
-#include "internal/types.h"
 #include "Core/X3DChildNode.h"
-#include <sstream>
 #include <list>
 
 namespace X3D {
@@ -37,7 +35,7 @@ namespace Core {
  *
  * \see ISO-IEC-19775-1.2 Part 5, 7.2.2 "Bindable children nodes"
  */
-class X3DBindableNode : public X3DChildNode {
+class X3DBindableNode : virtual public X3DChildNode {
 public:
 
 	/// The time at which the node is bound or unbound.
@@ -47,8 +45,13 @@ public:
 	const SFBool isBound;
 
 	/// Default node constructor.
-	X3DBindableNode(NodeDefinition* def) : 
-		X3DChildNode(def), isBound(false), bindTime(0) {}
+	X3DBindableNode() : isBound(false), bindTime(0) {}
+
+	/// DO NOT USE
+	X3DBindableNode(NodeDefinition* def) :
+		isBound(false), bindTime(0) { 
+		throw X3DError("BUG - should not be called");
+	}
 
 	/// Default action when #isBound changes is to invoke callback.
 	virtual void isBound_changed() { on_isBound(); }

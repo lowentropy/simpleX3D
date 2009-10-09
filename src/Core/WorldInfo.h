@@ -20,7 +20,6 @@
 #ifndef _X3D_WORLDINFO_H_
 #define _X3D_WORLDINFO_H_
 
-#include "internal/types.h"
 #include "Core/X3DInfoNode.h"
 
 namespace X3D {
@@ -42,8 +41,7 @@ public:
 	const MFString info;
 
 	/// Default node constructor.
-	WorldInfo(NodeDefinition* def) :
-		X3DInfoNode(def), title("") {}
+	WorldInfo(NodeDefinition* def) : Node(def), title("") {}
 };
 
 }} // namespace X3D::Core

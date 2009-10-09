@@ -22,6 +22,7 @@
 
 #include <string>
 #include "internal/profile.h"
+#include "internal/Node.h"
 #include "Core/X3DNode.h"
 #include "Core/X3DChildNode.h"
 #include "Core/X3DBindableNode.h"

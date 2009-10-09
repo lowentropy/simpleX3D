@@ -73,13 +73,13 @@ public:
 	void inherits(const string& name);
 	virtual void print(bool full = true);
 
-	virtual SafePointer get(const Core::X3DNode* node, const string& field) const;
-	virtual void set(Core::X3DNode* node, const string& field, const SafePointer& value, bool quiet=false) const;
-	virtual void changed(const Core::X3DNode* node, const string& field) const;
+	virtual SafePointer get(const Node* node, const string& field) const;
+	virtual void set(Node* node, const string& field, const SafePointer& value, bool quiet=false) const;
+	virtual void changed(const Node* node, const string& field) const;
 
 protected:
 
-	virtual Core::X3DNode* create() = 0;
+	virtual Node* create() = 0;
 	template <class N> N* create() {
 		if (abstract)
 			throw X3DError("can't instantiate abstract nodes");

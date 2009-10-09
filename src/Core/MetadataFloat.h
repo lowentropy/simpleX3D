@@ -20,7 +20,6 @@
 #ifndef _X3D_METADATAFLOAT_H_
 #define _X3D_METADATAFLOAT_H_
 
-#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
 
 namespace X3D {
@@ -34,8 +33,7 @@ public:
 	const MFFloat value;
 
 	/// Default node constructor.
-	MetadataFloat(NodeDefinition* def) :
-		X3DMetadataObject(def) {}
+	MetadataFloat(NodeDefinition* def) : Node(def) {}
 };
 
 }} // namespace X3D::Core

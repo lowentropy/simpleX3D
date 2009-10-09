@@ -20,7 +20,6 @@
 #ifndef _X3D_X3DCHILDNODE_H_
 #define _X3D_X3DCHILDNODE_H_
 
-#include "internal/types.h"
 #include "Core/X3DNode.h"
 
 namespace X3D {
@@ -32,16 +31,17 @@ namespace Core {
  * do not form strict trees, but are actually directed
  * acyclic graphs.
  */
-class X3DChildNode : public X3DNode {
+class X3DChildNode : virtual public X3DNode {
 protected:
-
 	/// list of parent nodes
 	MFNode parents;
 
 public:
-
 	/// Default node constructor.
-	X3DChildNode(NodeDefinition* def) : X3DNode(def) {}
+	X3DChildNode() {}
+
+	/// DO NOT USE
+	X3DChildNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 };
 
 }}

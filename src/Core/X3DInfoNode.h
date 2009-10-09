@@ -20,7 +20,6 @@
 #ifndef _X3D_X3DINFONODE_H_
 #define _X3D_X3DINFONODE_H_
 
-#include "internal/types.h"
 #include "Core/X3DChildNode.h"
 
 namespace X3D {
@@ -30,11 +29,13 @@ namespace Core {
  * This is the base node for any nodes which containy purely
  * semantic (i.e. non-visual) information.
  */
-class X3DInfoNode : public X3DChildNode {
+class X3DInfoNode : virtual public X3DChildNode {
 public:
-
 	/// Default node constructor.
-	X3DInfoNode(NodeDefinition* def) : X3DChildNode(def) {}
+	X3DInfoNode() {}
+
+	/// DO NOT USE
+	X3DInfoNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 };
 
 }}

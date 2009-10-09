@@ -20,15 +20,10 @@
 #ifndef _X3D_METADATASET_H
 #define _X3D_METADATASET_H
 
-#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
 #include <vector>
-#include <string>
-#include <map>
 
 using std::vector;
-using std::string;
-using std::map;
 
 namespace X3D {
 namespace Core {
@@ -41,8 +36,7 @@ public:
 	vector<X3DMetadataObject*> value;
 
 	/// Default node constructor.
-	MetadataSet(NodeDefinition* def) :
-		X3DMetadataObject(def) {}
+	MetadataSet(NodeDefinition* def) : Node(def) {}
 
 	/**
 	 * Add entries to #value from the entries in the given map.

@@ -20,7 +20,7 @@
 #ifndef _X3D_BROWSER_H_
 #define _X3D_BROWSER_H_
 
-#include "internal/types.h"
+#include "internal/Node.h"
 #include "internal/profile.h"
 #include "internal/builtin.h"
 #include <list>
@@ -28,8 +28,6 @@
 using std::list;
 
 namespace X3D {
-
-using Core::X3DNode;
 
 /**
  * This is the main X3D instance class. The browser controls
@@ -45,13 +43,13 @@ class Browser {
 private:
 
 	/// all nodes managed by the browser
-	list<X3DNode*> nodes;
+	list<Node*> nodes;
 
 	/// nodes we shouldn't garbage-collect
-	list<X3DNode*> persistent;
+	list<Node*> persistent;
 
 	/// root scene nodes
-	list<X3DNode*> roots;
+	list<Node*> roots;
 
 	/// singleton instance
 	static Browser* _inst;
@@ -82,7 +80,7 @@ public:
 	 * @param name qualified X3D node type name
 	 * @returns an instance of the registered node type
 	 */
-	X3DNode* createNode(const std::string& name);
+	Node* createNode(const std::string& name);
 
 	/**
 	 * Make the given node persistent, so that it will not be
@@ -90,7 +88,7 @@ public:
 	 * 
 	 * @param node pointer to node to persist
 	 */
-	void persist(X3DNode* node);
+	void persist(Node* node);
 
 	/**
 	 * Templatized node creation. This version of createNode

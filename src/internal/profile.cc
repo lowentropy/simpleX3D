@@ -23,7 +23,6 @@
 
 using std::cout;
 using std::endl;
-using X3D::Core::X3DNode;
 
 namespace X3D {
 
@@ -56,7 +55,7 @@ void NodeDefinition::print_fields(bool full) {
 		(*it)->print();
 }
 
-SafePointer NodeDefinition::get(const X3DNode* node, const string& field_name) const {
+SafePointer NodeDefinition::get(const Node* node, const string& field_name) const {
 	map<string,OutField*>* fields = const_cast<map<string,OutField*>*>(&out_fields);
 	const OutField* field = (*fields)[field_name];
 	if (field == NULL)
@@ -64,7 +63,7 @@ SafePointer NodeDefinition::get(const X3DNode* node, const string& field_name) c
 	return field->get(node);
 }
 
-void NodeDefinition::set(X3DNode* node, const string& field_name, const SafePointer& value, bool quiet) const {
+void NodeDefinition::set(Node* node, const string& field_name, const SafePointer& value, bool quiet) const {
 	map<string,InField*>* fields = const_cast<map<string,InField*>*>(&in_fields);
 	const InField* field = (*fields)[field_name];
 	if (field == NULL)
@@ -74,7 +73,7 @@ void NodeDefinition::set(X3DNode* node, const string& field_name, const SafePoin
 		changed(node, field_name);
 }
 
-void NodeDefinition::changed(const X3DNode* node, const string& field_name) const {
+void NodeDefinition::changed(const Node* node, const string& field_name) const {
 	// TODO: routing system goes here
 }
 

@@ -20,6 +20,7 @@
 #ifndef _X3D_CONFIG_H_
 #define _X3D_CONFIG_H_
 
+#define SAFE_CAST 1
 #define SAFE_POINTER 1
 
 #endif // #ifndef _X3D_CONFIG_H_

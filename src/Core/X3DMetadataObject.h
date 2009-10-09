@@ -20,11 +20,13 @@
 #ifndef _X3D_X3DMETADATAOBJECT_H_
 #define _X3D_X3DMETADATAOBJECT_H_
 
+#include "internal/Node.h"
 #include "internal/types.h"
-#include "Core/X3DNode.h"
 #include <string>
+#include <map>
 
 using std::string;
+using std::map;
 
 namespace X3D {
 namespace Core {
@@ -33,25 +35,8 @@ namespace Core {
  * This abstract type is the parent for any node
  * which provides a metadata value. The node must
  * provide both a name and value.
- * 
- * XXX According to the spec, X3DMetadaObject itself
- * is abstract, NOT derived from X3DNode. However, the
- * spec also states:
- * 
- *   NOTE  Since a metadata node is derived from X3DNode,
- *         the metadata node may itself have metadata.
- * 
- * The simpleX3D dynamic typing system does not allow
- * X3D fields in classes not derived from X3DNode; since
- * it seems all real metadata nodes DO derive from it,
- * then EITHER X3DMetadataObject must be part of the
- * inheritance hierarchy, OR every node would have to
- * redefine the #name and #reference fields.
- * 
- * Currently, simpleX3D DOES allow X3DMetadataObject to
- * subclass X3DNode, but this may change in the future.
  */
-class X3DMetadataObject : public X3DNode {
+class X3DMetadataObject : public virtual Node {
 public:
 
 	/// Key of the metadata object, always a string.
@@ -61,7 +46,10 @@ public:
 	const SFString reference;
 
 	/// Default node constructor.
-	X3DMetadataObject(NodeDefinition* def) : X3DNode(def) {}
+	X3DMetadataObject() : reference("") {}
+
+	/// DO NOT USE
+	X3DMetadataObject(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 
 	/**
 	 * Assign new metadata entries from a string-to-string map.

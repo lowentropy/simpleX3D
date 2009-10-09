@@ -28,24 +28,24 @@ Browser::Browser() : profile(new Profile()) {
 }
 
 Browser::~Browser() {
-	list<X3DNode*>::iterator it = nodes.begin();
+	list<Node*>::iterator it = nodes.begin();
 	for (; it != nodes.end(); it++)
 		delete *it;
 	delete profile;
 }
 
-X3DNode* Browser::createNode(const std::string& name) {
+Node* Browser::createNode(const std::string& name) {
 	NodeDefinition* def = profile->getNode(name);
 	if (def == NULL)
 		return NULL;
-	X3DNode* node = def->create();
+	Node* node = def->create();
 	if (node == NULL)
 		return NULL;
 	nodes.push_back(node);
 	return node;
 }
 
-void Browser::persist(X3DNode* node) {
+void Browser::persist(Node* node) {
 	persistent.push_back(node);
 }
 

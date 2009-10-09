@@ -30,8 +30,9 @@
 #define _X3D_TYPES_H_
 
 #include "internal/config.h"
-#include "internal/SafePointer.h"
 #include "internal/errors.h"
+#include "internal/Node.h"
+#include "internal/SafePointer.h"
 #include "internal/SFVec.h"
 #include "internal/SFMatrix.h"
 #include "internal/SFColor.h"
@@ -80,54 +81,48 @@ typedef std::vector<SFVec3f> MFVec3f; ///< list of SFVec3f values
 typedef std::vector<SFVec3d> MFVec3d; ///< list of SFVec3d values
 typedef std::vector<SFVec4f> MFVec4f; ///< list of SFVec4f values
 typedef std::vector<SFVec4d> MFVec4d; ///< list of SFVec4d values
+typedef Node* SFNode; ///< pointer to an X3DNode
+typedef std::vector<SFNode>* MFNode; ///< list of SFNode values
 
-}
+typedef enum {
+	SFBoolType = 0,
+	SFDoubleType,
+	SFFloatType,
+	SFInt32Type,
+	SFMatrix3fType,
+	SFMatrix3dType,
+	SFMatrix4fType,
+	SFMatrix4dType,
+	SFStringType,
+	SFTimeType,
+	SFVec2fType,
+	SFVec2dType,
+	SFVec3fType,
+	SFVec3dType,
+	SFVec4fType,
+	SFVec4dType,
+	SFNodeType,
+	MFBoolType,
+	MFDoubleType,
+	MFFloatType,
+	MFInt32Type,
+	MFMatrix3fType,
+	MFMatrix3dType,
+	MFMatrix4fType,
+	MFMatrix4dType,
+	MFStringType,
+	MFTimeType,
+	MFVec2fType,
+	MFVec2dType,
+	MFVec3fType,
+	MFVec3dType,
+	MFVec4fType,
+	MFVec4dType,
+	MFNodeType
+} FieldType;
 
-#include "Core/X3DNode.h"
+extern const char* FieldTypeNames[];
 
-namespace X3D {
-
-	typedef Core::X3DNode* SFNode; ///< pointer to an X3DNode
-	typedef std::vector<SFNode>* MFNode; ///< list of SFNode values
-
-	typedef enum {
-		SFBoolType = 0,
-		SFDoubleType,
-		SFFloatType,
-		SFInt32Type,
-		SFMatrix3fType,
-		SFMatrix3dType,
-		SFMatrix4fType,
-		SFMatrix4dType,
-		SFStringType,
-		SFTimeType,
-		SFVec2fType,
-		SFVec2dType,
-		SFVec3fType,
-		SFVec3dType,
-		SFVec4fType,
-		SFVec4dType,
-		SFNodeType,
-		MFBoolType,
-		MFDoubleType,
-		MFFloatType,
-		MFInt32Type,
-		MFMatrix3fType,
-		MFMatrix3dType,
-		MFMatrix4fType,
-		MFMatrix4dType,
-		MFStringType,
-		MFTimeType,
-		MFVec2fType,
-		MFVec2dType,
-		MFVec3fType,
-		MFVec3dType,
-		MFVec4fType,
-		MFVec4dType,
-		MFNodeType
-	} FieldType;
-
-	extern const char* FieldTypeNames[];
 }
 
 #endif // #ifndef _X3D_TYPES_H_

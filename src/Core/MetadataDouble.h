@@ -20,7 +20,6 @@
 #ifndef _X3D_METADATADOUBLE_H_
 #define _X3D_METADATADOUBLE_H_
 
-#include "internal/types.h"
 #include "Core/X3DMetadataObject.h"
 
 namespace X3D {
@@ -34,8 +33,7 @@ public:
 	const MFDouble value;
 
 	/// Default node constructor.
-	MetadataDouble(NodeDefinition* def) :
-		X3DMetadataObject(def) {}
+	MetadataDouble(NodeDefinition* def) : Node(def) {}
 
 	/**
 	 * Convert string value to double and set to #value.
@@ -45,11 +43,6 @@ public:
 	 */
 	virtual void assignFromString(const string& str, bool quiet=false) {
 		// TODO
-/*		value.clear();
-		value.append(Convert.toSFDouble(str));
-		if (!quiet)
-			changed("value");
-			*/
 	}
 };
 
