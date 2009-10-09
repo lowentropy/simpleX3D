@@ -32,7 +32,8 @@ namespace Core {
  */
 class X3DPrototypeInstance : public X3DNode {
 public:
-//	const X3DPrototype* prototype;
+
+	/// Default node constructor.
 	X3DPrototypeInstance(NodeDefinition* def) : X3DNode(def) {}
 };
 

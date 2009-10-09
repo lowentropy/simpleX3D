@@ -155,7 +155,7 @@ public:
 			const string& name,
 			FieldType type,
 			const T (N::*var),
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
 			this, name, type, const_cast<T (N::*)>(var), changed_fp);
 		addOutField(field);
@@ -166,7 +166,7 @@ public:
 			const string& name,
 			FieldType type,
 			T (N::*var),
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
 			this, name, type, var, changed_fp);
 		addOutField(field);
@@ -178,7 +178,7 @@ public:
 			FieldType type,
 			T& (N::*get_var)() const,
 			void (N::*set_var)(const T&),
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
 			this, name, type, get_var, set_var, changed_fp);
 		addOutField(field);
@@ -190,7 +190,7 @@ public:
 			FieldType type,
 			const T (N::*var),
 			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
 			this, name, type, const_cast<T (N::*)>(var), set_fp, changed_fp);
 		addInOutField(field);
@@ -202,7 +202,7 @@ public:
 			FieldType type,
 			T (N::*var),
 			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
 			this, name, type, var, set_fp, changed_fp);
 		addInOutField(field);
@@ -215,7 +215,7 @@ public:
 			T& (N::*get_var)() const,
 			void (N::*set_var)(const T&),
 			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)(const T&)=NULL) {
+			void (N::*changed_fp)()=NULL) {
 		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
 			name, type, get_var, set_var, set_fp, changed_fp);
 		addInOutField(field);

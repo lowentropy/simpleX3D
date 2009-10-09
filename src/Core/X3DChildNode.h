@@ -34,11 +34,13 @@ namespace Core {
  */
 class X3DChildNode : public X3DNode {
 protected:
-	/** list of parent nodes */
+
+	/// list of parent nodes
 	MFNode parents;
 
 public:
 
+	/// Default node constructor.
 	X3DChildNode(NodeDefinition* def) : X3DNode(def) {}
 };
 

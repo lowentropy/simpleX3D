@@ -37,13 +37,30 @@ namespace Core {
 class MetadataSet : public X3DMetadataObject {
 public:
 
+	/// metadata value, a list of other metadata (last written to value_changed)
 	vector<X3DMetadataObject*> value;
 
+	/// Default node constructor.
 	MetadataSet(NodeDefinition* def) :
 		X3DMetadataObject(def) {}
 
+	/**
+	 * Add entries to #value from the entries in the given map.
+	 * 
+	 * The map contains strings for keys and values, so the
+	 * new metadata entries will be of type MetadataString.
+	 * 
+	 * @param meta map of metadata keys to values
+	 * @param quiet if true, value_changed event is suppressed
+	 */ 
 	virtual void assignFromMap(const map<string,string>& meta, bool quiet=false);
-	virtual void assignFromString(const string& value, bool quiet=false);
+
+	/**
+	 * Add a single new metadata entry to the set.
+	 * 
+	 * @param entry metadata entry to add
+	 * @param quiet if true, value_changed event is suppressed
+	 */
 	void addMetadata(X3DMetadataObject* entry, bool quiet=false);
 };
 

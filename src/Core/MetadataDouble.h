@@ -30,11 +30,19 @@ namespace Core {
 class MetadataDouble : public X3DMetadataObject {
 public:
 
+	/// metadata value (last written to value_changed)
 	const MFDouble value;
 
+	/// Default node constructor.
 	MetadataDouble(NodeDefinition* def) :
 		X3DMetadataObject(def) {}
 
+	/**
+	 * Convert string value to double and set to #value.
+	 *
+	 * @param str string value to convert and set
+	 * @param quiet if true, signals value_changed
+	 */
 	virtual void assignFromString(const string& str, bool quiet=false) {
 		// TODO
 /*		value.clear();

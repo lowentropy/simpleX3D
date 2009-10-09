@@ -38,9 +38,18 @@
 
 namespace X3D {
 
+/**
+ * Contains a single function which initializes all the
+ * X3D types implemented by simpleX3D.
+ */
 class Builtin {
 public:
 
+	/**
+	 * Initialize the given profile with known types.
+	 * 
+	 * @param profile built-in supported profile
+	 */
 	static void init(Profile* profile) {
 		// Core component
 		Component* core = profile->createComponent("Core");
@@ -83,8 +92,8 @@ public:
 				// SFBool [out] isBound
 				bind->createOutputField(
 					"isBound", SFBoolType,
-					&X3DBindableNode::isBound,		// last set value
-					&X3DBindableNode::on_isBound);	// output action
+					&X3DBindableNode::isBound,			// last set value
+					&X3DBindableNode::isBound_changed);	// output action
 			}
 
 			// X3DInfoNode : X3DChildNode
@@ -127,14 +136,14 @@ public:
 				// SFBool [in,out] enabled TRUE
 				sensor->createInputOutputField<SFBool>(
 					"enabled", SFBoolType,
-					&X3DSensorNode::enabled,		// last set value
-					NULL,							// input action (none)
-					&X3DSensorNode::on_enabled);	// output action
+					&X3DSensorNode::enabled,			// last set value
+					&X3DSensorNode::set_enabled,		// input action (none)
+					&X3DSensorNode::enabled_changed);	// output action
 
 				// SFBool [out] isActive
 				sensor->createOutputField(
 					"isActive", SFBoolType,
-					&X3DSensorNode::active,			// last set value
+					&X3DSensorNode::isActive,		// last set value
 					&X3DSensorNode::on_isActive);	// output action
 			}
 

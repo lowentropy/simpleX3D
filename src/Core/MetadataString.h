@@ -30,10 +30,22 @@ namespace Core {
 class MetadataString : public X3DMetadataObject {
 public:
 
+	/// metadata value (last written to value_changed)
 	const MFString value;
 
+	/// Default node constructor.
 	MetadataString(NodeDefinition* def) :
 		X3DMetadataObject(def) {}
+
+	/**
+	 * Assign metadata value from string.
+	 * 
+	 * Simply copies the given string into #value.
+	 * 
+	 * @param str new value of metadata.
+	 * @param quiet if true, value_changed event is suppressed
+	 */
+	virtual void assignFromString(const string& str, bool quiet=false);
 };
 
 }} // namespace X3D::Core

@@ -24,9 +24,18 @@
 
 namespace X3D {
 
+/**
+ * Static type conversions.
+ */
 class Convert {
 public:
 
+	/**
+	 * Convert string to SFDouble.
+	 * 
+	 * @param str string to convert
+	 * @returns SFDouble value
+	 */
 	static SFDouble toSFDouble(const string& str) {
 		char* end = NULL;
 		SFDouble value = strtod(str.c_str(), &end);
@@ -35,6 +44,12 @@ public:
 		return value;
 	}
 
+	/**
+	 * Convert string to SFFloat.
+	 * 
+	 * @param str string to convert
+	 * @returns SFFloat value
+	 */
 	static SFFloat toSFFloat(const string& str) {
 		char* end = NULL;
 		SFFloat value = strtof(str.c_str(), &end);
@@ -43,6 +58,12 @@ public:
 		return value;
 	}
 
+	/**
+	 * Convert string to SFInt32.
+	 * 
+	 * @param str string to convert
+	 * @returns SFInt32 value
+	 */
 	static SFInt32 toSFInt32(const string& str) {
 		char* end = NULL;
 		SFInt32 value = strtoi(str.c_str(), &end);
@@ -50,6 +71,12 @@ public:
 			throw X3DError("invalid conversion to SFInt32");
 	}
 
+	/**
+	 * Convert string to SFString
+	 * 
+	 * @param str string to convert
+	 * @returns SFString value
+	 */
 	static SFString toSFString(const string& str) {
 		return str;
 	}

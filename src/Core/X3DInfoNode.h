@@ -33,6 +33,7 @@ namespace Core {
 class X3DInfoNode : public X3DChildNode {
 public:
 
+	/// Default node constructor.
 	X3DInfoNode(NodeDefinition* def) : X3DChildNode(def) {}
 };
 

@@ -30,8 +30,10 @@ namespace Core {
 class MetadataFloat : public X3DMetadataObject {
 public:
 	
+	/// metadata value (last written to value_changed)
 	const MFFloat value;
 
+	/// Default node constructor.
 	MetadataFloat(NodeDefinition* def) :
 		X3DMetadataObject(def) {}
 };

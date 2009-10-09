@@ -35,9 +35,13 @@ namespace Core {
 class WorldInfo : public X3DInfoNode {
 public:
 
+	/// Title of the world. Default is empty string.
 	const SFString title;
+
+	/// Arbitrary strings providing global metadata
 	const MFString info;
 
+	/// Default node constructor.
 	WorldInfo(NodeDefinition* def) :
 		X3DInfoNode(def), title("") {}
 };

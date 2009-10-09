@@ -39,14 +39,36 @@ namespace Core {
  */
 class X3DBindableNode : public X3DChildNode {
 public:
+
+	/// The time at which the node is bound or unbound.
 	const SFTime bindTime;
+
+	/// Whether the node is bound or not.
 	const SFBool isBound;
 
+	/// Default node constructor.
 	X3DBindableNode(NodeDefinition* def) : 
 		X3DChildNode(def), isBound(false), bindTime(0) {}
 
-	virtual void on_isBound(const SFBool& value) {}
+	/// Default action when #isBound changes is to invoke callback.
+	virtual void isBound_changed() { on_isBound(); }
 
+	/// Callback for #isBound output event.
+	virtual void on_isBound() {}
+
+	/**
+	 * Default action to take on set_bind input event.
+	 * 
+	 * Rearranges the bindable nodes on the appropriate stack,
+	 * which may call set_bind(false) on the currently bound
+	 * node, or set_bind(true) on the next node in the stack,
+	 * depending on the value of bound.
+	 * 
+	 * There is no callback associated with #set_bind, which
+	 * guarantees that no action can be taken if bound == #isBound.
+	 * 
+	 * @param bound whether the node should be bound or unbound
+	 */
 	void set_bind(const SFBool& bound) {
 		Stack* stack = this->stack();
 		if (bound) {
@@ -73,6 +95,7 @@ public:
 		set_bind(false);
 	}
 
+	/// The stack for bindable nodes is just an STL list.
 	class Stack : public std::list<X3DBindableNode*> {};
 
 	/**
@@ -80,9 +103,8 @@ public:
 	 * 
 	 * @returns bindable stack
      */
-	Stack* stack() const {
-		// TODO
-		return NULL;
+	virtual Stack* stack() const {
+		throw X3DError("X3DBindableNode subclasses MUST provide stack()");
 	}
 
 };

@@ -36,10 +36,6 @@ void MetadataSet::assignFromMap(const map<string,string>& meta, bool quiet) {
 		changed("value");
 }
 
-void MetadataSet::assignFromString(const string& value, bool quiet) {
-	throw X3DError("assigning metadata set from string not supported");
-}
-
 void MetadataSet::addMetadata(X3DMetadataObject* entry, bool quiet) {
 	value.push_back(entry);
 	if (!quiet)

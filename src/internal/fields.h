@@ -30,13 +30,29 @@ namespace X3D {
 
 class NodeDefinition;
 
+/**
+ * Root class for all types of fields, which include
+ * InitField, InputField, OutputField, and InputOutputField.
+ */
 class Field {
 public:
 
+	/// definition to which field belongs
 	const NodeDefinition* node;
+
+	/// name of field, just as stated by X3D
 	const std::string name;
+
+	/// type of field, as an enum (for nodes, may be super-type)
 	const FieldType type;
 
+	/**
+	 * Base field constructor.
+	 * 
+	 * @param node definition to which the field belongs
+	 * @param name of the field
+	 * @param type basic type of field
+	 */
 	Field(
 			NodeDefinition* node,
 			const std::string& name,
@@ -44,13 +60,24 @@ public:
 		node(node), name(name), type(type) {
 	}
 
+	/// Pretty-print the field definition.
 	virtual void print() = 0;
 };
 
 
+/**
+ * Base type for init-only fields.
+ */
 class InitField : public Field {
 public:
 
+	/**
+	 * Init-only base field constructor.
+	 * 
+	 * @param node definition to which the field belongs
+	 * @param name of the field
+	 * @param type basic type of field
+	 */
 	InitField(
 			NodeDefinition* node,
 			const std::string& name,
@@ -112,6 +139,13 @@ public:
 class InField : public Field {
 public:
 
+	/**
+	 * Input-only base field constructor.
+	 * 
+	 * @param node definition to which the field belongs
+	 * @param name of the field
+	 * @param type basic type of field
+	 */
 	InField(
 			NodeDefinition* node,
 			const std::string& name,
@@ -158,6 +192,13 @@ public:
 class OutField : public Field {
 public:
 
+	/**
+	 * Output-only base field constructor.
+	 * 
+	 * @param node definition to which the field belongs
+	 * @param name of the field
+	 * @param type basic type of field
+	 */
 	OutField(
 			NodeDefinition* node,
 			const std::string& name,
@@ -183,11 +224,12 @@ private:
 	typedef T (N::*Variable);
 	typedef T& (N::*Getter)() const;
 	typedef void (N::*Setter)(const T&);
+	typedef void (N::*Changer)();
 
 	Variable var;
 	Getter getter;
 	Setter setter;
-	Setter changed;
+	Changer changed;
 
 public:
 
@@ -196,7 +238,7 @@ public:
 			const std::string& name,
 			FieldType type,
 			Variable var,
-			Setter changed=NULL) :
+			Changer changed=NULL) :
 		OutField(node, name, type),
 		var(var), getter(NULL), setter(NULL), changed(changed) {
 	}
@@ -207,7 +249,7 @@ public:
 			FieldType type,
 			Getter getter,
 			Setter setter,
-			Setter changed=NULL) :
+			Changer changed=NULL) :
 		OutField(node, name, type),
 		var(NULL), getter(getter), setter(setter), changed(changed) {
 	}
@@ -228,14 +270,14 @@ public:
 	}
 
 	void signal_native(N* node, const T& value) const {
-		// signal action, if any
-		if (changed != NULL)
-			(node->*changed)(value);
 		// set last known value
 		if (setter == NULL)
 			(node->*var) = value;
 		else
 			(node->*setter)(value);
+		// signal action, if any
+		if (changed != NULL)
+			(node->*changed)();
 	}
 };
 
@@ -243,6 +285,13 @@ public:
 class InOutField : public Field {
 public:
 
+	/**
+	 * Input-output base field constructor.
+	 * 
+	 * @param node definition to which the field belongs
+	 * @param name of the field
+	 * @param type basic type of field
+	 */
 	InOutField(
 			NodeDefinition* node,
 			const std::string& name,
@@ -269,12 +318,13 @@ private:
 	typedef T& (N::*Getter)() const;
 	typedef void (N::*Setter)(const T&);
 	typedef void (N::*Receiver)(const T&);
+	typedef void (N::*Changer)();
 
 	Variable var;
 	Getter getter;
 	Setter setter;
 	Receiver receive;
-	Setter changed;
+	Changer changed;
 
 public:
 
@@ -284,7 +334,7 @@ public:
 			FieldType type,
 			Variable var,
 			Receiver receive,
-			Setter changed) :
+			Changer changed) :
 		InOutField(node, name, type),
 		var(var), getter(NULL), setter(NULL),
 		receive(receive), changed(changed) {
@@ -297,7 +347,7 @@ public:
 			Getter getter,
 			Setter setter,
 			Receiver receive,
-			Setter changed) :
+			Changer changed) :
 		InOutField(node, name, type),
 		var(NULL), getter(getter), setter(setter),
 		receive(receive), changed(changed) {
@@ -327,14 +377,14 @@ public:
 	}
 
 	void signal_native(N* node, const T& value) const {
-		// signal action, if any
-		if (changed != NULL)
-			(node->*changed)(value);
 		// set last known value
 		if (setter == NULL)
 			(node->*var) = value;
 		else
 			(node->*setter)(value);
+		// signal action, if any
+		if (changed != NULL)
+			(node->*changed)();
 	}
 };
 

@@ -33,14 +33,40 @@ namespace Core {
  */
 class X3DSensorNode : public X3DChildNode {
 public:
-	const SFBool enabled;
-	const SFBool active;
-
-	X3DSensorNode(NodeDefinition* def) :
-		X3DChildNode(def), enabled(true), active(false) {}
 	
-	virtual void on_enabled(const SFBool& enabled) {};
-	virtual void on_isActive(const SFBool& active) {};
+	/// Whether sensor is enabled. Precondition for #isActive.
+	const SFBool enabled;
+
+	/// Whether sensor is currently active.
+	const SFBool isActive;
+
+	/// Default node constructor.
+	X3DSensorNode(NodeDefinition* def) :
+		X3DChildNode(def), enabled(true), isActive(false) {}
+
+	/**
+	 * Default action to take on input event to #enabled.
+	 * May cause #isActive to change along with its associated
+	 * actions. This input event has no callback, but it is
+	 * virtual; it is likely that some but not all sensors would
+	 * wish to use the strategy pattern, but in any case you
+	 * can put callback actions into #on_enabled_changed.
+	 * 
+	 * @param enabled new value of #enabled
+	 */
+	virtual void set_enabled(const SFBool& enabled) {};
+
+	/**
+	 * Default action for #enabled output event is to invoke
+	 * callback actions in #on_enabled_changed.
+	 */
+	virtual void enabled_changed() { on_enabled_changed(); }
+
+	/// Callback for #enabled output event.
+	virtual void on_enabled_changed() {};
+
+	/// Callback for #isActive output event.
+	virtual void on_isActive() {};
 };
 
 }}

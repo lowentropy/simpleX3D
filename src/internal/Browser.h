@@ -44,17 +44,63 @@ using Core::X3DNode;
 class Browser {
 private:
 
+	/// all nodes managed by the browser
 	list<X3DNode*> nodes;
+
+	/// nodes we shouldn't garbage-collect
+	list<X3DNode*> persistent;
+
+	/// root scene nodes
+	list<X3DNode*> roots;
+
+	/// singleton instance
 	static Browser* _inst;
 
 public:
 
+	/// profile supported by the browser
 	Profile* const profile;
 
+	/// Default constructor. Initializes profile.
 	Browser();
+
+	/// Default destructor. Cleans up memory.
 	virtual ~Browser();
+
+	/**
+	 * Create a new node instance of the given qualified
+	 * name. The actual type of the node returned will be
+	 * determined by the profile, so that plugins can register
+	 * their own X3D types.
+	 * 
+	 * The node returned is managed by the browser automatically.
+	 * If you want the node to persist, you must either add the
+	 * node to the scene graph as a root node or as a field of
+	 * a live node, or you can explicitly tell the browser to
+	 * persist the node by calling #persist.
+	 * 
+	 * @param name qualified X3D node type name
+	 * @returns an instance of the registered node type
+	 */
 	X3DNode* createNode(const std::string& name);
 
+	/**
+	 * Make the given node persistent, so that it will not be
+	 * garbage collecected (until the browser shuts down).
+	 * 
+	 * @param node pointer to node to persist
+	 */
+	void persist(X3DNode* node);
+
+	/**
+	 * Templatized node creation. This version of createNode
+	 * will use the constructor of the actual template type,
+	 * so that even if a subclass has been registered for the
+	 * named X3D type, the base class can still be instantiated.
+	 * 
+	 * @param name qualified X3D node type name
+	 * @returns an instance of the given (template) node type
+	 */
 	template <class N>
 	N* createNode(const std::string& name) {
 		NodeDefinition* def = profile->getNode(name);
@@ -67,6 +113,11 @@ public:
 		return node;
 	}
 
+	/**
+	 * Singleton access.
+	 * 
+	 * @returns singleton instance
+	 */
 	static Browser* getSingleton() {
 		return _inst;
 	}

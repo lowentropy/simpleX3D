@@ -53,16 +53,39 @@ namespace Core {
  */
 class X3DMetadataObject : public X3DNode {
 public:
+
+	/// Key of the metadata object, always a string.
 	const SFString name;
+
+	/// Metadata specification for #name (optional).
 	const SFString reference;
 
+	/// Default node constructor.
 	X3DMetadataObject(NodeDefinition* def) : X3DNode(def) {}
 
+	/**
+	 * Assign new metadata entries from a string-to-string map.
+	 * 
+	 * Concrete metadata classes should only provide this method
+	 * if it makes sense to do so.
+	 * 
+	 * @param meta map of new metadata to add
+	 * @param quiet if true, value_changed event is suppressed
+	 */
 	virtual void assignFromMap(const map<string,string>& meta, bool quiet=false) {
 		throw X3DError("not implemented in this metadata class");
 	}
 
-	virtual void assignFromString(const string& value, bool quiet=false) {
+	/**
+	 * Assign new metadata value from a string.
+	 * 
+	 * Concrete metadata classes should only provide this method
+	 * if it makes sense to do so.
+	 * 
+	 * @param str new string value to set
+	 * @param quiet if true, value_changed event is suppressed
+	 */
+	virtual void assignFromString(const string& str, bool quiet=false) {
 		throw X3DError("not implemented in this metadata class");
 	}
 };
