@@ -39,19 +39,16 @@ class X3DBindableNode : virtual public X3DChildNode {
 public:
 
 	/// The time at which the node is bound or unbound.
-	const SFTime bindTime;
+	SFTime bindTime;
 
 	/// Whether the node is bound or not.
-	const SFBool isBound;
+	SFBool isBound;
 
 	/// Default node constructor.
 	X3DBindableNode() : isBound(false), bindTime(0) {}
 
 	/// DO NOT USE
-	X3DBindableNode(NodeDefinition* def) :
-		isBound(false), bindTime(0) { 
-		throw X3DError("BUG - should not be called");
-	}
+	X3DBindableNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 
 	/// Default action when #isBound changes is to invoke callback.
 	virtual void isBound_changed() { on_isBound(); }

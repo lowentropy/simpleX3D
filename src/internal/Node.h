@@ -78,9 +78,8 @@ public:
 	 * 
 	 * @param field name of field to set
 	 * @param value generic value to send with event
-	 * @param quiet if true, automatic output event triggering is suppressed
 	 */
-	virtual void set(const string& field, const SafePointer& value, bool quiet=false);
+	virtual void set(const string& field, const SafePointer& value);
 
 	/**
 	 * Indicate that a field value has changed and that the associated
@@ -114,9 +113,8 @@ public:
 	 * 
 	 * @param field name of field to set
 	 * @param value templatized value to send with event
-	 * @param quiet if true, automatic output event triggering is suppressed
 	 */
-	template <typename T> void set(const string& field, const T& value, bool quiet=false) {
+	template <typename T> void set(const string& field, const T& value) {
 		this->set(field, SafePointer(value));
 	}
 

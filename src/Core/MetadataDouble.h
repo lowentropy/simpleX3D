@@ -30,7 +30,7 @@ class MetadataDouble : public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	const MFDouble value;
+	MFDouble value;
 
 	/// Default node constructor.
 	MetadataDouble(NodeDefinition* def) : Node(def) {}

@@ -40,10 +40,10 @@ class X3DMetadataObject : public virtual Node {
 public:
 
 	/// Key of the metadata object, always a string.
-	const SFString name;
+	SFString name;
 
 	/// Metadata specification for #name (optional).
-	const SFString reference;
+	SFString reference;
 
 	/// Default node constructor.
 	X3DMetadataObject() : reference("") {}

@@ -30,7 +30,7 @@ class MetadataString : public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	const MFString value;
+	MFString value;
 
 	/// Default node constructor.
 	MetadataString(NodeDefinition* def) : Node(def) {}

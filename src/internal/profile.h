@@ -74,7 +74,7 @@ public:
 	virtual void print(bool full = true);
 
 	virtual SafePointer get(const Node* node, const string& field) const;
-	virtual void set(Node* node, const string& field, const SafePointer& value, bool quiet=false) const;
+	virtual void set(Node* node, const string& field, const SafePointer& value) const;
 	virtual void changed(const Node* node, const string& field) const;
 
 protected:

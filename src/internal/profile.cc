@@ -63,14 +63,13 @@ SafePointer NodeDefinition::get(const Node* node, const string& field_name) cons
 	return field->get(node);
 }
 
-void NodeDefinition::set(Node* node, const string& field_name, const SafePointer& value, bool quiet) const {
+void NodeDefinition::set(Node* node, const string& field_name, const SafePointer& value) const {
 	map<string,InField*>* fields = const_cast<map<string,InField*>*>(&in_fields);
 	const InField* field = (*fields)[field_name];
 	if (field == NULL)
 		throw X3DError("invalid field");
 	field->set(node, value);
-	if (!quiet)
-		changed(node, field_name);
+	changed(node, field_name);
 }
 
 void NodeDefinition::changed(const Node* node, const string& field_name) const {

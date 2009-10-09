@@ -28,9 +28,9 @@ void MetadataSet::assignFromMap(const map<string,string>& meta, bool quiet) {
 	map<string,string>::const_iterator it = meta.begin();
 	for (; it != meta.end(); it++) {
 		X3DMetadataObject* entry = browser()->createNode<MetadataString>("MetadataString");
-		entry->set("name", it->first, true);
-		entry->set("value", it->second, true);
 		addMetadata(entry, true);
+		entry->name = it->first;
+		entry->assignFromString(it->second, true);
 	}
 	if (!quiet && meta.size() > 0)
 		changed("value");

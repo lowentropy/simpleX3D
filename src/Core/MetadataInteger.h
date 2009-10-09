@@ -30,7 +30,7 @@ class MetadataInteger : public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	const MFInt32 value;
+	MFInt32 value;
 
 	/// Default node constructor.
 	MetadataInteger(NodeDefinition* def) : Node(def) {}

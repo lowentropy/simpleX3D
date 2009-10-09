@@ -30,7 +30,7 @@ class MetadataFloat : public X3DMetadataObject {
 public:
 	
 	/// metadata value (last written to value_changed)
-	const MFFloat value;
+	MFFloat value;
 
 	/// Default node constructor.
 	MetadataFloat(NodeDefinition* def) : Node(def) {}

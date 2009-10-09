@@ -44,13 +44,13 @@ class X3DNode : virtual public Node {
 public:
 
 	/// Metadata information, which all nodes have.
-	X3DMetadataObject* const metadata;
+	X3DMetadataObject* metadata;
 
 	/// Default node constructor. Sets meta-info definition.
 	X3DNode() : metadata(NULL) {}
 
 	/// DO NOT USE
-	X3DNode(NodeDefinition* def) : metadata(NULL) { throw X3DError("BUG - should not be called"); }
+	X3DNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 
 	/**
 	 * Assign metadata from a string-to-string map. Calls the

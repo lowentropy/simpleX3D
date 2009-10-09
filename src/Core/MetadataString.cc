@@ -23,7 +23,10 @@ namespace X3D {
 namespace Core {
 
 void MetadataString::assignFromString(const string& str, bool quiet) {
-	set("value", str, quiet);
+	value.clear();
+	value.push_back(str);
+	if (!quiet)
+		changed("value");
 }
 
 }}

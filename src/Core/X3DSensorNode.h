@@ -34,19 +34,16 @@ class X3DSensorNode : virtual public X3DChildNode {
 public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
-	const SFBool enabled;
+	SFBool enabled;
 
 	/// Whether sensor is currently active.
-	const SFBool isActive;
+	SFBool isActive;
 
 	/// Default node constructor.
 	X3DSensorNode() : enabled(true), isActive(false) {}
 
 	/// DO NOT USE
-	X3DSensorNode(NodeDefinition* def) :
-		enabled(true), isActive(false) {
-		throw X3DError("BUG - should not be called");
-	}
+	X3DSensorNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 
 	/**
 	 * Default action to take on input event to #enabled.

@@ -7,8 +7,8 @@ Browser* Node::browser() {
 	return Browser::getSingleton();
 }
 
-void Node::set(const string& field, const SafePointer& value, bool quiet) {
-	definition->set(this, field, value, quiet);
+void Node::set(const string& field, const SafePointer& value) {
+	definition->set(this, field, value);
 }
 
 SafePointer Node::get(const string& field) const {
