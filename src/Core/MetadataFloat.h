@@ -26,7 +26,7 @@ namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of floats (MFFloat). */
-class MetadataFloat : public X3DMetadataObject {
+class MetadataFloat : public X3DNode, public X3DMetadataObject {
 public:
 	
 	/// metadata value (last written to value_changed)

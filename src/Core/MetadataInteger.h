@@ -26,7 +26,7 @@ namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of ints (MFInt32). */
-class MetadataInteger : public X3DMetadataObject {
+class MetadataInteger : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)

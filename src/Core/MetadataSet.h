@@ -20,6 +20,7 @@
 #ifndef _X3D_METADATASET_H
 #define _X3D_METADATASET_H
 
+#include "Core/X3DNode.h"
 #include "Core/X3DMetadataObject.h"
 #include <vector>
 
@@ -29,7 +30,7 @@ namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of metadata nodes (MFNode). */
-class MetadataSet : public X3DMetadataObject {
+class MetadataSet : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value, a list of other metadata (last written to value_changed)

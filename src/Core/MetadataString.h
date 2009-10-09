@@ -20,13 +20,14 @@
 #ifndef _X3D_METADATASTRING_H_
 #define _X3D_METADATASTRING_H_
 
+#include "Core/X3DNode.h"
 #include "Core/X3DMetadataObject.h"
 
 namespace X3D {
 namespace Core {
 
 /** Metadata value containing a list of strings (MFString). */
-class MetadataString : public X3DMetadataObject {
+class MetadataString : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
