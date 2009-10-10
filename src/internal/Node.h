@@ -64,7 +64,7 @@ public:
 	 * @param field name of field to get
 	 * @returns generic field value
 	 */
-	virtual SafePointer get(const string& field) const;
+	virtual SafePointer get(const string& field);
 
 	/**
 	 * Send a generic value to an input field. The field type may

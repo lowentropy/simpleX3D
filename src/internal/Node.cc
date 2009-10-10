@@ -11,7 +11,7 @@ void Node::set(const string& field, const SafePointer& value) {
 	definition->set(this, field, value);
 }
 
-SafePointer Node::get(const string& field) const {
+SafePointer Node::get(const string& field) {
 	return definition->get(this, field);
 }
 

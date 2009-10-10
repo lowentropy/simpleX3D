@@ -36,6 +36,8 @@
 #include "Core/MetadataSet.h"
 #include "Core/MetadataString.h"
 #include "Core/WorldInfo.h"
+#include "Time/X3DTimeDependentNode.h"
+#include "Time/TimeSensor.h"
 
 namespace X3D {
 
@@ -144,7 +146,7 @@ public:
 				// SFBool [out] isActive
 				sensor->createOutputField(
 					"isActive", SFBoolType,
-					&X3DSensorNode::isActive,		// last set value
+					&X3DSensorNode::active,			// last set value
 					&X3DSensorNode::on_isActive);	// output action
 			}
 
@@ -230,6 +232,80 @@ public:
 					&WorldInfo::title);				// last set value
 			}
 		} // end of Core component
+		Component* time = profile->createComponent("Time");
+		{
+			using namespace Time;
+
+			NodeDefinitionImpl<X3DTimeDependentNode>* dep =
+				core->createNode<X3DTimeDependentNode>("X3DTimeDependentNode", true);
+			{
+				// SFBool [in,out] loop FALSE
+				dep->createInputOutputField(
+					"loop", SFBoolType,
+					&X3DTimeDependentNode::loop);
+
+				// SFTime [in,out] pauseTime 0
+				dep->createInputOutputField(
+					"pauseTime", SFTimeType,
+					&X3DTimeDependentNode::pauseTime);
+
+				// SFTime [in,out] resumeTime 0
+				dep->createInputOutputField(
+					"resumeTime", SFTimeType,
+					&X3DTimeDependentNode::resumeTime);
+
+				// SFTime [in,out] startTime 0
+				dep->createInputOutputField(
+					"startTime", SFTimeType,
+					&X3DTimeDependentNode::startTime);
+
+				// SFTime [in,out] stopTime 0
+				dep->createInputOutputField(
+					"stopTime", SFTimeType,
+					&X3DTimeDependentNode::stopTime);
+
+				// SFTime [out] elapsedTime
+				dep->createOutputField(
+					"elapsedTime", SFTimeType,
+					&X3DTimeDependentNode::elapsedTime);
+
+				// SFBool [out] isActive
+				dep->createOutputField(
+					"isActive", SFTimeType,
+					&X3DTimeDependentNode::getIsActive,
+					&X3DTimeDependentNode::setIsActive);
+
+				// SFBool [out] isPaused
+				dep->createOutputField(
+					"isPaused", SFTimeType,
+					&X3DTimeDependentNode::getIsPaused,
+					&X3DTimeDependentNode::setIsPaused);
+			}
+
+			NodeDefinitionImpl<TimeSensor>* ts =
+				core->createNode<TimeSensor>("TimeSensor");
+			{
+				// SFTime [in,out] cycleInterval 1
+				ts->createInputOutputField(
+					"cycleInterval", SFTimeType,
+					&TimeSensor::cycleInterval);
+
+				// SFTime [out] cycleTime
+				ts->createOutputField(
+					"cycleTime", SFTimeType,
+					&TimeSensor::cycleTime);
+
+				// SFFloat [out] fraction_changed
+				ts->createOutputField(
+					"fraction_changed", SFFloatType,
+					&TimeSensor::fraction);
+
+				// SFTime [out] time
+				ts->createOutputField(
+					"time", SFTimeType,
+					&TimeSensor::time);
+			}
+		}
 	} // end of profile
 };
 

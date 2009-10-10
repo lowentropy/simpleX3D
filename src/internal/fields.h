@@ -85,7 +85,7 @@ public:
 		Field(node, name, type) {
 	}
 
-	virtual SafePointer get(const Node* node) const = 0;
+	virtual SafePointer get(Node* node) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [] " << name << endl;
@@ -98,7 +98,7 @@ class InitFieldImpl : public InitField {
 private:
 
 	typedef const T (N::*Variable);
-	typedef T& (N::*Getter)() const;
+	typedef T& (N::*Getter)();
 
 	Variable var;
 	Getter getter;
@@ -123,11 +123,11 @@ public:
 		var(NULL), getter(getter) {
 	}
 
-	SafePointer get(const Node* node) const {
+	SafePointer get(Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
-	const T& get_native(const N* node) const {
+	const T& get_native(N* node) const {
 		if (getter == NULL)
 			return (node->*var);
 		else
@@ -205,7 +205,7 @@ public:
 			FieldType type) :
 		Field(node, name, type) {}
 	
-	virtual SafePointer get(const Node* node) const = 0;
+	virtual SafePointer get(Node* node) const = 0;
 
 	virtual void print() {
 		cout << "\t\t" << FieldTypeNames[type] << " [out] " << name << endl;
@@ -222,7 +222,7 @@ class OutFieldImpl : public OutField {
 private:
 	
 	typedef T (N::*Variable);
-	typedef T& (N::*Getter)() const;
+	typedef T& (N::*Getter)();
 	typedef void (N::*Setter)(const T&);
 	typedef void (N::*Changer)();
 
@@ -254,11 +254,11 @@ public:
 		var(NULL), getter(getter), setter(setter), changed(changed) {
 	}
 
-	SafePointer get(const Node* node) const {
+	SafePointer get(Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
-	const T& get_native(const N* node) const {
+	const T& get_native(N* node) const {
 		if (getter == NULL)
 			return (node->*var);
 		else
@@ -301,7 +301,7 @@ public:
 	
 	virtual ~InOutField() {}
 
-	virtual SafePointer get(const Node* node) const = 0;
+	virtual SafePointer get(Node* node) const = 0;
 	virtual void set(Node* node, const SafePointer& ptr) const = 0;
 	virtual void signal(Node* node, const SafePointer& ptr) const = 0;
 
@@ -315,7 +315,7 @@ class InOutFieldImpl : public InOutField {
 private:
 
 	typedef T (N::*Variable);
-	typedef T& (N::*Getter)() const;
+	typedef T& (N::*Getter)();
 	typedef void (N::*Setter)(const T&);
 	typedef void (N::*Receiver)(const T&);
 	typedef void (N::*Changer)();
@@ -361,11 +361,11 @@ public:
 		(node->*receive)(value);
 	}
 
-	SafePointer get(const Node* node) const {
+	SafePointer get(Node* node) const {
 		return SafePointer(get_native(node->cast<N>()));
 	}
 
-	const T& get_native(const N* node) const {
+	const T& get_native(N* node) const {
 		if (getter == NULL)
 			return (node->*var);
 		else

@@ -73,7 +73,7 @@ public:
 	void inherits(const string& name);
 	virtual void print(bool full = true);
 
-	virtual SafePointer get(const Node* node, const string& field) const;
+	virtual SafePointer get(Node* node, const string& field) const;
 	virtual void set(Node* node, const string& field, const SafePointer& value) const;
 	virtual void changed(const Node* node, const string& field) const;
 
@@ -176,7 +176,7 @@ public:
 	template <typename T> OutFieldImpl<N,T>* createOutputField(
 			const string& name,
 			FieldType type,
-			T& (N::*get_var)() const,
+			T& (N::*get_var)(),
 			void (N::*set_var)(const T&),
 			void (N::*changed_fp)()=NULL) {
 		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
@@ -212,7 +212,7 @@ public:
 	template <typename T> InOutFieldImpl<N,T>* createInputOutputField(
 			const string& name,
 			FieldType type,
-			T& (N::*get_var)() const,
+			T& (N::*get_var)(),
 			void (N::*set_var)(const T&),
 			void (N::*set_fp)(const T&)=NULL,
 			void (N::*changed_fp)()=NULL) {

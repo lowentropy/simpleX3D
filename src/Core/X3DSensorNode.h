@@ -37,10 +37,10 @@ public:
 	SFBool enabled;
 
 	/// Whether sensor is currently active.
-	SFBool isActive;
+	SFBool active;
 
 	/// Default node constructor.
-	X3DSensorNode() : enabled(true), isActive(false) {}
+	X3DSensorNode() : enabled(true), active(false) {}
 
 	/// DO NOT USE
 	X3DSensorNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }

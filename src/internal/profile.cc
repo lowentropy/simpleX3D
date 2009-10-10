@@ -55,7 +55,7 @@ void NodeDefinition::print_fields(bool full) {
 		(*it)->print();
 }
 
-SafePointer NodeDefinition::get(const Node* node, const string& field_name) const {
+SafePointer NodeDefinition::get(Node* node, const string& field_name) const {
 	map<string,OutField*>* fields = const_cast<map<string,OutField*>*>(&out_fields);
 	const OutField* field = (*fields)[field_name];
 	if (field == NULL)
