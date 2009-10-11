@@ -28,6 +28,7 @@ using namespace X3D;
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {
+	Browser browser;
 	::testing::InitGoogleMock(&argc, argv);
 	return RUN_ALL_TESTS();
 }

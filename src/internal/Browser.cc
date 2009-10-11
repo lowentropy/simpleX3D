@@ -24,6 +24,10 @@ namespace X3D {
 Browser* Browser::_inst;
 
 Browser::Browser() : profile(new Profile()) {
+	if (_inst == NULL)
+		_inst = this;
+	else
+		throw X3DError("multiple browser instances!");
 	Builtin::init(profile);
 }
 

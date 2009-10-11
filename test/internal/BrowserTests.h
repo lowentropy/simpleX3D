@@ -20,6 +20,6 @@
 #include "internal/Browser.h"
 
 TEST(Browser, ShouldJustBeThere) {
-	X3D::Browser browser;
-	browser.profile->print();
+	Browser* browser = Browser::getSingleton();
+	browser->profile->print();
 }
