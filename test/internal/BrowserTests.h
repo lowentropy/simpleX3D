@@ -21,5 +21,9 @@
 
 TEST(Browser, ShouldJustBeThere) {
 	Browser* browser = Browser::getSingleton();
-	browser->profile->print();
+//	browser->profile->print();
+}
+
+TEST(Browser, ShouldThrowErrorOnMultipleInstances) {
+	ASSERT_THROW(new Browser(), X3DError);
 }
