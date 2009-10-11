@@ -76,7 +76,7 @@ TEST(SFImage, SizeShouldHaveCorrectValue) {
 	for (int i = 0; i < 10; i++) {
 		int w = rand() % 0xff;
 		int h = rand() % 0xff;
-		int c = rand() % 3 + 1;
+		int c = rand() % 4 + 1;
 		SFImage img(w,h,c);
 		EXPECT_EQ(w*h*c, img.getSize());
 	}

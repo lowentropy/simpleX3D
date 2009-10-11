@@ -39,7 +39,7 @@ public:
 	/// Period of time for repeated events.
 	SFTime cycleInterval;
 
-	/// Last time the cycle began XXX
+	/// Sends current time on startTime or cycle loop
 	SFTime cycleTime;
 
 	/// Fraction of current cycle.
