@@ -237,7 +237,7 @@ public:
 			using namespace Time;
 
 			NodeDefinitionImpl<X3DTimeDependentNode>* dep =
-				core->createNode<X3DTimeDependentNode>("X3DTimeDependentNode", true);
+				time->createNode<X3DTimeDependentNode>("X3DTimeDependentNode", true);
 			{
 				// SFBool [in,out] loop FALSE
 				dep->createInputOutputField(
@@ -283,7 +283,7 @@ public:
 			}
 
 			NodeDefinitionImpl<TimeSensor>* ts =
-				core->createNode<TimeSensor>("TimeSensor");
+				time->createNode<TimeSensor>("TimeSensor");
 			{
 				// SFTime [in,out] cycleInterval 1
 				ts->createInputOutputField(

@@ -21,5 +21,5 @@
 
 TEST(Browser, ShouldJustBeThere) {
 	X3D::Browser browser;
-//	browser.profile->print();
+	browser.profile->print();
 }
