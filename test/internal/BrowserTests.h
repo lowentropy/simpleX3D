@@ -23,10 +23,10 @@ using ::testing::NotNull;
 
 TEST(Browser, GetSingletonShouldNotBeNull) {
 	Browser* browser = Browser::getSingleton();
-	EXPECT_THAT(browser, NotNull());
+	EXPECT_THAT(browser, NotNull()) << "Browser singleton is NULL";
 //	browser->profile->print();
 }
 
 TEST(Browser, ShouldThrowErrorOnMultipleInstances) {
-	ASSERT_THROW(new Browser(), X3DError);
+	ASSERT_THROW(new Browser(), X3DError) << "Browser is allowing multiple instances";
 }

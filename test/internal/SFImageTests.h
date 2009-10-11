@@ -26,18 +26,18 @@ TEST(SFImage, EmptyImageHasNullBytes) {
 
 TEST(SFImage, NonEmptyImageShouldHaveBytes) {
 	SFImage image(1,1,1);
-	EXPECT_THAT(image.array(), NotNull());
+	EXPECT_THAT(image.array(), NotNull()) << "Image array is NULL";
 }
 
 TEST(SFImage, ShouldThrowOnNegativeDims) {
     SFImage* image;
-	ASSERT_ANY_THROW(image = new SFImage(-1,1,1));
-	ASSERT_ANY_THROW(image = new SFImage(1,-1,1));
+	ASSERT_ANY_THROW(image = new SFImage(-1,1,1)) << "Image accepted bad dimensions (-1,1)";
+	ASSERT_ANY_THROW(image = new SFImage(1,-1,1)) << "Image accepted bad dimensions (1,-1)";
 }
 
 TEST(SFImage, ShouldThrowOnNullConstructorBytes) {
 	SFImage* image;
-	ASSERT_ANY_THROW(image = new SFImage(100,100,4,NULL));
+	ASSERT_ANY_THROW(image = new SFImage(100,100,4,NULL)) << "Image accepted a null byte array";
 }
 
 TEST(SFImage, ShouldThrowWhenAccessingOutOfBoundsCoord) {
