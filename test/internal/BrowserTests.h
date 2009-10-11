@@ -19,8 +19,11 @@
 
 #include "internal/Browser.h"
 
-TEST(Browser, ShouldJustBeThere) {
+using ::testing::NotNull;
+
+TEST(Browser, GetSingletonShouldNotBeNull) {
 	Browser* browser = Browser::getSingleton();
+	EXPECT_THAT(browser, NotNull());
 //	browser->profile->print();
 }
 
