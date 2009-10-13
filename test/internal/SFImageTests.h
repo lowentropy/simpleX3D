@@ -156,3 +156,9 @@ TEST(SFImage, ShouldGetColorFromPixel) {
 	i.setPixel(1,1,13141147);
 	ASSERT_EQ(SFColor(200, 132, 155), i.getColor(1,1));
 }
+
+TEST(SFImage, ShouldGetColorRGBAFromPixel) {
+	SFImage i(3,3,3);
+	i.setPixel(1,1,13141147);
+	ASSERT_EQ(SFColorRGBA(200, 132, 155), i.getColorRGBA(1,1));
+}
