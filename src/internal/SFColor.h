@@ -178,7 +178,17 @@ public:
     bool operator==(const SFColorRGBA& c) const {
         return (r == c.r) && (g == c.g) && (b == c.b) & (a == c.a);
     }
+    
 };
+
+/**
+     * Insert into stream
+     *
+	 */
+    std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c) {
+        str << "(" << ((int)c.r) << ", " << ((int)c.g) << ", " << ((int)c.b) << ", " << ((int)c.a) << ")";
+        return str;
+	}
 
 }
 
