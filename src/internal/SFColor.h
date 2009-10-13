@@ -21,6 +21,8 @@
 #define _X3D_SFCOLOR_H_
 
 #include "internal/types.h"
+#include <sstream>
+#include <ostream>
 
 namespace X3D {
 
@@ -89,6 +91,7 @@ public:
         return (r == c.r) && (g == c.g) && (b == c.b);
     }
 };
+
 
 /**
  * RGBA color value.
@@ -182,13 +185,14 @@ public:
 };
 
 /**
-     * Insert into stream
-     *
-	 */
-    std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c) {
-        str << "(" << ((int)c.r) << ", " << ((int)c.g) << ", " << ((int)c.b) << ", " << ((int)c.a) << ")";
-        return str;
-	}
+ * Insert SFColorinto stream.
+ */
+std::ostream& operator<<(std::ostream& str, const SFColor& c);
+
+/**
+ * Insert SFColorRGBA into stream.
+ */
+std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c);
 
 }
 

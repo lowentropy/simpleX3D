@@ -3,6 +3,7 @@ lib_LTLIBRARIES = libsimpleX3D.la
 libsimpleX3D_la_SOURCES = \
 	internal/Node.cc \
 	internal/SFImage.cc \
+	internal/SFColor.cc \
 	internal/profile.cc \
 	internal/types.cc \
 	internal/Browser.cc \
