@@ -78,6 +78,16 @@ public:
 	 * @returns const pointer to RGB array
 	 */
 	const unsigned char* array() const { return &r; }
+
+    /**
+     * Equality test.
+     *
+     * @param c color to test
+     * @returns whether colors are equal
+     */
+    bool operator==(const SFColor& c) const {
+        return (r == c.r) && (g == c.g) && (b == c.b);
+    }
 };
 
 /**
@@ -158,6 +168,16 @@ public:
 	 * @returns const pointer to RGBA array
 	 */
 	const unsigned char* array() const { return &r; }
+
+    /**
+     * Equality test.
+     *
+     * @param c color to test
+     * @returns whether colors are equal
+     */
+    bool operator==(const SFColorRGBA& c) const {
+        return (r == c.r) && (g == c.g) && (b == c.b) & (a == c.a);
+    }
 };
 
 }

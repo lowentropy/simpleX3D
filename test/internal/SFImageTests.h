@@ -19,6 +19,17 @@
 
 using ::testing::NotNull;
 
+namespace X3D {
+    std::ostream& operator<<(std::ostream& str, const SFColor& c) {
+        str << "(" << c.r << ", " << c.g << ", " << c.b << ")";
+        return str;
+    }
+    std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c) {
+        str << "(" << c.r << ", " << c.g << ", " << c.b << ", " << c.a << ")";
+        return str;
+    }
+}
+
 TEST(SFImage, EmptyImageHasNullBytes) {
 	SFImage image(0,0,0);
 	EXPECT_EQ(NULL, image.array()) << "Empty image has bytes.";
