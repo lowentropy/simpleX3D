@@ -212,8 +212,7 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 		c.g = *ptr++;
 		c.b = *ptr++;
 	}
-	if (components % 2 == 0)
-		c.a = *ptr;
+	c.a = (components % 2 == 0) ? *ptr : 255;
 	return c;
 }
 
