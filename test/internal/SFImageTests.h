@@ -117,7 +117,7 @@ TEST(SFImage, SetPixelShouldOnlyAffectCorrectBytes) {
 }
 
 
-// getPixel should return the value that setPixel put there, with the caveat that the high (4-components) bytes should be zeroed.
+// getPixel should return the value that setPixel put there.
 
 TEST(SFImage, ShouldGetPixel) {
 	unsigned char bytes[36];
@@ -125,3 +125,38 @@ TEST(SFImage, ShouldGetPixel) {
 	i.setPixel(1,1,0);
 	ASSERT_EQ(0, i.getPixel(1,1));
 }
+
+// getPixel should return the value that setPixel put there, and the high (4-components) bytes should be zeroed.
+
+TEST(SFImage, ShouldGetPixelZeroingHighBytesWithSingleComponent) {
+	unsigned char bytes[36];
+	SFImage i(3,3,1,bytes);
+	i.setPixel(1,1,257);
+	ASSERT_EQ(1, i.getPixel(1,1));
+}
+
+TEST(SFImage, ShouldGetPixelZeroingHighBytesWithDoubleComponent) {
+	unsigned char bytes[36];
+	SFImage i(3,3,2,bytes);
+	i.setPixel(1,1,65537);
+	ASSERT_EQ(1, i.getPixel(1,1));
+}
+
+TEST(SFImage, ShouldGetPixelZeroingHighBytesWithTripleComponent) {
+	unsigned char bytes[36];
+	SFImage i(3,3,3,bytes);
+	i.setPixel(1,1,16777217);
+	ASSERT_EQ(1, i.getPixel(1,1));
+}
+
+TEST(SFImage, ShouldGetPixelNotZeroingHighBytesWithQuadComponent) {
+	unsigned char bytes[36];
+	SFImage i(3,3,4,bytes);
+	i.setPixel(1,1,16777217);
+	ASSERT_EQ(16777217, i.getPixel(1,1));
+}
+
+
+
+
+

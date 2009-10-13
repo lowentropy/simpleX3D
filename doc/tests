@@ -1,9 +1,4 @@
-- memory management
-	- automatic image destructor should never kill things
 - get/set pairs
-	- pixel/pixel
-		- getPixel should return the value that setPixel put there, with the caveat
-		  that the high (4-components) bytes should be zeroed.
 	- color/color
 		- (same as above for xxColor w/ component=3, and xxColorRGBA w/ component=4)
 	- pixel/color, components=3/4
