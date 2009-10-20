@@ -22,6 +22,10 @@
 
 using namespace X3D;
 
+Browser* browser() {
+	return Browser.getSingleton();
+}
+
 // here's the list of tests
 #include "internal/BrowserTests.h"
 #include "internal/SFImageTests.h"
