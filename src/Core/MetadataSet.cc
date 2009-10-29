@@ -24,22 +24,19 @@
 namespace X3D {
 namespace Core {
 
-void MetadataSet::assignFromMap(const map<string,string>& meta, bool quiet) {
+void MetadataSet::assignFromMap(const map<string,string>& meta) {
 	map<string,string>::const_iterator it = meta.begin();
 	for (; it != meta.end(); it++) {
 		X3DMetadataObject* entry = browser()->createNode<MetadataString>("MetadataString");
 		addMetadata(entry, true);
-		entry->name = it->first;
+		entry->name(it->first);
 		entry->assignFromString(it->second, true);
 	}
-	if (!quiet && meta.size() > 0)
-		changed("value");
 }
 
-void MetadataSet::addMetadata(X3DMetadataObject* entry, bool quiet) {
-	value.push_back(entry);
-	if (!quiet)
-		changed("value");
+void MetadataSet::addMetadata(X3DMetadataObject* entry) {
+	value().push_back(entry);
+	value.changed(true);
 }
 
 }}

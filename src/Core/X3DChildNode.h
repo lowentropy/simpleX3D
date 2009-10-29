@@ -34,14 +34,7 @@ namespace Core {
 class X3DChildNode : virtual public X3DNode {
 protected:
 	/// list of parent nodes
-	MFNode parents;
-
-public:
-	/// Default node constructor.
-	X3DChildNode() {}
-
-	/// DO NOT USE
-	X3DChildNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
+	MFNode<X3DNode> parents;
 };
 
 }}

@@ -36,7 +36,9 @@ class X3DTimeDependentNode : virtual public X3DChildNode {
 public:
 
 	/// if true, node will repeat its cycle
-	SFBool loop;
+	class : public InOutField<X3DTimeDependentNode, SFBool> {
+		void action() { node()->onLoopChanged(); }
+	} loop;
 
 	/// when paused, node will freeze state
 	SFBool paused;

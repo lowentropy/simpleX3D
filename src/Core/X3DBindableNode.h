@@ -39,22 +39,24 @@ class X3DBindableNode : virtual public X3DChildNode {
 public:
 
 	/// The time at which the node is bound or unbound.
-	SFTime bindTime;
+	DefaultOutField<X3DBindableNode, SFTime> bindTime;
 
 	/// Whether the node is bound or not.
-	SFBool isBound;
+	class : public OutField<X3DBindableNode, SFBool> {
+		void action() {
+			node()->onIsBound(value());
+		}
+	} isBound;
 
-	/// Default node constructor.
-	X3DBindableNode() : isBound(false), bindTime(0) {}
-
-	/// DO NOT USE
-	X3DBindableNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
-
-	/// Default action when #isBound changes is to invoke callback.
-	virtual void isBound_changed() { on_isBound(); }
+	/// Set whether node is bound
+	class : public InField<X3DBindableNode, SFBool> {
+		void action(const bool& bound) {
+			node()->bind(bound);
+		}
+	} set_bind;
 
 	/// Callback for #isBound output event.
-	virtual void on_isBound() {}
+	virtual void onIsBound(bool bound);
 
 	/**
 	 * Default action to take on set_bind input event.
@@ -69,21 +71,21 @@ public:
 	 * 
 	 * @param bound whether the node should be bound or unbound
 	 */
-	void set_bind(const SFBool& bound) {
+	void bind(bool bound) {
 		Stack* stack = this->stack();
 		if (bound) {
-			if (isBound)
+			if (isBound())
 				return;
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->set("isBound", false);
+				top->isBound = true;
 			stack->remove(this);
 			stack->push_front(this);
 		} else {
 			stack->remove(this);
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->set("isBound", true);
+				top->isBound = true;
 		}
 	}
 	

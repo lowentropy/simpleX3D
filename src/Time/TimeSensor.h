@@ -37,27 +37,28 @@ class TimeSensor: public X3DTimeDependentNode, public X3DSensorNode {
 public:
 
 	/// Period of time for repeated events.
-	SFTime cycleInterval;
+	class : public InOutField<TimeSensor, SFTime> {
+		bool filter(const SFTime& interval) {
+			return (value != interval());
+		}
+		void action() {
+			node()->onCycleIntervalChanged();
+		}
+	} cycleInterval;
 
 	/// Sends current time on startTime or cycle loop
-	SFTime cycleTime;
+	DefaultOutField<TimeSensor, SFTime> cycleTime;
 
 	/// Fraction of current cycle.
-	SFFloat fraction;
+	DefaultOutField<TimeSensor, SFFloat> fraction_changed;
 
 	/// Current timestamp.
-	SFTime time;
+	DefaultOutField<TimeSensor, SFTime> time;
 
 	/// Default node constructor.
-	TimeSensor(NodeDefinition* def) : Node(def), cycleInterval(1) {}
+	TimeSensor() : cycleInterval(1) {}
 
-	virtual SFBool& getActive() {
-		return active;
-	}
 
-	virtual void setActive(const SFBool& active) {
-		this->active = active;
-	}
 };
 
 }}

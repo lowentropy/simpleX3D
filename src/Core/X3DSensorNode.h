@@ -34,40 +34,30 @@ class X3DSensorNode : virtual public X3DChildNode {
 public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
-	SFBool enabled;
+	class : public InOutField<X3DSensorNode, SFBool> {
+		bool filter(const bool& enabled) {
+			return (value() != enabled);
+		}
+		void action() {
+			node()->onEnabled(value());
+		}
+	} enabled;
 
 	/// Whether sensor is currently active.
-	SFBool active;
+	class : public OutField<X3DSensorNode, SFBool> {
+		void action() {
+			node()->onIsActive(value());
+		}
+	} isActive;
 
 	/// Default node constructor.
 	X3DSensorNode() : enabled(true), active(false) {}
 
-	/// DO NOT USE
-	X3DSensorNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
-
-	/**
-	 * Default action to take on input event to #enabled.
-	 * May cause #isActive to change along with its associated
-	 * actions. This input event has no callback, but it is
-	 * virtual; it is likely that some but not all sensors would
-	 * wish to use the strategy pattern, but in any case you
-	 * can put callback actions into #on_enabled_changed.
-	 * 
-	 * @param enabled new value of #enabled
-	 */
-	virtual void set_enabled(const SFBool& enabled) {};
-
-	/**
-	 * Default action for #enabled output event is to invoke
-	 * callback actions in #on_enabled_changed.
-	 */
-	virtual void enabled_changed() { on_enabled_changed(); }
-
 	/// Callback for #enabled output event.
-	virtual void on_enabled_changed() {};
+	virtual void onEnabled(bool enabled) {};
 
 	/// Callback for #isActive output event.
-	virtual void on_isActive() {};
+	virtual void onIsActive(bool active) {};
 };
 
 }}

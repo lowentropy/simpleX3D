@@ -30,10 +30,7 @@ class MetadataInteger : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	MFInt32 value;
-
-	/// Default node constructor.
-	MetadataInteger(NodeDefinition* def) : Node(def) {}
+	DefaultInOutField<MetadataInteger, MFInt32> value;
 };
 
 }} // namespace X3D::Core

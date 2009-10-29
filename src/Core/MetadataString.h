@@ -31,10 +31,7 @@ class MetadataString : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	MFString value;
-
-	/// Default node constructor.
-	MetadataString(NodeDefinition* def) : Node(def) {}
+	DefaultInOutField<MetadataString, MFString> value;
 
 	/**
 	 * Assign metadata value from string.
@@ -44,7 +41,7 @@ public:
 	 * @param str new value of metadata.
 	 * @param quiet if true, value_changed event is suppressed
 	 */
-	virtual void assignFromString(const string& str, bool quiet=false);
+	virtual void assignFromString(const string& str);
 };
 
 }} // namespace X3D::Core

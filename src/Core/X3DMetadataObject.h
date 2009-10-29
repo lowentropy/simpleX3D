@@ -40,16 +40,10 @@ class X3DMetadataObject : public virtual Node {
 public:
 
 	/// Key of the metadata object, always a string.
-	SFString name;
+	DefaultInOutField<X3DMetadataObject, SFString> name;
 
 	/// Metadata specification for #name (optional).
-	SFString reference;
-
-	/// Default node constructor.
-	X3DMetadataObject() : reference("") {}
-
-	/// DO NOT USE
-	X3DMetadataObject(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
+	DefaultInOutField<X3DMetadataObject, SFString> reference;
 
 	/**
 	 * Assign new metadata entries from a string-to-string map.

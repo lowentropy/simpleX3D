@@ -30,14 +30,6 @@ namespace Core {
  * semantic (i.e. non-visual) information.
  */
 class X3DInfoNode : virtual public X3DChildNode {
-public:
-	/// Default node constructor.
-	X3DInfoNode() {}
-
-	/// DO NOT USE
-	X3DInfoNode(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
-};
-
 }}
 
 #endif // #ifndef _X3D_X3DINFONODE_H_

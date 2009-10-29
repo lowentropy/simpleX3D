@@ -35,13 +35,10 @@ class WorldInfo : public X3DInfoNode {
 public:
 
 	/// Title of the world. Default is empty string.
-	SFString title;
+	InitField<WorldInfo, SFString> title;
 
 	/// Arbitrary strings providing global metadata
-	MFString info;
-
-	/// Default node constructor.
-	WorldInfo(NodeDefinition* def) : Node(def), title("") {}
+	InitField<WorldInfo, MFString> info;
 };
 
 }} // namespace X3D::Core

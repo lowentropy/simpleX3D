@@ -24,9 +24,9 @@ namespace X3D {
 namespace Core {
 
 void X3DNode::assignMetadata(const map<string,string>& meta, bool quiet) {
-	if (metadata == NULL)
+	if (metadata() == NULL)
 		metadata = browser()->createNode<MetadataSet>("MetadataSet");
-	metadata->assignFromMap(meta, quiet);
+	metadata()->assignFromMap(meta, quiet);
 }
 
 }}

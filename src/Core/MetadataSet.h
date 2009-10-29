@@ -34,10 +34,7 @@ class MetadataSet : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value, a list of other metadata (last written to value_changed)
-	vector<X3DMetadataObject*> value;
-
-	/// Default node constructor.
-	MetadataSet(NodeDefinition* def) : Node(def) {}
+	DefaultInOutField<MetadataSet, MFNode<X3DMetadataObject> > value;
 
 	/**
 	 * Add entries to #value from the entries in the given map.
@@ -48,7 +45,7 @@ public:
 	 * @param meta map of metadata keys to values
 	 * @param quiet if true, value_changed event is suppressed
 	 */ 
-	virtual void assignFromMap(const map<string,string>& meta, bool quiet=false);
+	virtual void assignFromMap(const map<string,string>& meta);
 
 	/**
 	 * Add a single new metadata entry to the set.
@@ -56,7 +53,7 @@ public:
 	 * @param entry metadata entry to add
 	 * @param quiet if true, value_changed event is suppressed
 	 */
-	void addMetadata(X3DMetadataObject* entry, bool quiet=false);
+	void addMetadata(X3DMetadataObject* entry);
 };
 
 }} // namespace X3D::Core
