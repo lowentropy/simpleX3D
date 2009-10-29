@@ -22,6 +22,8 @@
 
 #include "internal/X3DField.h"
 
+namespace X3D {
+
 class SFInt32 : public X3DField {
 public:
 	typedef int TYPE;
@@ -50,5 +52,7 @@ public:
 		return *this;
 	}
 };
+
+}
 
 #endif // #ifndef _X3D_SFINT32_H_

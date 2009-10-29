@@ -20,6 +20,7 @@
 #ifndef _X3D_SFVEC_H_
 #define _X3D_SFVEC_H_
 
+#include "internal/X3DField.h"
 #include <string.h>
 #include <math.h>
 

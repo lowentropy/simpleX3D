@@ -49,15 +49,44 @@ public:
 	virtual void print();
 };
 
+class FieldDef {
+public:
+	NodeDef* const nodeDef;
+	const string name;
+	const X3DField::Type type;
+	const X3DField::Access access;
 
-class NodeDefinition {
+	FieldDef(
+		NodeDef* nodeDef,
+		const string& name,
+		X3DField::Type type,
+		X3DField::Access access) :
+		nodeDef(nodeDef),
+		name(name),
+		type(type),
+		access(access) {}
+	
+};
+
+template <class N>
+class FieldDefImpl : public FieldDef {
+public:
+	Field(N::*const field);
+
+	FieldDefImpl(
+		NodeDef* nodeDef,
+		const string& name,
+		X3DField::Type type,
+		X3DField::Access access,
+		Field (N::*field)) :
+		FieldDef(nodeDef, name, type, access),
+		field(field) {}
+};
+
+class NodeDef {
 private:
-	map<string, InitField*> init_fields;
-	map<string, InField*> in_fields;
-	map<string, OutField*> out_fields;
-	map<string, InOutField*> inout_fields;
-	vector<Field*> fields;
-	NodeDefinition* parent;
+	map<string, FieldDef*> fields;
+	NodeDef* parent;
 
 	friend class Browser;
 
@@ -73,10 +102,6 @@ public:
 	void inherits(const string& name);
 	virtual void print(bool full = true);
 
-	virtual SafePointer get(Node* node, const string& field) const;
-	virtual void set(Node* node, const string& field, const SafePointer& value) const;
-	virtual void changed(const Node* node, const string& field) const;
-
 protected:
 
 	virtual Node* create() = 0;
@@ -86,21 +111,17 @@ protected:
 		return new N(this);
 	}
 
-	void addInitField(InitField* field);
-	void addInField(InField* field);
-	void addOutField(OutField* field);
-	void addInOutField(InOutField* field);
+	void addField(FieldDef* field);
 	void print_fields(bool full);
 };
 
 
 template <class N>
-class NodeDefinitionImpl : public NodeDefinition {
+class NodeDefImpl : public NodeDef {
 public:
-
 	friend class Browser;
 
-	NodeDefinitionImpl(Component* comp, const string& name, bool abstract) :
+	NodeDefImpl(Component* comp, const string& name, bool abstract) :
 		NodeDefinition(comp, name, abstract) {}
 
 protected:
@@ -111,118 +132,12 @@ protected:
 
 public:
 
-	template <typename T> InitFieldImpl<N,T>* createInitField(
-			const string& name, 
-			FieldType type,
-			const T (N::*var)) {
-		InitFieldImpl<N,T>* field = new InitFieldImpl<N,T>(
-			this, name, type, var);
-		addInitField(field);
-		return field;
-	}
-
-	template <typename T> InitFieldImpl<N,T>* createInitField(
-			const string& name,
-			FieldType type,
-			T (N::*var)) {
-		InitFieldImpl<N,T>* field = new InitFieldImpl<N,T>(
-			this, name, type, var);
-		addInitField(field);
-		return field;
-	}
-
-	template <typename T> InitFieldImpl<N,T>* createInitField(
-			const string& name,
-			FieldType type,
-			T& (N::*get_var)() const) {
-		InitFieldImpl<N,T>* field = new InitFieldImpl<N,T>(
-			this, name, type, get_var);
-		addInitField(field);
-		return field;
-	}
-
-	template <typename T> InFieldImpl<N,T>* createInputField(
-			const string& name,
-			FieldType type,
-			void (N::*set_fp)(const T&)) {
-		InFieldImpl<N,T>* field = new InFieldImpl<N,T>(
-			this, name, type, set_fp);
-		addInField(field);
-		return field;
-	}
-
-	template <typename T> OutFieldImpl<N,T>* createOutputField(
-			const string& name,
-			FieldType type,
-			const T (N::*var),
-			void (N::*changed_fp)()=NULL) {
-		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
-			this, name, type, const_cast<T (N::*)>(var), changed_fp);
-		addOutField(field);
-		return field;
-	}
-
-	template <typename T> OutFieldImpl<N,T>* createOutputField(
-			const string& name,
-			FieldType type,
-			T (N::*var),
-			void (N::*changed_fp)()=NULL) {
-		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
-			this, name, type, var, changed_fp);
-		addOutField(field);
-		return field;
-	}
-
-	template <typename T> OutFieldImpl<N,T>* createOutputField(
-			const string& name,
-			FieldType type,
-			T& (N::*get_var)(),
-			void (N::*set_var)(const T&),
-			void (N::*changed_fp)()=NULL) {
-		OutFieldImpl<N,T>* field = new OutFieldImpl<N,T>(
-			this, name, type, get_var, set_var, changed_fp);
-		addOutField(field);
-		return field;
-	}
-
-	template <typename T> InOutFieldImpl<N,T>* createInputOutputField(
-			const string& name,
-			FieldType type,
-			const T (N::*var),
-			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)()=NULL) {
-		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
-			this, name, type, const_cast<T (N::*)>(var), set_fp, changed_fp);
-		addInOutField(field);
-		return field;
-	}
-
-	template <typename T> InOutFieldImpl<N,T>* createInputOutputField(
-			const string& name,
-			FieldType type,
-			T (N::*var),
-			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)()=NULL) {
-		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
-			this, name, type, var, set_fp, changed_fp);
-		addInOutField(field);
-		return field;
-	}
-
-	template <typename T> InOutFieldImpl<N,T>* createInputOutputField(
-			const string& name,
-			FieldType type,
-			T& (N::*get_var)(),
-			void (N::*set_var)(const T&),
-			void (N::*set_fp)(const T&)=NULL,
-			void (N::*changed_fp)()=NULL) {
-		InOutFieldImpl<N,T>* field = new InOutFieldImpl<N,T>(
-			name, type, get_var, set_var, set_fp, changed_fp);
-		addInOutField(field);
-		return field;
+	FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, Field (N::*ptr)) {
+		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, ptr);
+		addField(def);
+		return def;
 	}
 };
-
 
 class Component {
 private:
@@ -238,7 +153,7 @@ public:
 	NodeDefinition* getNode(const string& name);
 	virtual void print();
 
-	template <class T> NodeDefinitionImpl<T>* createNode(const string& name, bool abstract=false) {
+	template <class T> NodeDefImpl<T>* createNode(const string& name, bool abstract=false) {
 		NodeDefinitionImpl<T>* def = new NodeDefinitionImpl<T>(this, name, abstract);
 		node_map[name] = def;
 		node_list.push_back(def);

@@ -20,6 +20,10 @@
 #ifndef _X3D_SFNODE_H_
 #define _X3D_SFNODE_H_
 
+#include "X3DField.h"
+
+namespace X3D {
+
 class SFAbstractNode : public X3DField {
 public:
 	inline X3DField::Type getType() const { return SFNODE; }
@@ -56,5 +60,7 @@ public:
 		return *this;
 	}
 };
+
+}
 
 #endif // #ifndef _X3D_SFNODE_H_

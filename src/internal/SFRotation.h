@@ -20,7 +20,7 @@
 #ifndef _X3D_ROTATION_H_
 #define _X3D_ROTATION_H_
 
-#include "internal/types.h"
+#include "internal/X3DField.h"
 #include <math.h>
 
 namespace X3D {

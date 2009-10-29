@@ -54,6 +54,7 @@ public:
 	 * @param profile built-in supported profile
 	 */
 	static void init(Profile* profile) {
+/*
 		// Core component
 		Component* core = profile->createComponent("Core");
 		{
@@ -305,7 +306,7 @@ public:
 					"time", SFTimeType,
 					&TimeSensor::time);
 			}
-		}
+		}*/
 	} // end of profile
 };
 

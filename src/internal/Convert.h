@@ -36,9 +36,9 @@ public:
 	 * @param str string to convert
 	 * @returns SFDouble value
 	 */
-	static SFDouble toSFDouble(const string& str) {
+	static double toSFDouble(const string& str) {
 		char* end = NULL;
-		SFDouble value = strtod(str.c_str(), &end);
+		double value = strtod(str.c_str(), &end);
 		if (end != NULL)
 			throw X3DError("invalid conversion to SFDouble");
 		return value;
@@ -50,9 +50,9 @@ public:
 	 * @param str string to convert
 	 * @returns SFFloat value
 	 */
-	static SFFloat toSFFloat(const string& str) {
+	static float toSFFloat(const string& str) {
 		char* end = NULL;
-		SFFloat value = strtof(str.c_str(), &end);
+		float value = strtof(str.c_str(), &end);
 		if (end != NULL)
 			throw X3DError("invalid conversion to SFFloat");
 		return value;
@@ -64,9 +64,9 @@ public:
 	 * @param str string to convert
 	 * @returns SFInt32 value
 	 */
-	static SFInt32 toSFInt32(const string& str) {
+	static int toSFInt32(const string& str) {
 		char* end = NULL;
-		SFInt32 value = strtoi(str.c_str(), &end);
+		int value = strtoi(str.c_str(), &end);
 		if (end != NULL)
 			throw X3DError("invalid conversion to SFInt32");
 	}
@@ -77,7 +77,7 @@ public:
 	 * @param str string to convert
 	 * @returns SFString value
 	 */
-	static SFString toSFString(const string& str) {
+	static const std::string& toSFString(const string& str) {
 		return str;
 	}
 };
