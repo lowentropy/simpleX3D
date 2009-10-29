@@ -39,14 +39,35 @@ namespace X3D {
  * Pixels are stored in row-major order in the #bytes array, whose total
  * size is indicated by the #size.
  */
-class SFImage {
+class SFImage : public X3DField {
 protected:
 	int width; ///< image width, in pixels
 	int height; ///< image height, in pixels
 	int components; ///< pixel depth (1-4). Can be 0 for empty image.
 	int size; ///< size of #bytes array
 	unsigned char* bytes; ///< packed pixel array
+
 public:
+
+	// here's the x3dfield stuff...
+
+	typedef const SFImage& TYPE;
+	inline static const SFImage& unwrap(const X3DField& f) {
+		if (f.getType() != SFIMAGE)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFImage&>(f);
+	}
+	inline const SFImage& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+	inline const SFImage& operator() const {
+		return *this;
+	}
+	inline const SFImage& operator=(const SFImage& i) {
+		(*this)(i);
+		return *this;
+	}
+
 	/**
 	 * Default constructor.
 	 * 
@@ -119,8 +140,7 @@ public:
 	virtual void setColor(int x, int y, const SFColor c);
 	virtual SFColorRGBA getColorRGBA(int x, int y) const;
 	virtual void setColorRGBA(int x, int y, const SFColorRGBA c);
-
-
+	
 private:
 	
 	void alloc(int width, int height, int components);

@@ -32,11 +32,28 @@ namespace X3D {
  * Each channel (red, green, and blue) is an 8-bit
  * value represented by an unsigned char.
  */
-class SFColor {
+class SFColor : public X3DField {
 public:
 	unsigned char r; ///< red channel
 	unsigned char g; ///< green channel
 	unsigned char b; ///< blue channel
+
+	// X3DField stuff
+
+	typedef const SFColor& TYPE;
+	inline const SFColor& operator=(const SFColor& c) {
+		(*this)(c);
+		return *this;
+	}
+	inline const SFColor& operator()() const { return *this; }
+	inline static const SFColor& unwrap(const X3DField& f) {
+		if (f.getType() != SFCOLOR)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFColor&>(f);
+	}
+	inline const SFColor& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
 	
 	/**
 	 * Default constructor.
@@ -100,12 +117,29 @@ public:
  * value represented by an unsigned char. The alpha channel
  * controls opacity (0=transparent, 255=opaque).
  */
-class SFColorRGBA {
+class SFColorRGBA : public X3DField {
 public:
 	unsigned char r; ///< red channel
 	unsigned char g; ///< green channel
 	unsigned char b; ///< blue channel
 	unsigned char a; ///< alpha channel
+
+	// X3DField stuff 
+
+	typedef const SFColorRGBA& TYPE;
+	inline const SFColorRGBA& operator=(const SFColorRGBA& c) {
+		(*this)(c);
+		return *this;
+	}
+	inline const SFColorRGBA& operator()() const { return *this; }
+	inline static const SFColorRGBA& unwrap(const X3DField& f) {
+		if (f.getType() != SFCOLORRGBA)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFColorRGBA&>(f);
+	}
+	inline const SFColorRGBA& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
 
 	/**
 	 * Default constructor.

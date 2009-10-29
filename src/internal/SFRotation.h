@@ -32,12 +32,31 @@ namespace X3D {
  * normalized. The #a member defines a right-handed rotation about this
  * axis. The default rotation value is (0,0,1,0).
  */
-class SFRotation {
+class SFRotation : public X3DField {
 public:
 	float x; ///< rotation axis X value
 	float y; ///< rotation axis Y value
 	float z; ///< rotation axis Z value
 	float a; ///< angle of rotation
+
+	// X3DField stuff
+
+	typedef const SFRotation& TYPE;
+	inline static const SFRotation& unwrap(const X3DField& f) {
+		if (f.getType() != SFROTATION)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFRotation&>(f);
+	}
+	inline const SFRotation& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+	inline const SFRotation& operator=(const SFRotation& r) {
+		(*this)(r);
+		return *this;
+	}
+	inline const SFRotation& operator()() {
+		return *this;
+	}
 
 	/**
 	 * Default constructor.

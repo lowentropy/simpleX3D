@@ -20,8 +20,10 @@
 #ifndef _X3D_SFVEC_H_
 #define _X3D_SFVEC_H_
 
-#include "internal/types.h"
+#include <string.h>
 #include <math.h>
+
+using std::string;
 
 namespace X3D {
 
@@ -40,7 +42,7 @@ template <typename T> class SFMatrix4;
  * the X3D spec.
  */
 template <typename T>
-class SFVec2 {
+class SFVec2 : public X3DField {
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -251,7 +253,7 @@ public:
  * 3D vectors define matrix operations and a cross-product operator.
  */
 template <typename T>
-class SFVec3 {
+class SFVec3 : public X3DField {
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -537,7 +539,7 @@ public:
  * SFVec4 defines matrix operations with SFMatrix4.
  */
 template <typename T>
-class SFVec4 {
+class SFVec4 : public X3DField {
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -733,6 +735,90 @@ public:
 	 */
 	template <typename U> SFVec4<T>& operator*=(const SFMatrix4<U>& m) {
 		return this->operator=(*this * m);
+	}
+};
+
+class SFVec2f : public SFVec2<float> {
+	typedef SFVec2f TYPE;
+	inline X3DField::Type getType() const { return SFVEC2F; }
+	inline string getTypeName() const { return "SFVec2f"; }
+	static inline const SFVec2f& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC2F)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec2f&>(f);
+	}
+	virtual const SFVec2f& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+};
+
+class SFVec2d : public SFVec2<double> {
+	typedef SFVec2d TYPE;
+	inline X3DField::Type getType() const { return SFVEC2D; }
+	inline string getTypeName() const { return "SFVec2d"; }
+	static inline const SFVec2d& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC2D)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec2d&>(f);
+	}
+	virtual const SFVec2d& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+};
+
+class SFVec3f : public SFVec3<float> {
+	typedef SFVec3f TYPE;
+	inline X3DField::Type getType() const { return SFVEC3F; }
+	inline string getTypeName() const { return "SFVec3f"; }
+	static inline const SFVec3f& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC3F)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec3f&>(f);
+	}
+	virtual const SFVec3f& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+};
+
+class SFVec3d : public SFVec2<double> {
+	typedef SFVec3d TYPE;
+	inline X3DField::Type getType() const { return SFVEC3D; }
+	inline string getTypeName() const { return "SFVec3d"; }
+	static inline const SFVec3d& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC3D)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec3d&>(f);
+	}
+	virtual const SFVec3d& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+};
+
+class SFVec4f : public SFVec4<float> {
+	typedef SFVec4f TYPE;
+	inline X3DField::Type getType() const { return SFVEC4F; }
+	inline string getTypeName() const { return "SFVec4f"; }
+	static inline const SFVec4f& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC4F)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec4f&>(f);
+	}
+	virtual const SFVec4f& operator=(const X3DField& f) {
+		return *this = unwrap(f);
+	}
+};
+
+class SFVec4d : public SFVec4<double> {
+	typedef SFVec4d TYPE;
+	inline X3DField::Type getType() const { return SFVEC4D; }
+	inline string getTypeName() const { return "SFVec4d"; }
+	static inline const SFVec4d& unwrap(const X3DField& f) {
+		if (f.getType() != SFVEC4D)
+			throw X3DError("base type mismatch");
+		return static_cast<const SFVec4d&>(f);
+	}
+	virtual const SFVec4d& operator=(const X3DField& f) {
+		return *this = unwrap(f);
 	}
 };
 
