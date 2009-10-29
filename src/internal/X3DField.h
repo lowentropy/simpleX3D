@@ -91,27 +91,4 @@ private:
 
 }
 
-#define X3DFIELD_BODY(NAME,CONST,NATIVE) \
-	typedef NATIVE TYPE; \
-	NATIVE value; \
-	inline NAME() {} \
-	inline NAME(const NATIVE& value) : value(value) {} \
-	inline X3DField::Type getType() const { return CONST; } \
-	inline string getTypeName() const { return #NAME; } \
-	inline const NATIVE& operator=(const NATIVE& v) { value = v; return v; } \
-	inline const NATIVE& operator()() const { return value; } \
-	static inline const NATIVE& unwrap(const X3DField& f) { \
-		if (f.getType() != CONST) \
-			throw X3DError("base type mismatch"); \
-		return (static_cast<const NAME*>(&f))->value; \
-	} \
-	virtual const NAME& operator=(const NAME& f) { \
-		value = f.value; \
-		return *this; \
-	} \
-	virtual const NAME& operator=(const X3DField& f) { \
-		value = unwrap(f); \
-		return *this; \
-	}
-
 #endif // #ifndef _X3D_X3DFIELD_H_
