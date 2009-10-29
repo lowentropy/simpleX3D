@@ -5,10 +5,9 @@ libsimpleX3D_la_SOURCES = \
 	internal/SFImage.cc \
 	internal/SFColor.cc \
 	internal/profile.cc \
-	internal/types.cc \
 	internal/Browser.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
-include_HEADERS = internal/types.h
+include_HEADERS = internal/X3DField.h

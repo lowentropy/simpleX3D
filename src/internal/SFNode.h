@@ -20,14 +20,17 @@
 #ifndef _X3D_SFNODE_H_
 #define _X3D_SFNODE_H_
 
-#include "X3DField.h"
+#include "internal/X3DField.h"
 
 namespace X3D {
+
+class Node;
 
 class SFAbstractNode : public X3DField {
 public:
 	inline X3DField::Type getType() const { return SFNODE; }
-	inline const string& getTypeName() const { return "SFNode"; }
+	inline string getTypeName() const { return "SFNode"; }
+	virtual Node* operator()() const = 0;
 };
 
 template <class N>

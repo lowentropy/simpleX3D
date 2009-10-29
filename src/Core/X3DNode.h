@@ -20,8 +20,6 @@
 #ifndef _X3D_X3DNODE_H_
 #define _X3D_X3DNODE_H_
 
-#include "internal/types.h"
-#include "internal/SafePointer.h"
 #include "Core/X3DMetadataObject.h"
 #include <string>
 #include <map>

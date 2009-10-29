@@ -20,9 +20,12 @@
 #ifndef _X3D_NODE_H_
 #define _X3D_NODE_H_
 
-#include "internal/config.h"
 #include "internal/errors.h"
-#include "internal/SafePointer.h"
+#include "internal/types.h"
+#include "internal/InitField.h"
+#include "internal/InField.h"
+#include "internal/OutField.h"
+#include "internal/InOutField.h"
 #include <string>
 
 using std::string;
@@ -30,7 +33,7 @@ using std::string;
 namespace X3D {
 
 // forward declarations
-class NodeDefinition;
+class NodeDef;
 class Browser;
 
 class Node {
@@ -43,7 +46,7 @@ public:
 	} Stage;
 
 protected:
-	NodeDefinition* definition;
+	NodeDef* definition;
 	Stage stage;
 
 private:

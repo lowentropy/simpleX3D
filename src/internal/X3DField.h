@@ -21,20 +21,70 @@
 #define _X3D_X3DFIELD_H_
 
 #include <string>
+using std::string;
 
 namespace X3D {
 
 class X3DField {
 public:
+
 	typedef enum {
-		SFNODE,
+		SFBOOL,
+		SFCOLOR,
+		SFCOLORRGBA,
+		SFDOUBLE,
+		SFFLOAT,
+		SFIMAGE,
 		SFINT32,
-		SFFLOAT
+		SFMATRIX3D,
+		SFMATRIX3F,
+		SFMATRIX4D,
+		SFMATRIX4F,
+		SFNODE,
+		SFROTATION,
+		SFSTRING,
+		SFTIME,
+		SFVEC2D,
+		SFVEC2F,
+		SFVEC3D,
+		SFVEC3F,
+		SFVEC4D,
+		SFVEC4F,
+		MFBOOL,
+		MFCOLOR,
+		MFCOLORRGBA,
+		MFDOUBLE,
+		MFFLOAT,
+		MFIMAGE,
+		MFINT32,
+		MFMATRIX3D,
+		MFMATRIX3F,
+		MFMATRIX4D,
+		MFMATRIX4F,
+		MFNODE,
+		MFROTATION,
+		MFSTRING,
+		MFTIME,
+		MFVEC2D,
+		MFVEC2F,
+		MFVEC3D,
+		MFVEC3F,
+		MFVEC4D,
+		MFVEC4F
 	} Type;
+
+	typedef enum {
+		INIT_ONLY,
+		INPUT_ONLY,
+		OUTPUT_ONLY,
+		INPUT_OUTPUT
+	} Access;
+
 	virtual Type getType() const = 0;
-	virtual std::string getTypeName() const = 0;
+	virtual string getTypeName() const = 0;
 	virtual const X3DField& operator=(const X3DField& f) = 0;
 	X3DField() {}
+
 private:
 	X3DField(const X3DField& field) {}
 };

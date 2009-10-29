@@ -20,7 +20,6 @@
 #ifndef _X3D_X3DTIMEDEPENDENTNODE_H_
 #define _X3D_X3DTIMEDEPENDENTNODE_H_
 
-#include "internal/types.h"
 #include "Core/X3DChildNode.h"
 
 using X3D::Core::X3DChildNode;

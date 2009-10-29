@@ -20,6 +20,8 @@
 #ifndef _X3D_OUTFIELD_H_
 #define _X3D_OUTFIELD_H_
 
+#include "internal/SAIField.h"
+
 namespace X3D {
 
 template <class N, class TT>

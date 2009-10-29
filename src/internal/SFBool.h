@@ -17,37 +17,37 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_SFDOUBLE_H_
-#define _X3D_SFDOUBLE_H_
+#ifndef _X3D_SFBOOL_H_
+#define _X3D_SFBOOL_H_
 
 #include "internal/X3DField.h"
 
 namespace X3D {
 
-class SFDouble : public X3DField {
+class SFBool : public X3DField {
 public:
-	typedef double TYPE;
-	double value;
+	typedef bool TYPE;
+	bool value;
 
-	inline X3DField::Type getType() const { return SFDOUBLE; }
-	inline string getTypeName() const { return "SFDouble"; }
+	inline X3DField::Type getType() const { return SFBOOL; }
+	inline string getTypeName() const { return "SFBool"; }
 
-	inline SFDouble() : value(0) {}
-	inline SFDouble(double x) : value(x) {}
-	inline double operator()() { return value; }
+	inline SFBool() : value(0) {}
+	inline SFBool(bool x) : value(x) {}
+	inline bool operator()() { return value; }
 
-	inline static double unwrap(const X3DField& f) {
-		if (f.getType() != SFDOUBLE)
+	inline static bool unwrap(const X3DField& f) {
+		if (f.getType() != SFBOOL)
 			throw X3DError("base type mismatch");
-		return (static_cast<const SFDouble&>(f)).value;
+		return (static_cast<const SFBool&>(f)).value;
 	}
 
-	inline const SFDouble& operator=(double x) { value = x; return *this; }
-	inline const SFDouble& operator=(const X3DField& f) {
+	inline const SFBool& operator=(bool x) { value = x; return *this; }
+	inline const SFBool& operator=(const X3DField& f) {
 		value = unwrap(f);
 		return *this;
 	}
-	inline const SFDouble& operator=(const SFDouble& f) {
+	inline const SFBool& operator=(const SFBool& f) {
 		value = f.value;
 		return *this;
 	}
@@ -55,4 +55,4 @@ public:
 
 }
 
-#endif // #ifndef _X3D_SFDOUBLE_H_
+#endif // #ifndef _X3D_SFBOOL_H_

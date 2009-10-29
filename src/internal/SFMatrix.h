@@ -20,7 +20,7 @@
 #ifndef _X3D_SFMATRIX_H_
 #define _X3D_SFMATRIX_H_
 
-#include "internal/types.h"
+#include "internal/SFVec.h"
 #include <string.h>
 
 using std::string;
@@ -42,6 +42,9 @@ class SFMatrix3 : public X3DField {
 private:
 	T data[9]; ///< private element array
 public:
+
+	
+
 	/**
 	 * Default constructor.
 	 * 

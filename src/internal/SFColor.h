@@ -41,10 +41,8 @@ public:
 	// X3DField stuff
 
 	typedef const SFColor& TYPE;
-	inline const SFColor& operator=(const SFColor& c) {
-		(*this)(c);
-		return *this;
-	}
+	inline X3DField::Type getType() const { return SFCOLOR; }
+	inline string getTypeName() const { return "SFColor"; }
 	inline const SFColor& operator()() const { return *this; }
 	inline static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
@@ -65,9 +63,19 @@ public:
 	/**
 	 * Copy constructor.
 	 * 
-	 * @param c color to copy from.
+	 * @param c color to copy from
 	 */
-	SFColor(const SFColor& c) : r(c.r), g(c.g), b(c.b) {}
+	SFColor(const SFColor& c) { *this = c; }
+
+	/**
+	 * Equals operator
+	 * 
+	 * @param c color to copy from
+	 */
+	inline const SFColor& operator=(const SFColor& c) {
+		r = c.r; g = c.g; b = c.b;
+		return *this;
+	}
 
 	/**
 	 * Full constructor.
@@ -127,10 +135,8 @@ public:
 	// X3DField stuff 
 
 	typedef const SFColorRGBA& TYPE;
-	inline const SFColorRGBA& operator=(const SFColorRGBA& c) {
-		(*this)(c);
-		return *this;
-	}
+	inline X3DField::Type getType() const { return SFCOLORRGBA; }
+	inline string getTypeName() const { return "SFColorRGBA"; }
 	inline const SFColorRGBA& operator()() const { return *this; }
 	inline static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
@@ -156,14 +162,34 @@ public:
      *
      * @param c color to copy from
 	 */
-	SFColorRGBA(const SFColor& c) : r(c.r), g(c.g), b(c.b), a(255) {}
+	SFColorRGBA(const SFColor& c) { *this = c; }
 
 	/**
 	 * Copy constructor.
 	 * 
 	 * @param c color to copy from
 	 */
-	SFColorRGBA(const SFColorRGBA& c) : r(c.r), g(c.g), b(c.b), a(c.a) {}
+	SFColorRGBA(const SFColorRGBA& c) { *this = c; }
+
+	/**
+	 * Equals operator.
+	 * 
+	 * @param c color to copy from, and set alpha to 255
+	 */
+	inline const SFColorRGBA& operator=(const SFColor& c) {
+		r = c.r; g = c.g; b = c.b; a = 255;
+		return *this;
+	}
+
+	/**
+	 * Equals operator.
+	 * 
+	 * @param c color to copy from.
+	 */
+	inline const SFColorRGBA& operator=(const SFColorRGBA& c) {
+		r = c.r; g = c.g; b = c.b; a = c.a;
+		return *this;
+	}
 
 	/**
 	 * Full constructor.

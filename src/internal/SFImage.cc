@@ -22,12 +22,13 @@
 using namespace X3D;
 
 /**
- * Copy constructor.
+ * Equals operator.
  *
  * @param i the image to copy
  */
-SFImage::SFImage(const SFImage& i) {
-	alloc(i.width, i.height, i.components);
+const SFImage& SFImage::operator=(const SFImage& i) {
+	if (i.width != width || i.height != height || i.components != components)
+		throw X3DError("mismatched image properties in =");
 	setBytes(i.bytes);
 }
 

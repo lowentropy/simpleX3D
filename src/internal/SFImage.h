@@ -52,6 +52,8 @@ public:
 	// here's the x3dfield stuff...
 
 	typedef const SFImage& TYPE;
+	inline X3DField::Type getType() const { return SFIMAGE; }
+	inline string getTypeName() const { return "SFImage"; }
 	inline static const SFImage& unwrap(const X3DField& f) {
 		if (f.getType() != SFIMAGE)
 			throw X3DError("base type mismatch");
@@ -60,11 +62,7 @@ public:
 	inline const SFImage& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
-	inline const SFImage& operator() const {
-		return *this;
-	}
-	inline const SFImage& operator=(const SFImage& i) {
-		(*this)(i);
+	inline const SFImage& operator()() const {
 		return *this;
 	}
 
@@ -129,7 +127,13 @@ public:
 
 	// the rest are documented in SFImage.cc
 
-	SFImage(const SFImage& i);
+	
+	SFImage(const SFImage& i) {
+		alloc(i.width, i.height, i.components);
+		*this = i;
+	}
+
+	const SFImage& operator=(const SFImage& i);
 	SFImage(int width, int height, int components);
 	SFImage(int width, int height, int components, unsigned char* pixels);
 	virtual ~SFImage();

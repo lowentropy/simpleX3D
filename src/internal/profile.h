@@ -20,9 +20,10 @@
 #ifndef _X3D_PROFILE_H_
 #define _X3D_PROFILE_H_
 
+#include "internal/X3DField.h"
+#include "internal/SAIField.h"
 #include <map>
 #include <vector>
-#include "internal/fields.h"
 
 using std::map;
 using std::vector;
@@ -49,6 +50,9 @@ public:
 	virtual void print();
 };
 
+// forward declaration
+class NodeDef;
+
 class FieldDef {
 public:
 	NodeDef* const nodeDef;
@@ -71,14 +75,14 @@ public:
 template <class N>
 class FieldDefImpl : public FieldDef {
 public:
-	Field(N::*const field);
+	SAIField N::*const field;
 
 	FieldDefImpl(
 		NodeDef* nodeDef,
 		const string& name,
 		X3DField::Type type,
 		X3DField::Access access,
-		Field (N::*field)) :
+		SAIField N::*field) :
 		FieldDef(nodeDef, name, type, access),
 		field(field) {}
 };
@@ -95,9 +99,9 @@ public:
 	const string name;
 	const bool abstract;
 
-	NodeDefinition(Component* component, const string& name, bool abstract) :
+	NodeDef(Component* component, const string& name, bool abstract) :
 		component(component), name(name), parent(NULL), abstract(abstract) {}
-	virtual ~NodeDefinition();
+	virtual ~NodeDef();
 
 	void inherits(const string& name);
 	virtual void print(bool full = true);
@@ -127,12 +131,12 @@ public:
 protected:
 
 	N* create() {
-		return NodeDefinition::create<N>();
+		return NodeDef::create<N>();
 	}
 
 public:
 
-	FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, Field (N::*ptr)) {
+	FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, SAIField N::*ptr) {
 		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, ptr);
 		addField(def);
 		return def;
@@ -154,7 +158,7 @@ public:
 	virtual void print();
 
 	template <class T> NodeDefImpl<T>* createNode(const string& name, bool abstract=false) {
-		NodeDefinitionImpl<T>* def = new NodeDefinitionImpl<T>(this, name, abstract);
+		NodeDefImpl<T>* def = new NodeDefImpl<T>(this, name, abstract);
 		node_map[name] = def;
 		node_list.push_back(def);
 		return def;

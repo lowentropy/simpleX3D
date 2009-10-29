@@ -30,7 +30,7 @@ public:
 	float value;
 
 	inline X3DField::Type getType() const { return SFFLOAT; }
-	inline const string& getTypeName() const { return "SFFloat"; }
+	inline string getTypeName() const { return "SFFloat"; }
 
 	inline SFFloat() : value(0) {}
 	inline SFFloat(float x) : value(x) {}

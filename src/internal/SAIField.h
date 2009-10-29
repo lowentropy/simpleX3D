@@ -20,7 +20,14 @@
 #ifndef _X3D_SAIFIELD_H_
 #define _X3D_SAIFIELD_H_
 
+#include "internal/X3DField.h"
+#include <string>
+
+using std::string;
+
 namespace X3D {
+
+class Node;
 
 class SAIField {
 public:
@@ -28,7 +35,7 @@ public:
 	virtual X3DField::Type getType() const = 0;
 	virtual const string& getTypeName() const = 0;
 	virtual const X3DField& get() const = 0;
-	virtaul void set(const X3DField& value) = 0;
+	virtual void set(const X3DField& value) = 0;
 	virtual void route() = 0;
 };
 

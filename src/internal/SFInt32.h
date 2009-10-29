@@ -30,7 +30,7 @@ public:
 	int value;
 
 	inline X3DField::Type getType() const { return SFINT32; }
-	inline const string& getTypeName() const { return "SFInt32"; }
+	inline string getTypeName() const { return "SFInt32"; }
 
 	inline SFInt32() : value(0) {}
 	inline SFInt32(int x) : value(x) {}
