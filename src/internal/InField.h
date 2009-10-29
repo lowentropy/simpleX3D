@@ -17,45 +17,34 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/types.h"
+#ifndef _X3D_INFIELD_H_
+#define _X3D_INFIELD_H_
 
 namespace X3D {
 
-const char* FieldTypeNames[] = {
-	"SFBool",
-	"SFDouble",
-	"SFFloat",
-	"SFInt32",
-	"SFMatrix3f",
-	"SFMatrix3d",
-	"SFMatrix4f",
-	"SFMatrix4d",
-	"SFString",
-	"SFTime",
-	"SFVec2f",
-	"SFVec2d",
-	"SFVec3f",
-	"SFVec3d",
-	"SFVec4f",
-	"SFVec4d",
-	"SFNode",
-	"MFBool",
-	"MFDouble",
-	"MFFloat",
-	"MFInt32",
-	"MFMatrix3f",
-	"MFMatrix3d",
-	"MFMatrix4f",
-	"MFMatrix4d",
-	"MFString",
-	"MFTime",
-	"MFVec2f",
-	"MFVec2d",
-	"MFVec3f",
-	"MFVec3d",
-	"MFVec4f",
-	"MFVec4d",
-	"MFNode"
+template <class N, class TT>
+class InField : public BaseField<N,TT> {
+private:
+    typedef typename TT::TYPE T;
+protected:
+    inline N* node() const { return NodeField<N>::node; }
+public:
+    inline const TT& get() const {
+        throw X3DError("can't read input field");
+    }
+    inline void set(const X3DField& field) {
+        static TT x;
+        (*this)(x.unwrap(field));
+    }
+    inline void operator()(T x) {
+        if (!node()->realized())
+            throw X3DError("wrong stage");
+        action(x);
+    }
+    virtual void action(T value) = 0;
+    void route() {}
 };
 
 }
+
+#endif // #ifndef _X3D_INFIELD_H_
