@@ -30,7 +30,7 @@ class MetadataDouble : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to output field)
-	DefaultInOutField<MetadaDouble, MFDouble> value;
+	DefaultInOutField<MetadataDouble, MFDouble> value;
 
 	/**
 	 * Convert string value to double and set to #value.

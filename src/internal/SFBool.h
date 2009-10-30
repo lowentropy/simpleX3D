@@ -29,7 +29,7 @@ public:
 	typedef bool TYPE;
 	bool value;
 
-	inline X3DField::Type getType() const { return SFBOOL; }
+	inline X3DField::Type getType() const { return X3DField::SFBOOL; }
 	inline string getTypeName() const { return "SFBool"; }
 
 	inline SFBool() : value(0) {}

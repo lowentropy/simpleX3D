@@ -42,8 +42,10 @@ public:
 	// X3DField stuff
 
 	typedef const SFRotation& TYPE;
+    inline X3DField::Type getType() const { return X3DField::SFROTATION; }
+    inline string getTypeName() const { return "SFRotation"; }
 	inline static const SFRotation& unwrap(const X3DField& f) {
-		if (f.getType() != SFROTATION)
+		if (f.getType() != X3DField::SFROTATION)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFRotation&>(f);
 	}
@@ -51,7 +53,10 @@ public:
 		return *this = unwrap(f);
 	}
 	inline const SFRotation& operator=(const SFRotation& r) {
-		(*this)(r);
+    x = r.x;
+    y = r.y;
+    z = r.z;
+    a = r.a;
 		return *this;
 	}
 	inline const SFRotation& operator()() {
@@ -70,7 +75,7 @@ public:
 	 * 
 	 * @param r rotation to copy from.
 	 */
-	SFRotation(const SFRotation& r) : x(r.x), y(r.y), z(r.z), a(r.a) {}
+	SFRotation(const SFRotation& r) { *this = r; }
 
 	/**
 	 * Full constructor.
@@ -97,7 +102,7 @@ public:
 	 * where \f$ s = sin(\alpha) \f$,
 	 * \f$ c = cos(\alpha) \f$, and \f$ t = 1 - c \f$.
 	 */
-	SFMatrix3<float> matrix() const {
+	SFMatrix3f matrix() const {
 		float c = cos(a), s = sin(a), t = 1-c;
 		float tx = t * x, ty = t * y, tz = t * z;
 		float txy = tx * y, tyz = ty * z, txz = tx * z;
@@ -107,7 +112,7 @@ public:
 			txy - sz, ty * y + c, tyz + sx,
 			txz + sy, tyz - sx, tz * z + c
 		};
-		return SFMatrix3<float>(m);
+		return SFMatrix3f(m);
 	}
 
 	/**

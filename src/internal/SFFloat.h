@@ -29,7 +29,7 @@ public:
 	typedef float TYPE;
 	float value;
 
-	inline X3DField::Type getType() const { return SFFLOAT; }
+	inline X3DField::Type getType() const { return X3DField::SFFLOAT; }
 	inline string getTypeName() const { return "SFFloat"; }
 
 	inline SFFloat() : value(0) {}

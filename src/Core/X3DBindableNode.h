@@ -50,7 +50,7 @@ public:
 
 	/// Set whether node is bound
 	class : public InField<X3DBindableNode, SFBool> {
-		void action(const bool& bound) {
+		void action(bool bound) {
 			node()->bind(bound);
 		}
 	} set_bind;
@@ -78,14 +78,14 @@ public:
 				return;
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->isBound = true;
+				top->isBound(true);
 			stack->remove(this);
 			stack->push_front(this);
 		} else {
 			stack->remove(this);
 			X3DBindableNode* top = stack->front();
 			if (top)
-				top->isBound = true;
+				top->isBound(true);
 		}
 	}
 	

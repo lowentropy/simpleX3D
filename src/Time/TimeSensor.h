@@ -38,11 +38,8 @@ public:
 
 	/// Period of time for repeated events.
 	class : public InOutField<TimeSensor, SFTime> {
-		bool filter(const SFTime& interval) {
-			return (value != interval());
-		}
 		void action() {
-			node()->onCycleIntervalChanged();
+			node()->onCycleIntervalChanged(value());
 		}
 	} cycleInterval;
 
@@ -56,9 +53,9 @@ public:
 	DefaultOutField<TimeSensor, SFTime> time;
 
 	/// Default node constructor.
-	TimeSensor() : cycleInterval(1) {}
+	TimeSensor() { cycleInterval(1); }
 
-
+    virtual void onCycleIntervalChanged(double interval) = 0;
 };
 
 }}

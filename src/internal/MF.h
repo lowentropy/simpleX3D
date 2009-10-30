@@ -20,14 +20,18 @@
 #ifndef _X3D_MFFIELDS_H_
 #define _X3D_MFFIELDS_H_
 
+#include "internal/X3DField.h"
+#include <list>
+using std::list;
+
 #define MAKE_MF(CONST,MF,SF,KIND) \
 class MF : public KIND<SF> { \
 public:\
     typedef MF TYPE; \
-    inline X3DField::Type getType() const { return CONST; } \
+    inline X3DField::Type getType() const { return X3DField::CONST; } \
     inline string getTypeName() const { return #MF; } \
     static inline const MF& unwrap(const X3DField& f) { \
-        if (f.getType() != CONST) \
+        if (f.getType() != X3DField::CONST) \
             throw X3DError("base type mismatch"); \
         return static_cast<const MF&>(f); \
     } \
@@ -41,27 +45,27 @@ namespace X3D {
 template <class T>
 class MFReference : public X3DField {
 protected:
-	list<T> list;
+	list<T> elements;
 public:
-	void add(const T& elem) { list.add(elem); }
+	void add(const T& elem) { elements.add(elem); }
 };
 
 template <typename T>
 class MFNative : public X3DField {
 protected:
-	list<T> list;
+	list<T> elements;
 public:
-	void add(T elem) { list.add(elem); }
+	void add(T elem) { elements.add(elem); }
 };
 
 template <class N>
 class MFNode : public MFNative<N*> {
 public:
 	typedef MFNode<N> TYPE;
-	inline X3DField::Type getType() const { return MFNODE; }
+	inline X3DField::Type getType() const { return X3DField::MFNODE; }
 	inline string getTypeName() const { return "MFNode"; }
 	static inline const MFNode<N>& unwrap(const X3DField& f) {
-		if (f.getType() != MFNODE)
+		if (f.getType() != X3DField::MFNODE)
 			throw X3DError("base type mismatch");
 		return static_cast<const MFNode<N>&>(f);
 	}

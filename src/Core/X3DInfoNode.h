@@ -30,6 +30,8 @@ namespace Core {
  * semantic (i.e. non-visual) information.
  */
 class X3DInfoNode : virtual public X3DChildNode {
+};
+
 }}
 
 #endif // #ifndef _X3D_X3DINFONODE_H_

@@ -33,7 +33,6 @@ namespace X3D {
 
 class Profile;
 class Component;
-class NodeDefinition;
 
 
 class Profile {
@@ -46,7 +45,7 @@ public:
 	virtual ~Profile();
 
 	Component* createComponent(const string& name);
-	NodeDefinition* getNode(const string& name);
+	NodeDef* getNode(const string& name);
 	virtual void print();
 };
 
@@ -126,7 +125,7 @@ public:
 	friend class Browser;
 
 	NodeDefImpl(Component* comp, const string& name, bool abstract) :
-		NodeDefinition(comp, name, abstract) {}
+		NodeDef(comp, name, abstract) {}
 
 protected:
 
@@ -145,8 +144,8 @@ public:
 
 class Component {
 private:
-	map<string, NodeDefinition*> node_map;
-	vector<NodeDefinition*> node_list;
+	map<string, NodeDef*> node_map;
+	vector<NodeDef*> node_list;
 
 public:
 	const string name;
@@ -154,7 +153,7 @@ public:
 	Component(const string& name) : name(name) {}
 	virtual ~Component();
 
-	NodeDefinition* getNode(const string& name);
+	NodeDef* getNode(const string& name);
 	virtual void print();
 
 	template <class T> NodeDefImpl<T>* createNode(const string& name, bool abstract=false) {

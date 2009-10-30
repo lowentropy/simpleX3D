@@ -47,7 +47,7 @@ public:
         return value();
     }
     inline void operator()(T value) {
-        if (!node->realized())
+        if (!node()->realized())
             throw X3DError("can't route event until realized");
         if (dirty)
             throw X3DError("already wrote to this field");

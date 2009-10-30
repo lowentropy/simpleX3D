@@ -41,7 +41,7 @@ public:
 	// X3DField stuff
 
 	typedef const SFColor& TYPE;
-	inline X3DField::Type getType() const { return SFCOLOR; }
+	inline X3DField::Type getType() const { return X3DField::SFCOLOR; }
 	inline string getTypeName() const { return "SFColor"; }
 	inline const SFColor& operator()() const { return *this; }
 	inline static const SFColor& unwrap(const X3DField& f) {

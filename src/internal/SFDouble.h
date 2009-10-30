@@ -29,7 +29,7 @@ public:
 	typedef double TYPE;
 	double value;
 
-	inline X3DField::Type getType() const { return SFDOUBLE; }
+	inline X3DField::Type getType() const { return X3DField::SFDOUBLE; }
 	inline string getTypeName() const { return "SFDouble"; }
 
 	inline SFDouble() : value(0) {}

@@ -29,15 +29,15 @@ public:
 	typedef double TYPE;
 	double value;
 
-	inline X3DField::Type getType() const { return SFTIME; }
-	inline const string& getTypeName() const { return "SFTime"; }
+	inline X3DField::Type getType() const { return X3DField::SFTIME; }
+	inline string getTypeName() const { return "SFTime"; }
 
 	inline SFTime() : value(0) {}
 	inline SFTime(double x) : value(x) {}
 	inline double operator()() { return value; }
 
 	inline static double unwrap(const X3DField& f) {
-		if (f.getType() != SFTIME)
+		if (f.getType() != X3DField::SFTIME)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFTime&>(f)).value;
 	}

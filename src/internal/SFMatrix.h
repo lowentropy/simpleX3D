@@ -41,23 +41,15 @@ template <typename T>
 class SFMatrix3 : public X3DField {
 private:
 	T data[9]; ///< private element array
-public:
 
-	
+public:
 
 	/**
 	 * Default constructor.
 	 * 
 	 * The default value for any matrix dimension is its identity matrix.
 	 */ 
-	SFMatrix3() { static T i[] = {1,0,0,0,1,0,0,0,1}; *this = i; }
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	template <typename U> SFMatrix3(const SFMatrix3<U>& m) { *this = m.array(); }
+	SFMatrix3() : X3DField() { static T i[] = {1,0,0,0,1,0,0,0,1}; *this = i; }
 
 	/**
 	 * Array constructor.
@@ -66,7 +58,7 @@ public:
 	 * 
 	 * @param a array of matrix elements
 	 */
-	template <typename U> SFMatrix3(U* a) { *this = a; }
+	template <typename U> SFMatrix3(U* a) : X3DField() { *this = a; }
 
 	/**
 	 * Index operator (mutable version).
@@ -205,14 +197,7 @@ public:
 	 * 
 	 * The default value for any matrix dimension is its identity matrix.
 	 */ 
-	SFMatrix4() { static T i[] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}; *this = i; }
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	template <typename U> SFMatrix4(const SFMatrix4<U>& m) { *this = m.array(); }
+	SFMatrix4() : X3DField() { static T i[] = {1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1}; *this = i; }
 
 	/**
 	 * Array constructor.
@@ -221,7 +206,7 @@ public:
 	 * 
 	 * @param a array of matrix elements
 	 */
-	template <typename U> SFMatrix4(U* a) { *this = a; }
+	template <typename U> SFMatrix4(U* a) : X3DField() { *this = a; }
 
 	/**
 	 * Index operator (mutable version).
@@ -355,11 +340,36 @@ private:
 };
 
 class SFMatrix3f : public SFMatrix3<float> {
+public:
 	typedef SFMatrix3f TYPE;
-	inline X3DField::Type getType() const { return SFMATRIX3F; }
+
+	/**
+	 * Default constructor.
+	 * 
+	 * The default value for any matrix dimension is its identity matrix.
+	 */ 
+	SFMatrix3f() : SFMatrix3<float>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+  SFMatrix3f(const SFMatrix3f& m) : SFMatrix3<float>(m.array()) {}
+
+	/**
+	 * Array constructor.
+	 * 
+	 * Copy the elements of the given array directly into the matrix.
+	 * 
+	 * @param a array of matrix elements
+	 */
+	template <typename U> SFMatrix3f(U* a) : SFMatrix3<float>(a) {}
+
+	inline X3DField::Type getType() const { return X3DField::SFMATRIX3F; }
 	inline string getTypeName() const { return "SFMatrix3f"; }
 	static inline const SFMatrix3f& unwrap(const X3DField& f) {
-		if (f.getType() != SFMATRIX3F)
+		if (f.getType() != X3DField::SFMATRIX3F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3f&>(f);
 	}
@@ -369,11 +379,43 @@ class SFMatrix3f : public SFMatrix3<float> {
 };
 
 class SFMatrix3d : public SFMatrix3<double> {
+public:
 	typedef SFMatrix3d TYPE;
-	inline X3DField::Type getType() const { return SFMATRIX3D; }
+
+	/**
+	 * Default constructor.
+	 * 
+	 * The default value for any matrix dimension is its identity matrix.
+	 */ 
+	SFMatrix3d() : SFMatrix3<double>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+	SFMatrix3d(const SFMatrix3f& m) : SFMatrix3<double>(m.array()) {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+	SFMatrix3d(const SFMatrix3d& m) : SFMatrix3<double>(m.array()) {}
+
+	/**
+	 * Array constructor.
+	 * 
+	 * Copy the elements of the given array directly into the matrix.
+	 * 
+	 * @param a array of matrix elements
+	 */
+	template <typename U> SFMatrix3d(U* a) : SFMatrix3<double>(a) {}
+
+	inline X3DField::Type getType() const { return X3DField::SFMATRIX3D; }
 	inline string getTypeName() const { return "SFMatrix3d"; }
 	static inline const SFMatrix3d& unwrap(const X3DField& f) {
-		if (f.getType() != SFMATRIX3D)
+		if (f.getType() != X3DField::SFMATRIX3D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3d&>(f);
 	}
@@ -383,11 +425,35 @@ class SFMatrix3d : public SFMatrix3<double> {
 };
 
 class SFMatrix4f : public SFMatrix4<float> {
+public:
 	typedef SFMatrix4f TYPE;
-	inline X3DField::Type getType() const { return SFMATRIX4F; }
+	/**
+	 * Default constructor.
+	 * 
+	 * The default value for any matrix dimension is its identity matrix.
+	 */ 
+	SFMatrix4f() : SFMatrix4<float>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+	SFMatrix4f(const SFMatrix4f& m) : SFMatrix4<float>(m.array()) {}
+
+	/**
+	 * Array constructor.
+	 * 
+	 * Copy the elements of the given array directly into the matrix.
+	 * 
+	 * @param a array of matrix elements
+	 */
+	template <typename U> SFMatrix4f(U* a) : SFMatrix4<float>(a) {}
+
+	inline X3DField::Type getType() const { return X3DField::SFMATRIX4F; }
 	inline string getTypeName() const { return "SFMatrix4f"; }
 	static inline const SFMatrix4f& unwrap(const X3DField& f) {
-		if (f.getType() != SFMATRIX4F)
+		if (f.getType() != X3DField::SFMATRIX4F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4f&>(f);
 	}
@@ -397,11 +463,43 @@ class SFMatrix4f : public SFMatrix4<float> {
 };
 
 class SFMatrix4d : public SFMatrix4<double> {
+public:
 	typedef SFMatrix4d TYPE;
-	inline X3DField::Type getType() const { return SFMATRIX4D; }
+
+	/**
+	 * Default constructor.
+	 * 
+	 * The default value for any matrix dimension is its identity matrix.
+	 */ 
+	SFMatrix4d() : SFMatrix4<double>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+	SFMatrix4d(const SFMatrix4f& m) : SFMatrix4<double>(m.array()) {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param m matrix to copy from
+	 */
+	SFMatrix4d(const SFMatrix4d& m) : SFMatrix4<double>(m.array()) {}
+
+	/**
+	 * Array constructor.
+	 * 
+	 * Copy the elements of the given array directly into the matrix.
+	 * 
+	 * @param a array of matrix elements
+	 */
+	template <typename U> SFMatrix4d(U* a) : SFMatrix4<double>(a) {}
+
+	inline X3DField::Type getType() const { return X3DField::SFMATRIX4D; }
 	inline string getTypeName() const { return "SFMatrix4d"; }
 	static inline const SFMatrix4d& unwrap(const X3DField& f) {
-		if (f.getType() != SFMATRIX4D)
+		if (f.getType() != X3DField::SFMATRIX4D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4d&>(f);
 	}

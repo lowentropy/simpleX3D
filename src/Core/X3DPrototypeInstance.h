@@ -30,12 +30,6 @@ namespace Core {
  * for nodes instantiated from PROTOs.
  */
 class X3DPrototypeInstance : virtual public X3DNode {
-public:
-	/// Default node constructor.
-	X3DPrototypeInstance() {}
-
-	/// DO NOT USE
-	X3DPrototypeInstance(NodeDefinition* def) { throw X3DError("BUG - should not be called"); }
 };
 
 }}

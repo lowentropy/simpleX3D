@@ -32,15 +32,15 @@ public:
 	typedef const string& TYPE;
 	string value;
 
-	inline X3DField::Type getType() const { return SFSTRING; }
-	inline const string& getTypeName() const { return "SFString"; }
+	inline X3DField::Type getType() const { return X3DField::SFSTRING; }
+	inline string getTypeName() const { return "SFString"; }
 
 	inline SFString() : value("") {}
 	inline SFString(const string& init) : value(init) {}
 	inline const string& operator()() { return value; }
 
 	inline static const string& unwrap(const X3DField& f) {
-		if (f.getType() != SFSTRING)
+		if (f.getType() != X3DField::SFSTRING)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFString&>(f)).value;
 	}

@@ -33,7 +33,7 @@ class SAIField {
 public:
 	virtual Node* getNode() const = 0;
 	virtual X3DField::Type getType() const = 0;
-	virtual const string& getTypeName() const = 0;
+	virtual string getTypeName() const = 0;
 	virtual const X3DField& get() const = 0;
 	virtual void set(const X3DField& value) = 0;
 	virtual void route() = 0;
@@ -52,7 +52,7 @@ template <class N, class TT>
 class BaseField : public NodeField<N> {
 public:
 	X3DField::Type getType() const { static TT x; return x.getType(); }
-	const string& getTypeName() const { static TT x; return x.getTypeName(); }
+	string getTypeName() const { static TT x; return x.getTypeName(); }
 };
 
 }

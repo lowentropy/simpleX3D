@@ -101,7 +101,7 @@ public:
 	 */
 	template <class N>
 	N* createNode(const std::string& name) {
-		NodeDefinition* def = profile->getNode(name);
+		NodeDef* def = profile->getNode(name);
 		if (def == NULL)
 			return NULL;
 		N* node = def->create<N>();

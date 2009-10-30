@@ -56,13 +56,6 @@ public:
 	SFVec2() : x(0), y(0) {}
 
 	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec2 to copy from
-	 */
-	template <typename U> SFVec2(const SFVec2<U>& v) : x(v.x), y(v.y) {}
-
-	/**
 	 * Full constructor.
 	 * 
 	 * @param x X coordinate
@@ -266,13 +259,6 @@ public:
 	 * Default value is (0,0,0).
 	 */
 	SFVec3() : x(0), y(0), z(0) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec3 to copy from
-	 */
-	template <typename U> SFVec3(const SFVec3<U> v) : x(v.x), y(v.y), z(v.z) {}
 
 	/**
 	 * Full constructor.
@@ -740,7 +726,30 @@ public:
 };
 
 class SFVec2f : public SFVec2<float> {
+public:
 	typedef SFVec2f TYPE;
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0).
+	 */
+	SFVec2f() : SFVec2<float>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec2 to copy from
+	 */
+	SFVec2f(const SFVec2f& v) : SFVec2<float>(v.x, v.y) {}
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 */
+	template <typename U> SFVec2f(U x, U y) : SFVec2<float>(x, y) {}
+
 	inline X3DField::Type getType() const { return SFVEC2F; }
 	inline string getTypeName() const { return "SFVec2f"; }
 	static inline const SFVec2f& unwrap(const X3DField& f) {
@@ -754,7 +763,37 @@ class SFVec2f : public SFVec2<float> {
 };
 
 class SFVec2d : public SFVec2<double> {
+public:
 	typedef SFVec2d TYPE;
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0).
+	 */
+	SFVec2d() : SFVec2<double>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec2 to copy from
+	 */
+	SFVec2d(const SFVec2f& v) : SFVec2<double>(v.x, v.y) {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec2 to copy from
+	 */
+	SFVec2d(const SFVec2d& v) : SFVec2<double>(v.x, v.y) {}
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 */
+	template <typename U> SFVec2d(U x, U y) : SFVec2<double>(x, y) {}
+
 	inline X3DField::Type getType() const { return SFVEC2D; }
 	inline string getTypeName() const { return "SFVec2d"; }
 	static inline const SFVec2d& unwrap(const X3DField& f) {
@@ -768,7 +807,31 @@ class SFVec2d : public SFVec2<double> {
 };
 
 class SFVec3f : public SFVec3<float> {
+public:
 	typedef SFVec3f TYPE;
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0,0).
+	 */
+	SFVec3f() : SFVec3<float>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec3 to copy from
+	 */
+	SFVec3f(const SFVec3f& v) : SFVec3<float>(v.x, v.y, v.z) {};
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 * @param z Z coordinate
+	 */
+	template <typename U> SFVec3f(U x, U y, U z) : SFVec3<float>(x, y) {}
+
 	inline X3DField::Type getType() const { return SFVEC3F; }
 	inline string getTypeName() const { return "SFVec3f"; }
 	static inline const SFVec3f& unwrap(const X3DField& f) {
@@ -781,8 +844,40 @@ class SFVec3f : public SFVec3<float> {
 	}
 };
 
-class SFVec3d : public SFVec2<double> {
+class SFVec3d : public SFVec3<double> {
+public:
 	typedef SFVec3d TYPE;
+
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0,0).
+	 */
+	SFVec3d() : SFVec3<double>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec3 to copy from
+	 */
+	SFVec3d(const SFVec3f& v) : SFVec3<double>(v.x, v.y, v.z) {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec3 to copy from
+	 */
+	SFVec3d(const SFVec3d& v) : SFVec3<double>(v.x, v.y, v.z) {}
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 * @param z Z coordinate
+	 */
+	template <typename U> SFVec3d(U x, U y, U z) : SFVec3<double>(x, y, z) {}
+
 	inline X3DField::Type getType() const { return SFVEC3D; }
 	inline string getTypeName() const { return "SFVec3d"; }
 	static inline const SFVec3d& unwrap(const X3DField& f) {
@@ -796,7 +891,32 @@ class SFVec3d : public SFVec2<double> {
 };
 
 class SFVec4f : public SFVec4<float> {
+public:
 	typedef SFVec4f TYPE;
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0,0,1).
+	 */
+	SFVec4f() : SFVec4<float>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec4 to copy from
+	 */
+	SFVec4f(const SFVec4f& v) : SFVec4<float>(v.x, v.y, v.z, v.w) {}
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 * @param z Z coordinate
+	 * @param w W coordinate
+	 */
+	template <typename U> SFVec4f(U x, U y, U z, U w) : SFVec4<float>(x,y,z,w) {}
+
 	inline X3DField::Type getType() const { return SFVEC4F; }
 	inline string getTypeName() const { return "SFVec4f"; }
 	static inline const SFVec4f& unwrap(const X3DField& f) {
@@ -810,7 +930,39 @@ class SFVec4f : public SFVec4<float> {
 };
 
 class SFVec4d : public SFVec4<double> {
+public:
 	typedef SFVec4d TYPE;
+	/**
+	 * Default constructor.
+	 * 
+	 * Default value is (0,0,0,1).
+	 */
+	SFVec4d() : SFVec4<double>() {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec4 to copy from
+	 */
+	SFVec4d(const SFVec4f& v) : SFVec4<double>(v.x, v.y, v.z, v.w) {}
+
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param v SFVec4 to copy from
+	 */
+	SFVec4d(const SFVec4d& v) : SFVec4<double>(v.x, v.y, v.z, v.w) {}
+
+	/**
+	 * Full constructor.
+	 * 
+	 * @param x X coordinate
+	 * @param y Y coordinate
+	 * @param z Z coordinate
+	 * @param w W coordinate
+	 */
+	template <typename U> SFVec4d(U x, U y, U z, U w) : SFVec4<double>(x,y,z,w) {}
+
 	inline X3DField::Type getType() const { return SFVEC4D; }
 	inline string getTypeName() const { return "SFVec4d"; }
 	static inline const SFVec4d& unwrap(const X3DField& f) {

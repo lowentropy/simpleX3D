@@ -28,7 +28,7 @@ class Node;
 
 class SFAbstractNode : public X3DField {
 public:
-	inline X3DField::Type getType() const { return SFNODE; }
+	inline X3DField::Type getType() const { return X3DField::SFNODE; }
 	inline string getTypeName() const { return "SFNode"; }
 	virtual Node* operator()() const = 0;
 };
@@ -44,7 +44,7 @@ public:
 	inline N* operator()() const { return value; }
 
 	inline static N* unwrap(const X3DField& f) {
-		if (f.getType() != SFNODE)
+		if (f.getType() != X3DField::SFNODE)
 			throw X3DError("base type mismatch");
 		const SFAbstractNode& n = static_cast<const SFAbstractNode&>(f);
 		N* v = dynamic_cast<N*>(n());

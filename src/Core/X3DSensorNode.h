@@ -51,7 +51,7 @@ public:
 	} isActive;
 
 	/// Default node constructor.
-	X3DSensorNode() : enabled(true), active(false) {}
+	X3DSensorNode() { enabled(true); }
 
 	/// Callback for #enabled output event.
 	virtual void onEnabled(bool enabled) {};

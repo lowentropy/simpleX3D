@@ -52,7 +52,7 @@ public:
 	// here's the x3dfield stuff...
 
 	typedef const SFImage& TYPE;
-	inline X3DField::Type getType() const { return SFIMAGE; }
+	inline X3DField::Type getType() const { return X3DField::SFIMAGE; }
 	inline string getTypeName() const { return "SFImage"; }
 	inline static const SFImage& unwrap(const X3DField& f) {
 		if (f.getType() != SFIMAGE)

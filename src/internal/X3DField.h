@@ -20,6 +20,7 @@
 #ifndef _X3D_X3DFIELD_H_
 #define _X3D_X3DFIELD_H_
 
+#include "internal/errors.h"
 #include <string>
 using std::string;
 
@@ -83,7 +84,9 @@ public:
 	virtual Type getType() const = 0;
 	virtual string getTypeName() const = 0;
 	virtual const X3DField& operator=(const X3DField& f) = 0;
+
 	X3DField() {}
+  virtual ~X3DField() {}
 
 private:
 	X3DField(const X3DField& field) {}

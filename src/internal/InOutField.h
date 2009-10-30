@@ -72,6 +72,8 @@ class DefaultInOutField : public InOutField<N,TT> {
 private:
     typedef typename TT::TYPE T;
 public:
+    DefaultInOutField() : InOutField<N,TT>() {}
+    DefaultInOutField(T init) : InOutField<N,TT>(init) {}
     void action() {}
 };
 

@@ -30,54 +30,51 @@ namespace Time {
 /**
  * Base class for any node which is time-sensitive, such
  * as TimeSensor, MovieTexture, etc.
+ * 
+ * NOTE: due to the multiple inheritance in TimeSensor,
+ * this abstract node does not include the field 'isActive'.
+ * Instead, this field is defined ONLY by X3DSensorNode.
+ * If you must get the isActive value from an abstract
+ * X3DTimeDependentNode, use the function getIsActive().
  */
 class X3DTimeDependentNode : virtual public X3DChildNode {
 public:
 
 	/// if true, node will repeat its cycle
 	class : public InOutField<X3DTimeDependentNode, SFBool> {
-		void action() { node()->onLoopChanged(); }
+		void action() { node()->onLoopChanged(value()); }
 	} loop;
 
 	/// when paused, node will freeze state
-	SFBool paused;
+	class : public OutField<X3DTimeDependentNode, SFBool> {
+        void action() { node()->onIsPaused(value()); }
+    } isPaused;
 
 	/// time at which node becomes paused
-	SFTime pauseTime;
+	DefaultInOutField<X3DTimeDependentNode, SFTime> pauseTime;
 
 	/// time at which node resumes from pause
-	SFTime resumeTime;
+	DefaultInOutField<X3DTimeDependentNode, SFTime> resumeTime;
 
 	/// time at which node begins its cycle
-	SFTime startTime;
+	DefaultInOutField<X3DTimeDependentNode, SFTime> startTime;
 
 	/// time at which node ends current cycle
-	SFTime stopTime;
+	DefaultInOutField<X3DTimeDependentNode, SFTime> stopTime;
 
 	/// time since cycle began
-	SFTime elapsedTime;
+	DefaultOutField<X3DTimeDependentNode, SFTime> elapsedTime;
 
 	/// Default node constructor.
 	X3DTimeDependentNode() :
-		loop(false), paused(false),
 		pauseTime(0), resumeTime(0),
-		startTime(0), stopTime(0) {}
-	
-	/// DO NOT USE
-	X3DTimeDependentNode(NodeDefinition* def) {
-		throw X3DError("BUG - should not be called");
-	}
+		startTime(0), stopTime(0) {
+        loop(false);
+    }
 
-	virtual SFBool& getIsPaused() {
-		return paused;
-	}
-
-	virtual void setIsPaused(const SFBool& paused) {
-		this->paused = paused;
-	}
-
-	virtual SFBool& getIsActive() { throw X3DError("ABSTRACT"); }
-	virtual void setIsActive(const SFBool& active) { throw X3DError("ABSTRACT"); }
+    virtual void onLoopChanged(bool loop) = 0;
+    virtual void onIsPaused(bool paused) = 0;
+    virtual bool getIsActive() = 0;
 };
 
 }}
