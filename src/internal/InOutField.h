@@ -27,13 +27,15 @@ namespace X3D {
 template <class N, class TT>
 class InOutField : public BaseField<N,TT> {
 private:
+    bool dirty;
     typedef typename TT::TYPE T;
+    typedef typename TT::CONST_TYPE CT;
 protected:
     inline N* node() const { return NodeField<N>::node; }
 public:
     TT value;
     InOutField() {}
-    InOutField(T init) : BaseField<N,TT>(), value(init) {}
+    InOutField(CT init) : BaseField<N,TT>(), value(init) {}
     inline const TT& get() const {
         return value;
     }
@@ -44,33 +46,41 @@ public:
     inline T operator()() {
         return value();
     }
-    inline void operator()(T value) {
+    inline void operator()(CT value) {
         if (!node()->realized()) {
             this->value = value;
         } else {
             if (!filter(value))
                 return;
             this->value = value;
-            // TODO: prepare for routing
-            action();
+            dirty = true;
         }
     }
-    void send(T value) {
+    void send(CT value) {
         if (!node()->realized())
             throw X3DError("can't send output until realized");
         this->value = value;
-        // TODO: prepare for routing
-        action();
+        dirty = true;
     }
-    virtual bool filter(T value) { return this->value() != value; }
+    virtual bool filter(CT value) { return this->value() != value; }
+    void changed(bool value=true) {
+        dirty = value;
+    }
+    void route() {
+        if (dirty) {
+            action();
+            // TODO: send event
+            dirty = false;
+        }
+    }
     virtual void action() = 0;
-    void route() {}
 };
 
 template <class N, class TT>
 class DefaultInOutField : public InOutField<N,TT> {
 private:
     typedef typename TT::TYPE T;
+    typedef typename TT::CONST_TYPE CT;
 public:
     DefaultInOutField() : InOutField<N,TT>() {}
     DefaultInOutField(T init) : InOutField<N,TT>(init) {}

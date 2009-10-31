@@ -27,6 +27,7 @@ namespace X3D {
 class SFDouble : public X3DField {
 public:
 	typedef double TYPE;
+	typedef double CONST_TYPE;
 	double value;
 
 	inline X3DField::Type getType() const { return X3DField::SFDOUBLE; }

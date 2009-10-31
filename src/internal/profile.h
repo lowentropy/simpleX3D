@@ -33,7 +33,7 @@ namespace X3D {
 
 class Profile;
 class Component;
-
+class NodeDef;
 
 class Profile {
 private:
@@ -69,6 +69,7 @@ public:
 		type(type),
 		access(access) {}
 	
+    void print();
 };
 
 template <class N>
@@ -111,7 +112,10 @@ protected:
 	template <class N> N* create() {
 		if (abstract)
 			throw X3DError("can't instantiate abstract nodes");
-		return new N(this);
+        N* node = new N();
+        node->definition = this;
+        // TODO: set node ref on fields
+        return node;
 	}
 
 	void addField(FieldDef* field);

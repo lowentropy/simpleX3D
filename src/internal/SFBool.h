@@ -27,6 +27,7 @@ namespace X3D {
 class SFBool : public X3DField {
 public:
 	typedef bool TYPE;
+    typedef bool CONST_TYPE;
 	bool value;
 
 	inline X3DField::Type getType() const { return X3DField::SFBOOL; }

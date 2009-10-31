@@ -41,7 +41,9 @@ public:
 
 	// X3DField stuff
 
-	typedef const SFRotation& TYPE;
+	typedef SFRotation& TYPE;
+	typedef const SFRotation& CONST_TYPE;
+
     inline X3DField::Type getType() const { return X3DField::SFROTATION; }
     inline string getTypeName() const { return "SFRotation"; }
 	inline static const SFRotation& unwrap(const X3DField& f) {
@@ -59,7 +61,7 @@ public:
     a = r.a;
 		return *this;
 	}
-	inline const SFRotation& operator()() {
+	inline SFRotation& operator()() {
 		return *this;
 	}
 
@@ -86,6 +88,26 @@ public:
 	 * @param a angle of rotation
 	 */
 	SFRotation(float x, float y, float z, float a) : x(x), y(y), z(z), a(a) {}
+
+    /**
+     * Comparison operator.
+     * 
+     * @param r rotation to compare to
+     * @returns whether rotations are equal
+     */
+    bool operator==(const SFRotation& r) {
+        return (x == r.x) && (y == r.y) && (z == r.z) && (a == r.a);
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param r rotation to compare to
+     * @returns whether rotations are not equal
+     */
+    bool operator!=(const SFRotation& r) {
+        return (x != r.x) || (y != r.y) || (z != r.z) || (a != r.a);
+    }
 
 	/**
 	 * Convert into rotation matrix.

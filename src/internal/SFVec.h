@@ -124,6 +124,26 @@ public:
 		return *this;
 	}
 
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    template <typename U> bool operator==(const SFVec2<U>& v) const {
+        return (x == v.x) && (y == v.y);
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are not equal
+     */
+    template <typename U> bool operator!=(const SFVec2<U>& v) const {
+        return (x != v.x) || (y != v.y);
+    }
+
 	/**
 	 * Vector addition.
 	 * 
@@ -329,6 +349,26 @@ public:
 			*this /= m;
 		return *this;
 	}
+
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    template <typename U> bool operator==(const SFVec3<U>& v) const {
+        return (x == v.x) && (y == v.y) && (z == v.z);
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are not equal
+     */
+    template <typename U> bool operator!=(const SFVec3<U>& v) const {
+        return (x != v.x) || (y != v.y) || (z != v.z);
+    }
 
 	/**
 	 * Vector addition.
@@ -577,6 +617,26 @@ public:
 	 */
 	const T* array() const { return &x; }
 
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    template <typename U> bool operator==(const SFVec4<U>& v) const {
+        return (x == v.x) && (y == v.y) && (z == v.z) && (w == v.w);
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are not equal
+     */
+    template <typename U> bool operator!=(const SFVec4<U>& v) const {
+        return (x != v.x) || (y != v.y) || (z != v.z) || (w != v.w);
+    }
+
 	/**
 	 * Vector addition.
 	 * 
@@ -727,7 +787,9 @@ public:
 
 class SFVec2f : public SFVec2<float> {
 public:
-	typedef SFVec2f TYPE;
+	typedef SFVec2f& TYPE;
+	typedef const SFVec2f& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -757,14 +819,19 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec2f&>(f);
 	}
-	virtual const SFVec2f& operator=(const X3DField& f) {
+	inline const SFVec2f& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec2f& operator()() {
+        return *this;
+    }
 };
 
 class SFVec2d : public SFVec2<double> {
 public:
-	typedef SFVec2d TYPE;
+	typedef SFVec2d& TYPE;
+	typedef const SFVec2d& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -801,14 +868,19 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec2d&>(f);
 	}
-	virtual const SFVec2d& operator=(const X3DField& f) {
+	inline const SFVec2d& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec2d& operator()() {
+        return *this;
+    }
 };
 
 class SFVec3f : public SFVec3<float> {
 public:
-	typedef SFVec3f TYPE;
+	typedef SFVec3f& TYPE;
+	typedef const SFVec3f& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -839,14 +911,18 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec3f&>(f);
 	}
-	virtual const SFVec3f& operator=(const X3DField& f) {
+	inline const SFVec3f& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec3f& operator()() {
+        return *this;
+    }
 };
 
 class SFVec3d : public SFVec3<double> {
 public:
-	typedef SFVec3d TYPE;
+	typedef SFVec3d& TYPE;
+	typedef const SFVec3d& CONST_TYPE;
 
 	/**
 	 * Default constructor.
@@ -880,19 +956,24 @@ public:
 
 	inline X3DField::Type getType() const { return SFVEC3D; }
 	inline string getTypeName() const { return "SFVec3d"; }
-	static inline const SFVec3d& unwrap(const X3DField& f) {
+	static const SFVec3d& unwrap(const X3DField& f) {
 		if (f.getType() != SFVEC3D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec3d&>(f);
 	}
-	virtual const SFVec3d& operator=(const X3DField& f) {
+	inline const SFVec3d& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec3d& operator()() {
+        return *this;
+    }
 };
 
 class SFVec4f : public SFVec4<float> {
 public:
-	typedef SFVec4f TYPE;
+	typedef SFVec4f& TYPE;
+	typedef const SFVec4f& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -924,14 +1005,19 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec4f&>(f);
 	}
-	virtual const SFVec4f& operator=(const X3DField& f) {
+	inline const SFVec4f& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec4f& operator()() {
+        return *this;
+    }
 };
 
 class SFVec4d : public SFVec4<double> {
 public:
-	typedef SFVec4d TYPE;
+	typedef SFVec4d& TYPE;
+	typedef const SFVec4d& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -970,9 +1056,12 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec4d&>(f);
 	}
-	virtual const SFVec4d& operator=(const X3DField& f) {
+	inline const SFVec4d& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFVec4d& operator()() {
+        return *this;
+    }
 };
 
 }

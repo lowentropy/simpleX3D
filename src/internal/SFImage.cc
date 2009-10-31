@@ -33,6 +33,30 @@ const SFImage& SFImage::operator=(const SFImage& i) {
 }
 
 /**
+ * Comparison operator.
+ * 
+ * @param i image to compare to
+ * @returns if images are equal
+ */
+bool SFImage::operator==(const SFImage& i) const {
+    if (i.width != width || i.height != height || i.components != components)
+        return false;
+    return 0 == memcmp(bytes, i.bytes, size);
+}
+
+/**
+ * Comparison operator.
+ * 
+ * @param i image to compare to
+ * @returns if images are not equal
+ */
+bool SFImage::operator!=(const SFImage& i) const {
+    if (i.width != width || i.height != height || i.components != components)
+        return true;
+    return 0 != memcmp(bytes, i.bytes, size);
+}
+
+/**
  * Empty image constructor.
  * 
  * The total size of the image will be

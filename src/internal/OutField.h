@@ -29,6 +29,7 @@ class OutField : public BaseField<N,TT> {
 private:
     bool dirty;
     typedef typename TT::TYPE T;
+    typedef typename TT::CONST_TYPE CT;
 protected:
     inline N* node() const { return NodeField<N>::node; }
 public:
@@ -46,13 +47,16 @@ public:
             throw X3DError("wrong stage");
         return value();
     }
-    inline void operator()(T value) {
+    inline void operator()(CT value) {
         if (!node()->realized())
             throw X3DError("can't route event until realized");
         if (dirty)
             throw X3DError("already wrote to this field");
         this->value = value;
         dirty = true;
+    }
+    void changed(bool value=true) {
+        dirty = value;
     }
     void route() {
         if (dirty) {

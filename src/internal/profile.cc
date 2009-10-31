@@ -26,19 +26,19 @@ using std::endl;
 
 namespace X3D {
 
-NodeDefinition::~NodeDefinition() {
-	vector<Field*>::iterator it = fields.begin();
+NodeDef::~NodeDef() {
+	map<string, FieldDef*>::iterator it = fields.begin();
 	for (; it != fields.end(); it++)
-		delete *it;
+		delete it->second;
 }
 
-void NodeDefinition::inherits(const string& name) {
+void NodeDef::inherits(const string& name) {
 	parent = component->getNode(name);
 	if (parent == NULL)
 		throw X3DError("can't set nonexistent parent: " + name);
 }
 
-void NodeDefinition::print(bool full) {
+void NodeDef::print(bool full) {
 	cout << "\t" << name;
 	if (parent != NULL)
 		cout << " : " << parent->name;
@@ -47,68 +47,48 @@ void NodeDefinition::print(bool full) {
 	cout << "\t}" << endl;
 }
 
-void NodeDefinition::print_fields(bool full) {
+void NodeDef::print_fields(bool full) {
 	if (full && (parent != NULL))
 		parent->print_fields(full);
-	vector<Field*>::iterator it = fields.begin();
+	map<string, FieldDef*>::iterator it = fields.begin();
 	for (; it != fields.end(); it++)
-		(*it)->print();
+		it->second->print();
 }
 
-SafePointer NodeDefinition::get(Node* node, const string& field_name) const {
-	map<string,OutField*>* fields = const_cast<map<string,OutField*>*>(&out_fields);
-	const OutField* field = (*fields)[field_name];
-	if (field == NULL)
-		throw X3DError("invalid field");
-	return field->get(node);
+void NodeDef::addField(FieldDef* field) {
+    fields[field->name] = field;
 }
 
-void NodeDefinition::set(Node* node, const string& field_name, const SafePointer& value) const {
-	map<string,InField*>* fields = const_cast<map<string,InField*>*>(&in_fields);
-	const InField* field = (*fields)[field_name];
-	if (field == NULL)
-		throw X3DError("invalid field");
-	field->set(node, value);
-	changed(node, field_name);
-}
-
-void NodeDefinition::changed(const Node* node, const string& field_name) const {
-	// TODO: routing system goes here
-}
-
-void NodeDefinition::addInitField(InitField* field) {
-	init_fields[field->name] = field;
-	fields.push_back(field);
-}
-
-void NodeDefinition::addInField(InField* field) {
-	in_fields[field->name] = field;
-	fields.push_back(field);
-}
-
-void NodeDefinition::addOutField(OutField* field) {
-	out_fields[field->name] = field;
-	fields.push_back(field);
-}
-
-void NodeDefinition::addInOutField(InOutField* field) {
-	inout_fields[field->name] = field;
-	fields.push_back(field);
+void FieldDef::print() {
+    switch (access) {
+        case X3DField::INIT_ONLY:
+            cout << "[]";
+            break;
+        case X3DField::INPUT_ONLY:
+            cout << "[in]";
+            break;
+        case X3DField::OUTPUT_ONLY:
+            cout << "[out]";
+            break;
+        case X3DField::INPUT_OUTPUT:
+            cout << "[in,out]";
+            break;
+    }
 }
 
 Component::~Component() {
-	vector<NodeDefinition*>::iterator it = node_list.begin();
+	vector<NodeDef*>::iterator it = node_list.begin();
 	for (; it != node_list.end(); it++)
 		delete *it;
 }
 
-NodeDefinition* Component::getNode(const string& name) {
+NodeDef* Component::getNode(const string& name) {
 	return node_map[name];
 }
 
 void Component::print() {
 	cout << "COMPONENT " << name << " {" << endl;
-	vector<NodeDefinition*>::iterator it = node_list.begin();
+	vector<NodeDef*>::iterator it = node_list.begin();
 	for (; it != node_list.end(); it++)
 		(*it)->print();
 	cout << "}" << endl;
@@ -120,10 +100,10 @@ Profile::~Profile() {
 		delete *it;
 }
 
-NodeDefinition* Profile::getNode(const string& name) {
+NodeDef* Profile::getNode(const string& name) {
 	vector<Component*>::iterator it = comp_list.begin();
 	for (; it != comp_list.end(); it++) {
-		NodeDefinition* def = (*it)->getNode(name);
+		NodeDef* def = (*it)->getNode(name);
 		if (def != NULL)
 			return def;
 	}

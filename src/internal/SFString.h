@@ -29,7 +29,8 @@ namespace X3D {
 
 class SFString : public X3DField {
 public:
-	typedef const string& TYPE;
+	typedef string& TYPE;
+	typedef const string& CONST_TYPE;
 	string value;
 
 	inline X3DField::Type getType() const { return X3DField::SFSTRING; }
@@ -37,7 +38,7 @@ public:
 
 	inline SFString() : value("") {}
 	inline SFString(const string& init) : value(init) {}
-	inline const string& operator()() { return value; }
+	inline string& operator()() { return value; }
 
 	inline static const string& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFSTRING)

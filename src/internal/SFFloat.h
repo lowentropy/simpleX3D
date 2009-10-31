@@ -27,6 +27,7 @@ namespace X3D {
 class SFFloat : public X3DField {
 public:
 	typedef float TYPE;
+	typedef float CONST_TYPE;
 	float value;
 
 	inline X3DField::Type getType() const { return X3DField::SFFLOAT; }

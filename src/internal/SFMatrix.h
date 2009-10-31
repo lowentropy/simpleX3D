@@ -96,9 +96,35 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix3<T>& operator=(const SFMatrix3<U> m) {
+	template <typename U> SFMatrix3<T>& operator=(const SFMatrix3<U>& m) {
 		return this->operator=(m.array());
 	}
+
+    /**
+     * Comparison operator.
+     * 
+     * @param m matrix to compare to
+     * @returns whether matrices are equal
+     */
+    template <typename U> bool operator==(const SFMatrix3<T>& m) const {
+        for (int i = 0; i < 9; i++)
+            if (data[i] != m.data[i])
+                return false;
+        return true;
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param m matrix to compare to
+     * @returns whether matrices are not equal
+     */
+    template <typename U> bool operator!=(const SFMatrix3<T>& m) const {
+        for (int i = 0; i < 9; i++)
+            if (data[i] != m.data[i])
+                return true;
+        return false;
+    }
 
 	/**
 	 * Matrix-vector multiplication.
@@ -108,7 +134,7 @@ public:
 	 * 
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFVec3<T> operator*(const SFVec3<U> v) const {
+	template <typename U> SFVec3<T> operator*(const SFVec3<U>& v) const {
 		SFVec3<T> w;
 		const T* p1 = data;
 		const U* p2 = &v.x;
@@ -127,7 +153,7 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFMatrix3<T> operator*(const SFMatrix3<U> m) const {
+	template <typename U> SFMatrix3<T> operator*(const SFMatrix3<U>& m) const {
 		const T* a = data;
 		const U* b = m.array();
 		T c[9] = {
@@ -150,7 +176,7 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix3<T>& operator*=(const SFMatrix3<U> m) {
+	template <typename U> SFMatrix3<T>& operator*=(const SFMatrix3<U>& m) {
 		const T* a = data;
 		const U* b = m.array();
 		T c[9] = {
@@ -244,9 +270,35 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix4<T>& operator=(const SFMatrix4<U> m) {
+	template <typename U> SFMatrix4<T>& operator=(const SFMatrix4<U>& m) {
 		return this->operator=(m.array());
 	}
+
+    /**
+     * Comparison operator.
+     * 
+     * @param m matrix to compare to
+     * @returns whether matrices are equal
+     */
+    template <typename U> bool operator==(const SFMatrix4<T>& m) const {
+        for (int i = 0; i < 16; i++)
+            if (data[i] != m.data[i])
+                return false;
+        return true;
+    }
+
+    /**
+     * Comparison operator.
+     * 
+     * @param m matrix to compare to
+     * @returns whether matrices are not equal
+     */
+    template <typename U> bool operator!=(const SFMatrix4<T>& m) const {
+        for (int i = 0; i < 16; i++)
+            if (data[i] != m.data[i])
+                return true;
+        return false;
+    }
 
 	/**
 	 * Matrix-vector multiplication.
@@ -275,7 +327,7 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFMatrix4<T> operator*(const SFMatrix4<U> m) const {
+	template <typename U> SFMatrix4<T> operator*(const SFMatrix4<U>& m) const {
 		const T* a = data;
 		const U* b = m.array();
 		T c[16] = {
@@ -305,7 +357,7 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix4<T>& operator*=(const SFMatrix4<U> m) {
+	template <typename U> SFMatrix4<T>& operator*=(const SFMatrix4<U>& m) {
 		const T* a = data;
 		const U* b = m.array();
 		T c[16] = {
@@ -341,7 +393,9 @@ private:
 
 class SFMatrix3f : public SFMatrix3<float> {
 public:
-	typedef SFMatrix3f TYPE;
+
+	typedef SFMatrix3f& TYPE;
+	typedef const SFMatrix3f& CONST_TYPE;
 
 	/**
 	 * Default constructor.
@@ -373,14 +427,18 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3f&>(f);
 	}
-	virtual const SFMatrix3f& operator=(const X3DField& f) {
+	inline const SFMatrix3f& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFMatrix3f& operator()() {
+        return *this;
+    }
 };
 
 class SFMatrix3d : public SFMatrix3<double> {
 public:
-	typedef SFMatrix3d TYPE;
+	typedef SFMatrix3d& TYPE;
+	typedef const SFMatrix3d& CONST_TYPE;
 
 	/**
 	 * Default constructor.
@@ -419,14 +477,19 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3d&>(f);
 	}
-	virtual const SFMatrix3d& operator=(const X3DField& f) {
+	inline const SFMatrix3d& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFMatrix3d& operator()() {
+        return *this;
+    }
 };
 
 class SFMatrix4f : public SFMatrix4<float> {
 public:
-	typedef SFMatrix4f TYPE;
+	typedef SFMatrix4f& TYPE;
+	typedef const SFMatrix4f& CONST_TYPE;
+
 	/**
 	 * Default constructor.
 	 * 
@@ -457,14 +520,18 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4f&>(f);
 	}
-	virtual const SFMatrix4f& operator=(const X3DField& f) {
+	inline const SFMatrix4f& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFMatrix4f& operator()() {
+        return *this;
+    }
 };
 
 class SFMatrix4d : public SFMatrix4<double> {
 public:
-	typedef SFMatrix4d TYPE;
+	typedef SFMatrix4d& TYPE;
+	typedef const SFMatrix4d& CONST_TYPE;
 
 	/**
 	 * Default constructor.
@@ -503,9 +570,12 @@ public:
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4d&>(f);
 	}
-	virtual const SFMatrix4d& operator=(const X3DField& f) {
+	inline const SFMatrix4d& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
+    inline SFMatrix4d& operator()() {
+        return *this;
+    }
 };
 
 }

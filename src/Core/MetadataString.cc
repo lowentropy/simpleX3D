@@ -22,10 +22,10 @@
 namespace X3D {
 namespace Core {
 
-void MetadataString::assignFromString(const string& str, bool quiet) {
+void MetadataString::assignFromString(const string& str) {
 	value().clear();
-	value().push_back(str);
-	value.changed(true);
+	value().add(str);
+	value.changed();
 }
 
 }}

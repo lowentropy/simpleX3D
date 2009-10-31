@@ -28,12 +28,13 @@ template <class N, class TT>
 class InitField : public BaseField<N,TT> {
 private:
     typedef typename TT::TYPE T;
+    typedef typename TT::CONST_TYPE CT;
 protected:
     inline N* node() const { return NodeField<N>::node; }
 public:
     TT value;
     InitField() {}
-    InitField(T init) : BaseField<N,TT>(), value(init) {}
+    InitField(CT init) : BaseField<N,TT>(), value(init) {}
     inline const TT& get() const {
         if (node()->realized())
             throw X3DError("wrong stage");
@@ -49,7 +50,7 @@ public:
             throw X3DError("wrong stage");
         return value();
     }
-    inline void operator()(T x) {
+    inline void operator()(CT x) {
         if (node()->realized())
             throw X3DError("wrong stage");
         value = x;

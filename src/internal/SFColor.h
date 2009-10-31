@@ -40,10 +40,11 @@ public:
 
 	// X3DField stuff
 
-	typedef const SFColor& TYPE;
+	typedef SFColor& TYPE;
+    typedef const SFColor& CONST_TYPE;
 	inline X3DField::Type getType() const { return X3DField::SFCOLOR; }
 	inline string getTypeName() const { return "SFColor"; }
-	inline const SFColor& operator()() const { return *this; }
+	inline SFColor& operator()() { return *this; }
 	inline static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
 			throw X3DError("base type mismatch");
@@ -52,7 +53,7 @@ public:
 	inline const SFColor& operator=(const X3DField& f) {
 		return *this = unwrap(f);
 	}
-	
+
 	/**
 	 * Default constructor.
 	 * 
@@ -115,6 +116,16 @@ public:
     bool operator==(const SFColor& c) const {
         return (r == c.r) && (g == c.g) && (b == c.b);
     }
+
+    /**
+     * Equality test.
+     *
+     * @param c color to test
+     * @returns whether colors are not equal
+     */
+    bool operator!=(const SFColor& c) const {
+        return (r != c.r) || (g != c.g) || (b != c.b);
+    }
 };
 
 
@@ -134,10 +145,12 @@ public:
 
 	// X3DField stuff 
 
-	typedef const SFColorRGBA& TYPE;
+	typedef SFColorRGBA& TYPE;
+	typedef const SFColorRGBA& CONST_TYPE;
+
 	inline X3DField::Type getType() const { return SFCOLORRGBA; }
 	inline string getTypeName() const { return "SFColorRGBA"; }
-	inline const SFColorRGBA& operator()() const { return *this; }
+	inline SFColorRGBA& operator()() { return *this; }
 	inline static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
 			throw X3DError("base type mismatch");
@@ -239,7 +252,17 @@ public:
      * @returns whether colors are equal
      */
     bool operator==(const SFColorRGBA& c) const {
-        return (r == c.r) && (g == c.g) && (b == c.b) & (a == c.a);
+        return (r == c.r) && (g == c.g) && (b == c.b) && (a == c.a);
+    }
+
+    /**
+     * Equality test.
+     *
+     * @param c color to test
+     * @returns whether colors are not equal
+     */
+    bool operator!=(const SFColorRGBA& c) const {
+        return (r != c.r) || (g != c.g) || (b != c.b) || (a != c.a);
     }
     
 };

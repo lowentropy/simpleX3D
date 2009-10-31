@@ -37,6 +37,7 @@ template <class N>
 class SFNode : public SFAbstractNode {
 public:
 	typedef N* TYPE;
+    typedef N* CONST_TYPE;
 	N* value;
 
 	inline SFNode() {}
@@ -62,6 +63,12 @@ public:
 		value = f.value;
 		return *this;
 	}
+    bool operator==(const SFNode<N>& n) const {
+        return value == n.value;
+    }
+    bool operator!=(const SFNode<N>& n) const {
+        return value != n.value;
+    }
 };
 
 }

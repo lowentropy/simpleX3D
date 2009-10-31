@@ -37,6 +37,7 @@ class NodeDef;
 class Browser;
 
 class Node {
+friend class NodeDef;
 public:
 	typedef enum {
 		CREATION,

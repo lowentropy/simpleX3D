@@ -30,7 +30,7 @@ class X3DField {
 public:
 
 	typedef enum {
-		SFBOOL,
+		SFBOOL = 0,
 		SFCOLOR,
 		SFCOLORRGBA,
 		SFDOUBLE,
@@ -81,12 +81,14 @@ public:
 		INPUT_OUTPUT
 	} Access;
 
+    static const string typeNames[];
+    static const string& getTypeName(Type type);
+
 	virtual Type getType() const = 0;
-	virtual string getTypeName() const = 0;
 	virtual const X3DField& operator=(const X3DField& f) = 0;
 
 	X3DField() {}
-  virtual ~X3DField() {}
+    virtual ~X3DField() {}
 
 private:
 	X3DField(const X3DField& field) {}

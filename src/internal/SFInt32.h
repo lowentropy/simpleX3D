@@ -27,6 +27,7 @@ namespace X3D {
 class SFInt32 : public X3DField {
 public:
 	typedef int TYPE;
+	typedef int CONST_TYPE;
 	int value;
 
 	inline X3DField::Type getType() const { return X3DField::SFINT32; }
