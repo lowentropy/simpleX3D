@@ -29,14 +29,14 @@ namespace X3D {
 /**
  * RGB color value.
  * 
- * Each channel (red, green, and blue) is an 8-bit
- * value represented by an unsigned char.
+ * Each channel (red, green, and blue) is a floating-point
+ * value represented by an char.
  */
 class SFColor : public X3DField {
 public:
-	unsigned char r; ///< red channel
-	unsigned char g; ///< green channel
-	unsigned char b; ///< blue channel
+	float r; ///< red channel
+	float g; ///< green channel
+	float b; ///< blue channel
 
 	// X3DField stuff
 
@@ -85,7 +85,7 @@ public:
 	 * @param g green value
 	 * @param b blue value
 	 */
-	SFColor(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b) {}
+	SFColor(float r, float g, float b) : r(r), g(g), b(b) {}
 
 	/**
 	 * Array accessor (mutable version).
@@ -95,7 +95,7 @@ public:
 	 * 
 	 * @returns mutable pointer to RGB array
 	 */
-	unsigned char* array() { return &r; }
+	float* array() { return &r; }
 
 	/**
 	 * Array accessor (const version).
@@ -105,7 +105,7 @@ public:
 	 * 
 	 * @returns const pointer to RGB array
 	 */
-	const unsigned char* array() const { return &r; }
+	const float* array() const { return &r; }
 
     /**
      * Equality test.
@@ -132,16 +132,16 @@ public:
 /**
  * RGBA color value.
  * 
- * Each channel (red, green, blue, and alpha) is an 8-bit
- * value represented by an unsigned char. The alpha channel
- * controls opacity (0=transparent, 255=opaque).
+ * Each channel (red, green, blue, and alpha) is a floating-point
+ * value represented by an char. The alpha channel
+ * controls opacity (0=transparent, 1=opaque).
  */
 class SFColorRGBA : public X3DField {
 public:
-	unsigned char r; ///< red channel
-	unsigned char g; ///< green channel
-	unsigned char b; ///< blue channel
-	unsigned char a; ///< alpha channel
+	float r; ///< red channel
+	float g; ///< green channel
+	float b; ///< blue channel
+	float a; ///< alpha channel
 
 	// X3DField stuff 
 
@@ -171,7 +171,7 @@ public:
 	 * Copy constructor.
 	 * 
 	 * Copies RGB values from given color and sets
-	 * alpha to opaque (255).
+	 * alpha to opaque (1.0).
      *
      * @param c color to copy from
 	 */
@@ -187,10 +187,10 @@ public:
 	/**
 	 * Equals operator.
 	 * 
-	 * @param c color to copy from, and set alpha to 255
+	 * @param c color to copy from, and set alpha to 1.0
 	 */
 	inline const SFColorRGBA& operator=(const SFColor& c) {
-		r = c.r; g = c.g; b = c.b; a = 255;
+		r = c.r; g = c.g; b = c.b; a = 1;
 		return *this;
 	}
 
@@ -212,18 +212,18 @@ public:
 	 * @param b blue value
 	 * @param a alpha value
 	 */
-	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b, unsigned char a) : r(r), g(g), b(b), a(a) {}
+	SFColorRGBA(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 
 	/**
 	 * Partial constructor.
 	 * 
-	 * Initializes alpha to default opaque (255).
+	 * Initializes alpha to default opaque (1.0).
 	 * 
 	 * @param r red value
 	 * @param g green value
 	 * @param b blue value
 	 */
-	SFColorRGBA(unsigned char r, unsigned char g, unsigned char b) : r(r), g(g), b(b), a(255) {}
+	SFColorRGBA(float r, float g, float b) : r(r), g(g), b(b), a(1) {}
 
 	/**
 	 * Array accessor (mutable version).
@@ -233,7 +233,7 @@ public:
 	 * 
 	 * @returns mutable pointer to RGBA array
 	 */
-	unsigned char* array() { return &r; }
+	float* array() { return &r; }
 
 	/**
 	 * Array accessor (const version).
@@ -243,7 +243,7 @@ public:
 	 * 
 	 * @returns const pointer to RGBA array
 	 */
-	const unsigned char* array() const { return &r; }
+	const float* array() const { return &r; }
 
     /**
      * Equality test.

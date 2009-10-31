@@ -21,6 +21,9 @@
 
 using namespace X3D;
 
+#define COLOR2CHAR(x) ((unsigned char) ((x) * 255))
+#define CHAR2COLOR(x) (((float) x) / 255)
+
 /**
  * Equals operator.
  *
@@ -183,11 +186,11 @@ SFColor SFImage::getColor(int x, int y) const {
 	SFColor c;
 	const unsigned char* ptr = locate(x, y);
 	if (components < 3) {
-		c.r = c.g = c.b = *ptr;
+		c.r = c.g = c.b = CHAR2COLOR(*ptr);
 	} else {
-		c.r = *ptr++;
-		c.g = *ptr++;
-		c.b = *ptr;
+		c.r = CHAR2COLOR(*ptr++);
+		c.g = CHAR2COLOR(*ptr++);
+		c.b = CHAR2COLOR(*ptr);
 	}
 	return c;
 }
@@ -207,11 +210,11 @@ SFColor SFImage::getColor(int x, int y) const {
 void SFImage::setColor(int x, int y, const SFColor c) {
 	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
-		*ptr = (c.r + c.g + c.b) / 3;
+		*ptr = COLOR2CHAR((c.r + c.g + c.b) / 3);
 	} else {
-		*ptr++ = c.r;
-		*ptr++ = c.g;
-		*ptr++ = c.b;
+		*ptr++ = COLOR2CHAR(c.r);
+		*ptr++ = COLOR2CHAR(c.g);
+		*ptr++ = COLOR2CHAR(c.b);
 	}
 }
 
@@ -231,13 +234,13 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 	SFColorRGBA c;
 	const unsigned char* ptr = locate(x, y);
 	if (components < 3) {
-		c.r = c.g = c.b = *ptr++;
+		c.r = c.g = c.b = CHAR2COLOR(*ptr++);
 	} else {
-		c.r = *ptr++;
-		c.g = *ptr++;
-		c.b = *ptr++;
+		c.r = CHAR2COLOR(*ptr++);
+		c.g = CHAR2COLOR(*ptr++);
+		c.b = CHAR2COLOR(*ptr++);
 	}
-	c.a = (components % 2 == 0) ? *ptr : 255;
+	c.a = (components % 2 == 0) ? CHAR2COLOR(*ptr) : 1;
 	return c;
 }
 
@@ -256,14 +259,14 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
 	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
-		*ptr++ = (c.r + c.g + c.b) / 3;
+		*ptr++ = COLOR2CHAR((c.r + c.g + c.b) / 3);
 	} else {
-		*ptr++ = c.r;
-		*ptr++ = c.g;
-		*ptr++ = c.b;
+		*ptr++ = COLOR2CHAR(c.r);
+		*ptr++ = COLOR2CHAR(c.g);
+		*ptr++ = COLOR2CHAR(c.b);
 	}
 	if (components % 2 == 0)
-		*ptr = c.a;
+		*ptr = COLOR2CHAR(c.a);
 }
 
 // PRIVATE STUFF HERE

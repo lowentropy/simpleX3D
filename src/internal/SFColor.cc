@@ -5,13 +5,13 @@ namespace X3D {
 
 
 std::ostream& operator<<(std::ostream& str, const SFColor& c) {
-	str << "(" << ((int) c.r) << ", " << ((int) c.g) << ", " << ((int) c.b) << ")";
+	str << "(" << c.r << ", " << c.g << ", " << c.b << ")";
 	return str;
 }
 
 
 std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c) {
-	str << "(" << ((int)c.r) << ", " << ((int)c.g) << ", " << ((int)c.b) << ", " << ((int)c.a) << ")";
+	str << "(" << c.r << ", " << c.g << ", " << c.b << ", " << c.a << ")";
 	return str;
 }
 
