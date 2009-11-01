@@ -85,6 +85,10 @@ public:
 		SAIField N::*field) :
 		FieldDef(nodeDef, name, type, access),
 		field(field) {}
+
+    void init(N* node) {
+        (static_cast<NodeField<N>*>(&(node->*field)))->setNode(node);
+    }
 };
 
 class NodeDef {
@@ -114,9 +118,18 @@ protected:
 			throw X3DError("can't instantiate abstract nodes");
         N* node = new N();
         node->definition = this;
-        // TODO: set node ref on fields
+        setNodeOnFields<N>(node);
         return node;
 	}
+
+    template <class N> void setNodeOnFields(N* node) {
+        map<string, FieldDef*>::iterator fit = fields.begin();
+        for (; fit != fields.end(); fit++)
+            (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
+        vector<NodeDef*>::iterator pit = parents.begin();
+        for (; pit != parents.end(); pit++)
+            (*pit)->setNodeOnFields(node);
+    }
 
 	void addField(FieldDef* field);
 	void print_fields(bool full);
