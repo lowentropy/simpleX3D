@@ -24,37 +24,102 @@
 
 namespace X3D {
 
+/**
+ * Base class for all init-only fields. To make an init-only field,
+ * declare an instance of this class (it is never necessary to subclass
+ * InitField).
+ * 
+ * The low-level interface allows code to get and set the value of the
+ * field as long as its node is in the SETUP phase. Attempting to access
+ * the field in any way at another phase will result in an error.
+ * 
+ * The high-level interface is the same as the low-level interface.
+ */
 template <class N, class TT>
 class InitField : public BaseField<N,TT> {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
+
 protected:
+    /**
+     * Return a pointer to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
     inline N* node() const { return NodeField<N>::node; }
+
 public:
+    /// wrapper value contained by the field
     TT value;
+
+    /// Default constructor; #value has default value.
     InitField() {}
+
+    /**
+     * Initializing constructor, taking the initial #value.
+     * 
+     * @param init initial value for #value
+     */
     InitField(CT init) : BaseField<N,TT>(), value(init) {}
+
+    /**
+     * Get the generic value of this field (high-level interface).
+     * Will throw an error if the field's node is not in the SETUP
+     * phase.
+     * 
+     * @returns generic field value
+     */
     inline const TT& get() const {
         if (node()->realized())
             throw X3DError("wrong stage");
         return value;
     }
+
+    /**
+     * Set the generic value of this field (high-level interface).
+     * Will throw an error if the field's node is not in the SETUP
+     * phase.
+     * 
+     * @param value generic field value to set
+     */
     inline void set(const X3DField& value) {
         static TT x;
         (*this)(x.unwrap(value));
     }
+
+    /**
+     * Get the native value of the field.
+     * Will throw an error if the field's node is not in the SETUP
+     * phase.
+     * 
+     * @return native field value
+     */
     inline T operator()() {
         if (node()->realized())
             throw X3DError("wrong stage");
         return value();
     }
-    inline void operator()(CT x) {
+
+    /**
+     * Set the native value of the field.
+     * Will throw an error if the field's node is not in the SETUP
+     * phase.
+     * 
+     * @param value native value to set
+     */
+    inline void operator()(CT value) {
         if (node()->realized())
             throw X3DError("wrong stage");
-        value = x;
+        this->value = value;
     }
-    void route() {}
+
+    /**
+     * Since init fields don't route out, they can't be dirty.
+     * 
+     * @returns false
+     */
+    bool isDirty() { return false; }
 };
 
 }

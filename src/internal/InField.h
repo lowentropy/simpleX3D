@@ -24,28 +24,82 @@
 
 namespace X3D {
 
+/**
+ * Base class for all node input fields. To make an input field,
+ * subclass InField and provide the action() method, which takes
+ * the value passed to the input field.
+ * 
+ * The low-level interface for input fields consists of the
+ * operator()(value) method, which triggers the input event.
+ * 
+ * The high-level interface for input fields consists of the
+ * set(value) method, which triggers the input event.
+ * 
+ * Both behaviors require that the node the field belongs to
+ * is in state REALIZED.
+ */
 template <class N, class TT>
 class InField : public BaseField<N,TT> {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
+
 protected:
+    /**
+     * Return a pointer to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
     inline N* node() const { return NodeField<N>::node; }
+
 public:
+    /**
+     * Throws an error, since input fields have no persistent value.
+     * 
+     * @returns nothing, always throws an error
+     */
     inline const TT& get() const {
         throw X3DError("can't read input field");
     }
-    inline void set(const X3DField& field) {
+
+    /**
+     * Send a value to the input event. Will throw an error if
+     * the value is of the wrong type or if the node is not in
+     * state REALIZED.
+     * 
+     * @param value generic event value
+     */
+    inline void set(const X3DField& value) {
         static TT x;
-        (*this)(x.unwrap(field));
+        (*this)(x.unwrap(value));
     }
-    inline void operator()(CT x) {
+
+    /**
+     * Send a value to the input event. Will throw an error if
+     * the node is not in state REALIZED.
+     * 
+     * @param value native event value
+     */
+    inline void operator()(CT value) {
         if (!node()->realized())
             throw X3DError("wrong stage");
-        action(x);
+        action(value);
     }
+
+    /**
+     * Abstract method which subclasses use to indicate what actions
+     * to take when the input event is triggered.
+     * 
+     * @param value native event value
+     */
     virtual void action(CT value) = 0;
-    void route() {}
+
+    /**
+     * Input fields are never dirty, since they don't route out.
+     * 
+     * @returns false
+     */
+    bool isDirty() { return false; }
 };
 
 }

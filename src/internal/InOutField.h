@@ -24,28 +24,98 @@
 
 namespace X3D {
 
+/**
+ * Base class for all input-output fields within nodes. In order to create
+ * an input-output field, either declare an instance of DefaultInOutField,
+ * or subclass InOutField and provide implementations for #filter and #action.
+ * 
+ * The low-level and high-level interfaces both allow read and write access
+ * at both the SETUP and REALIZED phases of the node lifecycle. In the SETUP
+ * phase, this will simply result in the value of the field being changed.
+ * In the REALIZED phase, setting the field value will additionally result in
+ * the field being marked dirty, scheduling any routes from the field to be
+ * activated in the next event cascade.
+ * 
+ * The user-defined actions for input-output fields are broken into two parts.
+ * On an input event trigger, the #filter method is called with the event value.
+ * If the #filter method returns false, then no further action is taken and the
+ * field value remains unchanged. If #filter returns true, the field value is
+ * immediately overwritten and marked as dirty.
+ * 
+ * On the next event cascade, if the field has been marked as dirty, the first
+ * action taken by the browser will be to call #action. This happens before any
+ * outging routes, if any, are activated.
+ * 
+ * Attempting to write to an input-output field more than once during the same
+ * period (before the next cascade) will result in an error.
+ */
 template <class N, class TT>
 class InOutField : public BaseField<N,TT> {
 private:
-    bool dirty;
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
+
+    /// whether field value has been modified since last event cascade
+    bool dirty;
+
 protected:
+    /**
+     * Returns a pointer to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
     inline N* node() const { return NodeField<N>::node; }
+
 public:
+    /// generic wrapper value of this field
     TT value;
+
+    /// Default constructor; #value will have its default value.
     InOutField() {}
+
+    /**
+     * Initializing constructor, which sets initial #value.
+     * 
+     * @param init initial value of #value
+     */
     InOutField(CT init) : BaseField<N,TT>(), value(init) {}
+
+    /**
+     * Get the generic wrapper value of the field (high-level interface).
+     * 
+     * @returns generic field value
+     */
     inline const TT& get() const {
         return value;
     }
-    inline void set(const X3DField& field) {
+
+    /**
+     * Set the generic value of the field (high-level interface). If the
+     * node is realized and #filter returns true, mark the field as dirty
+     * and schedule for routing.
+     * 
+     * @param value generic field value to set
+     */
+    inline void set(const X3DField& value) {
         static TT x;
-        (*this)(x.unwrap(field));
+        (*this)(x.unwrap(value));
     }
+
+    /**
+     * Get the native value of the field.
+     * 
+     * @returns native field value
+     */
     inline T operator()() {
         return value();
     }
+
+    /**
+     * Set the native value of the field. If the node is realized and
+     * #filter returns true, mark the field as dirty and schedule for routing.
+     * 
+     * @param value native value to set
+     */
     inline void operator()(CT value) {
         if (!node()->realized()) {
             this->value = value;
@@ -56,35 +126,78 @@ public:
             dirty = true;
         }
     }
+
+    /**
+     * Bypass the input event stage by directly overwriting the field value
+     * and marking the field as dirty. This function does not call #filter.
+     * If the node is not in the REALZIED stage, or if the field has already
+     * been marked as dirty, then this method will throw an error.
+     * 
+     * @param value native value to set
+     */
     void send(CT value) {
         if (!node()->realized())
             throw X3DError("can't send output until realized");
         this->value = value;
         dirty = true;
     }
+
+    /**
+     * The default filtering action compares the event value with the value
+     * already stored in the field. If they are equal, filter returns false
+     * and the field is considered not to have changed.
+     * 
+     * @param value native event value
+     * @returns whether value has changed
+     */
     virtual bool filter(CT value) { return this->value() != value; }
+
+    /**
+     * Manually sets the dirty value of the field. This can be useful if,
+     * for instance, the field value has changed externally in some way
+     * the field itself cannot monitor.
+     * 
+     * @param value new value for #dirty
+     */
     void changed(bool value=true) {
         dirty = value;
     }
+
+    /**
+     * Return whether field has been marked dirty since last event cascade.
+     * 
+     * @returns whether field is #dirty
+     */
     bool isDirty() { return dirty; }
-    void route() {
-        if (dirty) {
-            action();
-            // TODO: send event
-            dirty = false;
-        }
-    }
+
+    /**
+     * Action to take on output event. Subclasses MUST define this function.
+     */
     virtual void action() = 0;
 };
 
+/**
+ * Input-output field which has default (empty) actions.
+ */
 template <class N, class TT>
 class DefaultInOutField : public InOutField<N,TT> {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
 public:
+    /// Empty constructor.
     DefaultInOutField() : InOutField<N,TT>() {}
+
+    /**
+     * Initializing constructor.
+     * 
+     * @param init initial value for #value
+     */
     DefaultInOutField(T init) : InOutField<N,TT>(init) {}
+
+    /**
+     * On output event, take no action.
+     */
     void action() {}
 };
 
