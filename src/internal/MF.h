@@ -25,77 +25,163 @@
 using std::list;
 
 #define MAKE_MF(CONST,MF,SF,KIND) \
+/** Base type for lists of SF */ \
 class MF : public KIND<SF> { \
 public:\
     typedef MF& TYPE; \
     typedef const MF& CONST_TYPE; \
+    /** Empty constructor. */ \
     MF() : KIND<SF>() {} \
+    /** @returns CONST */ \
     inline X3DField::Type getType() const { return X3DField::CONST; } \
-    static inline const MF& unwrap(const X3DField& f) { \
-        if (f.getType() != X3DField::CONST) \
+    /** Unwrap a generic value. @param value generic value @returns native value */ \
+    static inline const MF& unwrap(const X3DField& value) { \
+        if (value.getType() != X3DField::CONST) \
             throw X3DError("base type mismatch"); \
-        return static_cast<const MF&>(f); \
+        return static_cast<const MF&>(value); \
     } \
+    /** @returns native list value */ \
     inline MF& operator()() { \
         return *this; \
     } \
+    /** Generic comparison operator. @param value generic value to compare to @returns whether list is equal to generic value */ \
+    inline bool operator==(const X3DField& value) { \
+        return *this == unwrap(value); \
+    } \
+    /** Generic comparison operator. @param value generic value to compare to @returns whether list is not equal to generic value */ \
+    inline bool operator!=(const X3DField& value) { \
+        return *this != unwrap(value); \
+    } \
 private: \
+    /** Disallow copy constructor. */ \
     MF(const MF& mf) {} \
 };
 
 namespace X3D {
 
+/**
+ * Base class for implementations of MF types.
+ * 
+ * Contains a list of elements. The two subclasses,
+ * MFNative and MFReference, differ only in the parameters of
+ * some of their accessor functions; MFReference uses const
+ * reference types, while MFNative uses undecorated raw types.
+ */
 template <typename T>
 class MFBase : public X3DField {
 protected:
+    /** internal list of elements */
     list<T> elements;
+
 public:
+    /** Empty constructor. */
     MFBase() : X3DField() {}
+
+    /** Clear the elements list. */
     void clear() {
         elements.clear();
     }
+
+    /**
+     * Native comparison operator.
+     * 
+     * @param mf list to compare to
+     * @returns whether lists are equal
+     */
     bool operator==(const MFBase<T>& mf) const {
         return elements == mf.elements;
     }
+
+    /**
+     * Native comparison operator.
+     * 
+     * @param mf list to compare to
+     * @returns whether lists are not equal
+     */
     bool operator!=(const MFBase<T>& mf) const {
         return elements != mf.elements;
     }
 };
 
+/**
+ * Base type for lists of complex data structures.
+ * Uses a const reference type for accessors with parameters.
+ */
 template <class T>
 class MFReference : public MFBase<T> {
 public:
+    /** Empty constructor. */
     MFReference() : MFBase<T>() {}
+
+    /**
+     * Add an element to the list.
+     * 
+     * @param elem element to add
+     */
 	void add(const T& elem) {
         MFBase<T>::elements.push_back(elem);
     }
 };
 
+/**
+ * Baes type for lists of simple data types (including pointers).
+ * Uses an undecorated basic type for accessors with parameters.
+ */
 template <typename T>
 class MFNative : public MFBase<T> {
 public:
+    /** Empty constructor. */
     MFNative() : MFBase<T>() {}
+
+    /**
+     * Add an element to the list.
+     * 
+     * @param elem element to add.
+     */
 	void add(T elem) {
         MFBase<T>::elements.push_back(elem);
     }
 };
 
+/**
+ * Templatized list of nodes. The template type identifies the root node
+ * type contained in the list. This type may be abstract. When unwrapping
+ * a generic value, the list type contained in the generic must match the
+ * root node type exactly (no dynamic casting is performed).
+ */
 template <class N>
 class MFNode : public MFNative<N*> {
 public:
 	typedef MFNode<N>& TYPE;
 	typedef const MFNode<N>& CONST_TYPE;
+
+    /** Empty constructor. */
     MFNode() : MFNative<N*>() {}
+
+    /** @returns MFNODE */
 	inline X3DField::Type getType() const { return X3DField::MFNODE; }
+
+    /**
+     * Unwrap a generic value into a list type. This method will
+     * only succeed if the generic value is an MFNode list of the
+     * exact same root node type.
+     * 
+     * @param f generic value
+     * @returns native list type
+     */
 	static inline const MFNode<N>& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
 			throw X3DError("base type mismatch");
 		return static_cast<const MFNode<N>&>(f);
 	}
+
+    /** @returns native list type */
     inline MFNode<N>& operator()() {
         return *this;
     }
+
 private:
+    /** Disallow copy constructor. */
     MFNode(const MFNode<N>& mf) {}
 };
 
