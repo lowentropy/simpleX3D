@@ -37,7 +37,7 @@ class TimeSensor: public X3DTimeDependentNode, public X3DSensorNode {
 public:
 
 	/// Period of time for repeated events.
-	class : public InOutField<TimeSensor, SFTime> {
+	class CycleInterval : public InOutField<TimeSensor, SFTime> {
 		void action() {
 			node()->onCycleIntervalChanged(value());
 		}
@@ -55,7 +55,7 @@ public:
 	/// Default node constructor.
 	TimeSensor() { cycleInterval(1); }
 
-    virtual void onCycleIntervalChanged(double interval) = 0;
+    virtual void onCycleIntervalChanged(double interval) {} // XXX: abstract
 };
 
 }}

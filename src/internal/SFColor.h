@@ -43,15 +43,11 @@ public:
 	typedef SFColor& TYPE;
     typedef const SFColor& CONST_TYPE;
 	inline X3DField::Type getType() const { return X3DField::SFCOLOR; }
-	inline string getTypeName() const { return "SFColor"; }
 	inline SFColor& operator()() { return *this; }
 	inline static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFColor&>(f);
-	}
-	inline const SFColor& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
 
 	/**
@@ -149,15 +145,11 @@ public:
 	typedef const SFColorRGBA& CONST_TYPE;
 
 	inline X3DField::Type getType() const { return SFCOLORRGBA; }
-	inline string getTypeName() const { return "SFColorRGBA"; }
 	inline SFColorRGBA& operator()() { return *this; }
 	inline static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFColorRGBA&>(f);
-	}
-	inline const SFColorRGBA& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
 
 	/**

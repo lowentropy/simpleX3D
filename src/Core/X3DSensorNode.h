@@ -34,8 +34,8 @@ class X3DSensorNode : virtual public X3DChildNode {
 public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
-	class : public InOutField<X3DSensorNode, SFBool> {
-		bool filter(const bool& enabled) {
+	class Enabled : public InOutField<X3DSensorNode, SFBool> {
+		bool filter(bool enabled) {
 			return (value() != enabled);
 		}
 		void action() {
@@ -44,7 +44,7 @@ public:
 	} enabled;
 
 	/// Whether sensor is currently active.
-	class : public OutField<X3DSensorNode, SFBool> {
+	class IsActive : public OutField<X3DSensorNode, SFBool> {
 		void action() {
 			node()->onIsActive(value());
 		}

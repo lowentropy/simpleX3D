@@ -31,7 +31,6 @@ public:
 	bool value;
 
 	inline X3DField::Type getType() const { return X3DField::SFBOOL; }
-	inline string getTypeName() const { return "SFBool"; }
 
 	inline SFBool() : value(0) {}
 	inline SFBool(bool x) : value(x) {}
@@ -44,10 +43,6 @@ public:
 	}
 
 	inline const SFBool& operator=(bool x) { value = x; return *this; }
-	inline const SFBool& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFBool& operator=(const SFBool& f) {
 		value = f.value;
 		return *this;

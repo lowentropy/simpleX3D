@@ -31,7 +31,6 @@ public:
 	double value;
 
 	inline X3DField::Type getType() const { return X3DField::SFTIME; }
-	inline string getTypeName() const { return "SFTime"; }
 
 	inline SFTime() : value(0) {}
 	inline SFTime(double x) : value(x) {}
@@ -44,10 +43,6 @@ public:
 	}
 
 	inline const SFTime& operator=(double x) { value = x; return *this; }
-	inline const SFTime& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFTime& operator=(const SFTime& f) {
 		value = f.value;
 		return *this;

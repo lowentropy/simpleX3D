@@ -42,21 +42,21 @@ public:
 	DefaultOutField<X3DBindableNode, SFTime> bindTime;
 
 	/// Whether the node is bound or not.
-	class : public OutField<X3DBindableNode, SFBool> {
+	class IsBound : public OutField<X3DBindableNode, SFBool> {
 		void action() {
 			node()->onIsBound(value());
 		}
 	} isBound;
 
 	/// Set whether node is bound
-	class : public InField<X3DBindableNode, SFBool> {
+	class SetBind : public InField<X3DBindableNode, SFBool> {
 		void action(bool bound) {
 			node()->bind(bound);
 		}
 	} set_bind;
 
 	/// Callback for #isBound output event.
-	virtual void onIsBound(bool bound);
+	virtual void onIsBound(bool bound) {} // XXX abstract ?
 
 	/**
 	 * Default action to take on set_bind input event.

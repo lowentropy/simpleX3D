@@ -45,14 +45,10 @@ public:
 	typedef const SFRotation& CONST_TYPE;
 
     inline X3DField::Type getType() const { return X3DField::SFROTATION; }
-    inline string getTypeName() const { return "SFRotation"; }
 	inline static const SFRotation& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFROTATION)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFRotation&>(f);
-	}
-	inline const SFRotation& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
 	inline const SFRotation& operator=(const SFRotation& r) {
     x = r.x;

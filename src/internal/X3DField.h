@@ -83,12 +83,12 @@ public:
 
     static const string typeNames[];
     static const string& getTypeName(Type type);
-
-	virtual Type getType() const = 0;
-	virtual const X3DField& operator=(const X3DField& f) = 0;
+    const string& getTypeName();
 
 	X3DField() {}
     virtual ~X3DField() {}
+
+	virtual Type getType() const = 0;
 
 private:
 	X3DField(const X3DField& field) {}

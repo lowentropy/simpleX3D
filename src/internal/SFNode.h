@@ -29,7 +29,6 @@ class Node;
 class SFAbstractNode : public X3DField {
 public:
 	inline X3DField::Type getType() const { return X3DField::SFNODE; }
-	inline string getTypeName() const { return "SFNode"; }
 	virtual Node* operator()() const = 0;
 };
 
@@ -55,10 +54,6 @@ public:
 	}
 
 	inline const SFNode<N>& operator=(N* value) { this->value = value; }
-	inline const SFNode<N>& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFNode<N>& operator=(const SFNode<N>& f) {
 		value = f.value;
 		return *this;

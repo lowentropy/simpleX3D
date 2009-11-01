@@ -154,11 +154,11 @@ TEST(SFImage, ShouldGetPixelNotZeroingHighBytesWithQuadComponent) {
 TEST(SFImage, ShouldGetColorFromPixel) {
 	SFImage i(3,3,3);
 	i.setPixel(1,1,13141147);
-	ASSERT_EQ(SFColor(200, 132, 155), i.getColor(1,1));
+	ASSERT_EQ(SFColor(200.0/255, 132.0/255, 155.0/255), i.getColor(1,1));
 }
 
 TEST(SFImage, ShouldGetColorRGBAFromPixel) {
 	SFImage i(3,3,3);
 	i.setPixel(1,1,13141147);
-	ASSERT_EQ(SFColorRGBA(200, 132, 155), i.getColorRGBA(1,1));
+	ASSERT_EQ(SFColorRGBA(200.0/255, 132.0/255, 155.0/255), i.getColorRGBA(1,1));
 }

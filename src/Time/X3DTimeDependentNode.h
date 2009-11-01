@@ -41,12 +41,12 @@ class X3DTimeDependentNode : virtual public X3DChildNode {
 public:
 
 	/// if true, node will repeat its cycle
-	class : public InOutField<X3DTimeDependentNode, SFBool> {
+	class Loop : public InOutField<X3DTimeDependentNode, SFBool> {
 		void action() { node()->onLoopChanged(value()); }
 	} loop;
 
 	/// when paused, node will freeze state
-	class : public OutField<X3DTimeDependentNode, SFBool> {
+	class IsPaused : public OutField<X3DTimeDependentNode, SFBool> {
         void action() { node()->onIsPaused(value()); }
     } isPaused;
 
@@ -72,9 +72,9 @@ public:
         loop(false);
     }
 
-    virtual void onLoopChanged(bool loop) = 0;
-    virtual void onIsPaused(bool paused) = 0;
-    virtual bool getIsActive() = 0;
+    virtual void onLoopChanged(bool loop) {} // XXX abstract
+    virtual void onIsPaused(bool paused) {} // XXX abstract
+    virtual bool getIsActive() { return false; } // XXX abstract
 };
 
 }}

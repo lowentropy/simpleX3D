@@ -41,9 +41,8 @@ public:
         return value;
     }
     inline void set(const X3DField& value) {
-        if (node()->realized())
-            throw X3DError("wrong stage");
-        this->value = value;
+        static TT x;
+        (*this)(x.unwrap(value));
     }
     inline T operator()() const {
         if (node()->realized())

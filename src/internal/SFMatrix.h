@@ -421,14 +421,10 @@ public:
 	template <typename U> SFMatrix3f(U* a) : SFMatrix3<float>(a) {}
 
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX3F; }
-	inline string getTypeName() const { return "SFMatrix3f"; }
 	static inline const SFMatrix3f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3f&>(f);
-	}
-	inline const SFMatrix3f& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
     inline SFMatrix3f& operator()() {
         return *this;
@@ -471,14 +467,10 @@ public:
 	template <typename U> SFMatrix3d(U* a) : SFMatrix3<double>(a) {}
 
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX3D; }
-	inline string getTypeName() const { return "SFMatrix3d"; }
 	static inline const SFMatrix3d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3d&>(f);
-	}
-	inline const SFMatrix3d& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
     inline SFMatrix3d& operator()() {
         return *this;
@@ -514,14 +506,10 @@ public:
 	template <typename U> SFMatrix4f(U* a) : SFMatrix4<float>(a) {}
 
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX4F; }
-	inline string getTypeName() const { return "SFMatrix4f"; }
 	static inline const SFMatrix4f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4f&>(f);
-	}
-	inline const SFMatrix4f& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
     inline SFMatrix4f& operator()() {
         return *this;
@@ -564,14 +552,10 @@ public:
 	template <typename U> SFMatrix4d(U* a) : SFMatrix4<double>(a) {}
 
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX4D; }
-	inline string getTypeName() const { return "SFMatrix4d"; }
 	static inline const SFMatrix4d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4d&>(f);
-	}
-	inline const SFMatrix4d& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
     inline SFMatrix4d& operator()() {
         return *this;

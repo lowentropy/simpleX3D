@@ -22,8 +22,7 @@
 using ::testing::NotNull;
 
 TEST(Browser, GetSingletonShouldNotBeNull) {
-	Browser* browser = Browser::getSingleton();
-	EXPECT_THAT(browser, NotNull()) << "Browser singleton is NULL";
+	EXPECT_THAT(browser(), NotNull()) << "Browser singleton is NULL";
 //	browser->profile->print();
 }
 

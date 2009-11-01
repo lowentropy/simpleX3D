@@ -17,13 +17,13 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/types.h"
+#include "internal/Browser.h"
 #include <gmock/gmock.h>
 
 using namespace X3D;
 
 Browser* browser() {
-	return Browser.getSingleton();
+	return Browser::getSingleton();
 }
 
 // here's the list of tests

@@ -31,7 +31,6 @@ public:
 	double value;
 
 	inline X3DField::Type getType() const { return X3DField::SFDOUBLE; }
-	inline string getTypeName() const { return "SFDouble"; }
 
 	inline SFDouble() : value(0) {}
 	inline SFDouble(double x) : value(x) {}
@@ -44,10 +43,6 @@ public:
 	}
 
 	inline const SFDouble& operator=(double x) { value = x; return *this; }
-	inline const SFDouble& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFDouble& operator=(const SFDouble& f) {
 		value = f.value;
 		return *this;

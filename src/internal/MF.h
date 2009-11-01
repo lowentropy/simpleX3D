@@ -31,14 +31,10 @@ public:\
     typedef const MF& CONST_TYPE; \
     MF() : KIND<SF>() {} \
     inline X3DField::Type getType() const { return X3DField::CONST; } \
-    inline string getTypeName() const { return #MF; } \
     static inline const MF& unwrap(const X3DField& f) { \
         if (f.getType() != X3DField::CONST) \
             throw X3DError("base type mismatch"); \
         return static_cast<const MF&>(f); \
-    } \
-    inline const MF& operator=(const X3DField& f) { \
-        return *this = unwrap(f); \
     } \
     inline MF& operator()() { \
         return *this; \
@@ -91,14 +87,10 @@ public:
 	typedef const MFNode<N>& CONST_TYPE;
     MFNode() : MFNative<N*>() {}
 	inline X3DField::Type getType() const { return X3DField::MFNODE; }
-	inline string getTypeName() const { return "MFNode"; }
 	static inline const MFNode<N>& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
 			throw X3DError("base type mismatch");
 		return static_cast<const MFNode<N>&>(f);
-	}
-	inline const MFNode<N>& operator=(const X3DField& f) {
-		return *this = unwrap(f);
 	}
     inline MFNode<N>& operator()() {
         return *this;

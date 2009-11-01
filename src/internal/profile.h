@@ -90,7 +90,7 @@ public:
 class NodeDef {
 private:
 	map<string, FieldDef*> fields;
-	NodeDef* parent;
+	vector<NodeDef*> parents;
 
 	friend class Browser;
 
@@ -100,7 +100,7 @@ public:
 	const bool abstract;
 
 	NodeDef(Component* component, const string& name, bool abstract) :
-		component(component), name(name), parent(NULL), abstract(abstract) {}
+		component(component), name(name), abstract(abstract) {}
 	virtual ~NodeDef();
 
 	void inherits(const string& name);
@@ -139,8 +139,9 @@ protected:
 
 public:
 
-	FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, SAIField N::*ptr) {
-		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, ptr);
+	template <typename T> FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, T N::*ptr) {
+        SAIField N::*field = (SAIField N::*) ptr;
+		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, field);
 		addField(def);
 		return def;
 	}
@@ -153,8 +154,10 @@ private:
 
 public:
 	const string name;
+    Profile* const profile;
 
-	Component(const string& name) : name(name) {}
+	Component(Profile* profile, const string& name) :
+        profile(profile), name(name) {}
 	virtual ~Component();
 
 	NodeDef* getNode(const string& name);

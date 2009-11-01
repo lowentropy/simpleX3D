@@ -31,7 +31,6 @@ public:
 	float value;
 
 	inline X3DField::Type getType() const { return X3DField::SFFLOAT; }
-	inline string getTypeName() const { return "SFFloat"; }
 
 	inline SFFloat() : value(0) {}
 	inline SFFloat(float x) : value(x) {}
@@ -44,10 +43,6 @@ public:
 	}
 
 	inline const SFFloat& operator=(float x) { value = x; return *this; }
-	inline const SFFloat& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFFloat& operator=(const SFFloat& f) {
 		value = f.value;
 		return *this;

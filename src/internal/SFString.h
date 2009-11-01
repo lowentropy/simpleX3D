@@ -34,7 +34,6 @@ public:
 	string value;
 
 	inline X3DField::Type getType() const { return X3DField::SFSTRING; }
-	inline string getTypeName() const { return "SFString"; }
 
 	inline SFString() : value("") {}
 	inline SFString(const string& init) : value(init) {}
@@ -48,10 +47,6 @@ public:
 
 	inline const SFString& operator=(const string& x) {
 		value = x;
-		return *this;
-	}
-	inline const SFString& operator=(const X3DField& f) {
-		value = unwrap(f);
 		return *this;
 	}
 	inline const SFString& operator=(const SFString& f) {

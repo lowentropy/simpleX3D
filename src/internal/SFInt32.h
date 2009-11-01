@@ -31,7 +31,6 @@ public:
 	int value;
 
 	inline X3DField::Type getType() const { return X3DField::SFINT32; }
-	inline string getTypeName() const { return "SFInt32"; }
 
 	inline SFInt32() : value(0) {}
 	inline SFInt32(int x) : value(x) {}
@@ -44,10 +43,6 @@ public:
 	}
 
 	inline const SFInt32& operator=(int x) { value = x; return *this; }
-	inline const SFInt32& operator=(const X3DField& f) {
-		value = unwrap(f);
-		return *this;
-	}
 	inline const SFInt32& operator=(const SFInt32& f) {
 		value = f.value;
 		return *this;

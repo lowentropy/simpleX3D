@@ -33,23 +33,29 @@ NodeDef::~NodeDef() {
 }
 
 void NodeDef::inherits(const string& name) {
-	parent = component->getNode(name);
+	NodeDef* parent = component->profile->getNode(name);
 	if (parent == NULL)
 		throw X3DError("can't set nonexistent parent: " + name);
+    parents.push_back(parent);
 }
 
 void NodeDef::print(bool full) {
 	cout << "\t" << name;
-	if (parent != NULL)
-		cout << " : " << parent->name;
+	if (parents.size() > 0)
+		cout << " : " << parents[0]->name;
+    for (int i = 1; i < parents.size(); i++)
+        cout << ", " << parents[i]->name;
 	cout << " {" << endl;
 	print_fields(full);
 	cout << "\t}" << endl;
 }
 
 void NodeDef::print_fields(bool full) {
-	if (full && (parent != NULL))
-		parent->print_fields(full);
+	if (full) {
+        vector<NodeDef*>::iterator it = parents.begin();
+        for (; it != parents.end(); it++)
+            (*it)->print_fields(full);
+    }
 	map<string, FieldDef*>::iterator it = fields.begin();
 	for (; it != fields.end(); it++)
 		it->second->print();
@@ -111,7 +117,7 @@ NodeDef* Profile::getNode(const string& name) {
 }
 
 Component* Profile::createComponent(const string& name) {
-	Component* comp = new Component(name);
+	Component* comp = new Component(this, name);
 	comp_map[name] = comp;
 	comp_list.push_back(comp);
 	return comp;
