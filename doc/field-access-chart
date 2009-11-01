@@ -1,0 +1,25 @@
+EXAMPLES
+
+(for an X3DBindableNode)
+
+     ():	if (node.isBound()) ... ;
+(value):	node.set_bind(...);
+= value:	this->bindTime = ...;
+
+
+SETUP
+
+			()				(value)		      set
+init	get value		     ----          set value
+in		   ----				 ----			 ----
+out		   ----				 ----			 ----
+inout	get value			 ----		   set value
+
+
+REALIZED
+
+			()				(value)			 send
+init	   ----              ----            ----
+in		   ----           input event		 ----
+out		get last val		 ----		  output event
+inout	get last val	  input event     output event
