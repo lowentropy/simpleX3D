@@ -58,13 +58,7 @@ public:
     void changed(bool value=true) {
         dirty = value;
     }
-    void route() {
-        if (dirty) {
-            action();
-            // TODO: send event
-            dirty = false;
-        }
-    }
+    bool isDirty() { return dirty; }
     virtual void action() = 0;
 };
 
