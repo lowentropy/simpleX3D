@@ -66,6 +66,7 @@ public:
     void changed(bool value=true) {
         dirty = value;
     }
+    bool isDirty() { return dirty; }
     void route() {
         if (dirty) {
             action();

@@ -25,17 +25,59 @@ TEST(TypeSystem, SetupInOutFieldHasGetAndSet) {
 }
 
 TEST(TypeSystem, RealizedOutputFieldHasGet) {
+    TimeSensor* ts = browser()->createNode<TimeSensor>("TimeSensor");
+    ts->realize();
+    ASSERT_EQ(0.0, ts->time());
 }
 
 TEST(TypeSystem, RealizedInOutFieldHasGetAndSet) {
+    TimeSensor* ts = browser()->createNode<TimeSensor>("TimeSensor");
+    ts->realize();
+    ASSERT_EQ(1.0, ts->cycleInterval());
+    ts->cycleInterval(5);
+    ASSERT_EQ(5.0, ts->cycleInterval());
 }
+
+class InFieldNode : public Node {
+public:
+    class TestField : public InField<InFieldNode, SFString> {
+        void action(const string& str) {
+            ASSERT_EQ("foo", str);
+        }
+    } testField;
+};
 
 TEST(TypeSystem, RealizedInputFieldCallsAction) {
+    InFieldNode* node = new InFieldNode();
+    node->testField.setNode(node);
+    ASSERT_ANY_THROW(node->testField("foo"));
+    node->realize();
+    node->testField("foo");
 }
 
+class InOutNode : public Node {
+public:
+    class TestField : public InOutField<InOutNode, SFInt32> {
+        bool filter(int value) {
+            EXPECT_EQ(true, node()->realized());
+            return value > 3;
+        }
+        void action() {
+        }
+    } testField;
+};
+
 TEST(TypeSystem, RealizedInputOutputFieldCallsFilter) {
-    // making sure to test that if filter is false, the
-    // value of the field is unchanged
+    InOutNode* node = new InOutNode();
+    node->testField.setNode(node);
+    node->testField(-3);
+    node->realize();
+    ASSERT_EQ(-3, node->testField());
+    node->testField(5);
+    ASSERT_EQ(5, node->testField());
+    ASSERT_EQ(true, node->testField.isDirty()) << "filter should have returned true, marking field dirty";
+    node->testField(2);
+    ASSERT_EQ(5, node->testField()) << "filter should have returned false, so value should be unchanged";
 }
 
 // TODO: tests of dynamic field lookup and access
