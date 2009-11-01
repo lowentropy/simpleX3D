@@ -14,6 +14,14 @@ TEST(TypeSystem, SetupInitFieldHasGetAndSet) {
 TEST(TypeSystem, SetupInOutFieldHasGetAndSet) {
     TimeSensor* ts = browser()->createNode<TimeSensor>("TimeSensor");
     ASSERT_EQ(1.0, ts->cycleInterval());
+    ts->cycleInterval(5);
+    ASSERT_EQ(5.0, ts->cycleInterval());
+    // This is commented because
+    //   1) not all SF... wrappers have == and != methods yet
+    //   2) none of them have the << operator, so the assertions
+    //      won't actually compile
+//  SFTime time(5);
+//  ASSERT_EQ(time, ts->cycleInterval.get());
 }
 
 TEST(TypeSystem, RealizedOutputFieldHasGet) {

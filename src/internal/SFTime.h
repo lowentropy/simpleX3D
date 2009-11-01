@@ -47,6 +47,9 @@ public:
 		value = f.value;
 		return *this;
 	}
+
+    inline bool operator==(const SFTime& t) const { return value == t.value; }
+    inline bool operator!=(const SFTime& t) const { return value != t.value; }
 };
 
 }
