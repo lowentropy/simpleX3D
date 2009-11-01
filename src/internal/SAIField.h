@@ -37,6 +37,7 @@ public:
 	virtual const X3DField& get() const = 0;
 	virtual void set(const X3DField& value) = 0;
 	virtual void route() = 0;
+    virtual void setup() {}
 };
 
 template <class N>

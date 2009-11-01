@@ -44,12 +44,11 @@ public:
         static TT x;
         (*this)(x.unwrap(value));
     }
-    /*inline*/ T operator()() {
+    inline T operator()() {
         if (node()->realized())
             throw X3DError("wrong stage");
         return value();
     }
-    /*inline*/ void operator=(CT x) { value = x; }
     inline void operator()(CT x) {
         if (node()->realized())
             throw X3DError("wrong stage");

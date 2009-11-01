@@ -42,6 +42,7 @@ public:
 
 	/// if true, node will repeat its cycle
 	class Loop : public InOutField<X3DTimeDependentNode, SFBool> {
+        void setup() { value = false; }
 		void action() { node()->onLoopChanged(value()); }
 	} loop;
 
@@ -64,13 +65,6 @@ public:
 
 	/// time since cycle began
 	DefaultOutField<X3DTimeDependentNode, SFTime> elapsedTime;
-
-	/// Default node constructor.
-	X3DTimeDependentNode() :
-		pauseTime(0), resumeTime(0),
-		startTime(0), stopTime(0) {
-        loop(false);
-    }
 
     virtual void onLoopChanged(bool loop) {} // XXX abstract
     virtual void onIsPaused(bool paused) {} // XXX abstract

@@ -38,6 +38,7 @@ public:
 
 	/// Period of time for repeated events.
 	class CycleInterval : public InOutField<TimeSensor, SFTime> {
+        void setup() { value = 1; }
 		void action() {
 			node()->onCycleIntervalChanged(value());
 		}
@@ -51,9 +52,6 @@ public:
 
 	/// Current timestamp.
 	DefaultOutField<TimeSensor, SFTime> time;
-
-	/// Default node constructor.
-	TimeSensor() { cycleInterval(1); }
 
     virtual void onCycleIntervalChanged(double interval) {} // XXX: abstract
 };

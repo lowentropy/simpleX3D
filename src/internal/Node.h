@@ -69,6 +69,8 @@ public:
 	 */
 	virtual Browser* browser();
 
+    virtual void setup() {}
+
 	template <class T> const T* cast() const {
 		const T* node = dynamic_cast<const T*>(this);
 		if (node == NULL)

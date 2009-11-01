@@ -87,7 +87,9 @@ public:
 		field(field) {}
 
     void init(N* node) {
-        (static_cast<NodeField<N>*>(&(node->*field)))->setNode(node);
+        NodeField<N>* f = static_cast<NodeField<N>*>(&(node->*field));
+        f->setNode(node);
+        f->setup();
     }
 };
 
@@ -118,17 +120,18 @@ protected:
 			throw X3DError("can't instantiate abstract nodes");
         N* node = new N();
         node->definition = this;
-        setNodeOnFields<N>(node);
+        initFields<N>(node);
         return node;
 	}
 
-    template <class N> void setNodeOnFields(N* node) {
+    template <class N> void initFields(N* node) {
         map<string, FieldDef*>::iterator fit = fields.begin();
-        for (; fit != fields.end(); fit++)
+        for (; fit != fields.end(); fit++) {
             (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
+        }
         vector<NodeDef*>::iterator pit = parents.begin();
         for (; pit != parents.end(); pit++)
-            (*pit)->setNodeOnFields(node);
+            (*pit)->initFields(node);
     }
 
 	void addField(FieldDef* field);

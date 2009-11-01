@@ -35,6 +35,7 @@ public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
 	class Enabled : public InOutField<X3DSensorNode, SFBool> {
+        void setup() { value = true; }
 		bool filter(bool enabled) {
 			return (value() != enabled);
 		}
@@ -49,9 +50,6 @@ public:
 			node()->onIsActive(value());
 		}
 	} isActive;
-
-	/// Default node constructor.
-	X3DSensorNode() { enabled(true); }
 
 	/// Callback for #enabled output event.
 	virtual void onEnabled(bool enabled) {};
