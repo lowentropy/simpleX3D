@@ -24,6 +24,28 @@
 
 namespace X3D {
 
+/**
+ * Base class for all output-only fields contained in nodes.
+ * 
+ * To create an output field, either create an instance of DefaultOutField
+ * or subclass OutField and provide the #action method.
+ * 
+ * The high-level interface for this field type only defines the
+ * get() method, which returns the last value triggered by this field.
+ * 
+ * The low-level interface additionally defines the operator()(value)
+ * method, which triggers an output event. It does this by immediately
+ * setting the value of the field, and marking the field as dirty.
+ * 
+ * Attempting to trigger an output event when the node is not in the
+ * REALIZED state will result in an error. Only one output event per
+ * event cycle is allowed; attempting to trigger the field repeatedly
+ * will also result in an error.
+ * 
+ * When the output event actually triggers, the first action performed
+ * by the browser is to call the #action method. This occurs before any
+ * outgoing routes are activated.
+ */
 template <class N, class TT>
 class OutField : public BaseField<N,TT> {
 private:

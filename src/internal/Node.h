@@ -36,9 +36,15 @@ namespace X3D {
 class NodeDef;
 class Browser;
 
+/**
+ * Base class for all abstract and concrete node types.
+ * This class by itself doesn't do much except track the
+ * node lifecycle.
+ */
 class Node {
 friend class NodeDef;
 public:
+    /// Node lifcycle stage definitions
 	typedef enum {
 		CREATION,
 		SETUP,
@@ -47,18 +53,30 @@ public:
 	} Stage;
 
 protected:
+    /// Definition of node, which may be a static definition or prototype definition
 	NodeDef* definition;
+
+    /// Current stage of node lifecycle
 	Stage stage;
 
 private:
+    /// Disallow copy constructgor
 	Node(const Node& node) {}
 
 public:
+    /// Empty constructor. Nodes start in stage SETUP.
 	Node() : stage(SETUP) {}
+
+    /// Virtual deconstructor.
 	virtual ~Node() {}
 
+    /// @returns current lifecycle stage
 	Stage getStage() const { return stage; }
+
+    /// @returns whether node is in REALIZED stage
 	bool realized() const { return stage == REALIZED; }
+
+    /// Moves the node to the REALIZED stage.
 	void realize() { stage = REALIZED; }
 
 	/**
@@ -68,22 +86,6 @@ public:
 	 * @returns singleton instance of Browser
 	 */
 	virtual Browser* browser();
-
-    virtual void setup() {}
-
-	template <class T> const T* cast() const {
-		const T* node = dynamic_cast<const T*>(this);
-		if (node == NULL)
-			throw X3DError("illegal node cast");
-		return node;
-	}
-
-	template <class T> T* cast() {
-		T* node = dynamic_cast<T*>(this);
-		if (node == NULL)
-			throw X3DError("illegal node cast");
-		return node;
-	}
 };
 
 }
