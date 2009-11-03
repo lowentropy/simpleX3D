@@ -49,26 +49,65 @@ namespace X3D {
 template <class N, class TT>
 class OutField : public BaseField<N,TT> {
 private:
-    bool dirty;
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
+
+    /// whether field has been modified
+    bool dirty;
+
 protected:
+    /**
+     * Get a reference to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
     inline N* node() const { return NodeField<N>::node; }
+
 public:
+    /// Stored value of the field; last thing sent in output event.
     TT value;
+
+    /**
+     * High-level accessor to get generic field value. Will throw an
+     * error if the field's node is not in state REALIZED.
+     * 
+     * @returns generic field value
+     */
     inline const TT& get() const {
         if (!node()->realized())
             throw X3DError("wrong stage");
         return value;
     }
+
+    /**
+     * High-level accessor to set generic field value. This will
+     * always throw an error, as output fields can't be written to.
+     * 
+     * @param field generic field value to set
+     */
     inline void set(const X3DField& field) {
         throw X3DError("can't write output field");
     }
+
+    /**
+     * Low-level accessor to get native field value. Will throw an
+     * error if the field's node is not in state REALIZED.
+     * 
+     * @returns native field value
+     */
     inline T operator()() {
         if (!node()->realized())
             throw X3DError("wrong stage");
         return value();
     }
+
+    /**
+     * Low-level access to set the native field value. This has the effect
+     * of overwriting the field's value and queueing an output event. If the
+     * field's node is not in state REALIZED, this will throw an error.
+     * 
+     * @param value native value to set
+     */
     inline void operator()(CT value) {
         if (!node()->realized())
             throw X3DError("can't route event until realized");
@@ -77,16 +116,37 @@ public:
         this->value = value;
         dirty = true;
     }
+
+    /**
+     * Manually set whether the field should be considered dirty.
+     * 
+     * @param value whether field is changed (#dirty)
+     */
     void changed(bool value=true) {
         dirty = value;
     }
+
+    /// @returns whether field has been marked dirty
     bool isDirty() { return dirty; }
+
+    /**
+     * When the output field triggers an event, the browser will call
+     * #action before activating any outgoing routes. This will be called
+     * even if no routes are present. Subclasses MUST provide this method,
+     * unless they subclass DefaultOutField.
+     */
     virtual void action() = 0;
 };
 
+/**
+ * Provides a default action for OutField. Derive from this class if you
+ * either do not want any action to be performed for this output field,
+ * or if the default action is to do nothing.
+ */
 template <class N, class TT>
 class DefaultOutField : public OutField<N,TT> {
 public:
+    /// Default action is to do nothing.
     virtual void action() {}
 };
 
