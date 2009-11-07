@@ -36,6 +36,9 @@ public:
 	/// metadata value, a list of other metadata (last written to value_changed)
 	DefaultInOutField<MetadataSet, MFNode<X3DMetadataObject> > value;
 
+    /// Setup stuff
+    void setup() {}
+
 	/**
 	 * Add entries to #value from the entries in the given map.
 	 * 

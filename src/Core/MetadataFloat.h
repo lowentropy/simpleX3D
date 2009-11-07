@@ -28,6 +28,9 @@ namespace Core {
 /** Metadata value containing a list of floats (MFFloat). */
 class MetadataFloat : public X3DNode, public X3DMetadataObject {
 public:
+
+    /// Setup stuff
+    void setup() {}
 	
 	/// metadata value (last written to value_changed)
 	DefaultInOutField<MetadataFloat, MFFloat> value;

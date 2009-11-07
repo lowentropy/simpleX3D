@@ -21,7 +21,6 @@
 #define _X3D_X3DSENSORNODE_H_
 
 #include "Core/X3DChildNode.h"
-#include <iostream> // XXX
 
 namespace X3D {
 namespace Core {
@@ -33,6 +32,8 @@ namespace Core {
  */
 class X3DSensorNode : virtual public X3DChildNode {
 public:
+
+    X3DSensorNode() {}
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
 	class Enabled : public InOutField<X3DSensorNode, SFBool> {
@@ -58,12 +59,14 @@ public:
 	virtual void onIsActive(bool active) {};
 
     /// Setup function called on instantiation.
-    virtual void setup() {
-        (dynamic_cast<X3DChildNode*>(this))->setup();
-//        X3DChildNode::setup();
-        std::cout << "setting enabled (" << &enabled << " from " << this << std::endl;
+    void setup() {
         enabled(true);
     }
+
+private:
+
+    // no copy constructor
+    X3DSensorNode(const X3DSensorNode& node) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }}

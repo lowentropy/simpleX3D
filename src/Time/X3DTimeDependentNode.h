@@ -21,7 +21,6 @@
 #define _X3D_X3DTIMEDEPENDENTNODE_H_
 
 #include "Core/X3DChildNode.h"
-#include <iostream> // XXX
 
 using X3D::Core::X3DChildNode;
 
@@ -40,6 +39,8 @@ namespace Time {
  */
 class X3DTimeDependentNode : virtual public X3DChildNode {
 public:
+
+    X3DTimeDependentNode() {}
 
 	/// if true, node will repeat its cycle
 	class Loop : public InOutField<X3DTimeDependentNode, SFBool> {
@@ -67,16 +68,18 @@ public:
 	DefaultOutField<X3DTimeDependentNode, SFTime> elapsedTime;
 
     /// Setup function called on node instantiation.
-    virtual void setup() {
-        (dynamic_cast<X3DChildNode*>(this))->setup();
-//        X3DChildNode::setup();
-        std::cout << "setting loop (" << &loop << " from " << this << std::endl;
+    void setup() {
         loop(false);
     }
 
     virtual void onLoopChanged(bool loop) {} // XXX abstract
     virtual void onIsPaused(bool paused) {} // XXX abstract
     virtual bool getIsActive() { return false; } // XXX abstract
+
+private:
+
+    // no copy constructor
+    X3DTimeDependentNode(const X3DTimeDependentNode& node) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }}

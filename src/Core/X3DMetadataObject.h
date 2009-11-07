@@ -44,6 +44,9 @@ public:
 	/// Metadata specification for #name (optional).
 	DefaultInOutField<X3DMetadataObject, SFString> reference;
 
+    /// Setup stuff
+    void setup() {}
+
 	/**
 	 * Assign new metadata entries from a string-to-string map.
 	 * 

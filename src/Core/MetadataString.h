@@ -33,6 +33,9 @@ public:
 	/// metadata value (last written to value_changed)
 	DefaultInOutField<MetadataString, MFString> value;
 
+    /// Setup stuff
+    void setup() {}
+
 	/**
 	 * Assign metadata value from string.
 	 * 

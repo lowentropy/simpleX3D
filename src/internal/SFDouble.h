@@ -36,44 +36,44 @@ public:
 	double value;
 
     /// @returns SFDOUBLE
-	inline X3DField::Type getType() const { return X3DField::SFDOUBLE; }
+	INLINE X3DField::Type getType() const { return X3DField::SFDOUBLE; }
 
     /// Empty constructor.
-	inline SFDouble() : value(0) {}
+	INLINE SFDouble() : value(0) {}
 
     /// Initializing constructor.
-	inline SFDouble(double x) : value(x) {}
+	INLINE SFDouble(double x) : value(x) {}
 
     /// @returns native value
-	inline double operator()() { return value; }
+	INLINE double operator()() { return value; }
 
     /// Unwrap generic SFDouble value
-	inline static double unwrap(const X3DField& f) {
+	INLINE static double unwrap(const X3DField& f) {
 		if (f.getType() != SFDOUBLE)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFDouble&>(f)).value;
 	}
 
     /// Low-level assignment operator
-	inline const SFDouble& operator=(double x) { value = x; return *this; }
+	INLINE const SFDouble& operator=(double x) { value = x; return *this; }
 
     /// High-level assignment operator
-	inline const SFDouble& operator=(const SFDouble& f) {
+	INLINE const SFDouble& operator=(const SFDouble& f) {
 		value = f.value;
 		return *this;
 	}
 
     /// Generic comparison operator (equal)
-    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+    INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
 
     /// Generic comparison operator (not equal)
-    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+    INLINE bool operator!=(const X3DField& f) const { return value != unwrap(f); }
 
     /// Native comparison operator (equal)
-    inline bool operator==(const SFDouble& b) const { return value == b.value; }
+    INLINE bool operator==(const SFDouble& b) const { return value == b.value; }
 
     /// Native comparison operator (not equal)
-    inline bool operator!=(const SFDouble& b) const { return value != b.value; }
+    INLINE bool operator!=(const SFDouble& b) const { return value != b.value; }
 };
 
 }

@@ -39,6 +39,9 @@ public:
 
 	/// Arbitrary strings providing global metadata
 	InitField<WorldInfo, MFString> info;
+
+    /// Setup stuff
+    void setup() {}
 };
 
 }} // namespace X3D::Core

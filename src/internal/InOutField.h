@@ -21,7 +21,6 @@
 #define _X3D_INOUTFIELD_H_
 
 #include "internal/SAIField.h"
-#include <iostream> // XXX
 
 namespace X3D {
 
@@ -59,16 +58,13 @@ private:
     /// whether field value has been modified since last event cascade
     bool dirty;
 
-    /// disallow copy constructor
-    InOutField(const InOutField<N,TT>& f) { throw X3DError("illegal copy"); }
-
 protected:
     /**
      * Returns a pointer to the node which owns this field.
      * 
      * @returns node pointer
      */
-    inline N* node() const { return NodeField<N>::node; }
+    INLINE N* node() const { return NodeField<N>::node; }
 
 public:
     /// generic wrapper value of this field
@@ -89,7 +85,7 @@ public:
      * 
      * @returns generic field value
      */
-    inline const TT& get() const {
+    INLINE const TT& get() const {
         return value;
     }
 
@@ -100,7 +96,7 @@ public:
      * 
      * @param value generic field value to set
      */
-    inline void set(const X3DField& value) {
+    INLINE void set(const X3DField& value) {
         static TT x;
         (*this)(x.unwrap(value));
     }
@@ -110,7 +106,7 @@ public:
      * 
      * @returns native field value
      */
-    inline T operator()() {
+    INLINE T operator()() {
         return value();
     }
 
@@ -120,8 +116,7 @@ public:
      * 
      * @param value native value to set
      */
-    inline void operator()(CT value) {
-        std::cout << "inout (" << this << ") has node " << node() << std::endl;
+    INLINE void operator()(CT value) {
         if (!node()->realized()) {
             this->value = value;
         } else {
@@ -179,6 +174,11 @@ public:
      * Action to take on output event. Subclasses MUST define this function.
      */
     virtual void action() = 0;
+
+private:
+
+    // no copy constructor
+    InOutField(const InOutField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 /**
@@ -204,6 +204,11 @@ public:
      * On output event, take no action.
      */
     void action() {}
+
+private:
+
+    // no copy constructor
+    DefaultInOutField(const DefaultInOutField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }

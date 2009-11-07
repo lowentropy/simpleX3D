@@ -33,7 +33,7 @@ class Node;
 class SFAbstractNode : public X3DField {
 public:
     /// @returns SFNODE
-	inline X3DField::Type getType() const { return X3DField::SFNODE; }
+	INLINE X3DField::Type getType() const { return X3DField::SFNODE; }
 
     /// @returns native but non-specific pointer to node value
 	virtual Node* operator()() const = 0;
@@ -53,13 +53,13 @@ public:
 	N* value;
 
     /// Empty constructor.
-	inline SFNode() {}
+	INLINE SFNode() {}
 
     /// Initializing constructor.
-	inline SFNode(N* value) : value(value) {}
+	INLINE SFNode(N* value) : value(value) {}
 
     /// @returns native pointer value
-	inline N* operator()() const { return value; }
+	INLINE N* operator()() const { return value; }
 
     /**
      * Unwrap a generic field value containing a node.
@@ -71,7 +71,7 @@ public:
      * @param f generic field value
      * @returns native node pointer
      */
-	inline static N* unwrap(const X3DField& f) {
+	INLINE static N* unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFNODE)
 			throw X3DError("base type mismatch");
 		const SFAbstractNode& n = static_cast<const SFAbstractNode&>(f);
@@ -82,25 +82,25 @@ public:
 	}
 
     /// Low-level assignment operator.
-	inline const SFNode<N>& operator=(N* value) { this->value = value; }
+	INLINE const SFNode<N>& operator=(N* value) { this->value = value; }
 
     /// High-level assignment operator.
-	inline const SFNode<N>& operator=(const SFNode<N>& f) {
+	INLINE const SFNode<N>& operator=(const SFNode<N>& f) {
 		value = f.value;
 		return *this;
 	}
 
     /// Generic comparison operator (equal)
-    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+    INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
 
     /// Generic comparison operator (not equal)
-    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+    INLINE bool operator!=(const X3DField& f) const { return value != unwrap(f); }
 
     /// Native comparison operator (equal)
-    inline bool operator==(const SFNode<N>& n) const { return value == n.value; }
+    INLINE bool operator==(const SFNode<N>& n) const { return value == n.value; }
 
     /// Native comparison operator (not equal)
-    inline bool operator!=(const SFNode<N>& n) const { return value != n.value; }
+    INLINE bool operator!=(const SFNode<N>& n) const { return value != n.value; }
 
 };
 

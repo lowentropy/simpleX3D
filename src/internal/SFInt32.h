@@ -36,44 +36,44 @@ public:
 	int value;
 
     /// @returns SFINT32
-	inline X3DField::Type getType() const { return X3DField::SFINT32; }
+	INLINE X3DField::Type getType() const { return X3DField::SFINT32; }
 
     /// Empty constructor.
-	inline SFInt32() : value(0) {}
+	INLINE SFInt32() : value(0) {}
 
     /// Initializing constructor.
-	inline SFInt32(int x) : value(x) {}
+	INLINE SFInt32(int x) : value(x) {}
 
     /// @returns native integer value
-	inline int operator()() { return value; }
+	INLINE int operator()() { return value; }
 
     /// Unwrap a generic SFInt32 value
-	inline static int unwrap(const X3DField& f) {
+	INLINE static int unwrap(const X3DField& f) {
 		if (f.getType() != SFINT32)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFInt32&>(f)).value;
 	}
 
     /// Low-level assignment operator.
-	inline const SFInt32& operator=(int x) { value = x; return *this; }
+	INLINE const SFInt32& operator=(int x) { value = x; return *this; }
 
     /// High-level assignment operator.
-	inline const SFInt32& operator=(const SFInt32& f) {
+	INLINE const SFInt32& operator=(const SFInt32& f) {
 		value = f.value;
 		return *this;
 	}
 
     /// Generic comparison operator (equal)
-    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+    INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
 
     /// Generic comparison operator (not equal)
-    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+    INLINE bool operator!=(const X3DField& f) const { return value != unwrap(f); }
 
     /// Native comparison operator (equal)
-    inline bool operator==(const SFInt32& x) const { return value == x.value; }
+    INLINE bool operator==(const SFInt32& x) const { return value == x.value; }
 
     /// Native comparison operator (not equal)
-    inline bool operator!=(const SFInt32& x) const { return value != x.value; }
+    INLINE bool operator!=(const SFInt32& x) const { return value != x.value; }
 };
 
 }

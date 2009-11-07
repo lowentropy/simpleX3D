@@ -61,11 +61,15 @@ protected:
      * 
      * @returns node pointer
      */
-    inline N* node() const { return NodeField<N>::node; }
+    INLINE N* node() const { return NodeField<N>::node; }
 
 public:
+
     /// Stored value of the field; last thing sent in output event.
     TT value;
+
+    /// Empty constructor.
+    OutField() {}
 
     /**
      * High-level accessor to get generic field value. Will throw an
@@ -73,7 +77,7 @@ public:
      * 
      * @returns generic field value
      */
-    inline const TT& get() const {
+    INLINE const TT& get() const {
         if (!node()->realized())
             throw X3DError("wrong stage");
         return value;
@@ -85,7 +89,7 @@ public:
      * 
      * @param field generic field value to set
      */
-    inline void set(const X3DField& field) {
+    INLINE void set(const X3DField& field) {
         throw X3DError("can't write output field");
     }
 
@@ -95,7 +99,7 @@ public:
      * 
      * @returns native field value
      */
-    inline T operator()() {
+    INLINE T operator()() {
         if (!node()->realized())
             throw X3DError("wrong stage");
         return value();
@@ -108,7 +112,7 @@ public:
      * 
      * @param value native value to set
      */
-    inline void operator()(CT value) {
+    INLINE void operator()(CT value) {
         if (!node()->realized())
             throw X3DError("can't route event until realized");
         if (dirty)
@@ -136,6 +140,11 @@ public:
      * unless they subclass DefaultOutField.
      */
     virtual void action() = 0;
+
+private:
+
+    // no copy constructor
+    OutField(const OutField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 /**
@@ -148,6 +157,14 @@ class DefaultOutField : public OutField<N,TT> {
 public:
     /// Default action is to do nothing.
     virtual void action() {}
+
+    /// Empty constructor.
+    DefaultOutField() {}
+    
+private:
+
+    // no copy constructor
+    DefaultOutField(const DefaultOutField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }

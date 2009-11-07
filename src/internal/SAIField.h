@@ -36,6 +36,10 @@ class Node;
  */
 class SAIField {
 public:
+
+    /// Empty constructor.
+    SAIField() {}
+
     /**
      * Get a pointer to the node which owns this field. Subclasses
      * should return a node of a specific type.
@@ -81,6 +85,11 @@ public:
      * @returns whether field is marked as dirty
      */
 	virtual bool isDirty() = 0;
+
+private:
+
+    // no copy constructor
+    SAIField(const SAIField& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 /**
@@ -95,11 +104,19 @@ protected:
 	N* node;
 public:
 
+    /// Empty constructor.
+    NodeField() {}
+
     /// @returns pointer to owner node
 	N* getNode() const { return node; }
 
     /// @param node owner node to set
 	void setNode(N* node) { this->node = node; }
+
+private:
+
+    // no copy constructor
+    NodeField(const NodeField<N>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 /**
@@ -111,11 +128,20 @@ public:
 template <class N, class TT>
 class BaseField : public NodeField<N> {
 public:
+
+    /// Empty constructor.
+    BaseField() {}
+
     /// @returns the data type of the field
 	X3DField::Type getType() const { static TT x; return x.getType(); }
 
     /// @returns the printable name of the field datatype
 	string getTypeName() const { static TT x; return x.getTypeName(); }
+
+private:
+
+    // no copy constructor
+    BaseField(const BaseField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }

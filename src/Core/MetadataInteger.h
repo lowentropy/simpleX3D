@@ -29,6 +29,9 @@ namespace Core {
 class MetadataInteger : public X3DNode, public X3DMetadataObject {
 public:
 
+    /// Setup stuff
+    void setup() {}
+
 	/// metadata value (last written to value_changed)
 	DefaultInOutField<MetadataInteger, MFInt32> value;
 };

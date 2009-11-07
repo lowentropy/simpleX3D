@@ -47,7 +47,7 @@ protected:
      * 
      * @returns node pointer
      */
-    inline N* node() const { return NodeField<N>::node; }
+    INLINE N* node() const { return NodeField<N>::node; }
 
 public:
     /// wrapper value contained by the field
@@ -70,7 +70,7 @@ public:
      * 
      * @returns generic field value
      */
-    inline const TT& get() const {
+    INLINE const TT& get() const {
         if (node()->realized())
             throw X3DError("wrong stage");
         return value;
@@ -83,7 +83,7 @@ public:
      * 
      * @param value generic field value to set
      */
-    inline void set(const X3DField& value) {
+    INLINE void set(const X3DField& value) {
         static TT x;
         (*this)(x.unwrap(value));
     }
@@ -95,7 +95,7 @@ public:
      * 
      * @return native field value
      */
-    inline T operator()() {
+    INLINE T operator()() {
         if (node()->realized())
             throw X3DError("wrong stage");
         return value();
@@ -108,7 +108,7 @@ public:
      * 
      * @param value native value to set
      */
-    inline void operator()(CT value) {
+    INLINE void operator()(CT value) {
         if (node()->realized())
             throw X3DError("wrong stage");
         this->value = value;
@@ -120,6 +120,11 @@ public:
      * @returns false
      */
     bool isDirty() { return false; }
+
+private:
+
+    // no copy constructor
+    InitField(const InitField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }

@@ -24,7 +24,6 @@
 #include "internal/SAIField.h"
 #include <map>
 #include <vector>
-#include <iostream> // XXX
 
 using std::map;
 using std::vector;
@@ -162,7 +161,6 @@ public:
      * fields of the node.
      */
     void init(N* node) {
-        std::cout << "calling init() on " << name << " (" << this << ") with " << node << std::endl;
         NodeField<N>* f = static_cast<NodeField<N>*>(&(node->*field));
         f->setNode(node);
     }
@@ -174,15 +172,20 @@ public:
  * fields.
  */
 class NodeDef {
-private:
-    /// map of field basename to field definition
-	map<string, FieldDef*> fields;
-
-    /// list of node parents
-	vector<NodeDef*> parents;
 
     // allow browser to access creation method
 	friend class Browser;
+
+protected:
+    /// map of field basename to field definition
+	map<string, FieldDef*> fields;
+
+    /// chain from root ancestor to immediate ancestors
+    list<NodeDef*> chain;
+
+private:
+    /// list of node parents
+	vector<NodeDef*> parents;
 
 public:
     /// component in which node is defined
@@ -222,6 +225,14 @@ public:
      */
 	virtual void print(bool full = true);
 
+    /**
+     * Initialize a node by preparing its fields and calling the setup() 
+     * chain defined by the node definition hierarchy.
+     * 
+     * @param node node to initialize
+     */
+    virtual void setup(Node* node) = 0;
+
 protected:
 
     /**
@@ -232,35 +243,12 @@ protected:
 	virtual Node* create() = 0;
 
     /**
-     * Create an instance of the particular template node type.
-     * This will automatically initialize the fields of the node.
+     * Create a node and return it in its particular type.
      * 
      * @returns new node instance
      */
-	template <class N> N* create() {
-		if (abstract)
-			throw X3DError("can't instantiate abstract nodes");
-        N* node = new N();
-        node->definition = this;
-        initFields<N>(node);
-        node->setup();
-        return node;
-	}
-
-    /**
-     * Initialize the fields of the given node by recursively looking
-     * up all declared fields and calling their init method.
-     * 
-     * @param node node instance whose fields to set up
-     */
-    template <class N> void initFields(N* node) {
-        map<string, FieldDef*>::iterator fit = fields.begin();
-        for (; fit != fields.end(); fit++) {
-            (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
-        }
-        vector<NodeDef*>::iterator pit = parents.begin();
-        for (; pit != parents.end(); pit++)
-            (*pit)->initFields(node);
+    template <class N> N* create() {
+        return dynamic_cast<N*>(create());
     }
 
     /** 
@@ -277,6 +265,24 @@ protected:
      * @param full if true, recursively print field definitions of parents
      */
 	void print_fields(bool full);
+
+    /**
+     * Set node definition on the given node.
+     * 
+     * @param node node to set definition=this on.
+     */
+    void setDefinition(Node* node);
+
+private:
+
+    /**
+     * Grow the inheritance chain recursively. Adds the given definition
+     * after its ancestors, ignoring any definitions that already exist in
+     * the chain.
+     * 
+     * @param def definition to add to chain
+     */
+    void growChain(NodeDef* def);
 };
 
 
@@ -299,16 +305,55 @@ public:
 	NodeDefImpl(Component* comp, const string& name, bool abstract) :
 		NodeDef(comp, name, abstract) {}
 
-protected:
-
     /**
      * Create a new instance of the template node type.
      * 
      * @returns new node instance
      */
 	N* create() {
-		return NodeDef::create<N>();
+		if (abstract)
+			throw X3DError("can't instantiate abstract nodes");
+        N* node = new N();
+        setDefinition(node);
+        list<NodeDef*>::iterator it = chain.begin();
+        for (; it != chain.end(); it++)
+            (*it)->setup(node);
+        setup(node);
+        return node;
 	}
+
+protected:
+
+    /**
+     * Set up the node by initializing its fields and calling the
+     * setup() method defined by this node-definition level.
+     * 
+     * @param node node to set up
+     */
+    void setup(Node* node) {
+        N* ptr = dynamic_cast<N*>(node);
+        initFields(ptr);
+        ptr->N::setup();
+    }
+
+    /**
+     * Initialize the fields of the given node by recursively looking
+     * up all declared fields and calling their init method.
+     * 
+     * @param node node instance whose fields to set up
+     */
+    void initFields(N* node) {
+        map<string, FieldDef*>::iterator fit = fields.begin();
+        for (; fit != fields.end(); fit++) {
+            (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
+        }
+        /*
+        vector<NodeDef*>::iterator pit = parents.begin();
+        for (; pit != parents.end(); pit++)
+            (*pit)->initFields(node);
+        */
+    }
+
 
 public:
 

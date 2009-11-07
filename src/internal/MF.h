@@ -33,23 +33,23 @@ public:\
     /** Empty constructor. */ \
     MF() : KIND<SF>() {} \
     /** @returns CONST */ \
-    inline X3DField::Type getType() const { return X3DField::CONST; } \
+    INLINE X3DField::Type getType() const { return X3DField::CONST; } \
     /** Unwrap a generic value. @param value generic value @returns native value */ \
-    static inline const MF& unwrap(const X3DField& value) { \
+    static INLINE const MF& unwrap(const X3DField& value) { \
         if (value.getType() != X3DField::CONST) \
             throw X3DError("base type mismatch"); \
         return static_cast<const MF&>(value); \
     } \
     /** @returns native list value */ \
-    inline MF& operator()() { \
+    INLINE MF& operator()() { \
         return *this; \
     } \
     /** Generic comparison operator. @param value generic value to compare to @returns whether list is equal to generic value */ \
-    inline bool operator==(const X3DField& value) { \
+    INLINE bool operator==(const X3DField& value) { \
         return *this == unwrap(value); \
     } \
     /** Generic comparison operator. @param value generic value to compare to @returns whether list is not equal to generic value */ \
-    inline bool operator!=(const X3DField& value) { \
+    INLINE bool operator!=(const X3DField& value) { \
         return *this != unwrap(value); \
     } \
 private: \
@@ -159,7 +159,7 @@ public:
     MFNode() : MFNative<N*>() {}
 
     /** @returns MFNODE */
-	inline X3DField::Type getType() const { return X3DField::MFNODE; }
+	INLINE X3DField::Type getType() const { return X3DField::MFNODE; }
 
     /**
      * Unwrap a generic value into a list type. This method will
@@ -169,14 +169,14 @@ public:
      * @param f generic value
      * @returns native list type
      */
-	static inline const MFNode<N>& unwrap(const X3DField& f) {
+	static INLINE const MFNode<N>& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
 			throw X3DError("base type mismatch");
 		return static_cast<const MFNode<N>&>(f);
 	}
 
     /** @returns native list type */
-    inline MFNode<N>& operator()() {
+    INLINE MFNode<N>& operator()() {
         return *this;
     }
 

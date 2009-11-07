@@ -80,12 +80,12 @@ public:
 	void realize() { stage = REALIZED; }
 
     /**
-     * Virtual function to provide initialization AFTER the fields
+     * Function to provide initialization AFTER the fields
      * have had their node pointer set, allowing us to set default
-     * values on our fields. Remember to call your parent class
-     * setup function first!
+     * values on our fields. Don't make it virtual; it's provided
+     * by contract rather than polymorphism.
      */
-    virtual void setup() {}
+    void setup() {}
 
 	/**
 	 * Return a reference to the browser. This is a helper function

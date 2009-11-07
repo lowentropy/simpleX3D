@@ -20,6 +20,7 @@
 #ifndef _X3D_X3DFIELD_H_
 #define _X3D_X3DFIELD_H_
 
+#include "internal/config.h"
 #include "internal/errors.h"
 #include <string>
 using std::string;

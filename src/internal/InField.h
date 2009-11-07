@@ -50,15 +50,19 @@ protected:
      * 
      * @returns node pointer
      */
-    inline N* node() const { return NodeField<N>::node; }
+    INLINE N* node() const { return NodeField<N>::node; }
 
 public:
+
+    /// Empty constructor.
+    InField() {}
+
     /**
      * Throws an error, since input fields have no persistent value.
      * 
      * @returns nothing, always throws an error
      */
-    inline const TT& get() const {
+    INLINE const TT& get() const {
         throw X3DError("can't read input field");
     }
 
@@ -69,7 +73,7 @@ public:
      * 
      * @param value generic event value
      */
-    inline void set(const X3DField& value) {
+    INLINE void set(const X3DField& value) {
         static TT x;
         (*this)(x.unwrap(value));
     }
@@ -80,7 +84,7 @@ public:
      * 
      * @param value native event value
      */
-    inline void operator()(CT value) {
+    INLINE void operator()(CT value) {
         if (!node()->realized())
             throw X3DError("wrong stage");
         action(value);
@@ -100,6 +104,11 @@ public:
      * @returns false
      */
     bool isDirty() { return false; }
+
+private:
+
+    // no copy constructor
+    InField(const InField<N,TT>& f) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }

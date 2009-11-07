@@ -55,6 +55,9 @@ public:
 		}
 	} set_bind;
 
+    /// Setup stuff
+    void setup() {}
+
 	/// Callback for #isBound output event.
 	virtual void onIsBound(bool bound) {} // XXX abstract ?
 

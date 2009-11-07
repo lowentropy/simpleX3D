@@ -22,7 +22,6 @@
 
 #include "Core/X3DSensorNode.h"
 #include "Time/X3DTimeDependentNode.h"
-#include <iostream> // XXX
 
 using X3D::Core::X3DSensorNode;
 
@@ -36,6 +35,8 @@ namespace Time {
  */
 class TimeSensor: public X3DTimeDependentNode, public X3DSensorNode {
 public:
+
+    TimeSensor() {}
 
 	/// Period of time for repeated events.
 	class CycleInterval : public InOutField<TimeSensor, SFTime> {
@@ -55,16 +56,16 @@ public:
 
     /// Setup function called on instantiation.
     virtual void setup() {
-        (dynamic_cast<X3DTimeDependentNode*>(this))->setup();
-        (dynamic_cast<X3DSensorNode*>(this))->setup();
-//        X3DTimeDependentNode::setup();
-//        X3DSensorNode::setup();
-        std::cout << "setting cycleInterval (" << &cycleInterval << " from " << this << std::endl;
         cycleInterval(1);
     }
 
     /// callback for the cycleInterval_changed event
     virtual void onCycleIntervalChanged(double interval) {} // XXX: abstract
+
+private:
+
+    // no copy constructor
+    TimeSensor(const TimeSensor& node) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 
 }}

@@ -32,6 +32,9 @@ public:
 	/// metadata value (last written to output field)
 	DefaultInOutField<MetadataDouble, MFDouble> value;
 
+    /// Setup stuff
+    void setup() {}
+
 	/**
 	 * Convert string value to double and set to #value.
 	 *

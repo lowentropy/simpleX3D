@@ -55,17 +55,17 @@ public:
 	typedef const SFImage& CONST_TYPE;
 
     /// @returns SFIMAGE
-	inline X3DField::Type getType() const { return X3DField::SFIMAGE; }
+	INLINE X3DField::Type getType() const { return X3DField::SFIMAGE; }
 
     /// Unwrap generic SFImage value
-	inline static const SFImage& unwrap(const X3DField& f) {
+	INLINE static const SFImage& unwrap(const X3DField& f) {
 		if (f.getType() != SFIMAGE)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFImage&>(f);
 	}
 
     /// @returns native SFImage value
-	inline SFImage& operator()() {
+	INLINE SFImage& operator()() {
 		return *this;
 	}
 

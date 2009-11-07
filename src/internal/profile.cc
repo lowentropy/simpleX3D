@@ -19,6 +19,7 @@
 
 #include "internal/types.h"
 #include "internal/profile.h"
+#include "internal/Node.h"
 #include <iostream>
 
 using std::cout;
@@ -37,6 +38,18 @@ void NodeDef::inherits(const string& name) {
 	if (parent == NULL)
 		throw X3DError("can't set nonexistent parent: " + name);
     parents.push_back(parent);
+    growChain(parent);
+}
+
+void NodeDef::growChain(NodeDef* def) {
+    list<NodeDef*>::iterator c_it = chain.begin();
+    for (; c_it != chain.end(); c_it++)
+        if (*c_it == def)
+            return;
+    vector<NodeDef*>::iterator p_it = def->parents.begin();
+    for (; p_it != def->parents.end(); p_it++)
+        growChain(*p_it);
+    chain.push_back(def);
 }
 
 void NodeDef::print(bool full) {
@@ -59,6 +72,10 @@ void NodeDef::print_fields(bool full) {
 	map<string, FieldDef*>::iterator it = fields.begin();
 	for (; it != fields.end(); it++)
 		it->second->print();
+}
+
+void NodeDef::setDefinition(Node* node) {
+    node->definition = this;
 }
 
 void NodeDef::addField(FieldDef* field) {

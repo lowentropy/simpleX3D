@@ -45,17 +45,17 @@ public:
 	typedef const SFRotation& CONST_TYPE;
 
     /// @returns SFROTATION
-    inline X3DField::Type getType() const { return X3DField::SFROTATION; }
+    INLINE X3DField::Type getType() const { return X3DField::SFROTATION; }
 
     /// Unwrap a generic rotation value.
-	inline static const SFRotation& unwrap(const X3DField& f) {
+	INLINE static const SFRotation& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFROTATION)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFRotation&>(f);
 	}
 
     /// Native assignment operator.
-	inline const SFRotation& operator=(const SFRotation& r) {
+	INLINE const SFRotation& operator=(const SFRotation& r) {
         x = r.x;
         y = r.y;
         z = r.z;
@@ -64,7 +64,7 @@ public:
 	}
 
     /// @returns native rotation value
-	inline SFRotation& operator()() {
+	INLINE SFRotation& operator()() {
 		return *this;
 	}
 

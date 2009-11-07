@@ -35,6 +35,10 @@ class X3DChildNode : virtual public X3DNode {
 protected:
 	/// list of parent nodes
 	MFNode<X3DNode> parents;
+
+public:
+    /// Setup stuff
+    void setup() {}
 };
 
 }}

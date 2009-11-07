@@ -36,44 +36,44 @@ public:
 	float value;
 
     /// @returns SFFLOAT
-	inline X3DField::Type getType() const { return X3DField::SFFLOAT; }
+	INLINE X3DField::Type getType() const { return X3DField::SFFLOAT; }
 
     /// Empty constructor.
-	inline SFFloat() : value(0) {}
+	INLINE SFFloat() : value(0) {}
 
     /// Initializing constructor.
-	inline SFFloat(float x) : value(x) {}
+	INLINE SFFloat(float x) : value(x) {}
 
     /// @returns native value
-	inline float operator()() { return value; }
+	INLINE float operator()() { return value; }
 
     /// Unwrap generic SFFloat value
-	inline static float unwrap(const X3DField& f) {
+	INLINE static float unwrap(const X3DField& f) {
 		if (f.getType() != SFFLOAT)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFFloat&>(f)).value;
 	}
 
     /// Low-level assignment operator
-	inline const SFFloat& operator=(float x) { value = x; return *this; }
+	INLINE const SFFloat& operator=(float x) { value = x; return *this; }
 
     /// High-level assignment operator
-	inline const SFFloat& operator=(const SFFloat& f) {
+	INLINE const SFFloat& operator=(const SFFloat& f) {
 		value = f.value;
 		return *this;
 	}
 
     /// Generic comparison operator (equal)
-    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+    INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
 
     /// Generic comparison operator (not equal)
-    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+    INLINE bool operator!=(const X3DField& f) const { return value != unwrap(f); }
 
     /// Native comparison operator (equal)
-    inline bool operator==(const SFFloat& b) const { return value == b.value; }
+    INLINE bool operator==(const SFFloat& b) const { return value == b.value; }
 
     /// Native comparison operator (not equal)
-    inline bool operator!=(const SFFloat& b) const { return value != b.value; }
+    INLINE bool operator!=(const SFFloat& b) const { return value != b.value; }
 };
 
 }

@@ -44,6 +44,9 @@ public:
 	/// Metadata information, which all nodes have.
 	DefaultInOutField<X3DNode, SFNode<X3DMetadataObject> > metadata;
 
+    /// Setup stuff
+    void setup() {}
+
 	/**
 	 * Assign metadata from a string-to-string map. Calls the
 	 * assignFromMap method on #metadata.

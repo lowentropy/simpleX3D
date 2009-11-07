@@ -36,44 +36,44 @@ public:
 	bool value;
 
     /// @returns SFBOOL
-	inline X3DField::Type getType() const { return X3DField::SFBOOL; }
+	INLINE X3DField::Type getType() const { return X3DField::SFBOOL; }
 
     /// Empty constructor.
-	inline SFBool() : value(0) {}
+	INLINE SFBool() : value(0) {}
 
     /// Initializing constructor.
-	inline SFBool(bool x) : value(x) {}
+	INLINE SFBool(bool x) : value(x) {}
 
     /// Low-level value access.
-	inline bool operator()() { return value; }
+	INLINE bool operator()() { return value; }
 
     /// Unwraps generic value.
-	inline static bool unwrap(const X3DField& f) {
+	INLINE static bool unwrap(const X3DField& f) {
 		if (f.getType() != SFBOOL)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFBool&>(f)).value;
 	}
 
     /// Low-level assignment operator
-	inline const SFBool& operator=(bool x) { value = x; return *this; }
+	INLINE const SFBool& operator=(bool x) { value = x; return *this; }
 
     /// High-level assignment operator
-	inline const SFBool& operator=(const SFBool& f) {
+	INLINE const SFBool& operator=(const SFBool& f) {
 		value = f.value;
 		return *this;
 	}
 
     /// Generic comparison operator (equal)
-    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+    INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
 
     /// Generic comparison operator (not equal)
-    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+    INLINE bool operator!=(const X3DField& f) const { return value != unwrap(f); }
 
     /// Native comparison operator (equal)
-    inline bool operator==(const SFBool& b) const { return value == b.value; }
+    INLINE bool operator==(const SFBool& b) const { return value == b.value; }
 
     /// Native comparison operator (not equal)
-    inline bool operator!=(const SFBool& b) const { return value != b.value; }
+    INLINE bool operator!=(const SFBool& b) const { return value != b.value; }
 };
 
 }

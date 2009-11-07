@@ -30,6 +30,10 @@ namespace Core {
  * for nodes instantiated from PROTOs.
  */
 class X3DPrototypeInstance : virtual public X3DNode {
+public:
+
+    /// Setup stuff
+    void setup() {}
 };
 
 }}

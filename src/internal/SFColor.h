@@ -44,13 +44,13 @@ public:
     typedef const SFColor& CONST_TYPE;
 
     /// @returns SFCOLOR
-	inline X3DField::Type getType() const { return X3DField::SFCOLOR; }
+	INLINE X3DField::Type getType() const { return X3DField::SFCOLOR; }
 
     /// @returns native SFColor value
-	inline SFColor& operator()() { return *this; }
+	INLINE SFColor& operator()() { return *this; }
 
     /// Unwraps generic SFColor value
-	inline static const SFColor& unwrap(const X3DField& f) {
+	INLINE static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFColor&>(f);
@@ -75,7 +75,7 @@ public:
 	 * 
 	 * @param c color to copy from
 	 */
-	inline const SFColor& operator=(const SFColor& c) {
+	INLINE const SFColor& operator=(const SFColor& c) {
 		r = c.r; g = c.g; b = c.b;
 		return *this;
 	}
@@ -167,13 +167,13 @@ public:
 	typedef const SFColorRGBA& CONST_TYPE;
 
     /// @returns SFCOLORRGBA
-	inline X3DField::Type getType() const { return SFCOLORRGBA; }
+	INLINE X3DField::Type getType() const { return SFCOLORRGBA; }
 
     /// @returns native SFColorRGBA value
-	inline SFColorRGBA& operator()() { return *this; }
+	INLINE SFColorRGBA& operator()() { return *this; }
 
     /// Unwrap generic SFColorRGBA value
-	inline static const SFColorRGBA& unwrap(const X3DField& f) {
+	INLINE static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFColorRGBA&>(f);
@@ -208,7 +208,7 @@ public:
 	 * 
 	 * @param c color to copy from, and set alpha to 1.0
 	 */
-	inline const SFColorRGBA& operator=(const SFColor& c) {
+	INLINE const SFColorRGBA& operator=(const SFColor& c) {
 		r = c.r; g = c.g; b = c.b; a = 1;
 		return *this;
 	}
@@ -218,7 +218,7 @@ public:
 	 * 
 	 * @param c color to copy from.
 	 */
-	inline const SFColorRGBA& operator=(const SFColorRGBA& c) {
+	INLINE const SFColorRGBA& operator=(const SFColorRGBA& c) {
 		r = c.r; g = c.g; b = c.b; a = c.a;
 		return *this;
 	}
