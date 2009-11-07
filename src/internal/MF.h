@@ -25,35 +25,27 @@
 using std::list;
 
 #define MAKE_MF(CONST,MF,SF,KIND) \
-/** Base type for lists of SF */ \
 class MF : public KIND<SF> { \
 public:\
     typedef MF& TYPE; \
     typedef const MF& CONST_TYPE; \
-    /** Empty constructor. */ \
     MF() : KIND<SF>() {} \
-    /** @returns CONST */ \
     INLINE X3DField::Type getType() const { return X3DField::CONST; } \
-    /** Unwrap a generic value. @param value generic value @returns native value */ \
     static INLINE const MF& unwrap(const X3DField& value) { \
         if (value.getType() != X3DField::CONST) \
             throw X3DError("base type mismatch"); \
         return static_cast<const MF&>(value); \
     } \
-    /** @returns native list value */ \
     INLINE MF& operator()() { \
         return *this; \
     } \
-    /** Generic comparison operator. @param value generic value to compare to @returns whether list is equal to generic value */ \
     INLINE bool operator==(const X3DField& value) { \
         return *this == unwrap(value); \
     } \
-    /** Generic comparison operator. @param value generic value to compare to @returns whether list is not equal to generic value */ \
     INLINE bool operator!=(const X3DField& value) { \
         return *this != unwrap(value); \
     } \
 private: \
-    /** Disallow copy constructor. */ \
     MF(const MF& mf) {} \
 };
 

@@ -157,7 +157,7 @@ public:
      * for instance, the field value has changed externally in some way
      * the field itself cannot monitor.
      * 
-     * @param value new value for #dirty
+     * @param value new value for dirty
      */
     void changed(bool value=true) {
         dirty = value;
@@ -166,7 +166,7 @@ public:
     /**
      * Return whether field has been marked dirty since last event cascade.
      * 
-     * @returns whether field is #dirty
+     * @returns whether field is dirty
      */
     bool isDirty() { return dirty; }
 

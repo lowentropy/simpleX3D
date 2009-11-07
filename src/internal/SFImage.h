@@ -195,7 +195,7 @@ public:
      * @param width image width
      * @param height image height
      * @param components image depth (0-4)
-     * @param bytes array to copy data from
+     * @param pixels array to copy data from
      */
 	SFImage(int width, int height, int components, unsigned char* pixels);
 

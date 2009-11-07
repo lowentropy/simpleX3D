@@ -42,7 +42,6 @@ public:
 	 * Simply copies the given string into #value.
 	 * 
 	 * @param str new value of metadata.
-	 * @param quiet if true, value_changed event is suppressed
 	 */
 	virtual void assignFromString(const string& str);
 };

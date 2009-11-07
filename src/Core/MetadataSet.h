@@ -46,7 +46,6 @@ public:
 	 * new metadata entries will be of type MetadataString.
 	 * 
 	 * @param meta map of metadata keys to values
-	 * @param quiet if true, value_changed event is suppressed
 	 */ 
 	virtual void assignFromMap(const map<string,string>& meta);
 
@@ -54,7 +53,6 @@ public:
 	 * Add a single new metadata entry to the set.
 	 * 
 	 * @param entry metadata entry to add
-	 * @param quiet if true, value_changed event is suppressed
 	 */
 	void addMetadata(X3DMetadataObject* entry);
 };

@@ -124,7 +124,7 @@ public:
     /**
      * Manually set whether the field should be considered dirty.
      * 
-     * @param value whether field is changed (#dirty)
+     * @param value whether field is changed
      */
     void changed(bool value=true) {
         dirty = value;
