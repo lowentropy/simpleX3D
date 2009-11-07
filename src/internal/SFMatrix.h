@@ -195,6 +195,12 @@ public:
 
 private:
 
+    /**
+     * Internal raw array assignment operator.
+     * 
+     * @param a new array of matrix data
+     * @returns self-reference
+     */
 	template <typename U> SFMatrix3<T>& operator=(U* a) {
 		T* p = data;
 		for (int i = 0; i < 9; i++)
@@ -383,6 +389,12 @@ public:
 
 private:
 
+    /**
+     * Raw array assignment operator.
+     * 
+     * @param a new array of matrix data
+     * @returns self-reference
+     */
 	template <typename U> SFMatrix4<T>& operator=(U* a) {
 		T* p = data;
 		for (int i = 0; i < 16; i++)
@@ -391,6 +403,7 @@ private:
 	}
 };
 
+/// 3x3 Matrix of floats
 class SFMatrix3f : public SFMatrix3<float> {
 public:
 
@@ -420,17 +433,29 @@ public:
 	 */
 	template <typename U> SFMatrix3f(U* a) : SFMatrix3<float>(a) {}
 
+    /// @returns SFMATRIX3F
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX3F; }
+
+    /// Unwrap generic matrix value.
 	static inline const SFMatrix3f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3f&>(f);
 	}
+
+    /// @returns native matrix value
     inline SFMatrix3f& operator()() {
         return *this;
     }
+
+    /// Generic comparison operator.
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /// Generic comparison operator.
+    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
 };
 
+/// 3x3 Matrix of doubles
 class SFMatrix3d : public SFMatrix3<double> {
 public:
 	typedef SFMatrix3d& TYPE;
@@ -466,17 +491,29 @@ public:
 	 */
 	template <typename U> SFMatrix3d(U* a) : SFMatrix3<double>(a) {}
 
+    /// @returns SFMATRIX3D
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX3D; }
+
+    /// Unwrap generic matrix value.
 	static inline const SFMatrix3d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix3d&>(f);
 	}
+
+    /// @returns native matrix value
     inline SFMatrix3d& operator()() {
         return *this;
     }
+
+    /// Generic comparison operator.
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /// Generic comparison operator.
+    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
 };
 
+/// 4x4 Matrix of floats
 class SFMatrix4f : public SFMatrix4<float> {
 public:
 	typedef SFMatrix4f& TYPE;
@@ -505,17 +542,29 @@ public:
 	 */
 	template <typename U> SFMatrix4f(U* a) : SFMatrix4<float>(a) {}
 
+    /// @returns SFMATRIX4F
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX4F; }
+
+    /// Unwrap generic matrix value
 	static inline const SFMatrix4f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4f&>(f);
 	}
+
+    /// @returns native matrix value
     inline SFMatrix4f& operator()() {
         return *this;
     }
+
+    /// Generic comparison operator.
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /// Generic comparison operator.
+    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
 };
 
+/// 4x4 Matrix of doubles
 class SFMatrix4d : public SFMatrix4<double> {
 public:
 	typedef SFMatrix4d& TYPE;
@@ -551,15 +600,26 @@ public:
 	 */
 	template <typename U> SFMatrix4d(U* a) : SFMatrix4<double>(a) {}
 
+    /// @returns SFMATRIX4D
 	inline X3DField::Type getType() const { return X3DField::SFMATRIX4D; }
+
+    /// Unwrap generic matrix value
 	static inline const SFMatrix4d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFMatrix4d&>(f);
 	}
+
+    /// @returns native matrix value
     inline SFMatrix4d& operator()() {
         return *this;
     }
+
+    /// Generic comparison operator.
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /// Generic comparison operator.
+    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
 };
 
 }

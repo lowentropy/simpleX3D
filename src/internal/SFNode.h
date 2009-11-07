@@ -26,23 +26,51 @@ namespace X3D {
 
 class Node;
 
+/**
+ * The root class of all node types. The only job of this class is to present
+ * a non-templatized base for the SFNode type.
+ */
 class SFAbstractNode : public X3DField {
 public:
+    /// @returns SFNODE
 	inline X3DField::Type getType() const { return X3DField::SFNODE; }
+
+    /// @returns native but non-specific pointer to node value
 	virtual Node* operator()() const = 0;
 };
 
+/**
+ * Templatized field type for node-containing values. The template type indicates
+ * the base class for any nodes contained by this wrapper type.
+ */
 template <class N>
 class SFNode : public SFAbstractNode {
 public:
 	typedef N* TYPE;
     typedef N* CONST_TYPE;
+
+    /// pointer to actual node value
 	N* value;
 
+    /// Empty constructor.
 	inline SFNode() {}
+
+    /// Initializing constructor.
 	inline SFNode(N* value) : value(value) {}
+
+    /// @returns native pointer value
 	inline N* operator()() const { return value; }
 
+    /**
+     * Unwrap a generic field value containing a node.
+     * In addition to checking the that the field is of type
+     * SFNODE, the target node value must be a descendant of
+     * this wrapper's template type. To check this, we perform
+     * a dynamic cast.
+     * 
+     * @param f generic field value
+     * @returns native node pointer
+     */
 	inline static N* unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFNODE)
 			throw X3DError("base type mismatch");
@@ -53,17 +81,27 @@ public:
 		return v;
 	}
 
+    /// Low-level assignment operator.
 	inline const SFNode<N>& operator=(N* value) { this->value = value; }
+
+    /// High-level assignment operator.
 	inline const SFNode<N>& operator=(const SFNode<N>& f) {
 		value = f.value;
 		return *this;
 	}
-    bool operator==(const SFNode<N>& n) const {
-        return value == n.value;
-    }
-    bool operator!=(const SFNode<N>& n) const {
-        return value != n.value;
-    }
+
+    /// Generic comparison operator (equal)
+    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+
+    /// Generic comparison operator (not equal)
+    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+
+    /// Native comparison operator (equal)
+    inline bool operator==(const SFNode<N>& n) const { return value == n.value; }
+
+    /// Native comparison operator (not equal)
+    inline bool operator!=(const SFNode<N>& n) const { return value != n.value; }
+
 };
 
 }

@@ -24,31 +24,56 @@
 
 namespace X3D {
 
+/**
+ * Generic container for a Time value, which is stored as a double-precision
+ * float indicating the number of seconds since midnight on Jan 1, 1970.
+ */
 class SFTime : public X3DField {
 public:
 	typedef double TYPE;
 	typedef double CONST_TYPE;
+
+    /// native stored value
 	double value;
 
+    /// @returns SFTIME
 	inline X3DField::Type getType() const { return X3DField::SFTIME; }
 
+    /// Empty constructor.
 	inline SFTime() : value(0) {}
+
+    /// Initializing constructor.
 	inline SFTime(double x) : value(x) {}
+
+    /// @returns native time value (as double)
 	inline double operator()() { return value; }
 
+    /// Unwrap generic time field (as double)
 	inline static double unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFTIME)
 			throw X3DError("base type mismatch");
 		return (static_cast<const SFTime&>(f)).value;
 	}
 
+    /// Low-level assignment operator.
 	inline const SFTime& operator=(double x) { value = x; return *this; }
+
+    /// High-level assignment operator.
 	inline const SFTime& operator=(const SFTime& f) {
 		value = f.value;
 		return *this;
 	}
 
+    /// Generic comparison operator (equal)
+    inline bool operator==(const X3DField& f) const { return value == unwrap(f); }
+
+    /// Generic comparison operator (not equal)
+    inline bool operator!=(const X3DField& f) const { return value != unwrap(f); }
+
+    /// Native comparison operator (equal)
     inline bool operator==(const SFTime& t) const { return value == t.value; }
+
+    /// Native comparison operator (not equal)
     inline bool operator!=(const SFTime& t) const { return value != t.value; }
 };
 

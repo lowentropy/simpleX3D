@@ -61,7 +61,7 @@ protected:
 
 private:
     /// Disallow copy constructgor
-	Node(const Node& node) {}
+	Node(const Node& node) { throw X3DError("illegal copy"); }
 
 public:
     /// Empty constructor. Nodes start in stage SETUP.
@@ -78,6 +78,14 @@ public:
 
     /// Moves the node to the REALIZED stage.
 	void realize() { stage = REALIZED; }
+
+    /**
+     * Virtual function to provide initialization AFTER the fields
+     * have had their node pointer set, allowing us to set default
+     * values on our fields. Remember to call your parent class
+     * setup function first!
+     */
+    virtual void setup() {}
 
 	/**
 	 * Return a reference to the browser. This is a helper function

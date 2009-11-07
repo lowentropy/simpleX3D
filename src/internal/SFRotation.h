@@ -44,19 +44,26 @@ public:
 	typedef SFRotation& TYPE;
 	typedef const SFRotation& CONST_TYPE;
 
+    /// @returns SFROTATION
     inline X3DField::Type getType() const { return X3DField::SFROTATION; }
+
+    /// Unwrap a generic rotation value.
 	inline static const SFRotation& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFROTATION)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFRotation&>(f);
 	}
+
+    /// Native assignment operator.
 	inline const SFRotation& operator=(const SFRotation& r) {
-    x = r.x;
-    y = r.y;
-    z = r.z;
-    a = r.a;
+        x = r.x;
+        y = r.y;
+        z = r.z;
+        a = r.a;
 		return *this;
 	}
+
+    /// @returns native rotation value
 	inline SFRotation& operator()() {
 		return *this;
 	}
@@ -104,6 +111,12 @@ public:
     bool operator!=(const SFRotation& r) {
         return (x != r.x) || (y != r.y) || (z != r.z) || (a != r.a);
     }
+
+    /// Generic comparison operator.
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /// Generic comparison operator.
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 
 	/**
 	 * Convert into rotation matrix.

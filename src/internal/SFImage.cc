@@ -24,53 +24,24 @@ using namespace X3D;
 #define COLOR2CHAR(x) ((unsigned char) ((x) * 255))
 #define CHAR2COLOR(x) (((float) x) / 255)
 
-/**
- * Equals operator.
- *
- * @param i the image to copy
- */
 const SFImage& SFImage::operator=(const SFImage& i) {
 	if (i.width != width || i.height != height || i.components != components)
 		throw X3DError("mismatched image properties in =");
 	setBytes(i.bytes);
 }
 
-/**
- * Comparison operator.
- * 
- * @param i image to compare to
- * @returns if images are equal
- */
 bool SFImage::operator==(const SFImage& i) const {
     if (i.width != width || i.height != height || i.components != components)
         return false;
     return 0 == memcmp(bytes, i.bytes, size);
 }
 
-/**
- * Comparison operator.
- * 
- * @param i image to compare to
- * @returns if images are not equal
- */
 bool SFImage::operator!=(const SFImage& i) const {
     if (i.width != width || i.height != height || i.components != components)
         return true;
     return 0 != memcmp(bytes, i.bytes, size);
 }
 
-/**
- * Empty image constructor.
- * 
- * The total size of the image will be
- * #width * #height * #components. If all
- * three parameters are zero, the bytes
- * array will be NULL.
-
- * @param width image width
- * @param height image height
- * @param components image depth (0-4)
- */
 SFImage::SFImage(int width, int height, int components) {
 	alloc(width, height, components);
 }
@@ -89,39 +60,16 @@ void SFImage::alloc(int width, int height, int components) {
 	bytes = this->size ? new unsigned char[size] : NULL;
 }
 
-/**
- * Raw copy constructor.
- * 
- * This constructor creates a blank image as in SFImage(),
- * then copies image bytes directly between the #bytes pointers.
- * 
- * @param width image width
- * @param height image height
- * @param components image depth (0-4)
- * @param bytes array to copy data from
- */
 SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
 	alloc(width, height, components);
 	setBytes(bytes);
 }
 
-/**
- * Image destructor. If bytes is not NULL,
- * it is freed.
- */
 SFImage::~SFImage() {
 	if (bytes != NULL)
 		delete[] bytes;
 }
 
-/**
- * Direct memory assignment.
- * 
- * Replaces the image bytes with a COPY of the input array.
- * 
- * @param array array of bytes to copy
- * @returns reference to this
- */
 SFImage& SFImage::setBytes(const unsigned char* array) {
 	if (size) {
 		if (array == NULL)
@@ -131,18 +79,6 @@ SFImage& SFImage::setBytes(const unsigned char* array) {
 	return *this;
 }
 
-/**
- * Extract a raw pixel value.
- * 
- * The value returned is an unsigned int, but will only
- * have a number of lower bytes set equal to #components.
- * The high bytes are always set to zero.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @returns raw (packed) pixel
- * @see setPixel
- */
 unsigned int SFImage::getPixel(int x, int y) const {
 	const unsigned char* ptr = locate(x, y);
 	unsigned int pixel = 0;
@@ -151,17 +87,6 @@ unsigned int SFImage::getPixel(int x, int y) const {
 	return pixel;
 }
 
-/**
- * Inject a raw pixel value.
- * 
- * The unsigned int argument should only have a number of lower
- * bytes set equal to #components. The upper bytes will be ignored.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @param pixel packed pixel value
- * @see getPixel
- */
 void SFImage::setPixel(int x, int y, unsigned int pixel) {
 	unsigned char* ptr = locate(x, y) + components;
 	for (int i = 0; i < components; i++) {
@@ -170,18 +95,6 @@ void SFImage::setPixel(int x, int y, unsigned int pixel) {
 	}
 }
 
-/**
- * Retrieve a pixel's RGB color.
- * 
- * The alpha channel, if present, is not returned. If the image
- * is grayscale, all three color channels are set equal to the
- * grayscale value.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @returns RGB color for pixel
- * @see setColor
- */
 SFColor SFImage::getColor(int x, int y) const {
 	SFColor c;
 	const unsigned char* ptr = locate(x, y);
@@ -195,18 +108,6 @@ SFColor SFImage::getColor(int x, int y) const {
 	return c;
 }
 
-/**
- * Updates a pixel's RGB color.
- * 
- * If the image has an alpha channel, it is not changed. If the image
- * is grayscale, then the updated value will be the average intensity
- * of the given color.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @param c RGB color to set
- * @see getColor
- */
 void SFImage::setColor(int x, int y, const SFColor c) {
 	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
@@ -218,18 +119,6 @@ void SFImage::setColor(int x, int y, const SFColor c) {
 	}
 }
 
-/**
- * Retrieve a pixel's RGBA color.
- * 
- * If the image does not have an alpha channel, the returned alpha will
- * be 255 (opaque). If the image is grayscale, all three color channels
- * will be set equal to the intensity value.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @returns RGBA color for pixel
- * @see setColorRGBA
- */
 SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 	SFColorRGBA c;
 	const unsigned char* ptr = locate(x, y);
@@ -244,18 +133,6 @@ SFColorRGBA SFImage::getColorRGBA(int x, int y) const {
 	return c;
 }
 
-/**
- * Update a pixel's RGBA color.
- * 
- * If the image does not have an alpha channel, the alpha color value
- * is ignored. If the image is grayscale, the updated value will be
- * the average intensity of the color.
- * 
- * @param x X coordinate
- * @param y Y coordinate
- * @param c RGBA color to set
- * @see getColorRGBA
- */
 void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
 	unsigned char* ptr = locate(x, y);
 	if (components < 3) {
@@ -268,8 +145,6 @@ void SFImage::setColorRGBA(int x, int y, const SFColorRGBA c) {
 	if (components % 2 == 0)
 		*ptr = COLOR2CHAR(c.a);
 }
-
-// PRIVATE STUFF HERE
 
 unsigned char* SFImage::locate(int x, int y) {
 	int index = (y * width + x) * components;

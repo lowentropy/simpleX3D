@@ -26,9 +26,17 @@ using std::string;
 
 namespace X3D {
 
+/**
+ * This is the base class for all simple data types within X3D. Although the
+ * only explicit abstract method is getType() (which returns an enumeration value
+ * identifying the X3D type), all X3DField implementations also obey a contract
+ * which includes the static unwrap() method, generic comparison operators == and
+ * !=, and the native-value access operator().
+ */
 class X3DField {
 public:
 
+    /// enumeration identifying x3d type
 	typedef enum {
 		SFBOOL = 0,
 		SFCOLOR,
@@ -74,6 +82,7 @@ public:
 		MFVEC4F
 	} Type;
 
+    /// access level for node fields ([], [in], [ou], [in,out])
 	typedef enum {
 		INIT_ONLY,
 		INPUT_ONLY,
@@ -81,16 +90,34 @@ public:
 		INPUT_OUTPUT
 	} Access;
 
+    /// string representation of x3d type names
     static const string typeNames[];
+
+    /// convert enumeration to string for type names
     static const string& getTypeName(Type type);
+
+    /// get string representation of this value's type
     const string& getTypeName();
 
+    /// Empty constructor.
 	X3DField() {}
+
+    /// Empty virtual destructor.
     virtual ~X3DField() {}
 
+    /**
+     * Abstract method to identify the X3D type of this value.
+     * This method is used to safely unwrap generic field values,
+     * which allows simpleX3D to operate at runtime with great
+     * flexibility.
+     * 
+     * @returns X3D type of field-value
+     */
 	virtual Type getType() const = 0;
 
 private:
+
+    /// Disallow copy constructor.
 	X3DField(const X3DField& field) {}
 };
 

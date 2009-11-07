@@ -28,6 +28,7 @@ using std::string;
 
 namespace X3D {
 
+// forward declarations
 template <typename T> class SFMatrix3;
 template <typename T> class SFMatrix4;
 
@@ -785,6 +786,7 @@ public:
 	}
 };
 
+/// 2d vector of floats
 class SFVec2f : public SFVec2<float> {
 public:
 	typedef SFVec2f& TYPE;
@@ -812,17 +814,39 @@ public:
 	 */
 	template <typename U> SFVec2f(U x, U y) : SFVec2<float>(x, y) {}
 
+    /// @returns SFVEC2F
 	inline X3DField::Type getType() const { return X3DField::SFVEC2F; }
+
+    /// Unwrap generic vector field
 	static inline const SFVec2f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC2F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec2f&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec2f& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
+/// 2d vector of doubles
 class SFVec2d : public SFVec2<double> {
 public:
 	typedef SFVec2d& TYPE;
@@ -857,17 +881,39 @@ public:
 	 */
 	template <typename U> SFVec2d(U x, U y) : SFVec2<double>(x, y) {}
 
+    /// @returns SFVEC2D
 	inline X3DField::Type getType() const { return X3DField::SFVEC2D; }
+
+    /// Unwrap generic vector field
 	static inline const SFVec2d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC2D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec2d&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec2d& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
+/// 3d vector of floats
 class SFVec3f : public SFVec3<float> {
 public:
 	typedef SFVec3f& TYPE;
@@ -896,17 +942,39 @@ public:
 	 */
 	template <typename U> SFVec3f(U x, U y, U z) : SFVec3<float>(x, y) {}
 
+    /// @returns SFVEC3F
 	inline X3DField::Type getType() const { return X3DField::SFVEC3F; }
+
+    /// Unwrap generic vector field
 	static inline const SFVec3f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC3F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec3f&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec3f& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
+/// 3d vector of doubles
 class SFVec3d : public SFVec3<double> {
 public:
 	typedef SFVec3d& TYPE;
@@ -942,17 +1010,39 @@ public:
 	 */
 	template <typename U> SFVec3d(U x, U y, U z) : SFVec3<double>(x, y, z) {}
 
+    /// @returns SFVEC3D
 	inline X3DField::Type getType() const { return X3DField::SFVEC3D; }
+
+    /// Unwrap generic vector field.
 	static const SFVec3d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC3D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec3d&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec3d& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
+/// 4d vector of floats
 class SFVec4f : public SFVec4<float> {
 public:
 	typedef SFVec4f& TYPE;
@@ -982,17 +1072,39 @@ public:
 	 */
 	template <typename U> SFVec4f(U x, U y, U z, U w) : SFVec4<float>(x,y,z,w) {}
 
+    /// @returns SFVEC4F
 	inline X3DField::Type getType() const { return X3DField::SFVEC4F; }
+
+    /// Unwrap generic vector field
 	static inline const SFVec4f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC4F)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec4f&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec4f& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
+/// 4d vector of doubles
 class SFVec4d : public SFVec4<double> {
 public:
 	typedef SFVec4d& TYPE;
@@ -1029,15 +1141,36 @@ public:
 	 */
 	template <typename U> SFVec4d(U x, U y, U z, U w) : SFVec4<double>(x,y,z,w) {}
 
+    /// @returns SFVEC4D
 	inline X3DField::Type getType() const { return X3DField::SFVEC4D; }
+
+    /// Unwrap generic vector field.
 	static inline const SFVec4d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC4D)
 			throw X3DError("base type mismatch");
 		return static_cast<const SFVec4d&>(f);
 	}
+
+    /// @returns native vector value
     inline SFVec4d& operator()() {
         return *this;
     }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are equal.
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic comparison operator.
+     * 
+     * @param f field to compare to
+     * @returns whether vectors are not equal.
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
 }

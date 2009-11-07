@@ -21,6 +21,7 @@
 #define _X3D_INOUTFIELD_H_
 
 #include "internal/SAIField.h"
+#include <iostream> // XXX
 
 namespace X3D {
 
@@ -57,6 +58,9 @@ private:
 
     /// whether field value has been modified since last event cascade
     bool dirty;
+
+    /// disallow copy constructor
+    InOutField(const InOutField<N,TT>& f) { throw X3DError("illegal copy"); }
 
 protected:
     /**
@@ -117,6 +121,7 @@ public:
      * @param value native value to set
      */
     inline void operator()(CT value) {
+        std::cout << "inout (" << this << ") has node " << node() << std::endl;
         if (!node()->realized()) {
             this->value = value;
         } else {

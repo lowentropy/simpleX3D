@@ -42,8 +42,14 @@ public:
 
 	typedef SFColor& TYPE;
     typedef const SFColor& CONST_TYPE;
+
+    /// @returns SFCOLOR
 	inline X3DField::Type getType() const { return X3DField::SFCOLOR; }
+
+    /// @returns native SFColor value
 	inline SFColor& operator()() { return *this; }
+
+    /// Unwraps generic SFColor value
 	inline static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
 			throw X3DError("base type mismatch");
@@ -122,6 +128,22 @@ public:
     bool operator!=(const SFColor& c) const {
         return (r != c.r) || (g != c.g) || (b != c.b);
     }
+
+    /**
+     * Generic equality test.
+     * 
+     * @param f field to test
+     * @returns whether field is equal
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic equality test.
+     * 
+     * @param f field to test
+     * @returns whether field is not equal
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
 
@@ -144,8 +166,13 @@ public:
 	typedef SFColorRGBA& TYPE;
 	typedef const SFColorRGBA& CONST_TYPE;
 
+    /// @returns SFCOLORRGBA
 	inline X3DField::Type getType() const { return SFCOLORRGBA; }
+
+    /// @returns native SFColorRGBA value
 	inline SFColorRGBA& operator()() { return *this; }
+
+    /// Unwrap generic SFColorRGBA value
 	inline static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
 			throw X3DError("base type mismatch");
@@ -257,6 +284,21 @@ public:
         return (r != c.r) || (g != c.g) || (b != c.b) || (a != c.a);
     }
     
+    /**
+     * Generic equality test.
+     * 
+     * @param f field to test
+     * @returns whether field is equal
+     */
+    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+
+    /**
+     * Generic equality test.
+     * 
+     * @param f field to test
+     * @returns whether field is not equal
+     */
+    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
 };
 
 /**

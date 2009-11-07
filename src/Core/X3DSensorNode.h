@@ -21,6 +21,7 @@
 #define _X3D_X3DSENSORNODE_H_
 
 #include "Core/X3DChildNode.h"
+#include <iostream> // XXX
 
 namespace X3D {
 namespace Core {
@@ -35,7 +36,6 @@ public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
 	class Enabled : public InOutField<X3DSensorNode, SFBool> {
-        void setup() { value = true; }
 		bool filter(bool enabled) {
 			return (value() != enabled);
 		}
@@ -56,6 +56,14 @@ public:
 
 	/// Callback for #isActive output event.
 	virtual void onIsActive(bool active) {};
+
+    /// Setup function called on instantiation.
+    virtual void setup() {
+        (dynamic_cast<X3DChildNode*>(this))->setup();
+//        X3DChildNode::setup();
+        std::cout << "setting enabled (" << &enabled << " from " << this << std::endl;
+        enabled(true);
+    }
 };
 
 }}
