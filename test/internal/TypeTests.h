@@ -82,3 +82,49 @@ TEST(TypeSystem, RealizedInputOutputFieldCallsFilter) {
 
 // TODO: tests of dynamic field lookup and access
 //      (like this)  Node* node = browser()->createNode("NodeName");
+
+// TODO: access at bad times should lead to errors
+/*
+TEST(TypeSystem, SetupInputFieldShouldNotGet) {
+    InFieldNode* node = new InFieldNode();
+    node->testField.setNode(node);
+    ASSERT_ANY_THROW(node->testField());
+}
+*/
+TEST(TypeSystem, UnrealizedInputFieldShouldNotSet) {
+    InFieldNode* node = new InFieldNode();
+    ASSERT_ANY_THROW(node->testField("foo"));
+}
+/*
+TEST(TypeSystem, UnrealizedOutputFieldShouldNotGet) {
+    OutFieldNode* node = new OutFieldNode();
+    ASSERT_ANY_THROW(node->testField());
+}
+*/
+/*
+TEST(TypeSystem, UnrealizedOutputFieldShouldNotSet) {
+    OutFieldNode* node = new OutFieldNode();
+    ASSERT_ANY_THROW(node->testField("foo"));
+}
+*/
+/*
+TEST(TypeSystem, RealizedInitFieldShouldNotGet) {
+    InitFieldNode* node = new InitFieldNode();
+    node->realize();
+    ASSERT_ANY_THROW(node->testField());
+}
+*/
+/*
+TEST(TypeSystem, RealizedInitFieldShouldNotSet) {
+    InitFieldNode* node = new InitFieldNode();
+    node->realize();
+    ASSERT_ANY_THROW(node->testField("foo"));
+}
+*/
+/*
+TEST(TypeSystem, RealizedInputFieldShouldNotGet) {
+    InFieldNode* node = new InFieldNode();
+    node->realize();
+    ASSERT_ANY_THROW(node->testField());
+}
+*/
