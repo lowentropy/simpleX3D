@@ -80,7 +80,30 @@ void NodeDef::setDefinition(Node* node) {
 
 void NodeDef::addField(FieldDef* field) {
     fields[field->name] = field;
+    switch (field->access) {
+        case X3DField::INPUT_ONLY:
+            set_fields[field->name] = field;
+            break;
+        case X3DField::OUTPUT_ONLY:
+            changed_fields[field->name] = field;
+            break;
+        case X3DField::INPUT_OUTPUT:
+            set_fields["set_" + field->name] = field;
+            changed_fields[field->name + "_changed"] = field;
+            break;
+    }
 }
+
+FieldDef* NodeDef::getFieldDef(const string& name) {
+    if (fields[name] != NULL)
+        return fields[name];
+    if (set_fields[name] != NULL)
+        return set_fields[name];
+    if (changed_fields[name] != NULL)
+        return changed_fields[name];
+    return NULL;
+}
+
 
 void FieldDef::print() {
     switch (access) {

@@ -81,9 +81,6 @@ public:
 	virtual void print();
 };
 
-// forward declaration
-class NodeDef;
-
 /**
  * Field definition structure. Defines the name, type, and access permissions
  * of a given field. This is an abstract class; FieldDefImpl actually contains
@@ -125,6 +122,15 @@ public:
      * Pretty-printing method.
      */
     void print();
+
+    /**
+     * Return a pointer to the instance specified by this field
+     * definition, owned by the given node pointer.
+     * 
+     * @param node node to look up field on
+     * @returns pointer to field object instance
+     */
+    virtual SAIField* getField(Node* node) = 0;
 };
 
 /**
@@ -164,6 +170,20 @@ public:
         NodeField<N>* f = static_cast<NodeField<N>*>(&(node->*field));
         f->setNode(node);
     }
+
+    /**
+     * Return a pointer to the instance specified by this field
+     * definition, owned by the given node pointer.
+     * 
+     * @param node node to look up field on
+     * @returns pointer to field object instance
+     */
+    virtual SAIField* getField(Node* node) {
+        N* ptr = dynamic_cast<N*>(node);
+        if (ptr == NULL)
+            throw X3DError("called getField() on node of wrong type");
+        return &(ptr->*field);
+    }
 };
 
 /**
@@ -179,6 +199,12 @@ class NodeDef {
 protected:
     /// map of field basename to field definition
 	map<string, FieldDef*> fields;
+
+    /// map of field set_ name to field definition
+    map<string, FieldDef*> set_fields;
+
+    /// map of field _changed name to field definition
+    map<string, FieldDef*> changed_fields;
 
     /// chain from root ancestor to immediate ancestors
     list<NodeDef*> chain;
@@ -209,6 +235,15 @@ public:
 
     /// Virtual destructor.
 	virtual ~NodeDef();
+
+    /**
+     * Access the named field of the given node.
+     * 
+     * @param name field name
+     * @param node node to access field on
+     * @returns field object pointer
+     */
+    virtual SAIField* getField(const string& name, Node* node) = 0;
     
     /**
      * Add a node defintiion as a parent of this one. The parent node
@@ -232,6 +267,15 @@ public:
      * @param node node to initialize
      */
     virtual void setup(Node* node) = 0;
+
+    /**
+     * This (non-recursive) function attempts to retrieve a field by its name.
+     * It should allow search using the set_ or _changed prefix, for InOut fields.
+     * 
+     * @param name name of field
+     * @returns field definition, if found, or NULL
+     */
+    FieldDef* getFieldDef(const string& name);
 
 protected:
 
@@ -322,6 +366,26 @@ public:
         return node;
 	}
 
+    /**
+     * Access the named field of the given node.
+     * 
+     * @param name field name
+     * @param node node to access field on
+     * @returns field object pointer
+     */
+    SAIField* getField(const string& name, Node* node) {
+        FieldDef* def = getFieldDef(name);
+        if (def != NULL)
+            return def->getField(node);
+        list<NodeDef*>::const_iterator it = chain.begin();
+        for (; it != chain.end(); it++) {
+            FieldDef* def = (*it)->getFieldDef(name);
+            if (def != NULL)
+                return def->getField(node);
+        }
+        return NULL;
+    }
+
 protected:
 
     /**
@@ -332,6 +396,8 @@ protected:
      */
     void setup(Node* node) {
         N* ptr = dynamic_cast<N*>(node);
+        if (ptr == NULL)
+            throw X3DError("setup() called on node of wrong type");
         initFields(ptr);
         ptr->N::setup();
     }

@@ -70,6 +70,18 @@ public:
     /// Virtual deconstructor.
 	virtual ~Node() {}
 
+    /**
+     * Look up a field on the node and return a reference to it.
+     * For input-output fields, either the base name or the set_
+     * or _changed modifiers may be used. Currently, they will all
+     * return the same field. XXX does the spec want limited-accessor
+     * versions? do i care?
+     * 
+     * @param name name of field
+     * @returns pointer to actual field
+     */
+    SAIField* getField(const string& name);
+
     /// @returns current lifecycle stage
 	Stage getStage() const { return stage; }
 

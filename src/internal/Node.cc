@@ -7,4 +7,8 @@ Browser* Node::browser() {
 	return Browser::getSingleton();
 }
 
+SAIField* Node::getField(const string& name) {
+    return definition->getField(name, this);
+}
+
 }
