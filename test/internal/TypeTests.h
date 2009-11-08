@@ -93,6 +93,7 @@ TEST(TypeSystem, SetupInputFieldShouldNotGet) {
 */
 TEST(TypeSystem, UnrealizedInputFieldShouldNotSet) {
     InFieldNode* node = new InFieldNode();
+    node->testField.setNode(node);
     ASSERT_ANY_THROW(node->testField("foo"));
 }
 /*
