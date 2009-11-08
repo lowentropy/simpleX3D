@@ -86,6 +86,11 @@ public:
      */
 	virtual bool isDirty() const = 0;
 
+    /**
+     * Clear the dirty value.
+     */
+    virtual void clearDirty() = 0;
+
 private:
 
     // no copy constructor

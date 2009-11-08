@@ -176,6 +176,13 @@ public:
     bool isDirty() const { return dirty; }
 
     /**
+     * Clear the dirty value.
+     */
+    virtual void clearDirty() {
+        dirty = false;
+    }
+
+    /**
      * Action to take on output event. Subclasses MUST define this function.
      */
     virtual void action() = 0;

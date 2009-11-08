@@ -134,6 +134,13 @@ public:
     bool isDirty() const { return dirty; }
 
     /**
+     * Clear the dirty value.
+     */
+    virtual void clearDirty() {
+        dirty = false;
+    }
+
+    /**
      * When the output field triggers an event, the browser will call
      * #action before activating any outgoing routes. This will be called
      * even if no routes are present. Subclasses MUST provide this method,
