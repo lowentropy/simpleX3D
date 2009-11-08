@@ -131,7 +131,7 @@ public:
     }
 
     /// @returns whether field has been marked dirty
-    bool isDirty() { return dirty; }
+    bool isDirty() const { return dirty; }
 
     /**
      * When the output field triggers an event, the browser will call

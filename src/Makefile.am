@@ -7,6 +7,7 @@ libsimpleX3D_la_SOURCES = \
 	internal/SFColor.cc \
 	internal/profile.cc \
 	internal/Browser.cc \
+    internal/Route.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc

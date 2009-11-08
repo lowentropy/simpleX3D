@@ -103,7 +103,7 @@ public:
      * 
      * @returns false
      */
-    bool isDirty() { return false; }
+    bool isDirty() const { return false; }
 
 private:
 

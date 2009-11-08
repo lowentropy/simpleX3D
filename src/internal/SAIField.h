@@ -84,7 +84,7 @@ public:
      * 
      * @returns whether field is marked as dirty
      */
-	virtual bool isDirty() = 0;
+	virtual bool isDirty() const = 0;
 
 private:
 

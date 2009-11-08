@@ -113,6 +113,7 @@ public:
     /**
      * Set the native value of the field. If the node is realized and
      * #filter returns true, mark the field as dirty and schedule for routing.
+     * If the node is already dirty, this will throw an error.
      * 
      * @param value native value to set
      */
@@ -122,6 +123,8 @@ public:
         } else {
             if (!filter(value))
                 return;
+            if (dirty)
+                throw X3DError("already wrote to this field");
             this->value = value;
             dirty = true;
         }
@@ -138,6 +141,8 @@ public:
     void send(CT value) {
         if (!node()->realized())
             throw X3DError("can't send output until realized");
+        if (dirty)
+            throw X3DError("already wrote to this field");
         this->value = value;
         dirty = true;
     }
@@ -168,7 +173,7 @@ public:
      * 
      * @returns whether field is dirty
      */
-    bool isDirty() { return dirty; }
+    bool isDirty() const { return dirty; }
 
     /**
      * Action to take on output event. Subclasses MUST define this function.
