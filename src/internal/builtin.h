@@ -21,7 +21,10 @@
 #define _X3D_BUILTIN_H_
 
 #include <string>
-#include "internal/profile.h"
+#include "internal/Profile.h"
+#include "internal/Component.h"
+#include "internal/NodeDef.h"
+#include "internal/FieldDef.h"
 #include "internal/Node.h"
 #include "Core/X3DNode.h"
 #include "Core/X3DChildNode.h"

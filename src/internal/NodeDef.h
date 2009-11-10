@@ -17,174 +17,23 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_PROFILE_H_
-#define _X3D_PROFILE_H_
+#ifndef _X3D_NODEDEF_H_
+#define _X3D_NODEDEF_H_
 
-#include "internal/X3DField.h"
+#include "internal/FieldDef.h"
 #include "internal/SAIField.h"
 #include <map>
+#include <list>
 #include <vector>
 
 using std::map;
+using std::list;
 using std::vector;
-using std::string;
 
 namespace X3D {
 
-// forward declarations
-class Profile;
 class Component;
-class NodeDef;
-
-/**
- * Defines the comformance profile for a given library-plugin combination.
- * Profiles consist of a set of component definitions, which in turn define
- * node comformance.
- */
-class Profile {
-private:
-    /// map of components, by name
-	map<string, Component*> comp_map;
-
-    /// flat list of components
-	vector<Component*> comp_list;
-
-public:
-    /// Empty constructor.
-	Profile() {}
-
-    /// Virtual desctructur; frees component definitions.
-	virtual ~Profile();
-
-    /**
-     * Create a new, empty component defintion. The profile will manage
-     * the memory of the returned pointer.
-     * 
-     * @param name canonical name of component
-     * @returns pointer to new component definition
-     */
-	Component* createComponent(const string& name);
-
-    /**
-     * Find and return a node definition given its canonical name.
-     * This function will look in each component.
-     * 
-     * @param name canonical name of node
-     * @returns node definition pointer
-     */
-	NodeDef* getNode(const string& name);
-
-    /**
-     * Pretty-print the profile definition, mimicking the format
-     * of the X3D spec.
-     */
-	virtual void print();
-};
-
-/**
- * Field definition structure. Defines the name, type, and access permissions
- * of a given field. This is an abstract class; FieldDefImpl actually contains
- * a type-specific pointer into the node which contains the field.
- */
-class FieldDef {
-public:
-    /// pointer to parent node definition
-	NodeDef* const nodeDef;
-
-    /// base name of field (i.e. without set_ or _changed, if InOut)
-	const string name;
-
-    /// X3D Field type (i.e. SFINT32, MFNODE, etc.)
-	const X3DField::Type type;
-
-    /// Access type (init-only, input-only, output-only, or input-output)
-	const X3DField::Access access;
-
-    /**
-     * Constructor.
-     * 
-     * @param nodeDef parent node definition pointer
-     * @param name field name
-     * @param type field datatype
-     * @param access field access level
-     */
-	FieldDef(
-		NodeDef* nodeDef,
-		const string& name,
-		X3DField::Type type,
-		X3DField::Access access) :
-		nodeDef(nodeDef),
-		name(name),
-		type(type),
-		access(access) {}
-	
-    /**
-     * Pretty-printing method.
-     */
-    void print();
-
-    /**
-     * Return a pointer to the instance specified by this field
-     * definition, owned by the given node pointer.
-     * 
-     * @param node node to look up field on
-     * @returns pointer to field object instance
-     */
-    virtual SAIField* getField(Node* node) = 0;
-};
-
-/**
- * Base class for field definitions in a particular node. Contains
- * a generic member pointer into the template-provided node type.
- */
-template <class N>
-class FieldDefImpl : public FieldDef {
-public:
-    /// generic member pointer to runtime field
-	SAIField N::*const field;
-
-    /**
-     * Constructor.
-     * 
-     * @param nodeDef parent node definition pointer
-     * @param name field name
-     * @param type field datatype
-     * @param access field access level
-     * @param field node member pointer
-     */
-	FieldDefImpl(
-		NodeDef* nodeDef,
-		const string& name,
-		X3DField::Type type,
-		X3DField::Access access,
-		SAIField N::*field) :
-		FieldDef(nodeDef, name, type, access),
-		field(field) {}
-
-    /**
-     * Initialization method called by the browser when an instance of the
-     * parent node type is instantiated. Sets the node pointer on the runtime
-     * fields of the node.
-     */
-    void init(N* node) {
-        NodeField<N>* f = static_cast<NodeField<N>*>(&(node->*field));
-        f->setNode(node);
-    }
-
-    /**
-     * Return a pointer to the instance specified by this field
-     * definition, owned by the given node pointer.
-     * 
-     * @param node node to look up field on
-     * @returns pointer to field object instance
-     */
-    virtual SAIField* getField(Node* node) {
-        N* ptr = dynamic_cast<N*>(node);
-        if (ptr == NULL)
-            throw X3DError("called getField() on node of wrong type");
-        return &(ptr->*field);
-    }
-};
+class Browser;
 
 /**
  * Node definition base class. Defines the inheritance hierarchy for node
@@ -413,11 +262,6 @@ protected:
         for (; fit != fields.end(); fit++) {
             (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
         }
-        /*
-        vector<NodeDef*>::iterator pit = parents.begin();
-        for (; pit != parents.end(); pit++)
-            (*pit)->initFields(node);
-        */
     }
 
 
@@ -443,71 +287,6 @@ public:
 	}
 };
 
-/**
- * A component groups a set of related functionality in the form of
- * a set of node definitions. The components used by simpleX3D are
- * meant to directly mirror those defined in the ISO X3D spec.
- */
-class Component {
-private:
-    /// map of node name to definition
-	map<string, NodeDef*> node_map;
-
-    /// flat list of node definitions
-	vector<NodeDef*> node_list;
-
-public:
-    /// canonical name of component
-	const string name;
-
-    /// reference to profile which owns this component
-    Profile* const profile;
-
-    /**
-     * Constructor.
-     * 
-     * @param profile parent profile reference
-     * @param name canonical component name
-     */
-	Component(Profile* profile, const string& name) :
-        profile(profile), name(name) {}
-
-    /// Virtual destructor.
-	virtual ~Component();
-
-    /**
-     * Find a node definition by its name. This function will only search
-     * nodes defined within this component.
-     * 
-     * @param name canonical node name
-     * @returns node reference, if found, or NULL
-     */
-	NodeDef* getNode(const string& name);
-
-    /**
-     * Pretty-print the entire component definition in the manner
-     * of the X3D spec.
-     */
-	virtual void print();
-
-    /**
-     * Create and add a new empty node definition with the given parameters.
-     * This function is templatized by the node class represented by the
-     * definition.
-     * 
-     * @param name canonical node name
-     * @param abstract whether node definition is abstract
-     * @returns new node definition instance
-     */
-	template <class T> NodeDefImpl<T>* createNode(const string& name, bool abstract=false) {
-		NodeDefImpl<T>* def = new NodeDefImpl<T>(this, name, abstract);
-		node_map[name] = def;
-		node_list.push_back(def);
-		return def;
-	}
-
-};
-
 }
 
-#endif // #ifndef _X3D_PROFILE_H_
+#endif // #ifndef _X3D_NODEDEF_H_

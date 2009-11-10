@@ -5,9 +5,12 @@ libsimpleX3D_la_SOURCES = \
 	internal/Node.cc \
 	internal/SFImage.cc \
 	internal/SFColor.cc \
-	internal/profile.cc \
 	internal/Browser.cc \
     internal/Route.cc \
+    internal/Profile.cc \
+    internal/Component.cc \
+    internal/NodeDef.cc \
+    internal/FieldDef.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc

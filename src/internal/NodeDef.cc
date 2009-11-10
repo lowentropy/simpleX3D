@@ -17,9 +17,10 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/types.h"
-#include "internal/profile.h"
+#include "internal/Component.h"
+#include "internal/NodeDef.h"
 #include "internal/Node.h"
+
 #include <iostream>
 
 using std::cout;
@@ -94,80 +95,8 @@ void NodeDef::addField(FieldDef* field) {
     }
 }
 
-FieldDef* NodeDef::getFieldDef(const string& name) {
-    if (fields[name] != NULL)
-        return fields[name];
-    if (set_fields[name] != NULL)
-        return set_fields[name];
-    if (changed_fields[name] != NULL)
-        return changed_fields[name];
-    return NULL;
-}
-
-
-void FieldDef::print() {
-    switch (access) {
-        case X3DField::INIT_ONLY:
-            cout << "[]";
-            break;
-        case X3DField::INPUT_ONLY:
-            cout << "[in]";
-            break;
-        case X3DField::OUTPUT_ONLY:
-            cout << "[out]";
-            break;
-        case X3DField::INPUT_OUTPUT:
-            cout << "[in,out]";
-            break;
-    }
-}
-
-Component::~Component() {
-	vector<NodeDef*>::iterator it = node_list.begin();
-	for (; it != node_list.end(); it++)
-		delete *it;
-}
-
 NodeDef* Component::getNode(const string& name) {
 	return node_map[name];
-}
-
-void Component::print() {
-	cout << "COMPONENT " << name << " {" << endl;
-	vector<NodeDef*>::iterator it = node_list.begin();
-	for (; it != node_list.end(); it++)
-		(*it)->print();
-	cout << "}" << endl;
-}
-
-Profile::~Profile() {
-	vector<Component*>::iterator it = comp_list.begin();
-	for (; it != comp_list.end(); it++)
-		delete *it;
-}
-
-NodeDef* Profile::getNode(const string& name) {
-	vector<Component*>::iterator it = comp_list.begin();
-	for (; it != comp_list.end(); it++) {
-		NodeDef* def = (*it)->getNode(name);
-		if (def != NULL)
-			return def;
-	}
-	return NULL;
-}
-
-Component* Profile::createComponent(const string& name) {
-	Component* comp = new Component(this, name);
-	comp_map[name] = comp;
-	comp_list.push_back(comp);
-	return comp;
-}
-
-void Profile::print() {
-	cout << "PROFILE" << endl;
-	vector<Component*>::iterator it = comp_list.begin();
-	for (; it != comp_list.end(); it++)
-		(*it)->print();
 }
 
 }
