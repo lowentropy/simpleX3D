@@ -82,6 +82,12 @@ public:
 	 */
 	Node* createNode(const std::string& name);
 
+    /**
+     * Process routes in a cascade. This function will block until
+     * the cascade is complete.
+     */
+    void route();
+
 	/**
 	 * Make the given node persistent, so that it will not be
 	 * garbage collecected (until the browser shuts down).

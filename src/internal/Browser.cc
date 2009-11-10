@@ -49,6 +49,21 @@ Node* Browser::createNode(const std::string& name) {
 	return node;
 }
 
+void Browser::route() {
+    /*
+    list<Node*>::iterator it = sources.begin();
+    for (; it != sources.end(); it++) {
+        FieldIterator* it = node->outputFields();
+        while (it->hasNext())
+            routeFrom(it->next());
+    */
+        // TODO: iterate field's output-capable nodes...
+        // do this with a callback?
+        // or with a pre-populated list?
+        // or with an iterator?
+    //}
+}
+
 void Browser::persist(Node* node) {
 	persistent.push_back(node);
 }
