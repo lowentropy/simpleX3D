@@ -231,8 +231,8 @@ public:
      * @returns field object pointer
      */
     SAIField* getField(const string& name, Node* node) {
-        list<NodeDef*>::const_iterator it = chain.begin();
-        for (; it != chain.end(); it++) {
+        list<NodeDef*>::const_iterator it;
+        for (it = chain.begin(); it != chain.end(); it++) {
             FieldDef* def = (*it)->getFieldDef(name);
             if (def != NULL)
                 return def->getField(node);
@@ -263,10 +263,9 @@ protected:
      * @param node node instance whose fields to set up
      */
     void initFields(N* node) {
-        map<string, FieldDef*>::iterator fit = fields.begin();
-        for (; fit != fields.end(); fit++) {
-            (static_cast<FieldDefImpl<N>*>(fit->second))->init(node);
-        }
+        list<FieldDef*>::iterator it;
+        for (it = field_list.begin(); it != field_list.end(); it++)
+            (static_cast<FieldDefImpl<N>*>(*it))->init(node);
     }
 
 

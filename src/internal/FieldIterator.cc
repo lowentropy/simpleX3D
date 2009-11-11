@@ -34,7 +34,7 @@ void FieldIterator::findNext() {
             return;
     while (++chain_it != node->definition->chain.end()) {
         def = *chain_it;
-        if (def->fields.empty())
+        if (def->field_list.empty())
             continue;
         field_it = def->field_list.begin();
         if (!filter())

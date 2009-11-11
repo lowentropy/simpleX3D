@@ -29,9 +29,19 @@ using std::endl;
 namespace X3D {
 
 NodeDef::~NodeDef() {
-	map<string, FieldDef*>::iterator it = fields.begin();
-	for (; it != fields.end(); it++)
-		delete it->second;
+    list<FieldDef*>::iterator it;
+    for (it = field_list.begin(); it != field_list.end(); it++)
+        delete *it;
+}
+
+FieldDef* NodeDef::getFieldDef(const string& name) {
+    if (fields.count(name))
+        return fields[name];
+    if (in_fields.count(name))
+        return in_fields[name];
+    if (out_fields.count(name))
+        return out_fields[name];
+    return NULL;
 }
 
 void NodeDef::inherits(const string& name) {

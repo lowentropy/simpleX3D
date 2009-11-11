@@ -27,16 +27,6 @@ using std::endl;
 
 namespace X3D {
 
-FieldDef* NodeDef::getFieldDef(const string& name) {
-    if (fields[name] != NULL)
-        return fields[name];
-    if (in_fields[name] != NULL)
-        return in_fields[name];
-    if (out_fields[name] != NULL)
-        return out_fields[name];
-    return NULL;
-}
-
 
 void FieldDef::print() {
     switch (access) {
