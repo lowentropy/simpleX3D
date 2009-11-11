@@ -54,8 +54,20 @@ bool FieldIterator::filter() {
     }
 }
 
-SAIField* FieldIterator::next() {
-    return atEnd ? NULL : field_it->second->getField(node);
+SAIField* FieldIterator::nextField() {
+    if (atEnd)
+        return NULL;
+    SAIField* field = field_it->second->getField(node);
+    findNext();
+    return field;
+}
+
+FieldDef* FieldIterator::nextFieldDef() {
+    if (atEnd)
+        return NULL;
+    NodeDef* def = field_it->second;
+    findNext();
+    return def;
 }
 
 bool FieldIterator::hasNext() const {

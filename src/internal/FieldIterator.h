@@ -65,7 +65,10 @@ public:
     bool hasNext() const;
 
     /// @returns the next filtered field
-    SAIField* next();
+    SAIField* nextField();
+
+    /// @returns the next filtered field definition
+    FieldDef* nextFieldDef();
 
 private:
 
