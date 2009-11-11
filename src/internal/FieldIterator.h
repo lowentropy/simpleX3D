@@ -79,7 +79,7 @@ private:
     NodeDef* def;
 
     /// The field iterator
-    map<string, FieldDef*>::iterator field_it;
+    list<FieldDef*>::iterator field_it;
 
     /// The node definition hierarchy iterator
     list<NodeDef*>::iterator chain_it;

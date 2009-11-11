@@ -49,6 +49,9 @@ public:
     /// map of field basename to field definition
 	map<string, FieldDef*> fields;
 
+    /// straight list of fields
+    list<FieldDef*> field_list;
+
     /// map of field set_ name to field definition
     map<string, FieldDef*> in_fields;
 

@@ -259,6 +259,8 @@ public:
 			NodeDefImpl<X3DTimeDependentNode>* dep =
 				time->createNode<X3DTimeDependentNode>("X3DTimeDependentNode", true);
 			{
+                dep->inherits("X3DChildNode");
+
 				// SFBool [in,out] loop FALSE
 				dep->createField(
 					"loop", X3DField::SFBOOL, SAIField::INPUT_OUTPUT,
@@ -307,8 +309,8 @@ public:
 			NodeDefImpl<TimeSensor>* ts =
 				time->createNode<TimeSensor>("TimeSensor");
 			{
-                ts->inherits("X3DSensorNode");
                 ts->inherits("X3DTimeDependentNode");
+                ts->inherits("X3DSensorNode");
 
 				// SFTime [in,out] cycleInterval 1
 				ts->createField(

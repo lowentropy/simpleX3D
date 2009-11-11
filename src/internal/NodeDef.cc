@@ -69,14 +69,19 @@ void NodeDef::print(bool full) {
 }
 
 void NodeDef::print_fields(bool full) {
-	if (full) {
-        vector<NodeDef*>::iterator it = parents.begin();
-        for (; it != parents.end(); it++)
-            (*it)->print_fields(full);
+    if (full) {
+        list<NodeDef*>::iterator c_it;
+        for (c_it = chain.begin(); c_it != chain.end(); c_it++) {
+            NodeDef* def = *c_it;
+            list<FieldDef*>::iterator f_it;
+            for (f_it = def->field_list.begin(); f_it != def->field_list.end(); f_it++)
+                (*f_it)->print();
+        }
+    } else {
+        list<FieldDef*>::iterator f_it;
+        for (f_it = field_list.begin(); f_it != field_list.end(); f_it++)
+            (*f_it)->print();
     }
-	map<string, FieldDef*>::iterator it = fields.begin();
-	for (; it != fields.end(); it++)
-		it->second->print();
 }
 
 void NodeDef::setDefinition(Node* node) {
@@ -85,6 +90,7 @@ void NodeDef::setDefinition(Node* node) {
 
 void NodeDef::addField(FieldDef* field) {
     fields[field->name] = field;
+    field_list.push_back(field);
     switch (field->access) {
         case SAIField::INPUT_ONLY:
             in_fields[field->name] = field;

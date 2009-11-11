@@ -55,7 +55,7 @@ void Browser::route() {
     for (; it != sources.end(); it++) {
         FieldIterator fields = (*it)->fields(FieldIterator::DIRTY);
         while (fields.hasNext())
-            routeFrom(fields.next());
+            routeFrom(fields.nextField());
     }
 }
 

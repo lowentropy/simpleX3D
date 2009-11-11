@@ -29,21 +29,23 @@ FieldIterator::FieldIterator(Node* node, IterMode mode) :
 }
 
 void FieldIterator::findNext() {
-    while (!atEnd) {
-        while (++field_it != def->fields.end())
-            if (filter())
-                return;
-        if (++chain_it != node->definition->chain.end()) {
-            def = *chain_it;
-            field_it = def->fields.begin();
-            if (filter())
-                return;
-        } else atEnd = true;
+    while (++field_it != def->field_list.end())
+        if (filter())
+            return;
+    while (++chain_it != node->definition->chain.end()) {
+        def = *chain_it;
+        if (def->fields.empty())
+            continue;
+        field_it = def->field_list.begin();
+        if (!filter())
+            findNext();
+        return;
     }
+    atEnd = true;
 }
 
 bool FieldIterator::filter() {
-    FieldDef* fieldDef = field_it->second;
+    FieldDef* fieldDef = *field_it;
     switch (mode) {
         case INPUT: return fieldDef->inputCapable();
         case OUTPUT: return fieldDef->outputCapable();
@@ -57,7 +59,7 @@ bool FieldIterator::filter() {
 SAIField* FieldIterator::nextField() {
     if (atEnd)
         return NULL;
-    SAIField* field = field_it->second->getField(node);
+    SAIField* field = (*field_it)->getField(node);
     findNext();
     return field;
 }
@@ -65,7 +67,7 @@ SAIField* FieldIterator::nextField() {
 FieldDef* FieldIterator::nextFieldDef() {
     if (atEnd)
         return NULL;
-    NodeDef* def = field_it->second;
+    FieldDef* def = *field_it;
     findNext();
     return def;
 }
@@ -77,7 +79,7 @@ bool FieldIterator::hasNext() const {
 void FieldIterator::reset() {
     chain_it = node->definition->chain.begin();
     def = *chain_it;
-    field_it = def->fields.begin();
+    field_it = def->field_list.begin();
     // the first nodedef in chain is X3DNode, which
     // has one field, so we don't have to check here
     // if def->fields is empty.
