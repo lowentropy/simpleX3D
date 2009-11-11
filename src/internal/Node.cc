@@ -11,4 +11,12 @@ SAIField* Node::getField(const string& name) {
     return definition->getField(name, this);
 }
 
+FieldIterator Node::fields(FieldIterator::IterMode mode) {
+    return FieldIterator(this, mode);
+}
+
+bool Node::eventSource() {
+    return false;
+}
+
 }

@@ -45,17 +45,17 @@ class NodeDef {
     // allow browser to access creation method
 	friend class Browser;
 
-protected:
+public:
     /// map of field basename to field definition
 	map<string, FieldDef*> fields;
 
     /// map of field set_ name to field definition
-    map<string, FieldDef*> set_fields;
+    map<string, FieldDef*> in_fields;
 
     /// map of field _changed name to field definition
-    map<string, FieldDef*> changed_fields;
+    map<string, FieldDef*> out_fields;
 
-    /// chain from root ancestor to immediate ancestors
+    /// chain from root ancestor to self
     list<NodeDef*> chain;
 
 private:
@@ -101,6 +101,12 @@ public:
      * @param name name of node definition to be parent
      */
 	void inherits(const string& name);
+
+    /**
+     * This should be called after all inheritance and field declaration
+     * has been completed. Any further precomputation should be done.
+     */
+    void finish();
 
     /**
      * Pretty-print the node definition, in the manner of the X3D spec.
@@ -211,7 +217,6 @@ public:
         list<NodeDef*>::iterator it = chain.begin();
         for (; it != chain.end(); it++)
             (*it)->setup(node);
-        setup(node);
         return node;
 	}
 
@@ -223,9 +228,6 @@ public:
      * @returns field object pointer
      */
     SAIField* getField(const string& name, Node* node) {
-        FieldDef* def = getFieldDef(name);
-        if (def != NULL)
-            return def->getField(node);
         list<NodeDef*>::const_iterator it = chain.begin();
         for (; it != chain.end(); it++) {
             FieldDef* def = (*it)->getFieldDef(name);
@@ -279,7 +281,7 @@ public:
      * @param ptr node class pointer to field declaration
      * @returns new field definition
      */
-	template <typename T> FieldDef* createField(const string& name, X3DField::Type type, X3DField::Access access, T N::*ptr) {
+	template <typename T> FieldDef* createField(const string& name, X3DField::Type type, SAIField::Access access, T N::*ptr) {
         SAIField N::*field = (SAIField N::*) ptr;
 		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, field);
 		addField(def);

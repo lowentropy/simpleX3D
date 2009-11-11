@@ -72,6 +72,13 @@ public:
     OutField() {}
 
     /**
+     * Get the access type of this field.
+     * 
+     * @returns OUTPUT_ONLY
+     */
+    SAIField::Access getAccess() const { return SAIField::OUTPUT_ONLY; }
+
+    /**
      * High-level accessor to get generic field value. Will throw an
      * error if the field's node is not in state REALIZED.
      * 

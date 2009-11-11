@@ -49,6 +49,9 @@ private:
 	/// nodes we shouldn't garbage-collect
 	list<Node*> persistent;
 
+    /// nodes which generate events asynchronously
+    list<Node*> sources;
+
 	/// root scene nodes
 	list<Node*> roots;
 
@@ -115,6 +118,8 @@ public:
 		if (node == NULL)
 			return NULL;
 		nodes.push_back(node);
+        if (node->eventSource())
+            sources.push_back(node);
 		return node;
 	}
 
@@ -126,6 +131,15 @@ public:
 	static Browser* getSingleton() {
 		return _inst;
 	}
+
+private:
+
+    /**
+     * Route events from the given field, which should be marked dirty.
+     * 
+     * @param field field to route events from
+     */
+    void routeFrom(SAIField* field);
 
 };
 

@@ -42,6 +42,10 @@ void NodeDef::inherits(const string& name) {
     growChain(parent);
 }
 
+void NodeDef::finish() {
+    chain.push_back(this);
+}
+
 void NodeDef::growChain(NodeDef* def) {
     list<NodeDef*>::iterator c_it = chain.begin();
     for (; c_it != chain.end(); c_it++)
@@ -82,15 +86,15 @@ void NodeDef::setDefinition(Node* node) {
 void NodeDef::addField(FieldDef* field) {
     fields[field->name] = field;
     switch (field->access) {
-        case X3DField::INPUT_ONLY:
-            set_fields[field->name] = field;
+        case SAIField::INPUT_ONLY:
+            in_fields[field->name] = field;
             break;
-        case X3DField::OUTPUT_ONLY:
-            changed_fields[field->name] = field;
+        case SAIField::OUTPUT_ONLY:
+            out_fields[field->name] = field;
             break;
-        case X3DField::INPUT_OUTPUT:
-            set_fields["set_" + field->name] = field;
-            changed_fields[field->name + "_changed"] = field;
+        case SAIField::INPUT_OUTPUT:
+            in_fields["set_" + field->name] = field;
+            out_fields[field->name + "_changed"] = field;
             break;
     }
 }

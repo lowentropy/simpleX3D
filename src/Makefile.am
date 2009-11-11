@@ -11,6 +11,7 @@ libsimpleX3D_la_SOURCES = \
     internal/Component.cc \
     internal/NodeDef.cc \
     internal/FieldDef.cc \
+    internal/FieldIterator.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc
@@ -25,7 +26,11 @@ include_HEADERS = \
 	internal/InField.h \
 	internal/OutField.h \
 	internal/InOutField.h \
-	internal/profile.h \
+    internal/Profile.h \
+    internal/Component.h \
+    internal/NodeDef.h \
+    internal/FieldDef.h \
+    internal/FieldIterator.h \
 	internal/builtin.h \
 	internal/SFBool.h \
 	internal/SFColor.h \

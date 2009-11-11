@@ -83,14 +83,6 @@ public:
 		MFVEC4F
 	} Type;
 
-    /// access level for node fields ([], [in], [ou], [in,out])
-	typedef enum {
-		INIT_ONLY,
-		INPUT_ONLY,
-		OUTPUT_ONLY,
-		INPUT_OUTPUT
-	} Access;
-
     /// string representation of x3d type names
     static const string typeNames[];
 

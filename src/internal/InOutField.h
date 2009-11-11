@@ -74,6 +74,13 @@ public:
     InOutField() {}
 
     /**
+     * Get the access type of this field.
+     * 
+     * @returns INPUT_OUTPUT
+     */
+    SAIField::Access getAccess() const { return SAIField::INPUT_OUTPUT; }
+
+    /**
      * Initializing constructor, which sets initial #value.
      * 
      * @param init initial value of #value

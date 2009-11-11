@@ -44,7 +44,7 @@ public:
 	const X3DField::Type type;
 
     /// Access type (init-only, input-only, output-only, or input-output)
-	const X3DField::Access access;
+	const SAIField::Access access;
 
     /**
      * Constructor.
@@ -58,7 +58,7 @@ public:
 		NodeDef* nodeDef,
 		const string& name,
 		X3DField::Type type,
-		X3DField::Access access) :
+		SAIField::Access access) :
 		nodeDef(nodeDef),
 		name(name),
 		type(type),
@@ -77,6 +77,12 @@ public:
      * @returns pointer to field object instance
      */
     virtual SAIField* getField(Node* node) = 0;
+
+    /// @returns true if the field INPUT_ONLY or INPUT_OUTPUT
+    bool inputCapable();
+
+    /// @returns true if the field OUTPUT_ONLY or INPUT_OUTPUT
+    bool outputCapable();
 };
 
 /**
@@ -102,7 +108,7 @@ public:
 		NodeDef* nodeDef,
 		const string& name,
 		X3DField::Type type,
-		X3DField::Access access,
+		SAIField::Access access,
 		SAIField N::*field) :
 		FieldDef(nodeDef, name, type, access),
 		field(field) {}

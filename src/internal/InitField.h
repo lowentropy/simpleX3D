@@ -57,6 +57,13 @@ public:
     InitField() {}
 
     /**
+     * Get the access type of this field.
+     * 
+     * @returns INIT_ONLY
+     */
+    SAIField::Access getAccess() const { return SAIField::INIT_ONLY; }
+
+    /**
      * Initializing constructor, taking the initial #value.
      * 
      * @param init initial value for #value

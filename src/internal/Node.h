@@ -26,6 +26,7 @@
 #include "internal/InField.h"
 #include "internal/OutField.h"
 #include "internal/InOutField.h"
+#include "internal/FieldIterator.h"
 #include <string>
 
 using std::string;
@@ -52,7 +53,6 @@ public:
 		DISPOSED
 	} Stage;
 
-protected:
     /// Definition of node, which may be a static definition or prototype definition
 	NodeDef* definition;
 
@@ -60,7 +60,7 @@ protected:
 	Stage stage;
 
 private:
-    /// Disallow copy constructgor
+    /// Disallow copy constructor
 	Node(const Node& node) { throw X3DError("illegal copy"); }
 
 public:
@@ -69,6 +69,9 @@ public:
 
     /// Virtual deconstructor.
 	virtual ~Node() {}
+
+    /// @returns whether this node is an event generator
+    virtual bool eventSource();
 
     /**
      * Look up a field on the node and return a reference to it.
@@ -81,6 +84,16 @@ public:
      * @returns pointer to actual field
      */
     SAIField* getField(const string& name);
+
+    /**
+     * Create and return an iterator into the run-time fields of this node.
+     * The given mode (defaulting to all fields) is used to filter the
+     * results.
+     * 
+     * @param mode filtering mode (defaults to ALL)
+     * @returns field iterator for this node
+     */
+    FieldIterator fields(FieldIterator::IterMode mode = FieldIterator::ALL);
 
     /// @returns current lifecycle stage
 	Stage getStage() const { return stage; }
@@ -105,7 +118,7 @@ public:
 	 * 
 	 * @returns singleton instance of Browser
 	 */
-	virtual Browser* browser();
+	Browser* browser();
 };
 
 }

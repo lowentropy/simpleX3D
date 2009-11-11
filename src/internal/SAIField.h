@@ -37,6 +37,14 @@ class Node;
 class SAIField {
 public:
 
+    /// access level for node fields ([], [in], [ou], [in,out])
+	typedef enum {
+		INIT_ONLY,
+		INPUT_ONLY,
+		OUTPUT_ONLY,
+		INPUT_OUTPUT
+	} Access;
+
     /// Empty constructor.
     SAIField() {}
 
@@ -54,6 +62,13 @@ public:
      * @returns field datatype
      */
 	virtual X3DField::Type getType() const = 0;
+
+    /**
+     * Get the access type of this field.
+     * 
+     * @returns field access level
+     */
+    virtual Access getAccess() const = 0;
 
     /**
      * Get the name of the datatype of this field. XXX: deprecated

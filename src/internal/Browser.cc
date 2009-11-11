@@ -18,6 +18,7 @@
  */
 
 #include "internal/Browser.h"
+#include "internal/FieldIterator.h"
 
 namespace X3D {
 
@@ -50,18 +51,16 @@ Node* Browser::createNode(const std::string& name) {
 }
 
 void Browser::route() {
-    /*
     list<Node*>::iterator it = sources.begin();
     for (; it != sources.end(); it++) {
-        FieldIterator* it = node->outputFields();
-        while (it->hasNext())
-            routeFrom(it->next());
-    */
-        // TODO: iterate field's output-capable nodes...
-        // do this with a callback?
-        // or with a pre-populated list?
-        // or with an iterator?
-    //}
+        FieldIterator fields = (*it)->fields(FieldIterator::DIRTY);
+        while (fields.hasNext())
+            routeFrom(fields.next());
+    }
+}
+
+void Browser::routeFrom(SAIField* field) {
+    // TODO
 }
 
 void Browser::persist(Node* node) {

@@ -30,29 +30,37 @@ namespace X3D {
 FieldDef* NodeDef::getFieldDef(const string& name) {
     if (fields[name] != NULL)
         return fields[name];
-    if (set_fields[name] != NULL)
-        return set_fields[name];
-    if (changed_fields[name] != NULL)
-        return changed_fields[name];
+    if (in_fields[name] != NULL)
+        return in_fields[name];
+    if (out_fields[name] != NULL)
+        return out_fields[name];
     return NULL;
 }
 
 
 void FieldDef::print() {
     switch (access) {
-        case X3DField::INIT_ONLY:
+        case SAIField::INIT_ONLY:
             cout << "[]";
             break;
-        case X3DField::INPUT_ONLY:
+        case SAIField::INPUT_ONLY:
             cout << "[in]";
             break;
-        case X3DField::OUTPUT_ONLY:
+        case SAIField::OUTPUT_ONLY:
             cout << "[out]";
             break;
-        case X3DField::INPUT_OUTPUT:
+        case SAIField::INPUT_OUTPUT:
             cout << "[in,out]";
             break;
     }
+}
+
+bool FieldDef::inputCapable() {
+    return (access == SAIField::INPUT_ONLY) || (access == SAIField::INPUT_OUTPUT);
+}
+
+bool FieldDef::outputCapable() {
+    return (access == SAIField::OUTPUT_ONLY) || (access == SAIField::INPUT_OUTPUT);
 }
 
 }

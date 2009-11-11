@@ -58,6 +58,9 @@ public:
 	/// Callback for #isActive output event.
 	virtual void onIsActive(bool active) {};
 
+    /// All sensor nodes are potentially event generators
+    virtual bool eventSource() { return true; }
+
     /// Setup function called on instantiation.
     void setup() {
         enabled(true);

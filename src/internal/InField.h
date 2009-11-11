@@ -58,6 +58,13 @@ public:
     InField() {}
 
     /**
+     * Get the access type of this field.
+     * 
+     * @returns INPUT_ONLY
+     */
+    SAIField::Access getAccess() const { return SAIField::INPUT_ONLY; }
+
+    /**
      * Throws an error, since input fields have no persistent value.
      * 
      * @returns nothing, always throws an error
