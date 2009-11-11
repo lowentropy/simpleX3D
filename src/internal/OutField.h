@@ -21,6 +21,7 @@
 #define _X3D_OUTFIELD_H_
 
 #include "internal/SAIField.h"
+#include "internal/OutputCapableField.h"
 
 namespace X3D {
 
@@ -47,7 +48,7 @@ namespace X3D {
  * outgoing routes are activated.
  */
 template <class N, class TT>
-class OutField : public BaseField<N,TT> {
+class OutField : public BaseField<N,TT>, OutputCapableField {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;

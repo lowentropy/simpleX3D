@@ -28,14 +28,14 @@ namespace X3D {
 class Route {
 public:
     /// field which is source of event
-    SAIField* const from_field;
+    SAIField* const fromField;
 
     /// field which is target of event
-    SAIField* const to_field;
+    SAIField* const toField;
 
     /// Basic constructor.
     Route(SAIField* from, SAIField* to) :
-            from_field(from), to_field(to) {
+            fromField(from), toField(to) {
         checkTypes();
     }
 
@@ -49,8 +49,8 @@ public:
      */
     Route(Node* from_node, const string& from_field,
           Node* to_node, const string& to_field) :
-            from_field(from_node->getField(from_field)),
-            to_field(to_node->getField(to_field)) {
+            fromField(from_node->getField(from_field)),
+            toField(to_node->getField(to_field)) {
         checkTypes();
     }
     
@@ -58,7 +58,19 @@ public:
      * Activate the route, creating an event from the #from_field
      * to the #to_field.
      */
-    void activate();
+    void activate() const;
+
+    /**
+     * Remove this route from the scene by de-listing it, but don't free its
+     * memory. After calling this method, the route is dangling (not part of
+     * the scene).
+     */
+    void remove();
+
+    /**
+     * Assuming this route is dangling (not inserted into the scene), insert it.
+     */
+    void insert();
 
 private:
 

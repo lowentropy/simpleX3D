@@ -22,12 +22,15 @@
 
 #include "internal/X3DField.h"
 #include <string>
+#include <list>
 
 using std::string;
+using std::list;
 
 namespace X3D {
 
 class Node;
+class Route;
 
 /**
  * Base class for all node-owned field instances. This is not a "definition"
@@ -105,6 +108,26 @@ public:
      * Clear the dirty value.
      */
     virtual void clearDirty() = 0;
+
+    virtual void addIncomingRoute(Route* route) {
+        throw X3DError("this field does not support incoming routes");
+    }
+    virtual void removeIncomingRoute(Route* route) {
+        throw X3DError("this field does not support incoming routes");
+    }
+    virtual const list<Route*>& getIncomingRoutes() const {
+        throw X3DError("this field does not support incoming routes");
+    }
+
+    virtual void addOutgoingRoute(Route* route) {
+        throw X3DError("this field does not support outgoing routes");
+    }
+    virtual void removeOutgoingRoute(Route* route) {
+        throw X3DError("this field does not support outgoing routes");
+    }
+    virtual const list<Route*>& getOutgoingRoutes() const {
+        throw X3DError("this field does not support outgoing routes");
+    }
 
 private:
 

@@ -21,6 +21,7 @@
 #define _X3D_INFIELD_H_
 
 #include "internal/SAIField.h"
+#include "internal/InputCapableField.h"
 
 namespace X3D {
 
@@ -39,7 +40,7 @@ namespace X3D {
  * is in state REALIZED.
  */
 template <class N, class TT>
-class InField : public BaseField<N,TT> {
+class InField : public BaseField<N,TT>, InputCapableField {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;

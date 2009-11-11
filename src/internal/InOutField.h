@@ -21,6 +21,8 @@
 #define _X3D_INOUTFIELD_H_
 
 #include "internal/SAIField.h"
+#include "internal/InputCapableField.h"
+#include "internal/OutputCapableField.h"
 
 namespace X3D {
 
@@ -50,7 +52,7 @@ namespace X3D {
  * period (before the next cascade) will result in an error.
  */
 template <class N, class TT>
-class InOutField : public BaseField<N,TT> {
+class InOutField : public BaseField<N,TT>, InputCapableField, OutputCapableField {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
