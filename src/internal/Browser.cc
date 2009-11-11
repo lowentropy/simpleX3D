@@ -19,6 +19,7 @@
 
 #include "internal/Browser.h"
 #include "internal/FieldIterator.h"
+#include "internal/Route.h"
 
 namespace X3D {
 
@@ -60,11 +61,39 @@ void Browser::route() {
 }
 
 void Browser::routeFrom(SAIField* field) {
-    // TODO
+    const list<Route*>& routes = field->getOutgoingRoutes();
+    list<Route*>::const_iterator it;
+    for (it = routes.begin(); it != routes.end(); it++)
+        (*it)->activate();
+    // TODO: add target nodes to search list
+    field->clearDirty();
 }
 
 void Browser::persist(Node* node) {
 	persistent.push_back(node);
+}
+
+Route* Browser::createRoute(Node* fromNode, const string& fromFieldName,
+                            Node* toNode, const string& toFieldName) const {
+    SAIField* fromField = fromNode->getField(fromFieldName);
+    if (fromField == NULL)
+        throw X3DError("couldn't find source field");
+    SAIField* toField = toNode->getField(toFieldName);
+    if (toField == NULL)
+        throw X3DError("couldn't find target field");
+    return createRoute(fromField, toField);
+}
+
+Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
+    const list<Route*>& routes = fromField->getOutgoingRoutes();
+    list<Route*>::const_iterator it;
+    for (it = routes.begin(); it != routes.end(); it++)
+        if ((*it)->toField == toField)
+            return *it;
+    Route* route = new Route(fromField, toField);
+    fromField->addOutgoingRoute(route);
+    toField->addIncomingRoute(route);
+    return route;
 }
 
 }

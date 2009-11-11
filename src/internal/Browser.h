@@ -132,6 +132,31 @@ public:
 		return _inst;
 	}
 
+    /**
+     * Create a route between nodes based on field names. If such a route already
+     * exists, this function will return the existing route. Otherwise, it will
+     * create a new route and hook it up to the fields, then return it.
+     * 
+     * @param fromNode node to route from
+     * @param fromField name of field to route from
+     * @param toNode node to route to
+     * @param toField name of field to route to
+     * @returns new or existing route between fields
+     */
+    Route* createRoute(Node* fromNode, const string& fromField,
+                       Node* toNode, const string& toField) const;
+
+    /**
+     * Create a route between nodes based on their field pointers. If such a
+     * route already exists, this function will return the existing route. Otherwise,
+     * it will create a new route and hook it up to the fields, then return it.
+     * 
+     * @param fromField field object to route from
+     * @param toField field object to route to
+     * @returns new or existing route between fields
+     */
+    Route* createRoute(SAIField* fromField, SAIField* toField) const;
+
 private:
 
     /**
