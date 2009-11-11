@@ -31,6 +31,7 @@ Browser* browser() {
 #include "internal/SFImageTests.h"
 #include "internal/TypeTests.h"
 #include "internal/FieldIteratorTests.h"
+#include "internal/RouteTests.h"
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {

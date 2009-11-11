@@ -21,8 +21,6 @@
 #define _X3D_INOUTFIELD_H_
 
 #include "internal/SAIField.h"
-#include "internal/InputCapableField.h"
-#include "internal/OutputCapableField.h"
 
 namespace X3D {
 
@@ -52,7 +50,7 @@ namespace X3D {
  * period (before the next cascade) will result in an error.
  */
 template <class N, class TT>
-class InOutField : public BaseField<N,TT>, InputCapableField, OutputCapableField {
+class InOutField : public BaseField<N,TT> {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
@@ -61,6 +59,11 @@ private:
     bool dirty;
 
 protected:
+
+    list<Route*> incomingRoutes;
+
+    list<Route*> outgoingRoutes;
+
     /**
      * Returns a pointer to the node which owns this field.
      * 
@@ -195,6 +198,30 @@ public:
      * Action to take on output event. Subclasses MUST define this function.
      */
     virtual void action() = 0;
+
+    void addIncomingRoute(Route* route) {
+        incomingRoutes.push_back(route);
+    }
+
+    void removeIncomingRoute(Route* route) {
+        incomingRoutes.remove(route);
+    }
+
+    const list<Route*>& getIncomingRoutes() const {
+        return incomingRoutes;
+    }
+
+    void addOutgoingRoute(Route* route) {
+        outgoingRoutes.push_back(route);
+    }
+
+    void removeOutgoingRoute(Route* route) {
+        outgoingRoutes.remove(route);
+    }
+
+    const list<Route*>& getOutgoingRoutes() const {
+        return outgoingRoutes;
+    }
 
 private:
 

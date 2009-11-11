@@ -12,8 +12,6 @@ libsimpleX3D_la_SOURCES = \
     internal/NodeDef.cc \
     internal/FieldDef.cc \
     internal/FieldIterator.cc \
-    internal/InputCapableField.cc \
-    internal/OutputCapableField.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc

@@ -21,7 +21,6 @@
 #define _X3D_INFIELD_H_
 
 #include "internal/SAIField.h"
-#include "internal/InputCapableField.h"
 
 namespace X3D {
 
@@ -40,12 +39,15 @@ namespace X3D {
  * is in state REALIZED.
  */
 template <class N, class TT>
-class InField : public BaseField<N,TT>, InputCapableField {
+class InField : public BaseField<N,TT> {
 private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
 
 protected:
+
+    list<Route*> incomingRoutes;
+
     /**
      * Return a pointer to the node which owns this field.
      * 
@@ -117,6 +119,19 @@ public:
      * Clear the dirty value.
      */
     virtual void clearDirty() {}
+
+    void addIncomingRoute(Route* route) {
+        incomingRoutes.push_back(route);
+    }
+
+    void removeIncomingRoute(Route* route) {
+        incomingRoutes.remove(route);
+    }
+
+    const list<Route*>& getIncomingRoutes() const {
+        return incomingRoutes;
+    }
+
 
 private:
 
