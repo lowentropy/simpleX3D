@@ -18,10 +18,12 @@ libsimpleX3D_la_SOURCES = \
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \
+    internal/config.h \
 	internal/errors.h \
 	internal/Node.h \
 	internal/Browser.h \
 	internal/types.h \
+    internal/Route.h \
 	internal/InitField.h \
 	internal/InField.h \
 	internal/OutField.h \
