@@ -58,19 +58,41 @@ void Browser::route() {
         while (fields.hasNext())
             routeFrom(fields.nextField());
     }
+    while (!dirtyNodes.empty()) {
+        Node* node = dirtyNodes.front();
+        dirtyNodes.pop_front();
+        FieldIterator fields = node->fields(FieldIterator::DIRTY);
+        while (fields.hasNext())
+            routeFrom(fields.nextField());
+    }
+}
+
+void Browser::addDirtyNode(Node* node) {
+    // TODO: move to (ordered) set instead...
+    list<Node*>::iterator it;
+    for (it = dirtyNodes.begin(); it != dirtyNodes.end(); it++)
+        if (*it == node)
+            return;
+    dirtyNodes.push_back(node);
 }
 
 void Browser::routeFrom(SAIField* field) {
     const list<Route*>& routes = field->getOutgoingRoutes();
     list<Route*>::const_iterator it;
-    for (it = routes.begin(); it != routes.end(); it++)
+    for (it = routes.begin(); it != routes.end(); it++) {
+        addDirtyNode((*it)->toField->getNode());
         (*it)->activate();
-    // TODO: add target nodes to search list
+    }
     field->clearDirty();
 }
 
 void Browser::persist(Node* node) {
 	persistent.push_back(node);
+}
+
+void Browser::addSource(Node* node) {
+    // TODO: convert to Set
+    sources.push_back(node);
 }
 
 Route* Browser::createRoute(Node* fromNode, const string& fromFieldName,

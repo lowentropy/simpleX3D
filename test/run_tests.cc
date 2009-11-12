@@ -17,6 +17,11 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <iostream>
+
+using std::cout;
+using std::endl;
+
 #include "internal/Browser.h"
 #include <gmock/gmock.h>
 
@@ -32,6 +37,7 @@ Browser* browser() {
 #include "internal/TypeTests.h"
 #include "internal/FieldIteratorTests.h"
 #include "internal/RouteTests.h"
+#include "internal/Routing.h"
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {

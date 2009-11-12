@@ -55,6 +55,9 @@ private:
 	/// root scene nodes
 	list<Node*> roots;
 
+    /// nodes which need to be routed
+    list<Node*> dirtyNodes;
+
 	/// singleton instance
 	static Browser* _inst;
 
@@ -100,6 +103,14 @@ public:
 	 */
 	void persist(Node* node);
 
+    /**
+     * Make the given node a "source", meaning that we expect it to
+     * generate events asynchronously.
+     * 
+     * @param node node which will generate events
+     */
+    void addSource(Node* node);
+
 	/**
 	 * Templatized node creation. This version of createNode
 	 * will use the constructor of the actual template type,
@@ -113,13 +124,13 @@ public:
 	N* createNode(const std::string& name) {
 		NodeDef* def = profile->getNode(name);
 		if (def == NULL)
-			return NULL;
+            throw X3DError("no such node " + name);
 		N* node = def->create<N>();
 		if (node == NULL)
-			return NULL;
+            throw X3DError("node creation failed");
 		nodes.push_back(node);
         if (node->eventSource())
-            sources.push_back(node);
+            addSource(node);
 		return node;
 	}
 
@@ -165,6 +176,14 @@ private:
      * @param field field to route events from
      */
     void routeFrom(SAIField* field);
+
+    /**
+     * Add a (potentially) dirty node to the list of
+     * nodes to route from.
+     * 
+     * @param node node to route from
+     */
+    void addDirtyNode(Node* node);
 
 };
 
