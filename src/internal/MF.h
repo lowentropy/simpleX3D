@@ -45,8 +45,6 @@ public:\
     INLINE bool operator!=(const X3DField& value) { \
         return *this != unwrap(value); \
     } \
-private: \
-    MF(const MF& mf) {} \
 };
 
 namespace X3D {
@@ -171,10 +169,6 @@ public:
     INLINE MFNode<N>& operator()() {
         return *this;
     }
-
-private:
-    /** Disallow copy constructor. */
-    MFNode(const MFNode<N>& mf) {}
 };
 
 MAKE_MF(MFBOOL,		MFBool,		bool,		MFNative)

@@ -107,11 +107,6 @@ public:
      * @returns X3D type of field-value
      */
 	virtual Type getType() const = 0;
-
-private:
-
-    /// Disallow copy constructor.
-	X3DField(const X3DField& field) {}
 };
 
 }
