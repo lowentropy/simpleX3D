@@ -8,5 +8,7 @@ include_HEADERS = \
 	internal/BrowserTests.h \
 	internal/SFImageTests.h \
 	internal/TypeTests.h \
+    internal/FieldIteratorTests.h \
+    internal/RouteTests.h \
+    internal/Routing.h \
 	Core/X3DBindableNodeTests.h
-
