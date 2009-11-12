@@ -65,7 +65,7 @@ private:
 
 public:
     /// Empty constructor. Nodes start in stage SETUP.
-	Node() : stage(SETUP) {}
+	Node() : stage(SETUP), definition(NULL) {}
 
     /// Virtual deconstructor.
 	virtual ~Node() {}

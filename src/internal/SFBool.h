@@ -39,7 +39,7 @@ public:
 	INLINE X3DField::Type getType() const { return X3DField::SFBOOL; }
 
     /// Empty constructor.
-	INLINE SFBool() : value(0) {}
+	INLINE SFBool() : value(false) {}
 
     /// Initializing constructor.
 	INLINE SFBool(bool x) : value(x) {}

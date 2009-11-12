@@ -53,7 +53,7 @@ public:
 	N* value;
 
     /// Empty constructor.
-	INLINE SFNode() {}
+	INLINE SFNode() : value(NULL) {}
 
     /// Initializing constructor.
 	INLINE SFNode(N* value) : value(value) {}

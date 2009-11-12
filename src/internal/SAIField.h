@@ -148,7 +148,7 @@ protected:
 public:
 
     /// Empty constructor.
-    NodeField() {}
+    NodeField() : node(NULL) {}
 
     /// @returns pointer to owner node
 	N* getNode() const { return node; }

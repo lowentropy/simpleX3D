@@ -72,7 +72,7 @@ public:
     TT value;
 
     /// Empty constructor.
-    OutField() {}
+    OutField() : dirty(false) {}
 
     /**
      * Get the access type of this field.

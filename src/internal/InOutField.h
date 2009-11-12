@@ -76,7 +76,7 @@ public:
     TT value;
 
     /// Default constructor; #value will have its default value.
-    InOutField() {}
+    InOutField() : dirty(false) {}
 
     /**
      * Get the access type of this field.
