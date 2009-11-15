@@ -48,6 +48,7 @@ include_HEADERS = \
 	internal/SFTime.h \
 	internal/SFVec.h \
 	internal/MF.h \
+    internal/World.h \
 	Core/X3DNode.h \
 	Core/X3DChildNode.h \
     Core/X3DBindableNode.h \
