@@ -12,7 +12,6 @@ void Route::activate() const {
     if (!fromField->isDirty())
         return;
     const X3DField& value = fromField->get();
-    fromField->clearDirty();
     toField->set(value);
 }
 

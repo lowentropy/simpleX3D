@@ -34,6 +34,7 @@ World* World::read(Browser* browser, const char* filename) {
 void World::construct(xmlNode* node, int level) {
     // TODO: load
     // XXX
+    /*
     xmlNode* child;
     for (child = node; child != NULL; child = child->next) {
         if (child->type == XML_ELEMENT_NODE) {
@@ -43,6 +44,7 @@ void World::construct(xmlNode* node, int level) {
             construct(child->children, level+1);
         }
     }
+    */
 }
 
 }

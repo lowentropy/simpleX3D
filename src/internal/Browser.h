@@ -58,6 +58,9 @@ private:
     /// nodes which need to be routed
     list<Node*> dirtyNodes;
 
+    /// nodes which should be cleared
+    list<SAIField*> firedFields;
+
     /// named nodes
     map<string, Node*> defs;
 

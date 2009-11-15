@@ -22,6 +22,11 @@
 
 #include "internal/SAIField.h"
 
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
+
 namespace X3D {
 
 /**
@@ -110,7 +115,11 @@ public:
      */
     INLINE void set(const X3DField& value) {
         static TT x;
-        (*this)(x.unwrap(value));
+        try {
+            (*this)(x.unwrap(value));
+        } catch (EventLoopError e) {
+            // this is OK, just do nothing
+        }
     }
 
     /**
@@ -135,8 +144,10 @@ public:
         } else {
             if (!filter(value))
                 return;
-            if (dirty)
-                throw X3DError("already wrote to this field");
+            if (dirty) {
+                cout << "DIRTY, DIRTY FIELD" << endl;
+                throw EventLoopError(this);
+            }
             this->value = value;
             dirty = true;
             action();

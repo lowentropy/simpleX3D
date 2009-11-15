@@ -52,47 +52,33 @@ Node* Browser::createNode(const std::string& name) {
 }
 
 void Browser::route() {
-    list<Node*>::iterator it = sources.begin();
-    for (; it != sources.end(); it++) {
-        FieldIterator fields = (*it)->fields(FieldIterator::DIRTY);
-        while (fields.hasNext())
-            routeFrom(fields.nextField());
+    // route until cascade is done
+    while (!dirtyFields.empty()) {
+        SAIField* field = dirtyFields.front();
+        dirtyFields.pop_front();
+        fromFrom(field);
     }
-    while (!dirtyNodes.empty()) {
-        Node* node = dirtyNodes.front();
-        dirtyNodes.pop_front();
-        FieldIterator fields = node->fields(FieldIterator::DIRTY);
-        while (fields.hasNext())
-            routeFrom(fields.nextField());
-    }
+    // finally, clear all dirty flags
+    list<SAIField*>::iterator it;
+    for (it = firedFields.begin(); it != firedFields.end(); it++)
+        (*it)->clearDirty();
+    firedFields.clear();
 }
 
-void Browser::addDirtyNode(Node* node) {
-    // TODO: move to (ordered) set instead...
-    list<Node*>::iterator it;
-    for (it = dirtyNodes.begin(); it != dirtyNodes.end(); it++)
-        if (*it == node)
-            return;
-    dirtyNodes.push_back(node);
+void Browser::addDirtyField(SAIField* field) {
+    dirtyFields.push_back(field);
 }
 
 void Browser::routeFrom(SAIField* field) {
     const list<Route*>& routes = field->getOutgoingRoutes();
     list<Route*>::const_iterator it;
-    for (it = routes.begin(); it != routes.end(); it++) {
-        addDirtyNode((*it)->toField->getNode());
+    for (it = routes.begin(); it != routes.end(); it++)
         (*it)->activate();
-    }
-    field->clearDirty();
+    firedFields.push_back(field);
 }
 
 void Browser::persist(Node* node) {
 	persistent.push_back(node);
-}
-
-void Browser::addSource(Node* node) {
-    // TODO: convert to Set
-    sources.push_back(node);
 }
 
 Route* Browser::createRoute(Node* fromNode, const string& fromFieldName,

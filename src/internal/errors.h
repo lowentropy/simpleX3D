@@ -25,6 +25,8 @@
 
 namespace X3D {
 
+class SAIField;
+
 /**
  * Root class for X3D exceptions.
  */
@@ -43,6 +45,14 @@ public:
 	 * @param message error message
 	 */
 	X3DError(const std::string& message) : std::runtime_error(message) {}
+};
+
+class EventLoopError : public X3DError {
+protected:
+    SAIField* const field;
+
+public:
+    EventLoopError(SAIField* field) : X3DError("event loop detected"), field(field) {}
 };
 
 }
