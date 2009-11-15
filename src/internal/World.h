@@ -51,7 +51,7 @@ public:
 
 	static World* read(Browser* browser, const char* filename) {
 		World* world = new World(browser);
-
+        // TODO: load scene
 	}
 }
 
