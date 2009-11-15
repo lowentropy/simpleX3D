@@ -15,8 +15,8 @@ FieldIterator Node::fields(FieldIterator::IterMode mode) {
     return FieldIterator(this, mode);
 }
 
-bool Node::eventSource() {
-    return false;
+void Node::queue(SAIField* field) {
+    browser()->addDirtyField(field);
 }
 
 }

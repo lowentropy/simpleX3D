@@ -41,14 +41,12 @@ public:
 
     class CountingInOut : public InOutField<RouteTestNode,SFString> {
         bool filter(const string& str) {
-            cout << "FILTER" << endl;
             node()->inOutFilterCount++;
             // just for safety, don't loop forever
             return (node()->inOutFilterCount < 10); 
         }
 
         void action() {
-            cout << "ACTION" << endl;
             node()->inOutActionCount++;
         }
     } countingInOut;
@@ -89,7 +87,6 @@ TEST_F(RoutingTests, ManuallyRouteOutToIn) {
     RouteTestNode* to = browser()->createNode<RouteTestNode>("RouteTestNode");
     from->realize();
     to->realize();
-    browser()->addSource(from);
     browser()->createRoute(from, "testOut", to, "testIn");
     EXPECT_EQ("", from->inValue);
     EXPECT_EQ("", from->outValue);
@@ -115,7 +112,6 @@ TEST_F(RoutingTests, ManuallyRouteOutToInNothingSet) {
     RouteTestNode* to = browser()->createNode<RouteTestNode>("RouteTestNode");
     from->realize();
     to->realize();
-    browser()->addSource(from);
     browser()->createRoute(from, "testOut", to, "testIn");
     browser()->route();
     EXPECT_EQ("", from->inValue);
@@ -132,8 +128,6 @@ TEST_F(RoutingTests, ManuallyRouteFanIn) {
     from1->realize();
     from2->realize();
     to->realize();
-    browser()->addSource(from1);
-    browser()->addSource(from2);
     browser()->createRoute(from1, "testOut", to, "testIn");
     browser()->createRoute(from2, "testOut", to, "testIn");
     EXPECT_EQ("", to->inValue);
@@ -155,8 +149,6 @@ TEST_F(RoutingTests, ManuallyRouteFanInUndeterminedOrder) {
     from1->realize();
     from2->realize();
     to->realize();
-    browser()->addSource(from1);
-    browser()->addSource(from2);
     browser()->createRoute(from1, "testOut", to, "testIn");
     browser()->createRoute(from2, "testOut", to, "testIn");
     EXPECT_EQ("", to->inValue);
@@ -178,7 +170,6 @@ TEST_F(RoutingTests, ManuallyRouteFanOut) {
     from->realize();
     to1->realize();
     to2->realize();
-    browser()->addSource(from);
     browser()->createRoute(from, "testOut", to1, "testIn");
     browser()->createRoute(from, "testOut", to2, "testIn");
     EXPECT_EQ("", to1->inValue);
@@ -213,7 +204,6 @@ TEST_F(RoutingTests, ManuallyRouteChainWithInOutField) {
     from->realize();
     mid->realize();
     to->realize();
-    browser()->addSource(from);
     browser()->createRoute(from, "testOut", mid, "set_testInOut");
     browser()->createRoute(mid, "testInOut_changed", to, "testIn");
 
@@ -236,7 +226,6 @@ TEST_F(RoutingTests, ManuallyRouteChainWithCustomInputAction) {
     from->realize();
     mid->realize();
     to->realize();
-    browser()->addSource(from);
     browser()->createRoute(from, "testOut", mid, "customIn");
     browser()->createRoute(mid, "testOut", to, "testIn");
 
@@ -263,7 +252,6 @@ TEST_F(RoutingTests, ManuallyRouteChainWithCustomInputAction) {
 TEST_F(RoutingTests, LoopBreaking) {
     RouteTestNode* node = browser()->createNode<RouteTestNode>("RouteTestNode");
     node->realize();
-    browser()->addSource(node);
     browser()->createRoute(node, "countingInOut", node, "countingInOut");
 
     node->countingInOut("foo");

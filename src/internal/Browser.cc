@@ -56,7 +56,7 @@ void Browser::route() {
     while (!dirtyFields.empty()) {
         SAIField* field = dirtyFields.front();
         dirtyFields.pop_front();
-        fromFrom(field);
+        routeFrom(field);
     }
     // finally, clear all dirty flags
     list<SAIField*>::iterator it;

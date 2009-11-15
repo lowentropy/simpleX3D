@@ -49,14 +49,11 @@ private:
 	/// nodes we shouldn't garbage-collect
 	list<Node*> persistent;
 
-    /// nodes which generate events asynchronously
-    list<Node*> sources;
-
 	/// root scene nodes
 	list<Node*> roots;
 
-    /// nodes which need to be routed
-    list<Node*> dirtyNodes;
+    /// fields which need to be routed
+    list<SAIField*> dirtyFields;
 
     /// nodes which should be cleared
     list<SAIField*> firedFields;
@@ -110,14 +107,6 @@ public:
 	void persist(Node* node);
 
     /**
-     * Make the given node a "source", meaning that we expect it to
-     * generate events asynchronously.
-     * 
-     * @param node node which will generate events
-     */
-    void addSource(Node* node);
-
-    /**
      * Add a named node mapping.
      * 
      * Field, event, PROTO, EXTERNPROTO, and node names shall not contain control
@@ -160,8 +149,6 @@ public:
 		if (node == NULL)
             throw X3DError("node creation failed");
 		nodes.push_back(node);
-        if (node->eventSource())
-            addSource(node);
 		return node;
 	}
 
@@ -199,6 +186,14 @@ public:
      */
     Route* createRoute(SAIField* fromField, SAIField* toField) const;
 
+    /**
+     * Add a dirty field to the list of
+     * fields to route from.
+     * 
+     * @param field field to route from
+     */
+    void addDirtyField(SAIField* field);
+
 private:
 
     /**
@@ -207,14 +202,6 @@ private:
      * @param field field to route events from
      */
     void routeFrom(SAIField* field);
-
-    /**
-     * Add a (potentially) dirty node to the list of
-     * nodes to route from.
-     * 
-     * @param node node to route from
-     */
-    void addDirtyNode(Node* node);
 
 };
 

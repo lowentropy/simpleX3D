@@ -22,11 +22,6 @@
 
 #include "internal/SAIField.h"
 
-// XXX
-#include <iostream>
-using std::cout;
-using std::endl;
-
 namespace X3D {
 
 /**
@@ -145,11 +140,11 @@ public:
             if (!filter(value))
                 return;
             if (dirty) {
-                cout << "DIRTY, DIRTY FIELD" << endl;
                 throw EventLoopError(this);
             }
             this->value = value;
             dirty = true;
+            node()->queue(this);
             action();
         }
     }
@@ -179,7 +174,7 @@ public:
      * @param value native event value
      * @returns whether value has changed
      */
-    virtual bool filter(CT value) { return this->value() != value; }
+    virtual bool filter(CT value) { return !(dirty || (this->value() == value)); }
 
     /**
      * Manually sets the dirty value of the field. This can be useful if,

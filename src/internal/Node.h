@@ -70,9 +70,6 @@ public:
     /// Virtual deconstructor.
 	virtual ~Node() {}
 
-    /// @returns whether this node is an event generator
-    virtual bool eventSource();
-
     /**
      * Look up a field on the node and return a reference to it.
      * For input-output fields, either the base name or the set_
@@ -119,6 +116,14 @@ public:
 	 * @returns singleton instance of Browser
 	 */
 	Browser* browser();
+
+    /**
+     * Queue a field for routing.
+     * FIXME this is not an ideal calling scenario.
+     * 
+     * @param field field to route from
+     */
+    void queue(SAIField* field);
 };
 
 }

@@ -129,6 +129,7 @@ public:
             throw X3DError("already wrote to this field");
         this->value = value;
         dirty = true;
+        node()->queue(this);
         action();
     }
 
