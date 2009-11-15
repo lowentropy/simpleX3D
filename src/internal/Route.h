@@ -55,8 +55,8 @@ public:
     }
     
     /**
-     * Activate the route, creating an event from the #from_field
-     * to the #to_field.
+     * Activate the route, creating an event from the #fromField
+     * to the #toField.
      */
     void activate() const;
 

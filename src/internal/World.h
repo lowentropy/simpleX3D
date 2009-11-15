@@ -22,6 +22,13 @@
 
 #include "internal/Browser.h"
 #include <string>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
 
 using std::string;
 using namespace X3D::Core;
@@ -36,24 +43,25 @@ protected:
 	WorldInfo* info;
 	Browser* browser;
 	
-	World(	Browser* browser,
+public:
+
+	World(  Browser* browser,
 			const string& version,
 			const string& profile,
-			const map<string,string>& meta) :
+			const MFString& meta) :
 		browser(browser),
 		version(version),
 		profile(profile) {
-		info = browser->createNode("WorldInfo", true);
-		info->assignMetadata(meta, true);
+		info = browser->createNode<WorldInfo>("WorldInfo");
+		info->info(meta);
 	}
 
-public:
+	static World* read(Browser* browser, const char* filename);
 
-	static World* read(Browser* browser, const char* filename) {
-		World* world = new World(browser);
-        // TODO: load scene
-	}
-}
+protected:
+
+    virtual void construct(xmlNode* node, int level=0);
+};
 
 }
 

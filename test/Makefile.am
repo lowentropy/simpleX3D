@@ -10,5 +10,6 @@ include_HEADERS = \
 	internal/TypeTests.h \
     internal/FieldIteratorTests.h \
     internal/RouteTests.h \
-    internal/Routing.h \
+    internal/RoutingTests.h \
+    internal/XmlLoadTests.h \
 	Core/X3DBindableNodeTests.h

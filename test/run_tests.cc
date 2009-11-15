@@ -24,6 +24,8 @@ using std::endl;
 
 #include "internal/Browser.h"
 #include <gmock/gmock.h>
+#include <libxml/xmlversion.h>
+#include <libxml/parser.h>
 
 using namespace X3D;
 
@@ -37,11 +39,20 @@ Browser* browser() {
 #include "internal/TypeTests.h"
 #include "internal/FieldIteratorTests.h"
 #include "internal/RouteTests.h"
-#include "internal/Routing.h"
+#include "internal/RoutingTests.h"
+#include "internal/XmlLoadTests.h"
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {
+#ifdef LIBXML_TREE_ENABLED
+    LIBXML_TEST_VERSION
 	Browser browser;
 	::testing::InitGoogleMock(&argc, argv);
-	return RUN_ALL_TESTS();
+	int code = RUN_ALL_TESTS();
+    xmlCleanupParser();
+    return code;
+#else
+    cout << "Libxml tree support not enabled!" << endl;
+    return 1;
+#endif
 }

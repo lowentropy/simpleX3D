@@ -58,6 +58,9 @@ private:
     /// nodes which need to be routed
     list<Node*> dirtyNodes;
 
+    /// named nodes
+    map<string, Node*> defs;
+
 	/// singleton instance
 	static Browser* _inst;
 
@@ -110,6 +113,31 @@ public:
      * @param node node which will generate events
      */
     void addSource(Node* node);
+
+    /**
+     * Add a named node mapping.
+     * 
+     * Field, event, PROTO, EXTERNPROTO, and node names shall not contain control
+     * characters (0x0-0x1f, 0x7f), space (0x20), double or single quotes
+     * (0x22: ", 0x27: '), sharp (0x23: #), comma (0x2c: ,), period (0x2e: .),
+     * brackets (0x5b, 0x5d: []), backslash (0x5c: \) or braces (0x7b, 0x7d: {}).
+     * Further, their first character shall not be a digit (0x30-0x39), plus
+     * (0x2b: +), or minus (0x2d: -) character. Otherwise, names may contain any
+     * ISO 10646 character encoded using UTF-8. X3D is case-sensitive; "Sphere"
+     * is different from "sphere" and "BEGIN" is different from "begin."
+     * 
+     * @param name name of node
+     * @param node node to map to
+     */
+    void addNamedNode(const string& name, Node* node);
+
+    /**
+     * Look up a node by its name, returning NULL if it isn't found.
+     * 
+     * @param name stored node name
+     * @returns stored node
+     */
+    Node* getNodeByName(const string& name);
 
 	/**
 	 * Templatized node creation. This version of createNode

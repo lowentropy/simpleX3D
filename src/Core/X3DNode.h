@@ -31,7 +31,7 @@ namespace X3D {
 namespace Core {
 
 /**
- * X3DNode is the root of all node types in the X3D
+ * The root of all node types in the X3D
  * scene hierarchy. The only actual field contained
  * by X3DNode is the #metadata field, which contains
  * a single X3DMetadataObject value (if you want to

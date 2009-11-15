@@ -118,4 +118,14 @@ Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
     return route;
 }
 
+void Browser::addNamedNode(const string& name, Node* node) {
+    defs[name] = node;
+}
+
+Node* Browser::getNodeByName(const string& name) {
+    if (defs.count(name))
+        return defs[name];
+    return NULL;
+}
+
 }
