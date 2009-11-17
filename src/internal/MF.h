@@ -134,13 +134,23 @@ public:
 };
 
 /**
+ * This abstract class exists so that you can access arbitrary
+ * fields which you know to be MFNode<?>.
+ */
+class MFAbstractNode {
+public:
+    virtual void add(Node* node) = 0;
+    virtual void clear() = 0;
+};
+
+/**
  * Templatized list of nodes. The template type identifies the root node
  * type contained in the list. This type may be abstract. When unwrapping
  * a generic value, the list type contained in the generic must match the
  * root node type exactly (no dynamic casting is performed).
  */
 template <class N>
-class MFNode : public MFNative<N*> {
+class MFNode : public MFNative<N*>, public MFAbstractNode {
 public:
 	typedef MFNode<N>& TYPE;
 	typedef const MFNode<N>& CONST_TYPE;
@@ -168,6 +178,17 @@ public:
     /** @returns native list type */
     INLINE MFNode<N>& operator()() {
         return *this;
+    }
+
+    void add(Node* node) {
+        N* n = dynamic_cast<N*>(node);
+        if (n == NULL)
+            throw X3DError("node type mismatch");
+        add(n);
+    }
+
+    void clear() {
+        MFBase<N*>::elements.clear();
     }
 };
 

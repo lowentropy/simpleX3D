@@ -60,7 +60,18 @@ public:
 
 protected:
 
-    virtual void construct(xmlNode* node, int level=0);
+    void parseRoot(xmlNode* xml);
+    void parseHead(xmlNode* xml);
+    void parseScene(xmlNode* xml, Node* node);
+    void parseComponent(xmlNode* xml);
+    void parseMeta(xmlNode* xml);
+    void parseProtoDeclare(xmlNode* xml);
+    void parseExternProtoDeclare(xmlNode* xml);
+    void parseProtoInstance(xmlNode* xml, Node* parent);
+    void parseRoute(xmlNode* xml);
+    void parseNode(xmlNode* xml, Node* parent);
+    void parseImport(xmlNode* xml);
+    void parseExport(xmlNode* xml);
 };
 
 }

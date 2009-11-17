@@ -39,6 +39,11 @@ protected:
 public:
     /// Setup stuff
     void setup() {}
+
+    virtual const string& defaultContainerField() {
+        static string x("children");
+        return x;
+    }
 };
 
 }}

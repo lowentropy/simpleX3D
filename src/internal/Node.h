@@ -124,6 +124,9 @@ public:
      * @param field field to route from
      */
     void queue(SAIField* field);
+
+    /// @returns the default containerField for this node
+    virtual const string& defaultContainerField();
 };
 
 }

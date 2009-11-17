@@ -19,4 +19,8 @@ void Node::queue(SAIField* field) {
     browser()->addDirtyField(field);
 }
 
+const string& Node::defaultContainerField() {
+    throw X3DError("no default container field defined");
+}
+
 }

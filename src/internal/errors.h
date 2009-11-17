@@ -55,6 +55,11 @@ public:
     EventLoopError(SAIField* field) : X3DError("event loop detected"), field(field) {}
 };
 
+class X3DParserError : public X3DError {
+public:
+    X3DParserError(const std::string& message) : X3DError(message) {}
+};
+
 }
 
 #endif // #ifndef _X3D_ERRORS_H_

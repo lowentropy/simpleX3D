@@ -52,16 +52,14 @@ Node* Browser::createNode(const std::string& name) {
 }
 
 void Browser::route() {
-    // route until cascade is done
-    while (!dirtyFields.empty()) {
-        SAIField* field = dirtyFields.front();
-        dirtyFields.pop_front();
-        routeFrom(field);
-    }
-    // finally, clear all dirty flags
-    list<SAIField*>::iterator it;
-    for (it = firedFields.begin(); it != firedFields.end(); it++)
-        (*it)->clearDirty();
+    // route until cascade is done; this vector will grow as
+    // you are iterating it
+    for (int i = 0; i < dirtyFields.size(); i++)
+        routeFrom(dirtyFields[i]);
+    dirtyFields.clear();
+    // now clear all dirty flags
+    for (int i = 0; i < firedFields.size(); i++)
+        firedFields[i]->clearDirty();
     firedFields.clear();
 }
 
@@ -79,6 +77,10 @@ void Browser::routeFrom(SAIField* field) {
 
 void Browser::persist(Node* node) {
 	persistent.push_back(node);
+}
+
+void Browser::addRoot(Node* node) {
+    roots.push_back(node);
 }
 
 Route* Browser::createRoute(Node* fromNode, const string& fromFieldName,
@@ -102,6 +104,17 @@ Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
     fromField->addOutgoingRoute(route);
     toField->addIncomingRoute(route);
     return route;
+}
+
+Route* Browser::createRoute(const string& fromNode, const string& fromField,
+                          const string& toNode, const string& toField) {
+    Node* from = getNodeByName(fromNode);
+    if (from == NULL)
+        throw X3DError(string("source node not found: ") + fromNode);
+    Node* to = getNodeByName(toNode);
+    if (to == NULL)
+        throw X3DError(string("target node not found: ") + toNode);
+    return createRoute(from, fromField, to, toField);
 }
 
 void Browser::addNamedNode(const string& name, Node* node) {

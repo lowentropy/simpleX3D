@@ -53,10 +53,10 @@ private:
 	list<Node*> roots;
 
     /// fields which need to be routed
-    list<SAIField*> dirtyFields;
+    vector<SAIField*> dirtyFields;
 
     /// nodes which should be cleared
-    list<SAIField*> firedFields;
+    vector<SAIField*> firedFields;
 
     /// named nodes
     map<string, Node*> defs;
@@ -105,6 +105,13 @@ public:
 	 * @param node pointer to node to persist
 	 */
 	void persist(Node* node);
+
+    /**
+     * Add a new root node.
+     * 
+     * @param node node to add as a root
+     */
+    void addRoot(Node* node);
 
     /**
      * Add a named node mapping.
@@ -185,6 +192,21 @@ public:
      * @returns new or existing route between fields
      */
     Route* createRoute(SAIField* fromField, SAIField* toField) const;
+
+    /**
+     * Create a route between nodes based on field names. If such a route already
+     * exists, this function will return the existing route. Otherwise, it will
+     * create a new route and hook it up to the fields, then return it. The nodes
+     * are looked up by their DEF name.
+     * 
+     * @param fromNode name of node to route from
+     * @param fromField name of field to route from
+     * @param toNode name of node to route to
+     * @param toField name of field to route to
+     * @returns new or existing route between fields
+     */
+    Route* createRoute(const string& fromNode, const string& fromField,
+                       const string& toNode, const string& toField);
 
     /**
      * Add a dirty field to the list of
