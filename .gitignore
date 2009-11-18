@@ -15,7 +15,6 @@ changes.txt
 config.log
 config.status
 configure
-data
 libtool
 m4
 test/run_tests

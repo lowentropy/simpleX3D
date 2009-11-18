@@ -1,0 +1,7 @@
+<X3D>
+	<Scene>
+		<TimeSensor DEF="A" cycleInterval="3" loop="true" />
+		<TimeSensor DEF="B" cycleInterval="5" loop="false" />
+		<ROUTE fromNode="A" fromField="time" toNode="B" toField="set_pauseTime" />
+	</Scene>
+</X3D>

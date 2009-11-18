@@ -1,0 +1,22 @@
+<X3D>
+	<Scene>
+		<TimeSensor DEF="T" cycleInterval="5" loop="true" />
+		<PositionInterpolator DEF="I" key = "0 0.5 1" keyValue="0 0 0, 0 1 0, 0 0 0" />
+		<Transform DEF="P">
+			<Box DEF="B" />
+		</Transform>
+		<ROUTE fromNode="T" fromField="fraction_changed" toNode="I" toField="set_fraction" />
+		<ROUTE fromNode="I" fromField="value_changed" toNode="P" toField="set_translation" />
+
+		<TestSuite>
+			<Test DEF="test" name="Box position test" mode="discrete" timeout="3">
+				<Expect DEF="at_mid" startTime="2.5" type="SFVec3f" value="0 1 0" />
+				<Expect DEF="at_end" startTime="5.0" type="SFVec3f" value="0 0 0" />
+				<ROUTE fromNode="box" fromField="translation_changed"
+					toNode="at_mid" toField="test" />
+				<ROUTE fromNode="box" fromField="translation_changed"
+					toNode="at_end" toField="test" />
+			</Test>
+		</TestSuite>
+	</Scene>
+</X3D>
