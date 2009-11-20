@@ -75,6 +75,15 @@ public:
 
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFTime& t) const { return value != t.value; }
+
+    bool parse(istream& is) {
+        double d;
+        is >> d;
+        if (is.fail())
+            return false;
+        value = d;
+        return true;
+    }
 };
 
 }

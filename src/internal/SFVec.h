@@ -255,6 +255,24 @@ public:
 		y /= s;
 		return *this;
 	}
+
+    /**
+     * Parse a string into a vector. Vectors are represented as floats
+     * separated by whitespace. If parsing fails, the value of this vector
+     * will be unchanged.
+     * 
+     * @param ss stream to read vector from
+     * @returns whether parsing was successful.
+     */
+    bool parse(istream& ss) {
+        T x, y;
+        ss >> x >> y;
+        if (ss.fail())
+            return false;
+        this->x = x;
+        this->y = y;
+        return true;
+    }
 };
 
 /**
@@ -550,6 +568,25 @@ public:
 			x * v.y - y * v.x
 		);
 	}
+
+    /**
+     * Parse a string into a vector. Vectors are represented as floats
+     * separated by whitespace. If parsing fails, the value of this vector
+     * will be unchanged.
+     * 
+     * @param ss stream to read vector from
+     * @returns whether parsing was successful.
+     */
+    bool parse(istream& ss) {
+        T x, y, z;
+        ss >> x >> y >> z;
+        if (ss.fail())
+            return false;
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        return true;
+    }
 };
 
 /**
@@ -784,6 +821,26 @@ public:
 	template <typename U> SFVec4<T>& operator*=(const SFMatrix4<U>& m) {
 		return this->operator=(*this * m);
 	}
+
+    /**
+     * Parse a string into a vector. Vectors are represented as floats
+     * separated by whitespace. If parsing fails, the value of this vector
+     * will be unchanged.
+     * 
+     * @param ss stream to read vector from
+     * @returns whether parsing was successful.
+     */
+    bool parse(istream& ss) {
+        T x, y, z, w;
+        ss >> x >> y >> z >> w;
+        if (ss.fail())
+            return false;
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->w = w;
+        return true;
+    }
 };
 
 /// 2d vector of floats

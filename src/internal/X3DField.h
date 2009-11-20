@@ -23,7 +23,10 @@
 #include "internal/config.h"
 #include "internal/errors.h"
 #include <string>
+#include <istream>
+
 using std::string;
+using std::istream;
 
 namespace X3D {
 
@@ -107,6 +110,17 @@ public:
      * @returns X3D type of field-value
      */
 	virtual Type getType() const = 0;
+
+    /**
+     * Modify the value of the field by parsing from an input stream.
+     * If the parsing fails, the value of the field should remain unchanged
+     * and the function should return false. Otherwise, the field changes
+     * to the new value and the function returns true.
+     * 
+     * @param is input stream to read from
+     * @returns whether parsing was successful
+     */
+    virtual bool parse(istream& is) = 0;
 };
 
 }

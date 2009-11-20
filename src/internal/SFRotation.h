@@ -159,6 +159,18 @@ public:
 	 * @returns const pointer to rotation component array
 	 */
 	const float* array() const { return &x; }
+
+    bool parse(istream& is) {
+        float x, y, z, a;
+        is >> x >> y >> z >> a;
+        if (is.fail())
+            return false;
+        this->x = x;
+        this->y = y;
+        this->z = z;
+        this->a = a;
+        return true;
+    }
 };
 
 }

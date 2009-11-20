@@ -74,6 +74,15 @@ public:
 
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFFloat& b) const { return value != b.value; }
+
+    bool parse(istream& is) {
+        float f;
+        is >> f;
+        if (is.fail())
+            return false;
+        value = f;
+        return true;
+    }
 };
 
 }

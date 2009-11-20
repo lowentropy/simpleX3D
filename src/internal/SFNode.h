@@ -37,6 +37,10 @@ public:
 
     /// @returns native but non-specific pointer to node value
 	virtual Node* operator()() const = 0;
+
+    bool parse(istream& is) {
+        return false;
+    }
 };
 
 /**

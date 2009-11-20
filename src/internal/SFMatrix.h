@@ -193,6 +193,17 @@ public:
 		return this->operator=(c);
 	}
 
+    bool parse(istream& is) {
+        T arr[9];
+        for (int i = 0; i < 9; i++) {
+            is >> arr[i];
+            if (is.fail())
+                return false;
+        }
+        *this = arr;
+        return true;
+    }
+
 private:
 
     /**
@@ -401,6 +412,18 @@ private:
 			*p++ = *a++;
 		return *this;
 	}
+
+public:
+    bool parse(istream& is) {
+        T arr[16];
+        for (int i = 0; i < 16; i++) {
+            is >> arr[i];
+            if (is.fail())
+                return false;
+        }
+        *this = arr;
+        return true;
+    }
 };
 
 /// 3x3 Matrix of floats

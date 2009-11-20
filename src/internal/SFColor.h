@@ -144,6 +144,17 @@ public:
      * @returns whether field is not equal
      */
     bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+
+    bool parse(istream& is) {
+        float r, g, b;
+        is >> r >> g >> b;
+        if (is.fail())
+            return false;
+        this->r = r;
+        this->g = g;
+        this->b = b;
+        return true;
+    }
 };
 
 
@@ -299,6 +310,18 @@ public:
      * @returns whether field is not equal
      */
     bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+
+    bool parse(istream& is) {
+        float r, g, b, a;
+        is >> r >> g >> b >> a;
+        if (is.fail())
+            return false;
+        this->r = r;
+        this->g = g;
+        this->b = b;
+        this->a = a;
+        return true;
+    }
 };
 
 /**

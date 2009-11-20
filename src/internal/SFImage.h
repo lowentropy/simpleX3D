@@ -298,6 +298,8 @@ public:
      */
 	virtual void setColorRGBA(int x, int y, const SFColorRGBA c);
 	
+    bool parse(istream& is);
+
 private:
 	
     /**
@@ -308,6 +310,15 @@ private:
      * @param components image depth (0-4)
      */
 	void alloc(int width, int height, int components);
+
+    /**
+     * Free and reallocate image space.
+     * 
+     * @param width image width
+     * @param height image height
+     * @param components image depth (0-4)
+     */
+	void realloc(int width, int height, int components);
 
     /**
      * Locate a pointer into the image bytes by its (X,Y) location.

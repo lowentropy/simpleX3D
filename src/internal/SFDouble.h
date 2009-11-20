@@ -74,6 +74,15 @@ public:
 
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFDouble& b) const { return value != b.value; }
+
+    bool parse(istream& is) {
+        double d;
+        is >> d;
+        if (is.fail())
+            return false;
+        value = d;
+        return true;
+    }
 };
 
 }

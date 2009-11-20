@@ -19,7 +19,7 @@
 
 #include "internal/types.h"
 
-using namespace X3D;
+namespace X3D {
 
 #define COLOR2CHAR(x) ((unsigned char) ((x) * 255))
 #define CHAR2COLOR(x) (((float) x) / 255)
@@ -58,6 +58,12 @@ void SFImage::alloc(int width, int height, int components) {
 	this->components = components;
 	this->size = width * height * components;
 	bytes = this->size ? new unsigned char[size] : NULL;
+}
+
+void SFImage::realloc(int width, int height, int components) {
+    if (bytes != NULL)
+        delete[] bytes;
+    alloc(width, height, components);
 }
 
 SFImage::SFImage(int width, int height, int components, unsigned char* bytes) {
@@ -158,4 +164,30 @@ const unsigned char* SFImage::locate(int x, int y) const {
 	if (index < 0 || index >= size)
 		throw X3DError("coordinates out of bounds");
 	return &bytes[index];
+}
+
+bool SFImage::parse(istream& is) {
+    int width, height, components;
+    is >> width >> height >> components;
+    SFImage image(width, height, components);
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            unsigned int pixel;
+            is >> pixel >> std::ws;
+            if (is.fail())
+                return false;
+            if (!pixel && is.peek() == 'x') {
+                is.get();
+                is >> std::hex >> pixel >> std::dec;
+                if (is.fail())
+                    return false;
+            }
+            image.setPixel(x, y, pixel);
+        }
+    }
+    realloc(width, height, components);
+    *this = image;
+    return true;
+}
+
 }

@@ -22,8 +22,10 @@
 
 #include "internal/X3DField.h"
 #include <string>
+#include <sstream>
 
 using std::string;
+using std::stringbuf;
 
 namespace X3D {
 
@@ -80,6 +82,20 @@ public:
 
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFString& s) const { return value != s.value; }
+
+    bool parse(istream& is) {
+        is >> std::ws;
+        if (is.peek() != '"')
+            return false;
+        is.get();
+        stringbuf sb;
+        is.get(sb, '"');
+        is.get();
+        if (is.fail())
+            return false;
+        value = sb.str();
+        return true;
+    }
 };
 
 }

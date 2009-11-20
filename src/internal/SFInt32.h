@@ -74,6 +74,15 @@ public:
 
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFInt32& x) const { return value != x.value; }
+
+    bool parse(istream& is) {
+        int x;
+        is >> x;
+        if (is.fail())
+            return false;
+        value = x;
+        return true;
+    }
 };
 
 }

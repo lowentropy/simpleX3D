@@ -24,7 +24,7 @@
 #include <list>
 using std::list;
 
-#define MAKE_MF(CONST,MF,SF,KIND) \
+#define MAKE_MF(CONST,MF,SF,SFOBJ,KIND) \
 class MF : public KIND<SF> { \
 public:\
     typedef MF& TYPE; \
@@ -44,6 +44,21 @@ public:\
     } \
     INLINE bool operator!=(const X3DField& value) { \
         return *this != unwrap(value); \
+    } \
+    bool parse(istream& ss) { \
+        SFOBJ x; \
+        while (true) { \
+            ss >> std::ws; \
+            if (ss.peek() == ',') \
+                ss.get(); \
+            ss >> std::ws; \
+            if (ss.eof()) \
+                break; \
+            if (!x.parse(ss)) \
+                return false; \
+            add(x()); \
+        } \
+        return true; \
     } \
 };
 
@@ -190,28 +205,32 @@ public:
     void clear() {
         MFBase<N*>::elements.clear();
     }
+
+    bool parse(istream& ss) {
+        return false;
+    }
 };
 
-MAKE_MF(MFBOOL,		MFBool,		bool,		MFNative)
-MAKE_MF(MFCOLOR,	MFColor,	SFColor,	MFReference)
-MAKE_MF(MFCOLORRGBA,MFColorRGBA,SFColorRGBA,MFReference)
-MAKE_MF(MFDOUBLE,	MFDouble,	double,		MFNative)
-MAKE_MF(MFFLOAT,	MFFloat,	float,		MFNative)
-MAKE_MF(MFIMAGE,	MFImage,	SFImage,	MFReference)
-MAKE_MF(MFINT32,	MFInt32,	int,		MFNative)
-MAKE_MF(MFMATRIX3D,	MFMatrix3d,	SFMatrix3d,	MFReference)
-MAKE_MF(MFMATRIX3F,	MFMatrix3f,	SFMatrix3f,	MFReference)
-MAKE_MF(MFMATRIX4D,	MFMatrix4d,	SFMatrix4d,	MFReference)
-MAKE_MF(MFMATRIX4F,	MFMatrix4f,	SFMatrix4f,	MFReference)
-MAKE_MF(MFROTATION,	MFRotation,	SFRotation,	MFReference)
-MAKE_MF(MFSTRING,	MFString,	std::string,MFReference)
-MAKE_MF(MFTIME,		MFTime,		double,		MFNative)
-MAKE_MF(MFVEC2D,	MFVec2d,	SFVec2d,	MFReference)
-MAKE_MF(MFVEC2F,	MFVec2f,	SFVec2f,	MFReference)
-MAKE_MF(MFVEC3D,	MFVec3d,	SFVec3d,	MFReference)
-MAKE_MF(MFVEC3F,	MFVec3f,	SFVec3f,	MFReference)
-MAKE_MF(MFVEC4D,	MFVec4d,	SFVec4d,	MFReference)
-MAKE_MF(MFVEC4F,	MFVec4f,	SFVec4f,	MFReference)
+MAKE_MF(MFBOOL,		MFBool,		bool,		SFBool,     MFNative)
+MAKE_MF(MFCOLOR,	MFColor,	SFColor,	SFColor,    MFReference)
+MAKE_MF(MFCOLORRGBA,MFColorRGBA,SFColorRGBA,SFColorRGBA,MFReference)
+MAKE_MF(MFDOUBLE,	MFDouble,	double,		SFDouble,   MFNative)
+MAKE_MF(MFFLOAT,	MFFloat,	float,		SFFloat,    MFNative)
+MAKE_MF(MFIMAGE,	MFImage,	SFImage,	SFImage,    MFReference)
+MAKE_MF(MFINT32,	MFInt32,	int,		SFInt32,    MFNative)
+MAKE_MF(MFMATRIX3D,	MFMatrix3d,	SFMatrix3d,	SFMatrix3d, MFReference)
+MAKE_MF(MFMATRIX3F,	MFMatrix3f,	SFMatrix3f,	SFMatrix3f, MFReference)
+MAKE_MF(MFMATRIX4D,	MFMatrix4d,	SFMatrix4d,	SFMatrix4d, MFReference)
+MAKE_MF(MFMATRIX4F,	MFMatrix4f,	SFMatrix4f,	SFMatrix4f, MFReference)
+MAKE_MF(MFROTATION,	MFRotation,	SFRotation,	SFRotation, MFReference)
+MAKE_MF(MFSTRING,	MFString,	std::string,SFString,   MFReference)
+MAKE_MF(MFTIME,		MFTime,		double,		SFDouble,   MFNative)
+MAKE_MF(MFVEC2D,	MFVec2d,	SFVec2d,	SFVec2d,    MFReference)
+MAKE_MF(MFVEC2F,	MFVec2f,	SFVec2f,	SFVec2f,    MFReference)
+MAKE_MF(MFVEC3D,	MFVec3d,	SFVec3d,	SFVec3d,    MFReference)
+MAKE_MF(MFVEC3F,	MFVec3f,	SFVec3f,	SFVec3f,    MFReference)
+MAKE_MF(MFVEC4D,	MFVec4d,	SFVec4d,	SFVec4d,    MFReference)
+MAKE_MF(MFVEC4F,	MFVec4f,	SFVec4f,	SFVec4f,    MFReference)
 
 }
 
