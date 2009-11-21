@@ -106,7 +106,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are equal
      */
-    template <typename U> bool operator==(const SFMatrix3<T>& m) const {
+    template <typename U> bool operator==(const SFMatrix3<U>& m) const {
         for (int i = 0; i < 9; i++)
             if (data[i] != m.data[i])
                 return false;
@@ -119,7 +119,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are not equal
      */
-    template <typename U> bool operator!=(const SFMatrix3<T>& m) const {
+    template <typename U> bool operator!=(const SFMatrix3<U>& m) const {
         for (int i = 0; i < 9; i++)
             if (data[i] != m.data[i])
                 return true;
@@ -297,7 +297,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are equal
      */
-    template <typename U> bool operator==(const SFMatrix4<T>& m) const {
+    template <typename U> bool operator==(const SFMatrix4<U>& m) const {
         for (int i = 0; i < 16; i++)
             if (data[i] != m.data[i])
                 return false;
@@ -310,7 +310,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are not equal
      */
-    template <typename U> bool operator!=(const SFMatrix4<T>& m) const {
+    template <typename U> bool operator!=(const SFMatrix4<U>& m) const {
         for (int i = 0; i < 16; i++)
             if (data[i] != m.data[i])
                 return true;
@@ -472,10 +472,14 @@ public:
     }
 
     /// Generic comparison operator.
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFMatrix3<float>::operator==(unwrap(f));
+    }
 
     /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFMatrix3<float>::operator!=(unwrap(f));
+    }
 };
 
 /// 3x3 Matrix of doubles
@@ -530,10 +534,14 @@ public:
     }
 
     /// Generic comparison operator.
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFMatrix3<double>::operator==(unwrap(f));
+    }
 
     /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFMatrix3<double>::operator!=(unwrap(f));
+    }
 };
 
 /// 4x4 Matrix of floats
@@ -581,10 +589,14 @@ public:
     }
 
     /// Generic comparison operator.
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFMatrix4<float>::operator==(unwrap(f));
+    }
 
     /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFMatrix4<float>::operator!=(unwrap(f));
+    }
 };
 
 /// 4x4 Matrix of doubles
@@ -639,10 +651,14 @@ public:
     }
 
     /// Generic comparison operator.
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFMatrix4<double>::operator==(unwrap(f));
+    }
 
     /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFMatrix4<double>::operator!=(unwrap(f));
+    }
 };
 
 }

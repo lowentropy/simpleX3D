@@ -40,10 +40,10 @@ public:\
         return *this; \
     } \
     INLINE bool operator==(const X3DField& value) { \
-        return *this == unwrap(value); \
+        return this->MFBase<SF>::operator==(unwrap(value)); \
     } \
     INLINE bool operator!=(const X3DField& value) { \
-        return *this != unwrap(value); \
+        return this->MFBase<SF>::operator!=(unwrap(value)); \
     } \
     bool parse(istream& ss) { \
         SFOBJ x; \
@@ -208,6 +208,14 @@ public:
 
     bool parse(istream& ss) {
         return false;
+    }
+
+    bool operator==(const X3DField& f) const {
+        return this->MFBase<N*>::operator==(unwrap(f));
+    }
+
+    bool operator!=(const X3DField& f) const {
+        return this->MFBase<N*>::operator!=(unwrap(f));
     }
 };
 

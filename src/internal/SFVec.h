@@ -892,7 +892,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const { 
+        return this->SFVec2<float>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -900,7 +902,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec2<float>::operator!=(unwrap(f));
+    }
 };
 
 /// 2d vector of doubles
@@ -959,7 +963,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFVec2<double>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -967,7 +973,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec2<double>::operator!=(unwrap(f));
+    }
 };
 
 /// 3d vector of floats
@@ -1020,7 +1028,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFVec3<float>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -1028,7 +1038,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec3<float>::operator!=(unwrap(f));
+    }
 };
 
 /// 3d vector of doubles
@@ -1088,7 +1100,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFVec3<double>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -1096,7 +1110,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec3<double>::operator!=(unwrap(f));
+    }
 };
 
 /// 4d vector of floats
@@ -1150,7 +1166,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFVec4<float>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -1158,7 +1176,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec4<float>::operator!=(unwrap(f));
+    }
 };
 
 /// 4d vector of doubles
@@ -1219,7 +1239,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are equal.
      */
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return this->SFVec4<double>::operator==(unwrap(f));
+    }
 
     /**
      * Generic comparison operator.
@@ -1227,7 +1249,9 @@ public:
      * @param f field to compare to
      * @returns whether vectors are not equal.
      */
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return this->SFVec4<double>::operator!=(unwrap(f));
+    }
 };
 
 }
