@@ -150,6 +150,10 @@ public:
         is >> r >> g >> b;
         if (is.fail())
             return false;
+        if (r < 0 || r > 1 ||
+            g < 0 || g > 1 ||
+            b < 0 || b > 1)
+            return false;
         this->r = r;
         this->g = g;
         this->b = b;
@@ -315,6 +319,11 @@ public:
         float r, g, b, a;
         is >> r >> g >> b >> a;
         if (is.fail())
+            return false;
+        if (r < 0 || r > 1 ||
+            g < 0 || g > 1 ||
+            b < 0 || b > 1 ||
+            a < 0 || a > 1)
             return false;
         this->r = r;
         this->g = g;

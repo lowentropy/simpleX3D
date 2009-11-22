@@ -169,6 +169,13 @@ const unsigned char* SFImage::locate(int x, int y) const {
 bool SFImage::parse(istream& is) {
     int width, height, components;
     is >> width >> height >> components;
+    if (is.fail())
+        return false;
+    unsigned int max;
+    if (components < 4)
+        max = (2 << (components * 8)) - 1;
+    else
+        max = 0xffffffff;
     SFImage image(width, height, components);
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
@@ -182,6 +189,8 @@ bool SFImage::parse(istream& is) {
                 if (is.fail())
                     return false;
             }
+            if (pixel > max)
+                return false;
             image.setPixel(x, y, pixel);
         }
     }

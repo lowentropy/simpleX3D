@@ -77,7 +77,7 @@ public:
 
     bool parse(istream& is) {
         bool b;
-        is >> b;
+        is >> std::boolalpha >> b;
         if (is.fail())
             return false;
         value = b;

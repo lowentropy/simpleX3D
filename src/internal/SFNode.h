@@ -21,6 +21,14 @@
 #define _X3D_SFNODE_H_
 
 #include "internal/X3DField.h"
+#include <ios>
+#include <sstream>
+#include <cstring>
+
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
 
 namespace X3D {
 
@@ -38,9 +46,12 @@ public:
     /// @returns native but non-specific pointer to node value
 	virtual Node* operator()() const = 0;
 
-    bool parse(istream& is) {
-        return false;
-    }
+protected:
+
+    // XXX this is because we can't include Browser.h, but we
+    // need to be able to look up nodes for parsing.
+    Node* getNodeByName(const string& name);
+    
 };
 
 /**
@@ -106,6 +117,24 @@ public:
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFNode<N>& n) const { return value != n.value; }
 
+    bool parse(istream& is) {
+        std::stringbuf sb;
+        is.get(sb);
+        if (is.fail())
+            return false;
+        if (sb.str() == "NULL") {
+            value = NULL;
+        } else {
+            Node* node = getNodeByName(sb.str());
+            if (node == NULL)
+                throw X3DError(string("can't find node: ") + sb.str());
+            N* newval = dynamic_cast<N*>(node);
+            if (newval == NULL)
+                throw X3DError(string("wrong node type: ") + sb.str());
+            value = newval;
+        }
+        return true;
+    }
 };
 
 }
