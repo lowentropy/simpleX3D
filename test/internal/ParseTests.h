@@ -313,3 +313,17 @@ TEST(ParseTests, ImageShouldFailIfPixelOutOfBounds) {
     stringstream ss("2 2 1 216 0xa3 1111");
     EXPECT_EQ(false, img.parse(ss));
 }
+
+TEST(ParseTests, MFVecShouldSucceedInGeneralCase) {
+    MFVec3f mf;
+    stringstream ss("1 2 3  \n, 4 5 6, 7 8 9 , ");
+    EXPECT_EQ(true, mf.parse(ss));
+    EXPECT_EQ(3, mf.getElements().size());
+    list<SFVec3f>::const_iterator it;
+    int i = 1;
+    for (it = mf.getElements().begin(); it != mf.getElements().end(); it++) {
+        EXPECT_FLOAT_EQ((float) i++, it->x);
+        EXPECT_FLOAT_EQ((float) i++, it->y);
+        EXPECT_FLOAT_EQ((float) i++, it->z);
+    }
+}

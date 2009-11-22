@@ -106,6 +106,13 @@ public:
     bool operator!=(const MFBase<T>& mf) const {
         return elements != mf.elements;
     }
+
+    /**
+     * Return the inner list of elements.
+     */
+    const list<T>& getElements() {
+        return elements;
+    }
 };
 
 /**
