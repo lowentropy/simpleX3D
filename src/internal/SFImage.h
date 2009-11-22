@@ -300,6 +300,8 @@ public:
 	
     bool parse(istream& is);
 
+    void print(ostream& os) const;
+
 private:
 	
     /**

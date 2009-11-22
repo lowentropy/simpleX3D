@@ -63,6 +63,11 @@ public:\
         } \
         return true; \
     } \
+    void print(ostream& os) const { \
+        list<SF>::const_iterator it; \
+        for (it = elements.begin(); it != elements.end(); it++) \
+            os << *it << ", "; \
+    } \
 };
 
 namespace X3D {
@@ -217,7 +222,33 @@ public:
     }
 
     bool parse(istream& ss) {
-        return false;
+        SFNode<N> x;
+        ss >> std::ws;
+        if (ss.peek() == ',')
+            return false;
+        while (true) {
+            ss >> std::ws;
+            if (ss.eof())
+                break;
+            if (!x.parse(ss))
+                return false;
+            add(x());
+            ss >> std::ws;
+            if (ss.peek() == ',')
+                ss.get();
+        }
+        return true;
+    }
+
+    void print(ostream& os) const {
+        SFNode<N> sf;
+        typename list<N*>::const_iterator it;
+        for (   it = MFBase<N*>::elements.begin();
+                it != MFBase<N*>::elements.end();
+                it++) {
+            sf = *it;
+            os << sf << ", ";
+        }
     }
 
     bool operator==(const X3DField& f) const {

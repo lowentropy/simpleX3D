@@ -46,7 +46,9 @@ protected:
     // XXX this is because we can't include Browser.h, but we
     // need to be able to look up nodes for parsing.
     Node* getNodeByName(const string& name);
-    
+
+public:
+
 };
 
 /**
@@ -130,6 +132,18 @@ public:
         }
         return true;
     }
+
+    void print(ostream& os) const {
+        if (value == NULL) {
+            os << "NULL";
+        } else {
+            const string& name = value->getName();
+            if (name.empty())
+                throw X3DError("node has no DEF name");
+            os << name;
+        }
+    }
+
 };
 
 }

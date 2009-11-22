@@ -96,6 +96,10 @@ public:
         value = sb.str();
         return true;
     }
+
+    void print(ostream& os) const {
+        os << '"' << value << '"';
+    }
 };
 
 }

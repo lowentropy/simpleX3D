@@ -273,6 +273,10 @@ public:
         this->y = y;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << x << ' ' << y;
+    }
 };
 
 /**
@@ -587,6 +591,10 @@ public:
         this->z = z;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << x << ' ' << y << ' ' << z;
+    }
 };
 
 /**
@@ -840,6 +848,10 @@ public:
         this->z = z;
         this->w = w;
         return true;
+    }
+
+    void print(ostream& os) const {
+        os << x << ' ' << y << ' ' << z << ' ' << w;
     }
 };
 

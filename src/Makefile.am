@@ -4,7 +4,6 @@ libsimpleX3D_la_SOURCES = \
     internal/X3DField.cc \
 	internal/Node.cc \
 	internal/SFImage.cc \
-	internal/SFColor.cc \
     internal/SFNode.cc \
 	internal/Browser.cc \
     internal/Route.cc \

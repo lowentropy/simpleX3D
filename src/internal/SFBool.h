@@ -83,6 +83,10 @@ public:
         value = b;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << std::boolalpha << value;
+    }
 };
 
 }

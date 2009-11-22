@@ -22,6 +22,7 @@
 using std::cout;
 using std::endl;
 
+#include "internal/X3DField.h"
 #include "internal/Browser.h"
 #include <gmock/gmock.h>
 #include <libxml/xmlversion.h>

@@ -204,6 +204,11 @@ public:
         return true;
     }
 
+    void print(ostream& os) const {
+        for (int i = 0; i < 9; i++)
+            os << data[i] << ' ';
+    }
+
 private:
 
     /**
@@ -424,6 +429,12 @@ public:
         *this = arr;
         return true;
     }
+
+    void print(ostream& os) const {
+        for (int i = 0; i < 16; i++)
+            os << data[i] << ' ';
+    }
+
 };
 
 /// 3x3 Matrix of floats

@@ -24,9 +24,11 @@
 #include "internal/errors.h"
 #include <string>
 #include <istream>
+#include <ostream>
 
 using std::string;
 using std::istream;
+using std::ostream;
 
 namespace X3D {
 
@@ -121,7 +123,16 @@ public:
      * @returns whether parsing was successful
      */
     virtual bool parse(istream& is) = 0;
+
+    /**
+     * Print the value to the given output stream.
+     * 
+     * @param os output stream to write to
+     */
+    virtual void print(ostream& os) const = 0;
 };
+
+std::ostream& operator<<(std::ostream& os, const X3DField& f);
 
 }
 

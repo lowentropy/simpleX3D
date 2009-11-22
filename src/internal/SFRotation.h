@@ -171,6 +171,10 @@ public:
         this->a = a;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << x << ' ' << y << ' ' << z << ' ' << a;
+    }
 };
 
 }

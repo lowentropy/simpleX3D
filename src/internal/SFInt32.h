@@ -83,6 +83,10 @@ public:
         value = x;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << value;
+    }
 };
 
 }

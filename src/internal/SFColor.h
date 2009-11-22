@@ -159,6 +159,10 @@ public:
         this->b = b;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << r << ' ' << g << ' ' << b;
+    }
 };
 
 
@@ -331,17 +335,11 @@ public:
         this->a = a;
         return true;
     }
+
+    void print(ostream& os) const {
+        os << r << ' ' << g << ' ' << b << ' ' << a;
+    }
 };
-
-/**
- * Insert SFColorinto stream.
- */
-std::ostream& operator<<(std::ostream& str, const SFColor& c);
-
-/**
- * Insert SFColorRGBA into stream.
- */
-std::ostream& operator<<(std::ostream& str, const SFColorRGBA& c);
 
 }
 

@@ -60,6 +60,9 @@ public:
 	Stage stage;
 
 private:
+
+    string name;
+
     /// Disallow copy constructor
 	Node(const Node& node) { throw X3DError("illegal copy"); }
 
@@ -69,7 +72,15 @@ public:
 
     /// Virtual deconstructor.
 	virtual ~Node() {}
+    
+    const string& getName() {
+        return name;
+    }
 
+    void setName(const string& name) {
+        this->name = name;
+    }
+    
     /**
      * Look up a field on the node and return a reference to it.
      * For input-output fields, either the base name or the set_

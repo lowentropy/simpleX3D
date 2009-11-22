@@ -55,4 +55,9 @@ const string& X3DField::getTypeName() {
     return getTypeName(getType());
 }
 
+std::ostream& operator<<(std::ostream& os, const X3DField& f) {
+    f.print(os);
+    return os;
+}
+
 }
