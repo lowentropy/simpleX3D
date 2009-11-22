@@ -25,11 +25,6 @@
 #include <sstream>
 #include <cstring>
 
-// XXX
-#include <iostream>
-using std::cout;
-using std::endl;
-
 namespace X3D {
 
 class Node;

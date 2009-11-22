@@ -327,3 +327,9 @@ TEST(ParseTests, MFVecShouldSucceedInGeneralCase) {
         EXPECT_FLOAT_EQ((float) i++, it->z);
     }
 }
+
+TEST(ParseTests, MFVecShouldFailOnLeadingComma) {
+    MFVec3f mf;
+    stringstream ss(",1 2 3  \n, 4 5 6, 7 8 9 , ");
+    EXPECT_EQ(false, mf.parse(ss));
+}

@@ -47,16 +47,19 @@ public:\
     } \
     bool parse(istream& ss) { \
         SFOBJ x; \
+        ss >> std::ws; \
+        if (ss.peek() == ',') \
+            return false; \
         while (true) { \
-            ss >> std::ws; \
-            if (ss.peek() == ',') \
-                ss.get(); \
             ss >> std::ws; \
             if (ss.eof()) \
                 break; \
             if (!x.parse(ss)) \
                 return false; \
             add(x()); \
+            ss >> std::ws; \
+            if (ss.peek() == ',') \
+                ss.get(); \
         } \
         return true; \
     } \

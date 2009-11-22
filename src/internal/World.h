@@ -25,12 +25,6 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-// XXX
-#include <iostream>
-using std::cout;
-using std::endl;
-
-using std::string;
 using namespace X3D::Core;
 
 namespace X3D {
