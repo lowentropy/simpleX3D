@@ -98,7 +98,7 @@ public:
      * @param r rotation to compare to
      * @returns whether rotations are equal
      */
-    bool operator==(const SFRotation& r) {
+    bool operator==(const SFRotation& r) const {
         return (x == r.x) && (y == r.y) && (z == r.z) && (a == r.a);
     }
 
@@ -108,15 +108,19 @@ public:
      * @param r rotation to compare to
      * @returns whether rotations are not equal
      */
-    bool operator!=(const SFRotation& r) {
+    bool operator!=(const SFRotation& r) const {
         return (x != r.x) || (y != r.y) || (z != r.z) || (a != r.a);
     }
 
     /// Generic comparison operator.
-    bool operator==(const X3DField& f) const { return *this == unwrap(f); }
+    bool operator==(const X3DField& f) const {
+        return *this == unwrap(f);
+    }
 
     /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const { return *this != unwrap(f); }
+    bool operator!=(const X3DField& f) const {
+        return *this != unwrap(f);
+    }
 
 	/**
 	 * Convert into rotation matrix.

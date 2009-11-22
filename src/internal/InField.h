@@ -77,6 +77,15 @@ public:
     }
 
     /**
+     * Throws an error, since input fields have no persistent value.
+     * 
+     * @returns nothing, always throws an error
+     */
+    INLINE TT& get() {
+        throw X3DError("can't read input field");
+    }
+
+    /**
      * Send a value to the input event. Will throw an error if
      * the value is of the wrong type or if the node is not in
      * state REALIZED.

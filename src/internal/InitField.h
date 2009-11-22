@@ -84,6 +84,19 @@ public:
     }
 
     /**
+     * Get the generic value of this field (high-level interface).
+     * Will throw an error if the field's node is not in the SETUP
+     * phase.
+     * 
+     * @returns generic field value
+     */
+    INLINE TT& get() {
+        if (node()->realized())
+            throw X3DError("wrong stage");
+        return value;
+    }
+
+    /**
      * Set the generic value of this field (high-level interface).
      * Will throw an error if the field's node is not in the SETUP
      * phase.

@@ -19,6 +19,11 @@
 
 #include "internal/World.h"
 
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
+
 namespace X3D {
 
 World* World::read(Browser* browser, const char* filename) {
@@ -151,7 +156,8 @@ void World::parseRoute(xmlNode* xml) {
 
 void World::parseNode(xmlNode* xml, Node* parent) {
     Node* node = NULL;
-    xmlChar* def = NULL;
+    string field;
+    // if it's a USE, then look up the node and use that
     if (xmlHasProp(xml, (xmlChar*) "USE")) {
         xmlChar* name = xmlGetProp(xml, (xmlChar*) "USE");
         node = browser->getNodeByName((char*) name);
@@ -161,35 +167,52 @@ void World::parseNode(xmlNode* xml, Node* parent) {
             throw X3DParserError(msg);
         }
         xmlFree(name);
+    // otherwise, parse the node
     } else {
         node = browser->createNode((char*) xml->name);
         if (node == NULL)
             throw X3DParserError(
                 string("unknown node type: ")
                     + (char*) xml->name);
-        xmlChar* def = xmlGetProp(xml, (xmlChar*) "DEF");
-        if (def != NULL) {
-            browser->addNamedNode((char*) def, node);
-            xmlFree(def);
+        for (xmlAttrPtr attr = xml->properties; attr != NULL; attr = attr->next) {
+            char* name = (char*) attr->name;
+            xmlChar* value = xmlGetProp(xml, attr->name);
+            if (!strcmp("DEF", name)) {
+                browser->addNamedNode((char*) value, node);
+            } else if (!strcmp("field", name)) {
+                field = (char*) value;
+            } else {
+                SAIField* field = node->getField(name);
+                if (field == NULL) {
+                    xmlFree(value);
+                    throw X3DError(string("unknown field: ") + name);
+                }
+                std::stringstream ss((char*) value);
+                if (!field->get().parse(ss)) {
+                    std::stringstream msg;
+                    msg << "failed to parse value for field "
+                        << name << ": " << value;
+                    xmlFree(value);
+                    throw X3DError(msg.str());
+                }
+            }
+            xmlFree(value);
         }
-        // TODO: parse node basics
         for (xmlNode* child = xml->children; child != NULL; child = child->next)
             if (child->type == XML_ELEMENT_NODE)
                 parseScene(child, node);
     }
-    xmlChar* xmlField = xmlGetProp(xml, (xmlChar*) "containerField");
-    string field = (xmlField != NULL)
-        ? ((char*) xmlField)
-        : node->defaultContainerField();
+    if (field.empty())
+        field = node->defaultContainerField();
     if (parent == NULL)
         browser->addRoot(node);
     else {
-        SAIField* containerField = parent->getField(field);
-        MFAbstractNode* container = dynamic_cast<MFAbstractNode*>(containerField);
+        SAIField* sai = parent->getField(field);
+        if (sai == NULL)
+            throw X3DError(string("invalid container field: ") + field);
+        MFAbstractNode* container = dynamic_cast<MFAbstractNode*>(sai);
         container->add(node);
     }
-    if (xmlField != NULL)
-        xmlFree(xmlField);
 }
 
 void World::parseImport(xmlNode* xml) {

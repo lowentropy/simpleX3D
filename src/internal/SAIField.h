@@ -88,6 +88,13 @@ public:
 	virtual const X3DField& get() const = 0;
 
     /**
+     * Non-const version of value getter.
+     * 
+     * @returns generic (wrapped) field value
+     */
+    virtual X3DField& get() = 0;
+
+    /**
      * High-level field value setter.
      * 
      * @param value generic (wrapped) field value

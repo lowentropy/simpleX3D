@@ -94,6 +94,18 @@ public:
     }
 
     /**
+     * High-level accessor to get generic field value. Will throw an
+     * error if the field's node is not in state REALIZED.
+     * 
+     * @returns generic field value
+     */
+    INLINE TT& get() {
+        if (!node()->realized())
+            throw X3DError("wrong stage");
+        return value;
+    }
+
+    /**
      * High-level accessor to set generic field value. This will
      * always throw an error, as output fields can't be written to.
      * 

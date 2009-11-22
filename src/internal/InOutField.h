@@ -102,6 +102,15 @@ public:
     }
 
     /**
+     * Get the generic wrapper value of the field (high-level interface).
+     * 
+     * @returns generic field value
+     */
+    INLINE TT& get() {
+        return value;
+    }
+
+    /**
      * Set the generic value of the field (high-level interface). If the
      * node is realized and #filter returns true, mark the field as dirty
      * and schedule for routing.

@@ -33,16 +33,14 @@ TEST(ParseTests, VecShouldSucceedOnIntString) {
     SFVec3d v;
     stringstream ss("1 2 3");
     EXPECT_EQ(true, v.parse(ss));
-    SFVec3d w(1,2,3);
-    EXPECT_EQ(true, w == v);
+    EXPECT_EQ(SFVec3d(1,2,3), v);
 }
 
 TEST(ParseTests, VecShouldSucceedOnFloatString) {
     SFVec4f v;
     stringstream ss("1.23 \t 2e3 -3.0123123\n\n\n\n\n-0");
     EXPECT_EQ(true, v.parse(ss));
-    SFVec4f w(1.23,2e3,-3.0123123,0.0);
-    EXPECT_EQ(true, w == v);
+    EXPECT_EQ(SFVec4f(1.23,2e3,-3.0123123,0.0), v);
 }
 
 TEST(ParseTests, VecShouldFailWithCommas) {
@@ -67,18 +65,16 @@ TEST(ParseTests, Matrix3ShouldSucceedInGeneralCase) {
     SFMatrix3d m;
     stringstream ss("1 2 3 \n\t4.0 -3.561 1234\n\n-512 123\n3e-12");
     double arr[] = {1, 2, 3, 4, -3.561, 1234, -512, 123, 3e-12};
-    SFMatrix3d e(arr);
     EXPECT_EQ(true, m.parse(ss));
-    EXPECT_EQ(true, e == m);
+    EXPECT_EQ(SFMatrix3d(arr), m);
 }
 
 TEST(ParseTests, Matrix4ShouldSucceedInGeneralCase) {
     SFMatrix4d m;
     stringstream ss("1 2 3 124111\n\t4.0 -3.561 1234 -0\n\n-512 123\n3e-12\t2 1 2 3 4");
     double arr[] = {1, 2, 3, 124111, 4, -3.561, 1234, 0, -512, 123, 3e-12, 2.0, 1, 2, 3, 4};
-    SFMatrix4d e(arr);
     EXPECT_EQ(true, m.parse(ss));
-    EXPECT_EQ(true, e == m);
+    EXPECT_EQ(SFMatrix4d(arr), m);
 }
 
 TEST(ParseTests, FloatShouldSuceedOnIntegerString) {
@@ -188,9 +184,7 @@ TEST(ParseTests, ColorShouldSucceedIfInBounds) {
     SFColor c;
     stringstream ss("0.3 0.4 1");
     EXPECT_EQ(true, c.parse(ss));
-    EXPECT_FLOAT_EQ(0.3, c.r);
-    EXPECT_FLOAT_EQ(0.4, c.g);
-    EXPECT_FLOAT_EQ(1.0, c.b);
+    EXPECT_EQ(SFColor(0.3,0.4,1), c);
 }
 
 TEST(ParseTests, ColorShouldFailIfOutOfBounds) {
@@ -203,10 +197,7 @@ TEST(ParseTests, ColorRGBAShouldSucceedIfInBounds) {
     SFColorRGBA c;
     stringstream ss("0.3 0.4 0 1");
     EXPECT_EQ(true, c.parse(ss));
-    EXPECT_FLOAT_EQ(0.3, c.r);
-    EXPECT_FLOAT_EQ(0.4, c.g);
-    EXPECT_FLOAT_EQ(0.0, c.b);
-    EXPECT_FLOAT_EQ(1.0, c.a);
+    EXPECT_EQ(SFColorRGBA(0.3,0.4,0,1), c);
 }
 
 TEST(ParseTests, ColorRGBAShouldFailIfOutOfBounds) {
@@ -219,10 +210,7 @@ TEST(ParseTests, RotationShouldSucceedInGeneralCase) {
     SFRotation r;
     stringstream ss("1 2 3 4");
     EXPECT_EQ(true, r.parse(ss));
-    EXPECT_FLOAT_EQ(1, r.x);
-    EXPECT_FLOAT_EQ(2, r.y);
-    EXPECT_FLOAT_EQ(3, r.z);
-    EXPECT_FLOAT_EQ(4, r.a);
+    EXPECT_EQ(SFRotation(1,2,3,4), r);
 }
 
 TEST(ParseTests, StringShouldSuceedIfWellFormed) {
