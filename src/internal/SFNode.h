@@ -119,15 +119,18 @@ public:
         is.get(sb);
         if (is.fail())
             return false;
-        if (sb.str() == "NULL") {
-            value = NULL;
+        const string& name = sb.str();
+        Node* node = getNodeByName(name);
+        if (node == NULL) {
+            if (name == "NULL") {
+                value = NULL;
+            } else {
+                throw X3DError(string("can't find node: ") + name);
+            }
         } else {
-            Node* node = getNodeByName(sb.str());
-            if (node == NULL)
-                throw X3DError(string("can't find node: ") + sb.str());
             N* newval = dynamic_cast<N*>(node);
             if (newval == NULL)
-                throw X3DError(string("wrong node type: ") + sb.str());
+                throw X3DError(string("wrong node type: ") + name);
             value = newval;
         }
         return true;
