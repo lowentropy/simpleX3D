@@ -101,8 +101,7 @@ Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
         if ((*it)->toField == toField)
             return *it;
     Route* route = new Route(fromField, toField);
-    fromField->addOutgoingRoute(route);
-    toField->addIncomingRoute(route);
+    route->insert();
     return route;
 }
 

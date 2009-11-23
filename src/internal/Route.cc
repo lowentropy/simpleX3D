@@ -27,6 +27,8 @@ void Route::insert() {
         if ((*it)->toField == toField)
             throw X3DError("another identical route exists");
     }
+    fromField->getNode()->realize();
+    toField->getNode()->realize();
     fromField->addOutgoingRoute(this);
     toField->addIncomingRoute(this);
 }

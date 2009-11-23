@@ -211,10 +211,15 @@ public:
     }
 
     void add(Node* node) {
-        N* n = dynamic_cast<N*>(node);
-        if (n == NULL)
-            throw X3DError("node type mismatch");
-        add(n);
+        if (node == NULL) {
+            add(NULL);
+        } else {
+            N* n = dynamic_cast<N*>(node);
+            if (n == NULL)
+                throw X3DError("node type mismatch");
+            n->realize();
+            add(n);
+        }
     }
 
     void clear() {

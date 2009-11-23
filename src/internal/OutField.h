@@ -140,6 +140,7 @@ public:
         if (dirty)
             throw X3DError("already wrote to this field");
         this->value = value;
+        this->value.realize();
         dirty = true;
         node()->queue(this);
         action();

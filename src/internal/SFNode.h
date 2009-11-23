@@ -114,6 +114,11 @@ public:
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFNode<N>& n) const { return value != n.value; }
 
+    INLINE void realize() {
+        if (value != NULL)
+            value->realize();
+    }
+
     bool parse(istream& is) {
         std::stringbuf sb;
         is.get(sb);

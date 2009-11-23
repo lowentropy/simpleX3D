@@ -130,6 +130,12 @@ public:
      * @param os output stream to write to
      */
     virtual void print(ostream& os) const = 0;
+
+    /**
+     * Realize the value, which does nothing unless the value
+     * is an MFNode or SFNode value.
+     */
+    virtual INLINE void realize() {}
 };
 
 std::ostream& operator<<(std::ostream& os, const X3DField& f);

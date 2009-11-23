@@ -132,6 +132,7 @@ public:
         if (node()->realized())
             throw X3DError("wrong stage");
         this->value = value;
+        this->value.realize();
     }
 
     /**

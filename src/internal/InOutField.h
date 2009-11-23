@@ -145,6 +145,7 @@ public:
     INLINE void operator()(CT value) {
         if (!node()->realized()) {
             this->value = value;
+            this->value.realize();
         } else {
             if (!filter(value))
                 return;
@@ -152,6 +153,7 @@ public:
                 throw EventLoopError(this);
             }
             this->value = value;
+            this->value.realize();
             dirty = true;
             node()->queue(this);
             action();
@@ -171,6 +173,7 @@ public:
             throw X3DError("can't send output until realized");
         if (dirty)
             throw X3DError("already wrote to this field");
+        value.realize();
         this->value = value;
         dirty = true;
     }
