@@ -34,6 +34,5 @@
 #include "internal/SFTime.h"
 #include "internal/SFVec.h"
 #include "internal/MF.h"
-#include "internal/AnyField.h"
 
 #endif // #ifndef _X3D_TYPES_H_

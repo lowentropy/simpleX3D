@@ -56,8 +56,8 @@ TEST(FieldIterator, TimeSensorHasDirtyFields) {
     Node* ts = browser()->createNode("TimeSensor");
     ASSERT_THAT(ts, NotNull());
     ts->realize();
-    ts->getField("enabled")->set(SFBool(false));   // order of these twp
-    ts->getField("loop")->set(SFBool(true));       // is switched.
+    ts->getField("enabled")->set(SFBool(false));   // order of these two
+    ts->getField("loop")->set(SFBool(true));       //   is switched.
     ts->getField("cycleInterval")->set(SFTime(1)); // this one is unchanged
     FieldIterator it = ts->fields(FieldIterator::DIRTY);
     ASSERT_EQ(true, it.hasNext()) << "too few fields returned";
