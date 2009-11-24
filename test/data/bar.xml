@@ -8,10 +8,10 @@
 		<ROUTE fromNode="T" fromField="fraction_changed" toNode="I" toField="set_fraction" />
 		<ROUTE fromNode="I" fromField="value_changed" toNode="P" toField="set_translation" />
 
-		<TestSuite>
-			<Test DEF="test" name="Box position test" mode="discrete" timeout="3">
-				<Expect DEF="at_mid" startTime="2.5" type="SFVec3f" value="0 1 0" />
-				<Expect DEF="at_end" startTime="5.0" type="SFVec3f" value="0 0 0" />
+		<TestSuite name="Foo">
+			<Test name="Box position test">
+				<Expect DEF="at_mid" testAt="2.5" type="SFVec3f" value="0 1 0" />
+				<Expect DEF="at_end" testAt="5.0" type="SFVec3f" value="0 0 0" />
 				<ROUTE fromNode="box" fromField="translation_changed"
 					toNode="at_mid" toField="test" />
 				<ROUTE fromNode="box" fromField="translation_changed"

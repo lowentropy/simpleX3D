@@ -35,6 +35,7 @@ include_HEADERS = \
     internal/FieldDef.h \
     internal/FieldIterator.h \
 	internal/builtin.h \
+	internal/SAIField.h \
 	internal/SFBool.h \
 	internal/SFColor.h \
 	internal/SFDouble.h \
@@ -64,6 +65,8 @@ include_HEADERS = \
     Core/WorldInfo.h \
     Time/X3DTimeDependentNode.h \
     Time/TimeSensor.h \
-	internal/SAIField.h
+    Test/TestSuite.h \
+    Test/Test.h \
+    Test/Expect.h
 
 # s/^.*or: \([^:]*\):.*$/    \1 \\/
