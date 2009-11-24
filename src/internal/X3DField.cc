@@ -44,7 +44,8 @@ const string X3DField::typeNames[] = {
     "MFVec3d",
     "MFVec3f",
     "MFVec4d",
-    "MFVec4f"
+    "MFVec4f",
+    "Any"
 };
 
 const string& X3DField::getTypeName(X3DField::Type type) {

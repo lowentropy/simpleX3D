@@ -85,7 +85,8 @@ public:
 		MFVEC3D,
 		MFVEC3F,
 		MFVEC4D,
-		MFVEC4F
+		MFVEC4F,
+        ANY
 	} Type;
 
     /// string representation of x3d type names
