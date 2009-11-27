@@ -67,7 +67,7 @@ include_HEADERS = \
     Time/X3DTimeDependentNode.h \
     Time/TimeSensor.h \
     Test/TestSuite.h \
-    Test/Test.h \
+    Test/TestNode.h \
     Test/Expect.h
 
 # s/^.*or: \([^:]*\):.*$/    \1 \\/

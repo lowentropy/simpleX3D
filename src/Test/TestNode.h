@@ -17,24 +17,24 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_TEST_H_
-#define _X3D_TEST_H_
+#ifndef _X3D_TESTNODE_H_
+#define _X3D_TESTNODE_H_
 
 #include <Core/X3DChildNode.h>
 
 using X3D::Core::X3DChildNode;
 
 namespace X3D {
-namespace Time {
+namespace Test {
 
-class Test : public X3DChildNode {
+class TestNode : public X3DChildNode {
 public:
 
-    InitField<Test, SFString> name;
-    InitField<Test, SFString> eventMode;
-    InitField<Test, SFTime> timeout;
+    InitField<TestNode, SFString> name;
+    InitField<TestNode, SFString> eventMode;
+    InitField<TestNode, SFTime> timeout;
 
-    class Run : public InField<Test, SFBool> {
+    class Run : public InField<TestNode, SFBool> {
         void action(bool unused) {
             // TODO
         }
