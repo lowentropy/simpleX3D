@@ -9,25 +9,23 @@ TEST(TypeSystem, SetupInitFieldHasGetAndSet) {
     ASSERT_EQ("", wi->title());
     wi->title("foo");
     ASSERT_EQ("foo", wi->title());
+    browser()->reset();
 }
 
 TEST(TypeSystem, SetupInOutFieldHasGetAndSet) {
     TimeSensor* ts = browser()->createNode<TimeSensor>("TimeSensor");
     ASSERT_EQ(1.0, ts->cycleInterval());
     ts->cycleInterval(5);
-    ASSERT_EQ(5.0, ts->cycleInterval());
-    // This is commented because
-    //   1) not all SF... wrappers have == and != methods yet
-    //   2) none of them have the << operator, so the assertions
-    //      won't actually compile
-//  SFTime time(5);
-//  ASSERT_EQ(time, ts->cycleInterval.get());
+    EXPECT_EQ(5.0, ts->cycleInterval());
+    EXPECT_EQ(SFTime(5), ts->cycleInterval.get());
+    browser()->reset();
 }
 
 TEST(TypeSystem, RealizedOutputFieldHasGet) {
     TimeSensor* ts = browser()->createNode<TimeSensor>("TimeSensor");
     ts->realize();
     ASSERT_EQ(0.0, ts->time());
+    browser()->reset();
 }
 
 TEST(TypeSystem, RealizedInOutFieldHasGetAndSet) {
@@ -36,6 +34,7 @@ TEST(TypeSystem, RealizedInOutFieldHasGetAndSet) {
     ASSERT_EQ(1.0, ts->cycleInterval());
     ts->cycleInterval(5);
     ASSERT_EQ(5.0, ts->cycleInterval());
+    browser()->reset();
 }
 
 class InFieldNode : public Node {

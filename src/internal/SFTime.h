@@ -51,7 +51,9 @@ public:
     /// Unwrap generic time field (as double)
 	INLINE static double unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFTIME)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFTime") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFTime&>(f)).value;
 	}
 

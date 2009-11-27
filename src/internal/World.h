@@ -34,22 +34,26 @@ protected:
 	
 	string version;
 	string profile;
+    string filename;
 	WorldInfo* info;
 	Browser* browser;
 	
 public:
 
 	World(  Browser* browser,
+            const string& filename,
 			const string& version,
 			const string& profile,
 			const MFString& meta) :
 		browser(browser),
+        filename(filename),
 		version(version),
 		profile(profile) {
 		info = browser->createNode<WorldInfo>("WorldInfo");
 		info->info(meta);
 	}
 
+    ~World();
 	static World* read(Browser* browser, const char* filename);
 
 protected:

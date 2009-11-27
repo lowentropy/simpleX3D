@@ -889,7 +889,9 @@ public:
     /// Unwrap generic vector field
 	static INLINE const SFVec2f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC2F)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec2f") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec2f&>(f);
 	}
 
@@ -960,7 +962,9 @@ public:
     /// Unwrap generic vector field
 	static INLINE const SFVec2d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC2D)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec2d") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec2d&>(f);
 	}
 
@@ -1025,7 +1029,9 @@ public:
     /// Unwrap generic vector field
 	static INLINE const SFVec3f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC3F)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec3f") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec3f&>(f);
 	}
 
@@ -1097,7 +1103,9 @@ public:
     /// Unwrap generic vector field.
 	static const SFVec3d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC3D)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec3d") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec3d&>(f);
 	}
 
@@ -1163,7 +1171,9 @@ public:
     /// Unwrap generic vector field
 	static INLINE const SFVec4f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC4F)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec4f") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec4f&>(f);
 	}
 
@@ -1236,7 +1246,9 @@ public:
     /// Unwrap generic vector field.
 	static INLINE const SFVec4d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFVEC4D)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFVec4d") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFVec4d&>(f);
 	}
 

@@ -55,7 +55,9 @@ public:
     /// Unwrap generic string field.
 	INLINE static const string& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFSTRING)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFString") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFString&>(f)).value;
 	}
 

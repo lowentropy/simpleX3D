@@ -19,27 +19,27 @@
 
 #include "internal/World.h"
 
-// XXX
-#include <iostream>
-using std::cout;
-using std::endl;
-
 namespace X3D {
 
+World::~World() {
+    // do nothing?
+}
+
 World* World::read(Browser* browser, const char* filename) {
-    World* world = new World(browser, "", "", MFString());
+    World* world = new World(browser, filename, "", "", MFString());
     xmlDoc* doc;
     doc = xmlReadFile(filename, NULL, 0);
     if (doc == NULL)
         throw X3DError("failed to parse file");
     world->parseRoot(xmlDocGetRootElement(doc));
     xmlFreeDoc(doc);
+    return world;
 }
 
 void World::parseRoot(xmlNode* xml) {
     if (xml->type != XML_ELEMENT_NODE ||
         strcmp("X3D", (char*) xml->name))
-        throw X3DParserError("toplevel node should be <X3D>");
+        throw X3DParserError("toplevel node should be <X3D>", filename, xml);
     for (xmlNode* child = xml->children; child != NULL; child = child->next) {
         if (child->type != XML_ELEMENT_NODE)
             continue;
@@ -50,7 +50,7 @@ void World::parseRoot(xmlNode* xml) {
         } else {
             throw X3DParserError(
                 string("unexpected toplevel node: ")
-                    + (char*) child->name);
+                    + (char*) child->name, filename, child);
         }
     }
 }
@@ -66,7 +66,7 @@ void World::parseHead(xmlNode* xml) {
         } else {
             throw X3DParserError(
                 string("unexpected head node: ")
-                    + (char*) child->name);
+                    + (char*) child->name, filename, child);
         }
     }
 }
@@ -75,7 +75,9 @@ void World::parseScene(xmlNode* xml, Node* node) {
     for (xmlNode* child = xml->children; child != NULL; child = child->next) {
         if (child->type != XML_ELEMENT_NODE)
             continue;
-        if (!strcmp("ProtoDeclare", (char*) child->name)) {
+        if ((node != NULL) && node->parseSpecial(child, filename)) {
+            // do nothing
+        } else if (!strcmp("ProtoDeclare", (char*) child->name)) {
             parseProtoDeclare(child);
         } else if (!strcmp("ExternProtoDeclare", (char*) child->name)) {
             parseExternProtoDeclare(child);
@@ -96,10 +98,10 @@ void World::parseScene(xmlNode* xml, Node* node) {
 void World::parseComponent(xmlNode* xml) {
     xmlChar* name = xmlGetProp(xml, (xmlChar*) "name");
     if (name == NULL)
-        throw X3DParserError("component name missing");
+        throw X3DParserError("component name missing", filename, xml);
     xmlChar* level = xmlGetProp(xml, (xmlChar*) "level");
     if (level == NULL)
-        throw X3DParserError("component level mising");
+        throw X3DParserError("component level mising", filename, xml);
     // TODO: add component
     xmlFree(name);
     xmlFree(level);
@@ -108,43 +110,43 @@ void World::parseComponent(xmlNode* xml) {
 void World::parseMeta(xmlNode* xml) {
     xmlChar* name = xmlGetProp(xml, (xmlChar*) "name");
     if (name == NULL)
-        throw X3DParserError("meta name missing");
+        throw X3DParserError("meta name missing", filename, xml);
     xmlChar* content = xmlGetProp(xml, (xmlChar*) "content");
     if (content == NULL)
-        throw X3DParserError("meta content missing");
+        throw X3DParserError("meta content missing", filename, xml);
     // TODO: add meta
     xmlFree(name);
     xmlFree(content);
 }
 
 void World::parseProtoDeclare(xmlNode* xml) {
-    throw X3DParserError("prototyping not supported");
+    throw X3DParserError("prototyping not supported", filename, xml);
     // TODO
 }
 
 void World::parseExternProtoDeclare(xmlNode* xml) {
-    throw X3DParserError("prototyping not supported");
+    throw X3DParserError("prototyping not supported", filename, xml);
     // TODO
 }
 
 void World::parseProtoInstance(xmlNode* xml, Node* parent) {
-    throw X3DParserError("prototyping not supported");
+    throw X3DParserError("prototyping not supported", filename, xml);
     // TODO
 }
 
 void World::parseRoute(xmlNode* xml) {
     xmlChar* fromNode = xmlGetProp(xml, (xmlChar*) "fromNode");
     if (fromNode == NULL)
-        throw X3DParserError("route missing fromNode");
+        throw X3DParserError("route missing fromNode", filename, xml);
     xmlChar* toNode = xmlGetProp(xml, (xmlChar*) "toNode");
     if (toNode == NULL)
-        throw X3DParserError("route missing toNode");
+        throw X3DParserError("route missing toNode", filename, xml);
     xmlChar* fromField = xmlGetProp(xml, (xmlChar*) "fromField");
     if (fromField == NULL)
-        throw X3DParserError("route missing fromField");
+        throw X3DParserError("route missing fromField", filename, xml);
     xmlChar* toField = xmlGetProp(xml, (xmlChar*) "toField");
     if (toField == NULL)
-        throw X3DParserError("route missing toField");
+        throw X3DParserError("route missing toField", filename, xml);
     browser->createRoute(
         (char*) fromNode, (char*) fromField,
         (char*) toNode,   (char*) toField);
@@ -164,7 +166,7 @@ void World::parseNode(xmlNode* xml, Node* parent) {
         if (node == NULL) {
             string msg = string("can't find USE node: ") + (char*) name;
             xmlFree(name);
-            throw X3DParserError(msg);
+            throw X3DParserError(msg, filename, xml);
         }
         xmlFree(name);
     // otherwise, parse the node
@@ -173,7 +175,7 @@ void World::parseNode(xmlNode* xml, Node* parent) {
         if (node == NULL)
             throw X3DParserError(
                 string("unknown node type: ")
-                    + (char*) xml->name);
+                    + (char*) xml->name, filename, xml);
         for (xmlAttrPtr attr = xml->properties; attr != NULL; attr = attr->next) {
             char* name = (char*) attr->name;
             xmlChar* value = xmlGetProp(xml, attr->name);
@@ -185,7 +187,10 @@ void World::parseNode(xmlNode* xml, Node* parent) {
                 SAIField* field = node->getField(name);
                 if (field == NULL) {
                     xmlFree(value);
-                    throw X3DError(string("unknown field: ") + name);
+                    throw X3DParserError(
+                        string("unknown field for ") +
+                        string(node->definition->name) +
+                        string(": ") + name, filename, xml);
                 }
                 std::stringstream ss((char*) value);
                 if (!field->get().parse(ss)) {
@@ -193,14 +198,12 @@ void World::parseNode(xmlNode* xml, Node* parent) {
                     msg << "failed to parse value for field "
                         << name << ": " << value;
                     xmlFree(value);
-                    throw X3DError(msg.str());
+                    throw X3DParserError(msg.str(), filename, xml);
                 }
             }
             xmlFree(value);
         }
-        for (xmlNode* child = xml->children; child != NULL; child = child->next)
-            if (child->type == XML_ELEMENT_NODE)
-                parseScene(child, node);
+        parseScene(xml, node);
     }
     if (field.empty())
         field = node->defaultContainerField();
@@ -209,19 +212,19 @@ void World::parseNode(xmlNode* xml, Node* parent) {
     else {
         SAIField* sai = parent->getField(field);
         if (sai == NULL)
-            throw X3DError(string("invalid container field: ") + field);
+            throw X3DParserError(string("invalid container field: ") + field, filename, xml);
         MFAbstractNode* container = dynamic_cast<MFAbstractNode*>(sai);
         container->add(node);
     }
 }
 
 void World::parseImport(xmlNode* xml) {
-    throw X3DParserError("import/export not supported");
+    throw X3DParserError("import/export not supported", filename, xml);
     // TODO
 }
 
 void World::parseExport(xmlNode* xml) {
-    throw X3DParserError("import/export not supported");
+    throw X3DParserError("import/export not supported", filename, xml);
     // TODO
 }
 

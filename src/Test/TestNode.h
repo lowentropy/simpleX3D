@@ -27,28 +27,33 @@ using X3D::Core::X3DChildNode;
 namespace X3D {
 namespace Test {
 
+class Expect;
+
 class TestNode : public X3DChildNode {
+private:
+
+    map<string, Expect*> expects;
+
 public:
 
-    InitField<TestNode, SFString> name;
-    InitField<TestNode, SFString> eventMode;
-    InitField<TestNode, SFTime> timeout;
+    InitField       <   TestNode, SFString  > name;
+    InitField       <   TestNode, SFBool    > continuous;
+    InitField       <   TestNode, SFTime    > timeout;
+    DefaultOutField <   TestNode, SFBool    > success;
+    DefaultOutField <   TestNode, MFString  > reasons;
 
     class Run : public InField<TestNode, SFBool> {
         void action(bool unused) {
-            // TODO
+            node()->runTest();
         }
     } run;
 
-    const string& defaultContainerField() {
-        static string field = "tests";
-        return field;
-    }
-
-    void setup() {
-        eventMode("discrete");
-        timeout(0);
-    }
+    virtual ~TestNode();
+    void setup();
+    const string& defaultContainerField();
+    virtual bool parseSpecial(xmlNode* xml, const string& filename);
+    virtual SAIField* getField(const string& name);
+    void runTest();
 };
 
 }}

@@ -17,4 +17,6 @@ TEST(XmlLoad, LoadedSceneShouldHaveCorrectStructure) {
     EXPECT_EQ(b, route->toField->getNode());
     EXPECT_EQ(a->getField("time"), route->fromField);
     EXPECT_EQ(b->getField("pauseTime"), route->toField);
+    delete world;
+    browser()->reset();
 }

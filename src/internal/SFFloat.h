@@ -50,7 +50,9 @@ public:
     /// Unwrap generic SFFloat value
 	INLINE static float unwrap(const X3DField& f) {
 		if (f.getType() != SFFLOAT)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFFloat") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFFloat&>(f)).value;
 	}
 

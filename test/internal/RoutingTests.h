@@ -105,6 +105,7 @@ TEST_F(RoutingTests, ManuallyRouteOutToIn) {
     EXPECT_EQ("foo", to->inValue);
     EXPECT_EQ("", to->outValue);
     EXPECT_EQ(1, to->inCount);
+    browser()->reset();
 }
 
 TEST_F(RoutingTests, ManuallyRouteOutToInNothingSet) {
@@ -119,6 +120,7 @@ TEST_F(RoutingTests, ManuallyRouteOutToInNothingSet) {
     EXPECT_EQ("", to->inValue);
     EXPECT_EQ("", to->outValue);
     EXPECT_EQ(0, to->inCount);
+    browser()->reset();
 }
 
 TEST_F(RoutingTests, ManuallyRouteFanIn) {
@@ -140,6 +142,7 @@ TEST_F(RoutingTests, ManuallyRouteFanIn) {
     EXPECT_EQ("foo", to->inValue);
     EXPECT_EQ("", to->outValue);
     EXPECT_EQ(2, to->inCount);
+    browser()->reset();
 }
 
 TEST_F(RoutingTests, ManuallyRouteFanInUndeterminedOrder) {
@@ -161,6 +164,7 @@ TEST_F(RoutingTests, ManuallyRouteFanInUndeterminedOrder) {
     EXPECT_THAT(to->inValue, AnyOf(Eq("foo"), Eq("bar")));
     EXPECT_EQ("", to->outValue);
     EXPECT_EQ(2, to->inCount);
+    browser()->reset();
 }
 
 TEST_F(RoutingTests, ManuallyRouteFanOut) {
@@ -192,6 +196,7 @@ TEST_F(RoutingTests, ManuallyRouteFanOut) {
     EXPECT_EQ("foo", to2->inValue);
     EXPECT_EQ("", to2->outValue);
     EXPECT_EQ(1, to2->inCount);
+    browser()->reset();
 }
 
 // fanout errors
@@ -217,6 +222,7 @@ TEST_F(RoutingTests, ManuallyRouteChainWithInOutField) {
     EXPECT_EQ("", mid->inValue);
     EXPECT_EQ("", mid->outValue);
     EXPECT_EQ("foo", to->inValue);
+    browser()->reset();
 }
 
 TEST_F(RoutingTests, ManuallyRouteChainWithCustomInputAction) {
@@ -239,6 +245,7 @@ TEST_F(RoutingTests, ManuallyRouteChainWithCustomInputAction) {
     EXPECT_EQ("", mid->inValue);
     EXPECT_EQ("foofoo", mid->outValue);
     EXPECT_EQ("foofoo", to->inValue);
+    browser()->reset();
 }
 
 // route from routes any events from a field
@@ -259,4 +266,5 @@ TEST_F(RoutingTests, LoopBreaking) {
 
     EXPECT_EQ(2, node->inOutFilterCount);
     EXPECT_EQ(1, node->inOutActionCount);
+    browser()->reset();
 }

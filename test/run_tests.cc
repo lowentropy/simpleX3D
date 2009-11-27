@@ -45,10 +45,12 @@ Browser* browser() {
 #include "internal/ParseTests.h"
 #include "internal/DynamicFieldTests.h"
 #include "Core/X3DBindableNodeTests.h"
+#include "Test/TestNodeTests.h"
 
 int main(int argc, char** argv) {
 #ifdef LIBXML_TREE_ENABLED
     LIBXML_TEST_VERSION
+    xmlLineNumbersDefault(1);
 	Browser browser;
 	::testing::InitGoogleMock(&argc, argv);
 	int code = RUN_ALL_TESTS();

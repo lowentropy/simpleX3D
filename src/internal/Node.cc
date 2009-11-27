@@ -1,6 +1,11 @@
 #include "internal/Node.h"
 #include "internal/Browser.h"
 
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
+
 namespace X3D {
 
 Browser* Node::browser() {
@@ -21,6 +26,10 @@ void Node::queue(SAIField* field) {
 
 const string& Node::defaultContainerField() {
     throw X3DError("no default container field defined");
+}
+
+bool Node::parseSpecial(xmlNode* xml, const string& filename) {
+    return false;
 }
 
 }

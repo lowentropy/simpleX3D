@@ -93,6 +93,11 @@ public:
 	Node* createNode(const std::string& name);
 
     /**
+     * Clear the scene graph and free all resources.
+     */
+    void reset();
+
+    /**
      * Process routes in a cascade. This function will block until
      * the cascade is complete.
      */

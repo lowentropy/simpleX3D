@@ -1,0 +1,8 @@
+<X3D>
+    <Scene>
+        <Test DEF='test' name='"ShouldParseNodeWithExpects"' continuous='true' timeout='3'>
+            <expect name='expect1' type='SFInt32' value='216'></expect>
+            <expect name='expect2' type='MFString' value='"foo" "bar" "baz"'></expect>
+        </Test>
+    </Scene>
+</X3D>

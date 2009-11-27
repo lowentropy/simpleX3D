@@ -23,14 +23,19 @@
 namespace X3D {
 namespace Test {
 
-Expect::Expect(TestNode* node, const string& type, const string& value)
-    : NodeField<TestNode>(node) {
+Expect::Expect(TestNode* node, const string& type, const string& name, const string& value)
+    : NodeField<TestNode>(node), name(name) {
     field = X3DField::create(type);
     if (!value.empty()) {
         std::stringstream ss(value);
         if (!field->parse(ss))
             throw X3DError(string("invalid field value: ") + value);
     }
+}
+
+bool Expect::test(string* reason) {
+    // TODO
+    return true;
 }
 
 Expect::~Expect() {

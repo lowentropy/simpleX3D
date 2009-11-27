@@ -41,6 +41,8 @@
 #include "Core/WorldInfo.h"
 #include "Time/X3DTimeDependentNode.h"
 #include "Time/TimeSensor.h"
+#include "Test/TestSuite.h"
+#include "Test/TestNode.h"
 
 namespace X3D {
 
@@ -335,6 +337,64 @@ public:
                 ts->finish();
 			}
 		}
+		// Test component
+		Component* test = profile->createComponent("Test");
+		{
+			using namespace X3D::Test;
+
+			// TestSuite
+			NodeDefImpl<TestSuite>* ts =
+				test->createNode<TestSuite>("TestSutie");
+            {
+                ts->inherits("X3DNode");
+
+                // SFString [] name
+                ts->createField(
+                    "name", X3DField::SFSTRING, SAIField::INIT_ONLY,
+                    &TestSuite::name);
+    
+                // MFNode [] tests
+                ts->createField(
+                    "tests", X3DField::MFNODE, SAIField::INIT_ONLY,
+                    &TestSuite::tests);
+
+                ts->finish();
+            }
+
+            // TestNode
+            NodeDefImpl<TestNode>* tn =
+                test->createNode<TestNode>("Test");
+            {
+                tn->inherits("X3DChildNode");
+
+                // SFString [] name
+                tn->createField(
+                    "name", X3DField::SFSTRING, SAIField::INIT_ONLY,
+                    &TestNode::name);
+
+                // SFBool [] continuous (false)
+                tn->createField(
+                    "continuous", X3DField::SFBOOL, SAIField::INIT_ONLY,
+                    &TestNode::continuous);
+
+                // SFTime [] timeout (0)
+                tn->createField(
+                    "timeout", X3DField::SFTIME, SAIField::INIT_ONLY,
+                    &TestNode::timeout);
+
+                // SFBool [out] success
+                tn->createField(
+                    "success", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
+                    &TestNode::success);
+
+                // MFString [out] reasons
+                tn->createField(
+                    "reasons", X3DField::MFSTRING, SAIField::OUTPUT_ONLY,
+                    &TestNode::reasons);
+
+                tn->finish();
+            }
+        }
 	} // end of profile
 };
 

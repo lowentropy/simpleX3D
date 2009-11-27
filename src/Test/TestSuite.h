@@ -21,19 +21,20 @@
 #define _X3D_TESTSUITE_H_
 
 #include "Core/X3DNode.h"
+#include "Test/TestNode.h"
 
 namespace X3D {
 namespace Test {
 
-class TestSuite : virtual public X3DNode {
+class TestSuite : public Core::X3DNode {
 public:
     
     InitField<TestSuite, SFString> name;
-    InitField<TestSuite, MFNode<Test> > tests;
+    InitField<TestSuite, MFNode<TestNode> > tests;
 
     class Run : public InField<TestSuite, SFBool> {
         void action(bool unused) {
-            
+            // TODO
         }
     } run;
 

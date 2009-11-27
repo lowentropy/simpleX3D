@@ -36,7 +36,9 @@ private:
 
 public:
 
-    Expect(TestNode* node, const string& type, const string& value);
+    const string name;
+
+    Expect(TestNode* node, const string& type, const string& name, const string& value);
     virtual ~Expect();
     X3DField::Type getType() const;
     string getTypeName() const;
@@ -49,6 +51,7 @@ public:
     void addIncomingRoute(Route* route);
     void removeIncomingRoute(Route* route);
     const list<Route*>& getIncomingRoutes() const;
+    bool test(string* reason);
 
 };
 

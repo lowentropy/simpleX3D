@@ -473,7 +473,9 @@ public:
     /// Unwrap generic matrix value.
 	static INLINE const SFMatrix3f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3F)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix3f") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix3f&>(f);
 	}
 
@@ -535,7 +537,9 @@ public:
     /// Unwrap generic matrix value.
 	static INLINE const SFMatrix3d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX3D)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix3d") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix3d&>(f);
 	}
 
@@ -590,7 +594,9 @@ public:
     /// Unwrap generic matrix value
 	static INLINE const SFMatrix4f& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4F)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix4f") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix4f&>(f);
 	}
 
@@ -652,7 +658,9 @@ public:
     /// Unwrap generic matrix value
 	static INLINE const SFMatrix4d& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFMATRIX4D)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix4d") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix4d&>(f);
 	}
 

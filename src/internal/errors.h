@@ -22,6 +22,15 @@
 
 #include <stdexcept>
 #include <string>
+#include <libxml/tree.h>
+#include <sstream>
+
+// XXX
+#include <iostream>
+using std::cout;
+using std::endl;
+
+using std::string;
 
 namespace X3D {
 
@@ -30,34 +39,45 @@ class SAIField;
 /**
  * Root class for X3D exceptions.
  */
-class X3DError : public std::runtime_error {
+class X3DError : public std::exception {
+protected:
+    string message;
 public:
-	/**
-	 * Constructor.
-	 * 
-	 * @param message error message
-	 */
-	X3DError(const char* message) : std::runtime_error(message) {}
-
-	/**
-	 * Constructor (takes std::string rather than char*).
-	 * 
-	 * @param message error message
-	 */
-	X3DError(const std::string& message) : std::runtime_error(message) {}
+    X3DError() : message("<no message set>") {}
+	X3DError(const std::string& message) : message(message) {}
+    virtual ~X3DError() throw () {}
+    const char* what() const throw () { return message.c_str(); }
 };
 
 class EventLoopError : public X3DError {
-protected:
-    SAIField* const field;
-
 public:
+    const SAIField* const field;
     EventLoopError(SAIField* field) : X3DError("event loop detected"), field(field) {}
 };
 
 class X3DParserError : public X3DError {
+private:
+    xmlNode* xml;
+    string filename;
 public:
-    X3DParserError(const std::string& message) : X3DError(message) {}
+    X3DParserError(const std::string& message, const string& filename, xmlNode* xml=NULL)
+        : X3DError(), filename(filename), xml(xml) {
+        std::stringstream ss;
+        bool any = false;
+        if (!filename.empty()) {
+            ss << filename << ":";
+            any = true;
+        }
+        if (xml != NULL) {
+            ss << xmlGetLineNo(xml) << ":";
+            any = true;
+        }
+        if (any)
+            ss << " ";
+        ss << message;
+        this->message = ss.str();
+    }
+    virtual ~X3DParserError() throw () {}
 };
 
 }

@@ -33,10 +33,20 @@ Browser::Browser() : profile(new Profile()) {
 	Builtin::init(profile);
 }
 
-Browser::~Browser() {
+void Browser::reset() {
 	list<Node*>::iterator it = nodes.begin();
 	for (; it != nodes.end(); it++)
 		delete *it;
+    nodes.clear();
+    persistent.clear();
+    roots.clear();
+    dirtyFields.clear();
+    firedFields.clear();
+    defs.clear();
+}
+
+Browser::~Browser() {
+    reset();
 	delete profile;
 }
 

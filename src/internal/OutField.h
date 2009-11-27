@@ -141,9 +141,7 @@ public:
             throw X3DError("already wrote to this field");
         this->value = value;
         this->value.realize();
-        dirty = true;
-        node()->queue(this);
-        action();
+        changed();
     }
 
     /**
@@ -152,6 +150,10 @@ public:
      * @param value whether field is changed
      */
     void changed(bool value=true) {
+        if (value && !dirty) {
+            node()->queue(this);
+            action();
+        }
         dirty = value;
     }
 

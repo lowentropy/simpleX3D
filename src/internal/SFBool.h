@@ -50,7 +50,9 @@ public:
     /// Unwraps generic value.
 	INLINE static bool unwrap(const X3DField& f) {
 		if (f.getType() != SFBOOL)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFBool") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFBool&>(f)).value;
 	}
 

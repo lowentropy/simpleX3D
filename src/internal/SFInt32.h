@@ -50,7 +50,9 @@ public:
     /// Unwrap a generic SFInt32 value
 	INLINE static int unwrap(const X3DField& f) {
 		if (f.getType() != SFINT32)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFInt32") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFInt32&>(f)).value;
 	}
 

@@ -52,7 +52,9 @@ public:
     /// Unwraps generic SFColor value
 	INLINE static const SFColor& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLOR)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFColor") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFColor&>(f);
 	}
 
@@ -194,7 +196,9 @@ public:
     /// Unwrap generic SFColorRGBA value
 	INLINE static const SFColorRGBA& unwrap(const X3DField& f) {
 		if (f.getType() != SFCOLORRGBA)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFColorRGBA") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFColorRGBA&>(f);
 	}
 

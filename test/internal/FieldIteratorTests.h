@@ -27,6 +27,7 @@ TEST(FieldIterator, TimeSensorHasAllFields) {
     EXPECT_EQ(false, it.hasNext()) << "too many fields returned";
     EXPECT_EQ(NULL, it.nextField());
     EXPECT_EQ(NULL, it.nextFieldDef());
+    browser()->reset();
 }
 
 TEST(FieldIterator, TimeSensorHasInputFields) {
@@ -50,6 +51,7 @@ TEST(FieldIterator, TimeSensorHasInputFields) {
     EXPECT_EQ(false, it.hasNext()) << "too many fields returned";
     EXPECT_EQ(NULL, it.nextField());
     EXPECT_EQ(NULL, it.nextFieldDef());
+    browser()->reset();
 }
 
 TEST(FieldIterator, TimeSensorHasDirtyFields) {
@@ -65,4 +67,5 @@ TEST(FieldIterator, TimeSensorHasDirtyFields) {
     ASSERT_EQ(true, it.hasNext()) << "too few fields returned";
     EXPECT_EQ("enabled", it.nextFieldDef()->name);
     EXPECT_EQ(false, it.hasNext()) << "too many fields returned";
+    browser()->reset();
 }

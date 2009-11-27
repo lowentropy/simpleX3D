@@ -33,16 +33,18 @@ public:\
     INLINE X3DField::Type getType() const { return X3DField::CONST; } \
     static INLINE const MF& unwrap(const X3DField& value) { \
         if (value.getType() != X3DField::CONST) \
-            throw X3DError("base type mismatch"); \
+            throw X3DError(\
+                string("base type mismatch; expected ") + \
+                #MF + ", but was " + value.getTypeName()); \
         return static_cast<const MF&>(value); \
     } \
     INLINE MF& operator()() { \
         return *this; \
     } \
-    INLINE bool operator==(const X3DField& value) { \
+    INLINE bool operator==(const X3DField& value) const { \
         return this->MFBase<SF>::operator==(unwrap(value)); \
     } \
-    INLINE bool operator!=(const X3DField& value) { \
+    INLINE bool operator!=(const X3DField& value) const { \
         return this->MFBase<SF>::operator!=(unwrap(value)); \
     } \
     bool parse(istream& ss) { \
@@ -118,7 +120,14 @@ public:
     /**
      * Return the inner list of elements.
      */
-    const list<T>& getElements() {
+    const list<T>& getElements() const {
+        return elements;
+    }
+
+    /**
+     * Return the inner list of elements.
+     */
+    list<T>& getElements() {
         return elements;
     }
 };
@@ -201,8 +210,13 @@ public:
      */
 	static INLINE const MFNode<N>& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
-			throw X3DError("base type mismatch");
-		return static_cast<const MFNode<N>&>(f);
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+		const MFNode* mf = dynamic_cast<const MFNode<N>*>(&f);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        return *mf;
 	}
 
     /** @returns native list type */

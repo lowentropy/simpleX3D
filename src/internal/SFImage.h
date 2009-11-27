@@ -60,7 +60,9 @@ public:
     /// Unwrap generic SFImage value
 	INLINE static const SFImage& unwrap(const X3DField& f) {
 		if (f.getType() != SFIMAGE)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFImage") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFImage&>(f);
 	}
 

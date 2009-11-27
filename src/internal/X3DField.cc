@@ -52,7 +52,7 @@ const string& X3DField::getTypeName(X3DField::Type type) {
     return X3DField::typeNames[type];
 }
 
-const string& X3DField::getTypeName() {
+const string& X3DField::getTypeName() const {
     return getTypeName(getType());
 }
 

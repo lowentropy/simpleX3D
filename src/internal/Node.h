@@ -21,14 +21,11 @@
 #define _X3D_NODE_H_
 
 #include "internal/errors.h"
-//#include "internal/types.h"
 #include "internal/SAIField.h"
-//#include "internal/InitField.h"
-//#include "internal/InField.h"
-//#include "internal/OutField.h"
-//#include "internal/InOutField.h"
 #include "internal/FieldIterator.h"
 #include <string>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
 
 using std::string;
 
@@ -92,7 +89,7 @@ public:
      * @param name name of field
      * @returns pointer to actual field
      */
-    SAIField* getField(const string& name);
+    virtual SAIField* getField(const string& name);
 
     /**
      * Create and return an iterator into the run-time fields of this node.
@@ -139,6 +136,16 @@ public:
 
     /// @returns the default containerField for this node
     virtual const string& defaultContainerField();
+
+    /**
+     * If the given element has a special purpose for this node,
+     * parse and handle it in some way and then return true. Otherwise
+     * return false.
+     * 
+     * @param xml xml element to test and/or handle
+     * @returns whether special parsing was performed
+     */
+    virtual bool parseSpecial(xmlNode* xml, const string& filename);
 };
 
 }

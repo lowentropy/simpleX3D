@@ -100,7 +100,7 @@ public:
     static const string& getTypeName(Type type);
 
     /// get string representation of this value's type
-    const string& getTypeName();
+    const string& getTypeName() const;
 
     /// Empty constructor.
 	X3DField() {}

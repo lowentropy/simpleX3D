@@ -50,7 +50,9 @@ public:
     /// Unwrap a generic rotation value.
 	INLINE static const SFRotation& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFROTATION)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFRotation") +
+                ", but was " + f.getTypeName());
 		return static_cast<const SFRotation&>(f);
 	}
 

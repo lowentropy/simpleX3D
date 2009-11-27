@@ -5,3 +5,7 @@ TEST(DynamicFields, CreateFieldByNameShouldMakeCorrectType) {
     EXPECT_EQ(X3DField::SFNODE, X3DField::create("SFNode")->getType());
     EXPECT_EQ(X3DField::MFNODE, X3DField::create("MFNode")->getType());
 }
+
+TEST(DynamicFields, CreateBadFieldNameShouldThrowError) {
+    EXPECT_ANY_THROW(X3DField::create("SFBoolean"));
+}

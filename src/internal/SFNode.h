@@ -85,7 +85,9 @@ public:
      */
 	INLINE static N* unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::SFNODE)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFNode") +
+                ", but was " + f.getTypeName());
 		const SFAbstractNode& n = static_cast<const SFAbstractNode&>(f);
 		N* v = dynamic_cast<N*>(n());
 		if (v == NULL)

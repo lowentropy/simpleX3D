@@ -10,6 +10,7 @@ TEST(RouteStorage, NewRouteByNamesShouldBeListedByFields) {
     EXPECT_EQ(route, from->getField("loop")->getOutgoingRoutes().back());
     EXPECT_EQ(route, to->getField("enabled")->getIncomingRoutes().front());
     EXPECT_EQ(route, to->getField("enabled")->getIncomingRoutes().back());
+    browser()->reset();
 }
 
 TEST(RouteStorage, NewRouteByPtrsShouldBeListedByFields) {
@@ -25,12 +26,14 @@ TEST(RouteStorage, NewRouteByPtrsShouldBeListedByFields) {
     EXPECT_EQ(route, fromField->getOutgoingRoutes().back());
     EXPECT_EQ(route, toField->getIncomingRoutes().front());
     EXPECT_EQ(route, toField->getIncomingRoutes().back());
+    browser()->reset();
 }
 
 TEST(RouteStorage, NewRouteShouldFailIfTypesMismatch) {
     Node* from = browser()->createNode("TimeSensor");
     Node* to = browser()->createNode("TimeSensor");
     EXPECT_ANY_THROW(browser()->createRoute(from, "time", to, "enabled"));
+    browser()->reset();
 }
 
 TEST(RouteStorage, RemoveRouteShouldUnlistFromFields) {
@@ -41,6 +44,7 @@ TEST(RouteStorage, RemoveRouteShouldUnlistFromFields) {
     route->remove();
     EXPECT_EQ(0, from->getField("loop")->getOutgoingRoutes().size());
     EXPECT_EQ(0, to->getField("enabled")->getIncomingRoutes().size());
+    browser()->reset();
 }
 
 TEST(RouteStorage, InsertRouteShouldRelistRoute) {
@@ -54,6 +58,7 @@ TEST(RouteStorage, InsertRouteShouldRelistRoute) {
     EXPECT_EQ(route, from->getField("loop")->getOutgoingRoutes().back());
     EXPECT_EQ(route, to->getField("enabled")->getIncomingRoutes().front());
     EXPECT_EQ(route, to->getField("enabled")->getIncomingRoutes().back());
+    browser()->reset();
 }
 
 TEST(RouteStorage, InsertShouldFailIfRouteExists) {
@@ -64,6 +69,7 @@ TEST(RouteStorage, InsertShouldFailIfRouteExists) {
     route->remove();
     Route* other = browser()->createRoute(from, "loop_changed", to, "set_enabled");
     EXPECT_ANY_THROW(route->insert());
+    browser()->reset();
 }
 
 TEST(RouteStorage, CreateIdenticalRouteShouldReturnOriginalPtr) {
@@ -72,4 +78,5 @@ TEST(RouteStorage, CreateIdenticalRouteShouldReturnOriginalPtr) {
     Route* route = browser()->createRoute(from, "loop_changed", to, "set_enabled");
     ASSERT_THAT(route, NotNull());
     EXPECT_EQ(route, browser()->createRoute(from, "loop_changed", to, "set_enabled"));
+    browser()->reset();
 }

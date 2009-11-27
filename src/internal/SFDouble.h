@@ -50,7 +50,9 @@ public:
     /// Unwrap generic SFDouble value
 	INLINE static double unwrap(const X3DField& f) {
 		if (f.getType() != SFDOUBLE)
-			throw X3DError("base type mismatch");
+			throw X3DError(
+                string("base type mismatch; expected SFDouble") +
+                ", but was " + f.getTypeName());
 		return (static_cast<const SFDouble&>(f)).value;
 	}
 
