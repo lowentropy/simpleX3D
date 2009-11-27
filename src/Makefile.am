@@ -15,7 +15,8 @@ libsimpleX3D_la_SOURCES = \
     internal/World.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
-	Core/MetadataString.cc
+	Core/MetadataString.cc \
+    Test/Expect.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \

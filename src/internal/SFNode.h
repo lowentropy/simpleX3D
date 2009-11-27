@@ -20,14 +20,14 @@
 #ifndef _X3D_SFNODE_H_
 #define _X3D_SFNODE_H_
 
+#include "internal/Node.h"
 #include "internal/X3DField.h"
 #include <ios>
 #include <sstream>
 #include <cstring>
 
-namespace X3D {
 
-class Node;
+namespace X3D {
 
 /**
  * The root class of all node types. The only job of this class is to present

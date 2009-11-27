@@ -20,32 +20,36 @@
 #ifndef _X3D_EXPECT_H_
 #define _X3D_EXPECT_H_
 
-#include <internal/X3DChildNode.h>
+#include <internal/X3DField.h>
+#include <internal/SAIField.h>
+#include <internal/Route.h>
+#include <Test/TestNode.h>
 
 namespace X3D {
 namespace Test {
 
-class Expect : public X3DChildNode {
+class Expect : public NodeField<TestNode> {
+private:
+
+    X3DField* field;
+    list<Route*> routes;
+
 public:
 
-    InitField<Expect, SFTime> testAt;
-    InitField<Expect, SFString> type;
-    InitField<Expect, SFString> value;
-    
-    X3DField* value;
+    Expect(TestNode* node, const string& type, const string& value);
+    virtual ~Expect();
+    X3DField::Type getType() const;
+    string getTypeName() const;
+    SAIField::Access getAccess() const;
+    const X3DField& get() const;
+    X3DField& get();
+    void set(const X3DField& value);
+    bool isDirty() const;
+    void clearDirty();
+    void addIncomingRoute(Route* route);
+    void removeIncomingRoute(Route* route);
+    const list<Route*>& getIncomingRoutes() const;
 
-    void setup() {}
-
-    void schedule() {
-        // TODO
-    }
-
-    Expect() : value(NULL) {}
-
-    ~Expect() {
-        if (value != NULL)
-            delete value;
-    }
 };
 
 }}

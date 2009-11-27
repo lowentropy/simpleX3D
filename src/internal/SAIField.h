@@ -157,6 +157,9 @@ public:
     /// Empty constructor.
     NodeField() : node(NULL) {}
 
+    /// Initializing constructor (called only from dynamic fields)
+    NodeField(N* node) : node(node) {}
+
     /// @returns pointer to owner node
 	N* getNode() const { return node; }
 

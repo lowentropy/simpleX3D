@@ -21,6 +21,10 @@
 #define _X3D_X3DNODE_H_
 
 #include "Core/X3DMetadataObject.h"
+#include "internal/InitField.h"
+#include "internal/InField.h"
+#include "internal/OutField.h"
+#include "internal/InOutField.h"
 #include <string>
 #include <map>
 

@@ -25,6 +25,7 @@
 #include <string>
 #include <istream>
 #include <ostream>
+#include <map>
 
 using std::string;
 using std::istream;
@@ -40,6 +41,10 @@ namespace X3D {
  * !=, and the native-value access operator().
  */
 class X3DField {
+private:
+    typedef X3DField* (*TypeCon)();
+    static std::map<string, TypeCon> constructorMap;
+
 public:
 
     /// enumeration identifying x3d type
@@ -85,8 +90,7 @@ public:
 		MFVEC3D,
 		MFVEC3F,
 		MFVEC4D,
-		MFVEC4F,
-        ANY
+		MFVEC4F
 	} Type;
 
     /// string representation of x3d type names
@@ -137,6 +141,15 @@ public:
      * is an MFNode or SFNode value.
      */
     virtual INLINE void realize() {}
+
+    /**
+     * Create a new x3dfield by looking up the correct type by name.
+     * The memory for the field is the responsibility of the caller.
+     * 
+     * @param typeName name of x3d field type
+     * @returns new instance of field container
+     */
+    static X3DField* create(const string& typeName);
 };
 
 std::ostream& operator<<(std::ostream& os, const X3DField& f);

@@ -21,11 +21,12 @@
 #define _X3D_NODE_H_
 
 #include "internal/errors.h"
-#include "internal/types.h"
-#include "internal/InitField.h"
-#include "internal/InField.h"
-#include "internal/OutField.h"
-#include "internal/InOutField.h"
+//#include "internal/types.h"
+#include "internal/SAIField.h"
+//#include "internal/InitField.h"
+//#include "internal/InField.h"
+//#include "internal/OutField.h"
+//#include "internal/InOutField.h"
 #include "internal/FieldIterator.h"
 #include <string>
 

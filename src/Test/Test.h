@@ -20,10 +20,12 @@
 #ifndef _X3D_TEST_H_
 #define _X3D_TEST_H_
 
+#include <Core/X3DChildNode.h>
+
+using X3D::Core::X3DChildNode;
+
 namespace X3D {
 namespace Time {
-
-#include <Core/X3DChildNode.h>
 
 class Test : public X3DChildNode {
 public:
@@ -31,7 +33,6 @@ public:
     InitField<Test, SFString> name;
     InitField<Test, SFString> eventMode;
     InitField<Test, SFTime> timeout;
-    InitField<Test, MFNode<Expect> > expects;
 
     class Run : public InField<Test, SFBool> {
         void action(bool unused) {

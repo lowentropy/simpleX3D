@@ -21,6 +21,8 @@
 #define _X3D_X3DMETADATAOBJECT_H_
 
 #include "internal/Node.h"
+#include "internal/types.h"
+#include "internal/InOutField.h"
 #include <string>
 #include <map>
 

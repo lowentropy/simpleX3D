@@ -43,6 +43,7 @@ Browser* browser() {
 #include "internal/RoutingTests.h"
 #include "internal/XmlLoadTests.h"
 #include "internal/ParseTests.h"
+#include "internal/DynamicFieldTests.h"
 #include "Core/X3DBindableNodeTests.h"
 
 int main(int argc, char** argv) {
