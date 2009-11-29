@@ -41,20 +41,19 @@ private:
     typedef typename TT::TYPE T;
     typedef typename TT::CONST_TYPE CT;
 
-protected:
-    /**
-     * Return a pointer to the node which owns this field.
-     * 
-     * @returns node pointer
-     */
-    INLINE N* node() const { return NodeField<N>::node; }
-
 public:
     /// wrapper value contained by the field
     TT value;
 
     /// Default constructor; #value has default value.
     InitField() {}
+
+    /**
+     * Return a pointer to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
+    INLINE N* node() const { return NodeField<N>::node; }
 
     /**
      * Get the access type of this field.
@@ -79,7 +78,7 @@ public:
      */
     INLINE const TT& get() const {
         if (node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't read init field after node is realized", node());
         return value;
     }
 
@@ -92,7 +91,7 @@ public:
      */
     INLINE TT& get() {
         if (node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("cant read init field after node is realized", node());
         return value;
     }
 
@@ -117,7 +116,7 @@ public:
      */
     INLINE T operator()() {
         if (node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't read init field after node is realized", node());
         return value();
     }
 
@@ -130,7 +129,7 @@ public:
      */
     INLINE void operator()(CT value) {
         if (node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't write init field after node is realized", node());
         this->value = value;
         this->value.realize();
     }

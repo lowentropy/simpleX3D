@@ -17,42 +17,24 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Test/TestSuite.h"
+#include "internal/errors.h"
+#include "internal/Node.h"
 
 namespace X3D {
-namespace Test {
 
-void TestSuite::setup() {
-}
-
-void TestSuite::reset() {
-    numPassed(0);
-    numFailed(0);
-    passed().clear();
-    failed().clear();
-}
-
-void TestSuite::signal() {
-    numPassed.changed();
-    numFailed.changed();
-    passed.changed();
-    failed.changed();
-}
-
-void TestSuite::runTests() {
-    reset();
-    list<TestNode*> tests = this->tests.value.getElements();
-    list<TestNode*>::iterator it;
-    for (it = tests.begin(); it != tests.end(); it++) {
-        if ((*it)->runTest()) {
-            passed().add(*it);
-            numPassed.value++;
-        } else {
-            failed().add(*it);
-            numFailed.value++;
-        }
+const char* X3DError::what() const throw () {
+    std::stringstream ss;
+    ss << message;
+    if (node != NULL) {
+        ss << " (node: ";
+        const string& type = node->definition->getName();
+        const string& name = node->getName();
+        ss << type;
+        if (!name.empty())
+            ss << " \"" << name << '"';
+        ss << ")";
     }
-    signal();
+    return ss.str().c_str();
 }
 
-}}
+}

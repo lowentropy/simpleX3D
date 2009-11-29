@@ -14,4 +14,5 @@ include_HEADERS = \
     internal/XmlLoadTests.h \
     internal/ParseTests.h \
 	Core/X3DBindableNodeTests.h \
-    Test/TestNodeTests.h
+    Test/TestNodeTests.h \
+    Test/TestSuiteTests.h

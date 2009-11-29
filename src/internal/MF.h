@@ -38,6 +38,13 @@ public:\
                 #MF + ", but was " + value.getTypeName()); \
         return static_cast<const MF&>(value); \
     } \
+    static INLINE MF& unwrap(X3DField& value) { \
+        if (value.getType() != X3DField::CONST) \
+            throw X3DError(\
+                string("base type mismatch; expected ") + \
+                #MF + ", but was " + value.getTypeName()); \
+        return static_cast<MF&>(value); \
+    } \
     INLINE MF& operator()() { \
         return *this; \
     } \
@@ -180,6 +187,28 @@ class MFAbstractNode {
 public:
     virtual void add(Node* node) = 0;
     virtual void clear() = 0;
+    static const MFAbstractNode& unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+        const MFAbstractNode* mf = dynamic_cast<const MFAbstractNode*>(&f);
+        if (mf == NULL)
+            throw X3DError(
+                string("list type mismatch; not a node list"));
+        return *mf;
+    }
+    static MFAbstractNode& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+        MFAbstractNode* mf = dynamic_cast<MFAbstractNode*>(&f);
+        if (mf == NULL)
+            throw X3DError(
+                string("list type mismatch; not a node list"));
+        return *mf;
+    }
 };
 
 /**
@@ -219,6 +248,25 @@ public:
         return *mf;
 	}
 
+    /**
+     * Unwrap a generic value into a list type. This method will
+     * only succeed if the generic value is an MFNode list of the
+     * exact same root node type.
+     * 
+     * @param f generic value
+     * @returns native list type
+     */
+	static INLINE MFNode<N>& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+		const MFNode* mf = dynamic_cast<MFNode<N>*>(&f);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        return *mf;
+	}
+
     /** @returns native list type */
     INLINE MFNode<N>& operator()() {
         return *this;
@@ -226,18 +274,18 @@ public:
 
     void add(Node* node) {
         if (node == NULL) {
-            add(NULL);
+            MFBase<N*>::elements.push_back(NULL);
         } else {
             N* n = dynamic_cast<N*>(node);
             if (n == NULL)
                 throw X3DError("node type mismatch");
             n->realize();
-            add(n);
+            MFBase<N*>::elements.push_back(n);
         }
     }
 
     void clear() {
-        MFBase<N*>::elements.clear();
+        this->MFBase<N*>::elements.clear();
     }
 
     bool parse(istream& ss) {

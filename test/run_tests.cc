@@ -46,6 +46,7 @@ Browser* browser() {
 #include "internal/DynamicFieldTests.h"
 #include "Core/X3DBindableNodeTests.h"
 #include "Test/TestNodeTests.h"
+#include "Test/TestSuiteTests.h"
 
 int main(int argc, char** argv) {
 #ifdef LIBXML_TREE_ENABLED

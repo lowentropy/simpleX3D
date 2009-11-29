@@ -128,6 +128,7 @@ Route* Browser::createRoute(const string& fromNode, const string& fromField,
 
 void Browser::addNamedNode(const string& name, Node* node) {
     defs[name] = node;
+    node->setName(name);
 }
 
 Node* Browser::getNodeByName(const string& name) {

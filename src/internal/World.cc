@@ -205,16 +205,24 @@ void World::parseNode(xmlNode* xml, Node* parent) {
         }
         parseScene(xml, node);
     }
-    if (field.empty())
-        field = node->defaultContainerField();
-    if (parent == NULL)
+    if (parent == NULL) {
         browser->addRoot(node);
-    else {
+    } else {
+        if (field.empty()) {
+            field = node->defaultContainerField();
+            if (field.empty())
+                throw X3DParserError(
+                    string("no container field defined for ") + (char*) xml->name,
+                        filename, xml);
+        }
         SAIField* sai = parent->getField(field);
         if (sai == NULL)
-            throw X3DParserError(string("invalid container field: ") + field, filename, xml);
-        MFAbstractNode* container = dynamic_cast<MFAbstractNode*>(sai);
-        container->add(node);
+            throw X3DParserError(
+                string("invalid container field: ") + field, filename, xml);
+        MFAbstractNode::unwrap(sai->get()).add(node);
+        // XXX
+        if (!node->realized())
+            throw new X3DParserError("should've realized...", filename, xml);
     }
 }
 

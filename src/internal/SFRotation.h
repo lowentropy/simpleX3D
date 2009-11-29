@@ -56,6 +56,15 @@ public:
 		return static_cast<const SFRotation&>(f);
 	}
 
+    /// Unwrap a generic rotation value.
+	INLINE static SFRotation& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFROTATION)
+			throw X3DError(
+                string("base type mismatch; expected SFRotation") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFRotation&>(f);
+	}
+
     /// Native assignment operator.
 	INLINE const SFRotation& operator=(const SFRotation& r) {
         x = r.x;

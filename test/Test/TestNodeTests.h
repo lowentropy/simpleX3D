@@ -10,7 +10,6 @@ TEST(TestNode, ShouldParseNodeWithExpects) {
         "data/TestNodeShouldParseNodeWithExpects.xml"));
     Node* node = browser()->getNodeByName("test");
     ASSERT_THAT(node, NotNull());
-    EXPECT_EQ(SFString("ShouldParseNodeWithExpects"), node->getField("name")->get());
     Expect* e1 = dynamic_cast<Expect*>(node->getField("expect1"));
     ASSERT_THAT(e1, NotNull());
     Expect* e2 = dynamic_cast<Expect*>(node->getField("expect2"));

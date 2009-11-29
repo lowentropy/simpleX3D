@@ -68,6 +68,10 @@ void NodeDef::growChain(NodeDef* def) {
     chain.push_back(def);
 }
 
+const string& NodeDef::getName() {
+    return name;
+}
+
 void NodeDef::print(bool full) {
 	cout << "\t" << name;
 	if (parents.size() > 0)

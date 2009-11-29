@@ -48,6 +48,11 @@ protected:
 
     list<Route*> incomingRoutes;
 
+public:
+
+    /// Empty constructor.
+    InField() {}
+
     /**
      * Return a pointer to the node which owns this field.
      * 
@@ -55,10 +60,6 @@ protected:
      */
     INLINE N* node() const { return NodeField<N>::node; }
 
-public:
-
-    /// Empty constructor.
-    InField() {}
 
     /**
      * Get the access type of this field.
@@ -73,7 +74,7 @@ public:
      * @returns nothing, always throws an error
      */
     INLINE const TT& get() const {
-        throw X3DError("can't read input field");
+        throw X3DError("can't read input field", node());
     }
 
     /**
@@ -82,7 +83,7 @@ public:
      * @returns nothing, always throws an error
      */
     INLINE TT& get() {
-        throw X3DError("can't read input field");
+        throw X3DError("can't read input field", node());
     }
 
     /**
@@ -105,7 +106,7 @@ public:
      */
     INLINE void operator()(CT value) {
         if (!node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't write to input field until node is realized", node());
         action(value);
     }
 

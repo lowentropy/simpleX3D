@@ -479,6 +479,15 @@ public:
 		return static_cast<const SFMatrix3f&>(f);
 	}
 
+    /// Unwrap generic matrix value.
+	static INLINE SFMatrix3f& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFMATRIX3F)
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix3f") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFMatrix3f&>(f);
+	}
+
     /// @returns native matrix value
     INLINE SFMatrix3f& operator()() {
         return *this;
@@ -543,6 +552,15 @@ public:
 		return static_cast<const SFMatrix3d&>(f);
 	}
 
+    /// Unwrap generic matrix value.
+	static INLINE SFMatrix3d& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFMATRIX3D)
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix3d") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFMatrix3d&>(f);
+	}
+
     /// @returns native matrix value
     INLINE SFMatrix3d& operator()() {
         return *this;
@@ -598,6 +616,15 @@ public:
                 string("base type mismatch; expected SFMatrix4f") +
                 ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix4f&>(f);
+	}
+
+    /// Unwrap generic matrix value
+	static INLINE SFMatrix4f& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFMATRIX4F)
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix4f") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFMatrix4f&>(f);
 	}
 
     /// @returns native matrix value
@@ -662,6 +689,15 @@ public:
                 string("base type mismatch; expected SFMatrix4d") +
                 ", but was " + f.getTypeName());
 		return static_cast<const SFMatrix4d&>(f);
+	}
+
+    /// Unwrap generic matrix value
+	static INLINE SFMatrix4d& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFMATRIX4D)
+			throw X3DError(
+                string("base type mismatch; expected SFMatrix4d") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFMatrix4d&>(f);
 	}
 
     /// @returns native matrix value

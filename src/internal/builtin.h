@@ -387,19 +387,14 @@ public:
             {
                 tn->inherits("X3DChildNode");
 
-                // SFString [] name
+                // SFBool [in,out] continuous (false)
                 tn->createField(
-                    "name", X3DField::SFSTRING, SAIField::INIT_ONLY,
-                    &TestNode::name);
-
-                // SFBool [] continuous (false)
-                tn->createField(
-                    "continuous", X3DField::SFBOOL, SAIField::INIT_ONLY,
+                    "continuous", X3DField::SFBOOL, SAIField::INPUT_OUTPUT,
                     &TestNode::continuous);
 
-                // SFTime [] timeout (0)
+                // SFTime [in,out] timeout (0)
                 tn->createField(
-                    "timeout", X3DField::SFTIME, SAIField::INIT_ONLY,
+                    "timeout", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
                     &TestNode::timeout);
 
                 // SFBool [out] success

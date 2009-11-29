@@ -61,6 +61,15 @@ public:
 		return (static_cast<const SFString&>(f)).value;
 	}
 
+    /// Unwrap generic string field.
+	INLINE static string& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::SFSTRING)
+			throw X3DError(
+                string("base type mismatch; expected SFString") +
+                ", but was " + f.getTypeName());
+		return (static_cast<SFString&>(f)).value;
+	}
+
     /// Low-level assignment operator
 	INLINE const SFString& operator=(const string& x) {
 		value = x;

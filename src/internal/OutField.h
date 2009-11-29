@@ -21,6 +21,8 @@
 #define _X3D_OUTFIELD_H_
 
 #include "internal/SAIField.h"
+// XXX
+#include <sstream>
 
 namespace X3D {
 
@@ -59,13 +61,6 @@ protected:
 
     list<Route*> outgoingRoutes;
 
-    /**
-     * Get a reference to the node which owns this field.
-     * 
-     * @returns node pointer
-     */
-    INLINE N* node() const { return NodeField<N>::node; }
-
 public:
 
     /// Stored value of the field; last thing sent in output event.
@@ -73,6 +68,14 @@ public:
 
     /// Empty constructor.
     OutField() : dirty(false) {}
+
+    /**
+     * Get a reference to the node which owns this field.
+     * 
+     * @returns node pointer
+     */
+    INLINE N* node() const { return NodeField<N>::node; }
+
 
     /**
      * Get the access type of this field.
@@ -89,7 +92,7 @@ public:
      */
     INLINE const TT& get() const {
         if (!node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't read output field until node is realized", node());
         return value;
     }
 
@@ -101,7 +104,7 @@ public:
      */
     INLINE TT& get() {
         if (!node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't read output field until node is realized", node());
         return value;
     }
 
@@ -112,7 +115,7 @@ public:
      * @param field generic field value to set
      */
     INLINE void set(const X3DField& field) {
-        throw X3DError("can't write output field");
+        throw X3DError("can't write to output field", node());
     }
 
     /**
@@ -123,7 +126,7 @@ public:
      */
     INLINE T operator()() {
         if (!node()->realized())
-            throw X3DError("wrong stage");
+            throw X3DError("can't read output field until node is realized", node());
         return value();
     }
 
@@ -136,9 +139,9 @@ public:
      */
     INLINE void operator()(CT value) {
         if (!node()->realized())
-            throw X3DError("can't route event until realized");
+            throw X3DError("can't route event until realized", node());
         if (dirty)
-            throw X3DError("already wrote to this field");
+            throw X3DError("already wrote to this field", node());
         this->value = value;
         this->value.realize();
         changed();

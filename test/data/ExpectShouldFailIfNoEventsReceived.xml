@@ -1,0 +1,9 @@
+<X3D>
+    <Scene>
+        <TestSuite DEF="suite">
+            <Test DEF="OnlyTest">
+                <expect name="NeverActivated" type="SFInt32" value="216"/>
+            </Test>
+        </TestSuite>
+    </Scene>
+</X3D>

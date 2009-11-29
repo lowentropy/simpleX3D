@@ -58,6 +58,15 @@ public:
 		return static_cast<const SFColor&>(f);
 	}
 
+    /// Unwraps generic SFColor value
+	INLINE static SFColor& unwrap(X3DField& f) {
+		if (f.getType() != SFCOLOR)
+			throw X3DError(
+                string("base type mismatch; expected SFColor") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFColor&>(f);
+	}
+
 	/**
 	 * Default constructor.
 	 * 

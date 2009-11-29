@@ -25,7 +25,8 @@ void Node::queue(SAIField* field) {
 }
 
 const string& Node::defaultContainerField() {
-    throw X3DError("no default container field defined");
+    static string empty = "";
+    return empty;
 }
 
 bool Node::parseSpecial(xmlNode* xml, const string& filename) {

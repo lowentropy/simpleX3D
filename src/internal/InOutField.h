@@ -64,19 +64,20 @@ protected:
 
     list<Route*> outgoingRoutes;
 
+public:
+
+    /// generic wrapper value of this field
+    TT value;
+
+    /// Default constructor; #value will have its default value.
+    InOutField() : dirty(false) {}
+
     /**
      * Returns a pointer to the node which owns this field.
      * 
      * @returns node pointer
      */
     INLINE N* node() const { return NodeField<N>::node; }
-
-public:
-    /// generic wrapper value of this field
-    TT value;
-
-    /// Default constructor; #value will have its default value.
-    InOutField() : dirty(false) {}
 
     /**
      * Get the access type of this field.

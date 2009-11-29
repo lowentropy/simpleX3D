@@ -35,6 +35,7 @@ using std::string;
 namespace X3D {
 
 class SAIField;
+class Node;
 
 /**
  * Root class for X3D exceptions.
@@ -42,11 +43,13 @@ class SAIField;
 class X3DError : public std::exception {
 protected:
     string message;
+    const Node* node;
 public:
-    X3DError() : message("<no message set>") {}
-	X3DError(const std::string& message) : message(message) {}
+    X3DError() : message("<no message set>"), node(NULL) {}
+	X3DError(const std::string& message) : message(message), node(NULL) {}
+	X3DError(const std::string& message, const Node* node) : message(message), node(node) {}
     virtual ~X3DError() throw () {}
-    const char* what() const throw () { return message.c_str(); }
+    const char* what() const throw ();
 };
 
 class EventLoopError : public X3DError {

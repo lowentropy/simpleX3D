@@ -66,6 +66,14 @@ public:
 		return static_cast<const SFImage&>(f);
 	}
 
+	INLINE static SFImage& unwrap(X3DField& f) {
+		if (f.getType() != SFIMAGE)
+			throw X3DError(
+                string("base type mismatch; expected SFImage") +
+                ", but was " + f.getTypeName());
+		return static_cast<SFImage&>(f);
+	}
+
     /// @returns native SFImage value
 	INLINE SFImage& operator()() {
 		return *this;

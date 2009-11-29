@@ -114,6 +114,9 @@ public:
      */
     void finish();
 
+    /** @returns the name of the node type */
+    const string& getName();
+
     /**
      * Pretty-print the node definition, in the manner of the X3D spec.
      * 

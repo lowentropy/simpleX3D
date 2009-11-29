@@ -1,6 +1,7 @@
 AM_CPPFLAGS = $(DEPS_CFLAGS)
 lib_LTLIBRARIES = libsimpleX3D.la
 libsimpleX3D_la_SOURCES = \
+    internal/errors.cc \
     internal/X3DField.cc \
 	internal/Node.cc \
 	internal/SFImage.cc \

@@ -71,7 +71,7 @@ public:
     /// Virtual deconstructor.
 	virtual ~Node() {}
     
-    const string& getName() {
+    const string& getName() const {
         return name;
     }
 
