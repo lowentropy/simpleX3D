@@ -344,7 +344,7 @@ public:
 
 			// TestSuite
 			NodeDefImpl<TestSuite>* ts =
-				test->createNode<TestSuite>("TestSutie");
+				test->createNode<TestSuite>("TestSuite");
             {
                 ts->inherits("X3DNode");
 
@@ -357,6 +357,26 @@ public:
                 ts->createField(
                     "tests", X3DField::MFNODE, SAIField::INIT_ONLY,
                     &TestSuite::tests);
+
+                // MFNode [out] passed
+                ts->createField(
+                    "passed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
+                    &TestSuite::passed);
+
+                // MFNode [out] failed
+                ts->createField(
+                    "failed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
+                    &TestSuite::failed);
+
+                // SFInt32 [out] numPassed
+                ts->createField(
+                    "numPassed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
+                    &TestSuite::numPassed);
+
+                // SFInt32 [out] numFailed
+                ts->createField(
+                    "numFailed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
+                    &TestSuite::numFailed);
 
                 ts->finish();
             }

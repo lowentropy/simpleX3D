@@ -60,7 +60,7 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     return true;
 }
 
-void TestNode::runTest() {
+bool TestNode::runTest() {
     string reason;
     map<string,Expect*>::iterator it;
     int passed = 0;
@@ -73,6 +73,7 @@ void TestNode::runTest() {
     success(passed == expects.size());
     if (!success())
         reasons.changed();
+    return success();
 }
 
 }}

@@ -47,6 +47,14 @@ public:
     /// @returns native integer value
 	INLINE int operator()() { return value; }
 
+    INLINE int operator++() { return ++value; }
+
+    INLINE int operator--() { return --value; }
+
+    INLINE int operator++(int) { return value++; }
+
+    INLINE int operator--(int) { return value--; }
+
     /// Unwrap a generic SFInt32 value
 	INLINE static int unwrap(const X3DField& f) {
 		if (f.getType() != SFINT32)

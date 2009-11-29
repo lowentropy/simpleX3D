@@ -23,31 +23,38 @@
 namespace X3D {
 namespace Test {
 
-Expect::Expect(TestNode* node, const string& type, const string& name, const string& value)
-    : NodeField<TestNode>(node), name(name) {
-    field = X3DField::create(type);
-    if (!value.empty()) {
-        std::stringstream ss(value);
-        if (!field->parse(ss))
-            throw X3DError(string("invalid field value: ") + value);
-    }
+Expect::Expect(
+        TestNode* node, const string& type, const string& name, const string& value)
+            : NodeField<TestNode>(node), name(name), actual(NULL) {
+    expected = X3DField::create(type);
+    std::stringstream ss(value);
+    if (!expected->parse(ss))
+        throw X3DError(string("invalid field value: ") + value);
 }
 
 bool Expect::test(string* reason) {
-    // TODO
-    return true;
+    std::stringstream ss;
+    if (actual == NULL) {
+        ss << name << " expected " << *expected << ", but was never activated";
+    } else if (*expected != *actual) {
+        ss << name << " expected " << *expected << ", but was actually " << *actual;
+    } else {
+        return true;
+    }
+    *reason = ss.str();
+    return false;
 }
 
 Expect::~Expect() {
-    delete field;
+    delete expected;
 }
 
 X3DField::Type Expect::getType() const {
-    return field->getType();
+    return expected->getType();
 }
 
 string Expect::getTypeName() const {
-    return field->getTypeName();
+    return expected->getTypeName();
 }
 
 SAIField::Access Expect::getAccess() const {
@@ -56,16 +63,16 @@ SAIField::Access Expect::getAccess() const {
 
 // unlike in-only, we have a value from the start
 const X3DField& Expect::get() const {
-    return *field;
+    return *expected;
 }
 
 // unlike in-only, we have a value from the start
 X3DField& Expect::get() {
-    return *field;
+    return *expected;
 }
 
 void Expect::set(const X3DField& value) {
-    // TODO: here's where we do the check (if time is right?)
+    actual = &value;
 }
 
 bool Expect::isDirty() const {

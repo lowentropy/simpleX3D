@@ -31,7 +31,8 @@ namespace Test {
 class Expect : public NodeField<TestNode> {
 private:
 
-    X3DField* field;
+    X3DField* expected;
+    const X3DField* actual;
     list<Route*> routes;
 
 public:

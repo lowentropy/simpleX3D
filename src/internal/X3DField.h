@@ -118,6 +118,9 @@ public:
      */
 	virtual Type getType() const = 0;
 
+    virtual bool operator==(const X3DField& f) const = 0;
+    virtual bool operator!=(const X3DField& f) const = 0;
+
     /**
      * Modify the value of the field by parsing from an input stream.
      * If the parsing fails, the value of the field should remain unchanged

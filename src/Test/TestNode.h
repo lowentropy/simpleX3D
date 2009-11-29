@@ -53,7 +53,7 @@ public:
     const string& defaultContainerField();
     virtual bool parseSpecial(xmlNode* xml, const string& filename);
     virtual SAIField* getField(const string& name);
-    void runTest();
+    bool runTest();
 };
 
 }}

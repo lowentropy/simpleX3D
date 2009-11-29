@@ -17,31 +17,42 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_TESTSUITE_H_
-#define _X3D_TESTSUITE_H_
-
-#include "Core/X3DNode.h"
-#include "Test/TestNode.h"
+#include "Test/TestSuite.h"
 
 namespace X3D {
 namespace Test {
 
-class TestSuite : public Core::X3DNode {
-public:
-    
-    InitField<TestSuite, SFString> name;
-    InitField<TestSuite, MFNode<TestNode> > tests;
-    DefaultOutField<TestSuite, MFNode<TestNode> > passed;
-    DefaultOutField<TestSuite, MFNode<TestNode> > failed;
-    DefaultOutField<TestSuite, SFInt32> numPassed;
-    DefaultOutField<TestSuite, SFInt32> numFailed;
+void TestSuite::setup() {
+}
 
-    void setup();
-    void reset();
-    void signal();
-    void runTests();
-};
+void TestSuite::reset() {
+    numPassed(0);
+    numFailed(0);
+    passed().clear();
+    failed().clear();
+}
+
+void TestSuite::signal() {
+    numPassed.changed();
+    numFailed.changed();
+    passed.changed();
+    failed.changed();
+}
+
+void TestSuite::runTests() {
+    reset();
+    list<TestNode*> tests = this->tests().getElements();
+    list<TestNode*>::iterator it;
+    for (it = tests.begin(); it != tests.end(); it++) {
+        if ((*it)->runTest()) {
+            passed().add(*it);
+            numPassed.value++;
+        } else {
+            failed().add(*it);
+            numFailed.value++;
+        }
+    }
+    signal();
+}
 
 }}
-
-#endif // #ifndef _X3D_TESTSUITE_H_

@@ -16,6 +16,7 @@ libsimpleX3D_la_SOURCES = \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc \
+    Test/TestSuite.cc \
     Test/TestNode.cc \
     Test/Expect.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)

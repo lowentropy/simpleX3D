@@ -54,6 +54,7 @@ void NodeDef::inherits(const string& name) {
 
 void NodeDef::finish() {
     chain.push_back(this);
+    finished = true;
 }
 
 void NodeDef::growChain(NodeDef* def) {

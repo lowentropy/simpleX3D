@@ -1,0 +1,4 @@
+being able to run the test framework from within a scene means that
+you can backtrace the nodes routed into the tests and mark then green
+or red based on whether that test passed, effectively creating a test
+coverage tool for x3d scenes.

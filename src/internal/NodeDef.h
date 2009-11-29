@@ -65,6 +65,9 @@ private:
     /// list of node parents
 	vector<NodeDef*> parents;
 
+protected:
+    bool finished;
+
 public:
     /// component in which node is defined
 	Component* const component;
@@ -83,7 +86,7 @@ public:
      * @param abstract whether node definition is abstarct
      */
 	NodeDef(Component* component, const string& name, bool abstract) :
-		component(component), name(name), abstract(abstract) {}
+		component(component), name(name), abstract(abstract), finished(false) {}
 
     /// Virtual destructor.
 	virtual ~NodeDef();
@@ -215,6 +218,8 @@ public:
 	N* create() {
 		if (abstract)
 			throw X3DError("can't instantiate abstract nodes");
+        if (!finished)
+            throw X3DError("node definition was never completed");
         N* node = new N();
         setDefinition(node);
         list<NodeDef*>::iterator it = chain.begin();
