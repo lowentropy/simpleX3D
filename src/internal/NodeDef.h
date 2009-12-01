@@ -145,14 +145,14 @@ public:
      */
     FieldDef* getFieldDef(const string& name);
 
-protected:
-
     /**
      * Create a new node which conforms to this node definition.
      * 
      * @returns new node instance
      */
 	virtual Node* create() = 0;
+
+protected:
 
     /**
      * Create a new prototype definition which is based on this

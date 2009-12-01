@@ -33,10 +33,11 @@ class Node;
 class Route;
 
 class Prototype {
+    friend class ProtoInst;
 protected:
 
     virtual void setRootNode(Node* node) = 0;
-    virtual Node* getRootNode() = 0;
+    virtual Node* getRootNode() const = 0;
     vector<Node*> nodes;
 
 public:
@@ -49,8 +50,7 @@ public:
     void addField(ProtoField* field);
     void addConnection(Route* route);
     void addInternalRoute(Route* route);
-
-    // TODO: create insantiation code
+    virtual ProtoInst* createInstance() const = 0;
 
 public:
 
@@ -58,7 +58,7 @@ public:
 };
 
 template <class N>
-class PrototypeImpl : public Prototype, public N {
+class PrototypeImpl : public Prototype {
 private:
     
     N* root;
@@ -67,10 +67,6 @@ public:
 
     PrototypeImpl(const string& name) : Prototype(name), N() {}
 
-    void setup() {
-        // TODO
-    }
-
     virtual void setRootNode(Node* node) {
         N* n = dynamic_cast<N*>(node);
         if (n == NULL)
@@ -78,8 +74,12 @@ public:
         root = n;
     }
 
-    virtual Node* getRootNode() {
+    virtual Node* getRootNode() const {
         return root;
+    }
+
+    virtual ProtoInstImpl<N>* createInstance() const {
+        return new ProtoInstImpl<N>(root, this);
     }
 };
 
