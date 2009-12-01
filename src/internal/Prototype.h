@@ -36,20 +36,33 @@ class Prototype {
     friend class ProtoInst;
 protected:
 
+    vector<Node*> nodes;
+    list<Route*> routes;
+    map<string, Node*> defs;
+    list<RouteNames*> route_names;
+    map<string, ProtoField*> fields;
+    map<string, ProtoField*> in_fields;
+    map<string, ProtoField*> out_fields;
+    vector<ProtoField*> field_list;
+
+protected:
+
     virtual void setRootNode(Node* node) = 0;
     virtual Node* getRootNode() const = 0;
-    vector<Node*> nodes;
 
 public:
     
     const string name;
 
     Prototype(const string& name) : name(name) {}
+    virtual ~Prototype();
 
     void addNode(Node* node);
     void addField(ProtoField* field);
     void addConnection(Route* route);
     void addInternalRoute(Route* route);
+    void addRoute(const string& fromNode, const string& fromField,
+                  const string& toNode, const string& toField);
     virtual ProtoInst* createInstance() const = 0;
 
 public:
@@ -65,7 +78,8 @@ private:
 
 public:
 
-    PrototypeImpl(const string& name) : Prototype(name), N() {}
+    PrototypeImpl(const string& name) : Prototype(name) {}
+    ~PrototypeImpl() { delete root; }
 
     virtual void setRootNode(Node* node) {
         N* n = dynamic_cast<N*>(node);

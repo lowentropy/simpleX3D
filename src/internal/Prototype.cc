@@ -22,12 +22,30 @@
 
 namespace X3D {
 
+Prototype::~Prototype() {
+    vector<Node*>::iterator n_it;
+    for (n_it = nodes.begin(); n_it != nodes.end(); n_it++)
+        delete *n_it;
+    list<Route*>::iterator r_it;
+    for (r_it = routes.begin(); r_it != routes.end(); r_it++)
+        delete *r_it;
+}
+
 void Prototype::addNode(Node* node) {
     nodes.push_back(node);
+    if (!node->getName().empty())
+        defs[node->getName()] = node;
 }
 
 void Prototype::addField(ProtoField* field) {
+    field_list.push_back(field);
+    fields[field->name] = field;
     // TODO
+    // TODO: Prototype should inherit from NodeDef
+    // TODO: Prototype should contain fields of FieldDef
+    // TODO: ProtoField should inherit SAIField
+    // TODO: should have a component for a source file, such that
+    //       all its prototypes exist together
 }
 
 void Prototype::addConnection(Route* route) {
@@ -36,6 +54,19 @@ void Prototype::addConnection(Route* route) {
 
 void Prototype::addInternalRoute(Route* route) {
     // TODO
+}
+
+void Prototype::addRoute(const string& fromNode, const string& fromField,
+                         const string& toNode, const string& toField) {
+    if (!defs.count(fromNode))
+        throw X3DError(string("prototype has no source node: ") + fromNode);
+    if (!defs.count(toNode))
+        throw X3DError(string("prototype has no target node: ") + toNode);
+    Node* from = defs[fromNode];
+    Node* to = defs[toNode];
+    Route* route = new Route(from, fromField, to, toField);
+    routes.push_back(route);
+    route_names.push_back(RouteNames(fromNode, fromField, toNode, toField));
 }
 
 Prototype* Prototype::create(const string& name, Node* root) {
