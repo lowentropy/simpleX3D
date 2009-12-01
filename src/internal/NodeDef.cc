@@ -99,10 +99,6 @@ void NodeDef::print_fields(bool full) {
     }
 }
 
-void NodeDef::setDefinition(Node* node) {
-    node->definition = this;
-}
-
 void NodeDef::addField(FieldDef* field) {
     fields[field->name] = field;
     field_list.push_back(field);
