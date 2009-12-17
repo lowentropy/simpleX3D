@@ -66,7 +66,6 @@ void Prototype::addRoute(const string& fromNode, const string& fromField,
     Node* to = defs[toNode];
     Route* route = new Route(from, fromField, to, toField);
     routes.push_back(route);
-    route_names.push_back(RouteNames(fromNode, fromField, toNode, toField));
 }
 
 Prototype* Prototype::create(const string& name, Node* root) {

@@ -121,6 +121,7 @@ public:
     void init(N* node) {
         NodeField<N>* f = static_cast<NodeField<N>*>(&(node->*field));
         f->setNode(node);
+        f->definition = this;
     }
 
     /**

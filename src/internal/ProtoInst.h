@@ -20,7 +20,11 @@
 #ifndef _X3D_PROTOINST_H_
 #define _X3D_PROTOINST_H_
 
+#include "Core/X3DPrototypeInstance.h"
+
 namespace X3D {
+
+class Prototype;
 
 class ProtoInst : virtual public Core::X3DPrototypeInstance {
 protected:

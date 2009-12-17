@@ -22,10 +22,15 @@
 
 #include "internal/errors.h"
 #include "internal/ProtoField.h"
+#include "internal/ProtoInst.h"
+
 #include <vector>
 #include <string>
+#include <map>
+
 using std::vector;
 using std::string;
+using std::map;
 
 namespace X3D {
 
@@ -39,7 +44,6 @@ protected:
     vector<Node*> nodes;
     list<Route*> routes;
     map<string, Node*> defs;
-    list<RouteNames*> route_names;
     map<string, ProtoField*> fields;
     map<string, ProtoField*> in_fields;
     map<string, ProtoField*> out_fields;

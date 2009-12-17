@@ -27,12 +27,14 @@ void ProtoInst::instantiateFromProto() {
         Node* node = (*n_it)->definition->create();
         browser()->copyNode(*n_it, node, defs);
     }
-    list<Route*>::iterator names;
-    for (names = proto->routeNames.begin(); names != proto->routeNames.end(); names) {
-        Node* from = defs[names->fromNode];
-        Node* to = defs[names->toNode];
-        Route* route = new Route(from, names->fromField, to, names->toField);
-        routes.push_back(route);
+    list<Route*>::iterator r_it;
+    for (r_it = proto->routes.begin(); r_it != proto->routes.end(); r_it++) {
+        Route* route = *r_it;
+        Node* fromNode = defs[route->from->getNode()->getName()];
+        Node* toNode = defs[route->to->getNode()->getName()];
+        SAIField* fromField = fromNode->getField(route->from->getName());
+        SAIField* toField = toNode->getField(route->to->getName());
+        routes.push_back(new Route(fromField, toField));
     }
     // TODO: delete nodes and routes on proto and protoinst destructors
 }
