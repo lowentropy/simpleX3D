@@ -5,7 +5,7 @@ using namespace X3D::Test;
 TEST(TestSuite, ExpectShouldFailIfNoEventReceived) {
     World* world = World::read(browser(),
         "data/ExpectShouldFailIfNoEventsReceived.xml");
-    TestSuite* suite = dynamic_cast<TestSuite*>(browser()->getNodeByName("suite"));
+    TestSuite* suite = browser()->getNode<TestSuite>("suite");
     ASSERT_THAT(suite, NotNull());
     suite->realize(); // TODO: root nodes should be realized automatically...
     suite->runTests();

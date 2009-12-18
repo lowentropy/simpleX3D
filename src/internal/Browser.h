@@ -141,7 +141,25 @@ public:
      * @param name stored node name
      * @returns stored node
      */
-    Node* getNodeByName(const string& name);
+    Node* getNode(const string& name);
+
+    /**
+     * Look up a node by its name, returning NULL if it isn't found.
+     * Return a type-specific version of the node, and throw an error
+     * if the type is incorrect.
+     * 
+     * @param name stored node name
+     * @returns stored node
+     */
+    template <class N> N* getNode(const string& name) {
+        Node* found = getNode(name);
+        if (found == NULL)
+            return NULL;
+        N* node = dynamic_cast<N*>(found);
+        if (node == NULL)
+            throw X3DError("node type mismatch");
+        return node;
+    }
 
 	/**
 	 * Templatized node creation. This version of createNode

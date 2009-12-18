@@ -3,9 +3,9 @@
 
 namespace X3D {
 
-Node* SFAbstractNode::getNodeByName(const string& name) {
+Node* SFAbstractNode::getNode(const string& name) {
     Browser* browser = Browser::getSingleton();
-    return browser->getNodeByName(name);
+    return browser->getNode(name);
 }
 
 }

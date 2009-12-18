@@ -8,11 +8,11 @@ TEST(TestNode, ShouldParseNodeWithExpects) {
     World* world;
     ASSERT_NO_THROW(world = World::read(browser(),
         "data/TestNodeShouldParseNodeWithExpects.xml"));
-    Node* node = browser()->getNodeByName("test");
+    Node* node = browser()->getNode("test");
     ASSERT_THAT(node, NotNull());
-    Expect* e1 = dynamic_cast<Expect*>(node->getField("expect1"));
+    Expect* e1 = node->getField<Expect>("expect1");
+    Expect* e2 = node->getField<Expect>("expect2");
     ASSERT_THAT(e1, NotNull());
-    Expect* e2 = dynamic_cast<Expect*>(node->getField("expect2"));
     ASSERT_THAT(e2, NotNull());
     EXPECT_EQ(X3DField::SFINT32, e1->get().getType());
     EXPECT_EQ(SFInt32(216), e1->get());

@@ -162,7 +162,7 @@ void World::parseNode(xmlNode* xml, Node* parent) {
     // if it's a USE, then look up the node and use that
     if (xmlHasProp(xml, (xmlChar*) "USE")) {
         xmlChar* name = xmlGetProp(xml, (xmlChar*) "USE");
-        node = browser->getNodeByName((char*) name);
+        node = browser->getNode((char*) name);
         if (node == NULL) {
             string msg = string("can't find USE node: ") + (char*) name;
             xmlFree(name);

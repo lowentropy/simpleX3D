@@ -2,8 +2,8 @@
 
 TEST(XmlLoad, LoadedSceneShouldHaveCorrectStructure) {
     World* world = World::read(browser(), "data/foo.xml");
-    Node* a = browser()->getNodeByName("A");
-    Node* b = browser()->getNodeByName("B");
+    Node* a = browser()->getNode("A");
+    Node* b = browser()->getNode("B");
     ASSERT_THAT(a, NotNull());
     ASSERT_THAT(b, NotNull());
     EXPECT_EQ(SFTime(3), a->getField("cycleInterval")->get());

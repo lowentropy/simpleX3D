@@ -117,10 +117,10 @@ Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
 
 Route* Browser::createRoute(const string& fromNode, const string& fromField,
                           const string& toNode, const string& toField) {
-    Node* from = getNodeByName(fromNode);
+    Node* from = getNode(fromNode);
     if (from == NULL)
         throw X3DError(string("source node not found: ") + fromNode);
-    Node* to = getNodeByName(toNode);
+    Node* to = getNode(toNode);
     if (to == NULL)
         throw X3DError(string("target node not found: ") + toNode);
     return createRoute(from, fromField, to, toField);
@@ -131,7 +131,7 @@ void Browser::addNamedNode(const string& name, Node* node) {
     node->setName(name);
 }
 
-Node* Browser::getNodeByName(const string& name) {
+Node* Browser::getNode(const string& name) {
     if (defs.count(name))
         return defs[name];
     return NULL;

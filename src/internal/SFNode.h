@@ -45,7 +45,7 @@ protected:
 
     // XXX this is because we can't include Browser.h, but we
     // need to be able to look up nodes for parsing.
-    Node* getNodeByName(const string& name);
+    Node* getNode(const string& name);
 
 public:
 
@@ -127,7 +127,7 @@ public:
         if (is.fail())
             return false;
         const string& name = sb.str();
-        Node* node = getNodeByName(name);
+        Node* node = getNode(name);
         if (node == NULL) {
             if (name == "NULL") {
                 value = NULL;

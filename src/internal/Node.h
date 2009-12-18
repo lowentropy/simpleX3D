@@ -92,6 +92,29 @@ public:
     virtual SAIField* getField(const string& name);
 
     /**
+     * Look up a field on the node and return a reference to it.
+     * For input-output fields, either the base name or the set_
+     * or _changed modifiers may be used. Currently, they will all
+     * return the same field. XXX does the spec want limited-accessor
+     * versions? do i care?
+     *
+     * This is the type-specific version of getField. If the actual
+     * field does not match, an error is thrown.
+     * 
+     * @param name name of field
+     * @returns pointer to actual field
+     */
+    template <class F> F* getField(const string& name) {
+        SAIField* found = getField(name);
+        if (found == NULL)
+            return NULL;
+        F* field = dynamic_cast<F*>(found);
+        if (field == NULL)
+            throw X3DError("field type mismatch");
+        return field;
+    }
+
+    /**
      * Create and return an iterator into the run-time fields of this node.
      * The given mode (defaulting to all fields) is used to filter the
      * results.
