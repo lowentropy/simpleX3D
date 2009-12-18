@@ -22,6 +22,7 @@
 
 #include "internal/FieldDef.h"
 #include "internal/SAIField.h"
+#include "internal/Prototype.h"
 #include <map>
 #include <list>
 #include <vector>
@@ -44,6 +45,9 @@ class NodeDef {
 
     // allow browser to access creation method
 	friend class Browser;
+
+    // allow prototype to access createPrototype method
+    friend class Prototype;
 
 public:
     /// map of field basename to field definition
@@ -141,14 +145,22 @@ public:
      */
     FieldDef* getFieldDef(const string& name);
 
-protected:
-
     /**
      * Create a new node which conforms to this node definition.
      * 
      * @returns new node instance
      */
 	virtual Node* create() = 0;
+
+protected:
+
+    /**
+     * Create a new prototype definition which is based on this
+     * node definition as its interface.
+     * 
+     * @returns new prototype definition
+     */
+    virtual Prototype* createPrototype(const string& name) = 0;
 
     /**
      * Create a node and return it in its particular type.
@@ -173,13 +185,6 @@ protected:
      * @param full if true, recursively print field definitions of parents
      */
 	void print_fields(bool full);
-
-    /**
-     * Set node definition on the given node.
-     * 
-     * @param node node to set definition=this on.
-     */
-    void setDefinition(Node* node);
 
 private:
 
@@ -222,14 +227,28 @@ public:
 		if (abstract)
 			throw X3DError("can't instantiate abstract nodes");
         if (!finished)
-            throw X3DError("node definition was never completed");
+            throw X3DError("node definition was never finished");
         N* node = new N();
-        setDefinition(node);
+        node->definition = this;
         list<NodeDef*>::iterator it = chain.begin();
         for (; it != chain.end(); it++)
             (*it)->setup(node);
         return node;
 	}
+
+    /**
+     * Create a new prototype definition which is based on this
+     * node definition as its interface.
+     * 
+     * @returns new prototype definition
+     */
+    PrototypeImpl<N>* createPrototype(const string& name) {
+        if (abstract)
+            throw X3DError("can't create prototype from abstract node");
+        if (!finished)
+            throw X3DError("node definition was never finished");
+        return new PrototypeImpl<N>(name);
+    }
 
     /**
      * Access the named field of the given node.

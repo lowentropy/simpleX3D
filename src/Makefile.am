@@ -12,8 +12,11 @@ libsimpleX3D_la_SOURCES = \
     internal/Component.cc \
     internal/NodeDef.cc \
     internal/FieldDef.cc \
+    internal/SAIField.cc \
     internal/FieldIterator.cc \
     internal/World.cc \
+    internal/Prototype.cc \
+    internal/ProtoInst.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc \
@@ -29,6 +32,7 @@ include_HEADERS = \
 	internal/Browser.h \
 	internal/types.h \
     internal/Route.h \
+    internal/RouteNames.h \
 	internal/InitField.h \
 	internal/InField.h \
 	internal/OutField.h \
@@ -54,6 +58,9 @@ include_HEADERS = \
 	internal/SFVec.h \
 	internal/MF.h \
     internal/World.h \
+    internal/Prototype.h \
+    internal/ProtoInst.h \
+    internal/ProtoField.h \
 	Core/X3DNode.h \
 	Core/X3DChildNode.h \
     Core/X3DBindableNode.h \

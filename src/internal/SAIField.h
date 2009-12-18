@@ -31,6 +31,7 @@ namespace X3D {
 
 class Node;
 class Route;
+class FieldDef;
 
 /**
  * Base class for all node-owned field instances. This is not a "definition"
@@ -39,6 +40,8 @@ class Route;
  */
 class SAIField {
 public:
+
+    FieldDef* definition;
 
     /// access level for node fields ([], [in], [ou], [in,out])
 	typedef enum {
@@ -49,7 +52,10 @@ public:
 	} Access;
 
     /// Empty constructor.
-    SAIField() {}
+    SAIField(FieldDef* def) : definition(def) {}
+
+    /** @returns the name of the field */
+    const string& getName() const;
 
     /**
      * Get a pointer to the node which owns this field. Subclasses
@@ -116,25 +122,13 @@ public:
      */
     virtual void clearDirty() = 0;
 
-    virtual void addIncomingRoute(Route* route) {
-        throw X3DError("this field does not support incoming routes");
-    }
-    virtual void removeIncomingRoute(Route* route) {
-        throw X3DError("this field does not support incoming routes");
-    }
-    virtual const list<Route*>& getIncomingRoutes() const {
-        throw X3DError("this field does not support incoming routes");
-    }
+    virtual void addIncomingRoute(Route* route);
+    virtual void removeIncomingRoute(Route* route);
+    virtual const list<Route*>& getIncomingRoutes() const;
 
-    virtual void addOutgoingRoute(Route* route) {
-        throw X3DError("this field does not support outgoing routes");
-    }
-    virtual void removeOutgoingRoute(Route* route) {
-        throw X3DError("this field does not support outgoing routes");
-    }
-    virtual const list<Route*>& getOutgoingRoutes() const {
-        throw X3DError("this field does not support outgoing routes");
-    }
+    virtual void addOutgoingRoute(Route* route);
+    virtual void removeOutgoingRoute(Route* route);
+    virtual const list<Route*>& getOutgoingRoutes() const;
 
 private:
 
