@@ -1,0 +1,7 @@
+== SimpleX3D
+
+An implementation of the X3D spec in C++.
+
+=== Status
+
+Currently under development, not useful for much yet.
