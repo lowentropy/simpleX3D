@@ -20,7 +20,7 @@
 #ifndef _X3D_TESTNODE_H_
 #define _X3D_TESTNODE_H_
 
-#include <Core/X3DChildNode.h>
+#include "Core/X3DChildNode.h"
 
 using X3D::Core::X3DChildNode;
 

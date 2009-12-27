@@ -20,7 +20,7 @@
 #ifndef _X3D_SFIMAGE_H_
 #define _X3D_SFIMAGE_H_
 
-#include "internal/types.h"
+#include "SFColor.h"
 #include <string.h>
 
 namespace X3D {
