@@ -17,17 +17,13 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_PROTOFIELD_H_
-#define _X3D_PROTOFIELD_H_
+#ifndef _X3D_METADATA_H_
+#define _X3D_METADATA_H_
 
-#include "internal/SAIField.h"
+#include "Core/MetadataDouble.h"
+#include "Core/MetadataFloat.h"
+#include "Core/MetadataInteger.h"
+#include "Core/MetadataSet.h"
+#include "Core/MetadataString.h"
 
-namespace X3D {
-
-class ProtoField : public SAIField {
-
-};
-
-}
-
-#endif // #ifndef _X3D_PROTOFIELD_H_
+#endif // #ifndef _X3D_METADATA_H_

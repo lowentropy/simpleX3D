@@ -19,6 +19,7 @@
 
 #include "internal/errors.h"
 #include "internal/Node.h"
+#include "internal/NodeDef.h"
 
 namespace X3D {
 

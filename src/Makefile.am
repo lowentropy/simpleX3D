@@ -32,7 +32,6 @@ include_HEADERS = \
 	internal/Browser.h \
 	internal/types.h \
     internal/Route.h \
-    internal/RouteNames.h \
 	internal/InitField.h \
 	internal/InField.h \
 	internal/OutField.h \
@@ -61,6 +60,7 @@ include_HEADERS = \
     internal/Prototype.h \
     internal/ProtoInst.h \
     internal/ProtoField.h \
+    internal/metadata.h \
 	Core/X3DNode.h \
 	Core/X3DChildNode.h \
     Core/X3DBindableNode.h \

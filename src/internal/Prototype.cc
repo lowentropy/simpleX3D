@@ -19,6 +19,8 @@
 
 #include "internal/Prototype.h"
 #include "internal/Node.h"
+#include "internal/NodeDef.h"
+#include "internal/Route.h"
 
 namespace X3D {
 
@@ -39,7 +41,7 @@ void Prototype::addNode(Node* node) {
 
 void Prototype::addField(ProtoField* field) {
     field_list.push_back(field);
-    fields[field->name] = field;
+    fields[field->getName()] = field;
     // TODO
     // TODO: Prototype should inherit from NodeDef
     // TODO: Prototype should contain fields of FieldDef

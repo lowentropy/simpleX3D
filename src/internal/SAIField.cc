@@ -18,6 +18,7 @@
 */
 
 #include "internal/SAIField.h"
+#include "internal/FieldDef.h"
 
 namespace X3D {
 

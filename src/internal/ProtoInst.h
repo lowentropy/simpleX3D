@@ -22,33 +22,46 @@
 
 #include "Core/X3DPrototypeInstance.h"
 
+#include <map>
+#include <string>
+#include <vector>
+using std::map;
+using std::string;
+using std::vector;
+
 namespace X3D {
 
 class Prototype;
+class Node;
+class Route;
 
 class ProtoInst : virtual public Core::X3DPrototypeInstance {
 protected:
 
     map<string, Node*> defs;
+    vector<Node*> nodes;
+    vector<Route*> routes;
 
 public:
 
-    Prototype* const proto;
-
-    ProtoInst(Prototype* proto) : proto(proto) {}
+    const Prototype* const proto;
+    ProtoInst(const Prototype* proto) : proto(proto) {}
 
 protected:
 
-    void instantiateFromProto();
+    void instantiateFromProto(Node* root);
+
+private:
+
+    void copyNode(const Node* from, Node* to);
 };
 
 template <class N>
-class ProtoInstImpl : public ProtoInst, N {
+class ProtoInstImpl : public ProtoInst, virtual public N {
 public:
 
-    ProtoInstImpl(N* root, Prototype* proto) : ProtoInst(proto) {
-        browser()->copyNode(root, this, defs);
-        instantiateFromProto();
+    ProtoInstImpl(N* root, const Prototype* proto) : ProtoInst(proto) {
+        instantiateFromProto(root);
     }
 };
 

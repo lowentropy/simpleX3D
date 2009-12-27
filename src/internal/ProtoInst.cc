@@ -18,22 +18,29 @@
  */
 
 #include "internal/ProtoInst.h"
+#include "internal/Browser.h"
+#include "internal/Route.h"
 
 namespace X3D {
 
-void ProtoInst::instantiateFromProto() {
-    vector<Node*>::iterator n_it;
+void ProtoInst::copyNode(const Node* from, Node* to) {
+    // TODO
+    // TODO: Node should really return a POINTER to FieldIterator?
+}
+
+void ProtoInst::instantiateFromProto(Node* root) {
+    copyNode(root, this);
+    vector<Node*>::const_iterator n_it;
     for (n_it = proto->nodes.begin(); n_it != proto->nodes.end(); n_it++) {
-        Node* node = (*n_it)->definition->create();
-        browser()->copyNode(*n_it, node, defs);
+        copyNode(*n_it, (*n_it)->definition->create());
     }
-    list<Route*>::iterator r_it;
+    list<Route*>::const_iterator r_it;
     for (r_it = proto->routes.begin(); r_it != proto->routes.end(); r_it++) {
-        Route* route = *r_it;
-        Node* fromNode = defs[route->from->getNode()->getName()];
-        Node* toNode = defs[route->to->getNode()->getName()];
-        SAIField* fromField = fromNode->getField(route->from->getName());
-        SAIField* toField = toNode->getField(route->to->getName());
+        const Route* route = *r_it;
+        Node* fromNode = defs[route->fromField->getNode()->getName()];
+        Node* toNode = defs[route->toField->getNode()->getName()];
+        SAIField* fromField = fromNode->getField(route->fromField->getName());
+        SAIField* toField = toNode->getField(route->toField->getName());
         routes.push_back(new Route(fromField, toField));
     }
     // TODO: delete nodes and routes on proto and protoinst destructors

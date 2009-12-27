@@ -20,12 +20,12 @@
 #ifndef _X3D_FIELDITERATOR_H_
 #define _X3D_FIELDITERATOR_H_
 
-#include "internal/NodeDef.h"
 #include "internal/FieldDef.h"
 
 namespace X3D {
 
 class Node;
+class NodeDef;
 
 /**
  * This class allows you to easily iterate over the fields of a node,

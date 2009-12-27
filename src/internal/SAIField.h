@@ -52,7 +52,7 @@ public:
 	} Access;
 
     /// Empty constructor.
-    SAIField(FieldDef* def) : definition(def) {}
+    SAIField() {}
 
     /** @returns the name of the field */
     const string& getName() const;

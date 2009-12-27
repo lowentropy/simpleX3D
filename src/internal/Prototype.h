@@ -24,10 +24,12 @@
 #include "internal/ProtoField.h"
 #include "internal/ProtoInst.h"
 
+#include <list>
 #include <vector>
 #include <string>
 #include <map>
 
+using std::list;
 using std::vector;
 using std::string;
 using std::map;

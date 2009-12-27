@@ -18,6 +18,7 @@
  */
 
 #include "internal/Node.h"
+#include "internal/NodeDef.h"
 #include "internal/FieldIterator.h"
 
 namespace X3D {
