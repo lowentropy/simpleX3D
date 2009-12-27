@@ -21,7 +21,6 @@
 #define _X3D_SFNODE_H_
 
 #include "internal/Node.h"
-#include "internal/X3DField.h"
 #include <ios>
 #include <sstream>
 #include <cstring>

@@ -20,7 +20,6 @@
 #ifndef _X3D_FIELDDEF_H_
 #define _X3D_FIELDDEF_H_
 
-#include "internal/X3DField.h"
 #include "internal/SAIField.h"
 
 namespace X3D {

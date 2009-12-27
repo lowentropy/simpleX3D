@@ -21,19 +21,12 @@
 #define _X3D_BUILTIN_H_
 
 #include <string>
-#include "internal/Profile.h"
 #include "internal/Component.h"
-#include "internal/NodeDef.h"
-#include "internal/FieldDef.h"
-#include "internal/Node.h"
 #include "internal/metadata.h"
 #include "Core/X3DBindableNode.h"
-#include "Core/X3DInfoNode.h"
-#include "Core/X3DPrototypeInstance.h"
 #include "Core/WorldInfo.h"
 #include "Time/TimeSensor.h"
 #include "Test/TestSuite.h"
-#include "Test/TestNode.h"
 
 namespace X3D {
 

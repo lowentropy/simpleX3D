@@ -21,7 +21,6 @@
 #define _X3D_ROUTE_H_
 
 #include "internal/Node.h"
-#include "internal/SAIField.h"
 
 namespace X3D {
 

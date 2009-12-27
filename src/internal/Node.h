@@ -20,8 +20,6 @@
 #ifndef _X3D_NODE_H_
 #define _X3D_NODE_H_
 
-#include "internal/errors.h"
-#include "internal/SAIField.h"
 #include "internal/FieldIterator.h"
 #include <string>
 #include <libxml/parser.h>

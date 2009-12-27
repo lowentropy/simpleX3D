@@ -21,7 +21,6 @@
 #define _X3D_METADATASTRING_H_
 
 #include "Core/X3DNode.h"
-#include "Core/X3DMetadataObject.h"
 
 namespace X3D {
 namespace Core {

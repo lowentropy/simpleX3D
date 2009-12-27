@@ -20,8 +20,6 @@
 #ifndef _X3D_EXPECT_H_
 #define _X3D_EXPECT_H_
 
-#include "internal/X3DField.h"
-#include "internal/SAIField.h"
 #include "internal/Route.h"
 #include "Test/TestNode.h"
 

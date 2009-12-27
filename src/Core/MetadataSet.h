@@ -21,7 +21,6 @@
 #define _X3D_METADATASET_H
 
 #include "Core/X3DNode.h"
-#include "Core/X3DMetadataObject.h"
 #include <vector>
 
 using std::vector;

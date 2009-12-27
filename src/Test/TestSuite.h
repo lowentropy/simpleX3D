@@ -20,7 +20,6 @@
 #ifndef _X3D_TESTSUITE_H_
 #define _X3D_TESTSUITE_H_
 
-#include "Core/X3DNode.h"
 #include "Test/TestNode.h"
 
 namespace X3D {

@@ -20,7 +20,6 @@
 #ifndef _X3D_TYPES_H_
 #define _X3D_TYPES_H_
 
-#include "internal/X3DField.h"
 #include "internal/SFBool.h"
 #include "internal/SFColor.h"
 #include "internal/SFDouble.h"
@@ -32,7 +31,6 @@
 #include "internal/SFRotation.h"
 #include "internal/SFString.h"
 #include "internal/SFTime.h"
-#include "internal/SFVec.h"
 #include "internal/MF.h"
 
 #endif // #ifndef _X3D_TYPES_H_

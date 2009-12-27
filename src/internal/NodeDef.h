@@ -20,8 +20,6 @@
 #ifndef _X3D_NODEDEF_H_
 #define _X3D_NODEDEF_H_
 
-#include "internal/FieldDef.h"
-#include "internal/SAIField.h"
 #include "internal/Prototype.h"
 #include <map>
 #include <list>

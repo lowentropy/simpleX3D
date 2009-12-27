@@ -20,9 +20,6 @@
 #ifndef _X3D_BROWSER_H_
 #define _X3D_BROWSER_H_
 
-#include "internal/Node.h"
-#include "internal/NodeDef.h"
-#include "internal/Profile.h"
 #include "internal/builtin.h"
 #include <list>
 

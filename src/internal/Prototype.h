@@ -20,7 +20,6 @@
 #ifndef _X3D_PROTOTYPE_H_
 #define _X3D_PROTOTYPE_H_
 
-#include "internal/errors.h"
 #include "internal/ProtoField.h"
 #include "internal/ProtoInst.h"
 
