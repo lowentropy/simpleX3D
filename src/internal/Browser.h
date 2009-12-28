@@ -36,6 +36,10 @@ namespace X3D {
  * change how routing or memory management works, but keep
  * in mind that you should still attempt to support third-
  * party plugins.
+ *
+ * TODO: the browser shoudl either have a reference to ALL nodes or
+ * to only ANCHORED nodes, but currently prototypes are breaking this
+ * pattern.
  */
 class Browser {
 private:
