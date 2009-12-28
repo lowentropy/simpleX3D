@@ -50,6 +50,9 @@ bool FieldIterator::filter() {
     switch (mode) {
         case INPUT: return fieldDef->inputCapable();
         case OUTPUT: return fieldDef->outputCapable();
+        case CAN_INIT:
+            return (fieldDef->access == SAIField::INIT_ONLY)
+                || (fieldDef->access == SAIField::INPUT_OUTPUT);
         case ALL: return true;
         case DIRTY:
             SAIField* field = fieldDef->getField(node);

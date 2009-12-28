@@ -1,0 +1,3 @@
+#! /bin/bash
+
+bin/min -d | grep "-" | wc -l

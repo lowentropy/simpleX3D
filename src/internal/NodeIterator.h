@@ -17,53 +17,45 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_PROTOINST_H_
-#define _X3D_PROTOINST_H_
+#ifndef _X3D_NODEITERATOR_H_
+#define _X3D_NODEITERATOR_H_
 
-#include "Core/X3DPrototypeInstance.h"
+#include "internal/Node.h"
 
-#include <map>
-#include <string>
-#include <vector>
-using std::map;
-using std::string;
-using std::vector;
+#include <list>
+using std::list;
 
 namespace X3D {
 
-class Prototype;
-class Node;
-class Route;
-
-class ProtoInst : virtual public Core::X3DPrototypeInstance {
-protected:
-
-    map<string, Node*> defs;
-    vector<Node*> nodes;
-    vector<Route*> routes;
-
+class NodeIterator {
 public:
 
-    Prototype* const proto;
-    ProtoInst(Prototype* proto) : proto(proto) {}
-
-protected:
-
-    void instantiateFromProto(Node* root);
-
-private:
-
-    void copyNode(Node* from, Node* to);
+    virtual bool hasNext() const = 0;
+    virtual Node* next() const = 0;
 };
 
 template <class N>
-class ProtoInstImpl : public ProtoInst, virtual public N {
+class NodeIteratorImpl : public NodeIterator {
+private:
+
+    list<N*>& nodeList;
+    typename list<N*>::iterator iter;
+
 public:
 
-    ProtoInstImpl(N* root, Prototype* proto) : ProtoInst(proto) {
-        instantiateFromProto(root);
+    NodeIteratorImpl(MFNode<N>* mf) : nodeList(mf->getElements()) {
+        iter = nodeList.begin();
+    }
+
+    bool hasNext() const {
+        iter != nodeList.end();
+    }
+
+    Node* next() {
+        *iter++;
     }
 };
 
 }
-#endif // #ifndef _X3D_PROTOINST_H_
+
+#endif // #ifndef _X3D_NODEITERATOR_H_

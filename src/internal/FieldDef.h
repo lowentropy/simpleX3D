@@ -77,6 +77,17 @@ public:
      */
     virtual SAIField* getField(Node* node) = 0;
 
+    /**
+     * Return a pointer to the instance specified by this field
+     * definition, owned by the given node pointer.
+     * This is the const version, taking a const node pointer and
+     * returning a const field pointer.
+     * 
+     * @param node node to look up field on
+     * @returns pointer to field object instance
+     */
+    virtual const SAIField* getField(const Node* node) = 0;
+
     /// @returns true if the field INPUT_ONLY or INPUT_OUTPUT
     bool inputCapable();
 
@@ -132,6 +143,22 @@ public:
      */
     virtual SAIField* getField(Node* node) {
         N* ptr = dynamic_cast<N*>(node);
+        if (ptr == NULL)
+            throw X3DError("called getField() on node of wrong type");
+        return &(ptr->*field);
+    }
+
+    /**
+     * Return a pointer to the instance specified by this field
+     * definition, owned by the given node pointer.
+     * This is the const version, taking a const node pointer and
+     * returning a const field pointer.
+     * 
+     * @param node node to look up field on
+     * @returns pointer to field object instance
+     */
+    virtual const SAIField* getField(const Node* node) {
+        const N* ptr = dynamic_cast<const N*>(node);
         if (ptr == NULL)
             throw X3DError("called getField() on node of wrong type");
         return &(ptr->*field);

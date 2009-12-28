@@ -33,6 +33,8 @@ class NodeDef;
  * and then dereference its internal pointer). There are four iteration modes
  * which allow you to filter which fields are returned. Use the hasNext() and
  * next() methods to loop through the fields.
+ *
+ * TODO: write a const version of FieldIterator
  */
 class FieldIterator {
 public:
@@ -40,12 +42,14 @@ public:
     /// Iteration mode lets you filter based on four criteria:
     /// - INPUT: input-capable fields (INPUT_ONLY, INPUT_OUTPUT)
     /// - OUTPUT: output-capable fields (OUTPUT_ONLY, INPUT_OUTPUT)
-    /// - ALL: all input or output-capable fields
     /// - DIRTY: all output capable fields which are marked dirty
+    /// - CAN_INIT: all initializable fields (INIT_ONLY, INPUT_OUTPUT)
+    /// - ALL: all input or output-capable fields
     typedef enum {
         INPUT,
         OUTPUT,
         DIRTY,
+        CAN_INIT,
         ALL
     } IterMode;
 

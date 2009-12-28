@@ -21,6 +21,7 @@
 #define _X3D_MFFIELDS_H_
 
 #include "internal/X3DField.h"
+#include "internal/NodeIterator.h"
 #include <list>
 using std::list;
 
@@ -185,8 +186,11 @@ public:
  */
 class MFAbstractNode {
 public:
+
     virtual void add(Node* node) = 0;
     virtual void clear() = 0;
+    virtual NodeIterator nodes() = 0;
+
     static const MFAbstractNode& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
 			throw X3DError(
@@ -286,6 +290,10 @@ public:
 
     void clear() {
         this->MFBase<N*>::elements.clear();
+    }
+
+    NodeIterator nodes() {
+        return NodeIteratorImpl<N>(this);
     }
 
     bool parse(istream& ss) {

@@ -14,6 +14,7 @@ libsimpleX3D_la_SOURCES = \
     internal/FieldDef.cc \
     internal/SAIField.cc \
     internal/FieldIterator.cc \
+    internal/NodeIterator.cc \
     internal/World.cc \
     internal/Prototype.cc \
     internal/ProtoInst.cc \
@@ -41,6 +42,7 @@ include_HEADERS = \
     internal/NodeDef.h \
     internal/FieldDef.h \
     internal/FieldIterator.h \
+    internal/NodeIterator.h \
 	internal/builtin.h \
 	internal/SAIField.h \
 	internal/SFBool.h \

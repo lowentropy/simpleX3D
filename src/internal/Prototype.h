@@ -50,16 +50,21 @@ protected:
     map<string, ProtoField*> out_fields;
     vector<ProtoField*> field_list;
 
+private:
+    
+    int tempCounter;
+
 protected:
 
     virtual void setRootNode(Node* node) = 0;
     virtual Node* getRootNode() const = 0;
+    string createTempName();
 
 public:
     
     const string name;
 
-    Prototype(const string& name) : name(name) {}
+    Prototype(const string& name) : name(name), tempCounter(0) {}
     virtual ~Prototype();
 
     void addNode(Node* node);
@@ -68,7 +73,7 @@ public:
     void addInternalRoute(Route* route);
     void addRoute(const string& fromNode, const string& fromField,
                   const string& toNode, const string& toField);
-    virtual ProtoInst* createInstance() const = 0;
+    virtual ProtoInst* createInstance() = 0;
 
 public:
 
@@ -97,7 +102,7 @@ public:
         return root;
     }
 
-    virtual ProtoInstImpl<N>* createInstance() const {
+    virtual ProtoInstImpl<N>* createInstance() {
         return new ProtoInstImpl<N>(root, this);
     }
 };

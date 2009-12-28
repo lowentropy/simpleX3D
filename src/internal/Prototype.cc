@@ -22,6 +22,9 @@
 #include "internal/NodeDef.h"
 #include "internal/Route.h"
 
+#include <sstream>
+using std::ostringstream;
+
 namespace X3D {
 
 Prototype::~Prototype() {
@@ -31,6 +34,12 @@ Prototype::~Prototype() {
     list<Route*>::iterator r_it;
     for (r_it = routes.begin(); r_it != routes.end(); r_it++)
         delete *r_it;
+}
+
+string Prototype::createTempName() {
+    ostringstream os;
+    os << "_tmp_" << tempCounter++;
+    return os.str();
 }
 
 void Prototype::addNode(Node* node) {

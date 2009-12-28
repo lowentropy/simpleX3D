@@ -23,7 +23,35 @@
 
 namespace X3D {
 
-void ProtoInst::copyNode(const Node* from, Node* to) {
+void ProtoInst::copyNode(Node* from, Node* to) {
+    string name = from->getName();
+    if (name.empty())
+        from->setName(name = proto->createTempName());
+    to->setName(name);
+    defs[name] = to;
+    FieldIterator it = from->fields(FieldIterator::CAN_INIT);
+    while (it.hasNext()) {
+        FieldDef* field = it.nextFieldDef();
+        SAIField* fromField = field->getField(from);
+        SAIField* toField = field->getField(to);
+        if (field->getType() == X3DField::SFNODE) {
+            Node* node = SFNode<Node>::unwrap(fromField->get());
+            Node* newNode = node->definition->create();
+            copyNode(node, newNode);
+            toField->set(newNode);
+        } else if (field->getType() == X3DField::MFNODE) {
+            MFAbstractNode& fromList = MFAbstractNode::unwrap(fromField->get());
+            MFAbstractNode& toList = MFAbstractNode::unwrap(toField->get());
+            NodeIterator it = fromList.nodes();
+            while (it.hasNext()) {
+                Node* node = it.next();
+                Node* newNode = node->definition->create();
+                copyNode(node, newNode);
+                toList->add(newNode);
+            }
+        }
+        // TODO: copy field contents, or call copyNode
+    }
     // TODO
     // TODO: Node should really return a POINTER to FieldIterator?
 }

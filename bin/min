@@ -1,2 +1,2 @@
 #! /bin/bash
-../minclude/minclude.rb -b src -r src $*
+../minclude/minclude.rb $* -b src -r src
