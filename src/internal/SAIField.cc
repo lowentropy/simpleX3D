@@ -19,11 +19,39 @@
 
 #include "internal/SAIField.h"
 #include "internal/FieldDef.h"
+#include "internal/Node.h"
+#include "internal/Route.h"
+#include "internal/SFNode.h"
+#include "internal/MF.h"
+
+using std::map;
 
 namespace X3D {
 
+X3DField::Type SAIField::getType() const {
+    return definition->type;
+}
+
+const string& SAIField::getTypeName() const {
+    return X3DField::getTypeName(definition->type);
+}
+
 const string& SAIField::getName() const {
     return definition->name;
+}
+
+SAIField* SAIField::cloneInto(Node* node, map<Node*,Node*>* mapping, bool shallow) {
+    SAIField* target = definition->getField(node);
+    if (!shallow && (definition->type == X3DField::SFNODE)) {
+        SFAbstractNode& wrapper = static_cast<SFAbstractNode&>(target->get());
+        Node* source = SFNode<Node>::unwrap(get());
+        wrapper.set(source->clone(mapping, shallow));
+    } else if (!shallow && (definition->type == X3DField::MFNODE)) {
+        MFAbstractNode& fromList = MFAbstractNode::unwrap(get());
+        MFAbstractNode& toList = MFAbstractNode::unwrap(target->get());
+        fromList.cloneInto(toList, mapping, shallow);
+    } else target->set(get());
+    return target;
 }
 
 void SAIField::addIncomingRoute(Route* route) {

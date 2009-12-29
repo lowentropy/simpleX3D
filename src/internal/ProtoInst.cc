@@ -23,53 +23,22 @@
 
 namespace X3D {
 
-void ProtoInst::copyNode(Node* from, Node* to) {
-    string name = from->getName();
-    if (name.empty())
-        from->setName(name = proto->createTempName());
-    to->setName(name);
-    defs[name] = to;
-    FieldIterator it = from->fields(FieldIterator::CAN_INIT);
-    while (it.hasNext()) {
-        FieldDef* field = it.nextFieldDef();
-        SAIField* fromField = field->getField(from);
-        SAIField* toField = field->getField(to);
-        if (field->type == X3DField::SFNODE) {
-            Node* node = SFNode<Node>::unwrap(fromField->get());
-            Node* newNode = node->definition->create();
-            copyNode(node, newNode);
-            SFAbstractNode* wrapper = static_cast<SFAbstractNode*>(&fromField->get());
-            wrapper->set(newNode);
-        } else if (field->type == X3DField::MFNODE) {
-            MFAbstractNode& fromList = MFAbstractNode::unwrap(fromField->get());
-            MFAbstractNode& toList = MFAbstractNode::unwrap(toField->get());
-            NodeIterator it = fromList.nodes();
-            while (it.hasNext()) {
-                Node* node = it.next();
-                Node* newNode = node->definition->create();
-                copyNode(node, newNode);
-                toList.add(newNode);
-            }
-        }
-        // TODO: copy field contents, or call copyNode
-    }
-    // TODO
-    // TODO: Node should really return a POINTER to FieldIterator?
-}
-
 void ProtoInst::instantiateFromProto(Node* root) {
-    copyNode(root, this);
+    map<Node*,Node*> mapping;
+    // copy root
+    root->cloneInto(this, &mapping);
     vector<Node*>::const_iterator n_it;
-    for (n_it = proto->nodes.begin(); n_it != proto->nodes.end(); n_it++) {
-        copyNode(*n_it, (*n_it)->definition->create());
-    }
+    // copy siblings
+    for (n_it = proto->nodes.begin(); n_it != proto->nodes.end(); n_it++)
+        nodes.push_back((*n_it)->clone(&mapping));
+    // copy routes
     list<Route*>::const_iterator r_it;
     for (r_it = proto->routes.begin(); r_it != proto->routes.end(); r_it++) {
         const Route* route = *r_it;
-        Node* fromNode = defs[route->fromField->getNode()->getName()];
-        Node* toNode = defs[route->toField->getNode()->getName()];
-        SAIField* fromField = fromNode->getField(route->fromField->getName());
-        SAIField* toField = toNode->getField(route->toField->getName());
+        Node* fromNode = mapping[route->fromField->getNode()];
+        Node* toNode   = mapping[route->toField->getNode()];
+        SAIField* fromField = route->fromField->definition->getField(fromNode);
+        SAIField* toField   = route->toField->definition->getField(toNode);
         routes.push_back(new Route(fromField, toField));
     }
     // TODO: delete nodes and routes on proto and protoinst destructors

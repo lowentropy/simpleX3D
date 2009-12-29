@@ -24,6 +24,7 @@
 #include <string>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
+#include <map>
 
 using std::string;
 
@@ -76,6 +77,35 @@ public:
     void setName(const string& name) {
         this->name = name;
     }
+
+    /**
+     * Clone this node's memory by copying field values into a new
+     * node of the same type. Depending on the arguments, this may
+     * proceed recursively. If a mapping is provided, a link between
+     * original and cloned nodes can be maintained. This is useful to
+     * copy routes one the tree structure is complete.
+     * The browser will not have a reference to this new node,
+     * so memory management is the caller's resposibility.
+     * 
+     * @param mapping mapping from old node to new node
+     * @param shallow whether clone should stop at first level
+     * @returns cloned node
+     */
+    Node* clone(std::map<Node*,Node*>* mapping=NULL, bool shallow=false);
+
+    /**
+     * Clone this node's memory by copying field values into a new
+     * node of the same type. Depending on the arguments, this may
+     * proceed recursively. If a mapping is provided, a link between
+     * original and cloned nodes can be maintained. This is useful to
+     * copy routes one the tree structure is complete.
+     * 
+     * @param target target node to clone into
+     * @param mapping mapping from old node to new node
+     * @param shallow whether clone should stop at first level
+     * @returns cloned node
+     */
+    void cloneInto(Node* target, std::map<Node*,Node*>* mapping=NULL, bool shallow=false);
     
     /**
      * Look up a field on the node and return a reference to it.

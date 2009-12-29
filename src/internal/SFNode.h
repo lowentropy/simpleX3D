@@ -42,6 +42,25 @@ public:
 
     virtual void set(Node* node) = 0;
 
+    /**
+     * Unwrap a generic field value containing a node.
+     * In addition to checking the that the field is of type
+     * SFNODE, the target node value must be a descendant of
+     * Node. No check is performed, since it is highly unlikely
+     * that a non-node pointer is contained in the wrapper.
+     * 
+     * @param f generic field value
+     * @returns native node pointer
+     */
+	INLINE static Node* unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::SFNODE)
+			throw X3DError(
+                string("base type mismatch; expected SFNode") +
+                ", but was " + f.getTypeName());
+		const SFAbstractNode& n = static_cast<const SFAbstractNode&>(f);
+        return n();
+	}
+
 protected:
 
     // XXX this is because we can't include Browser.h, but we

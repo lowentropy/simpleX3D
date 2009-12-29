@@ -24,6 +24,20 @@ void Node::queue(SAIField* field) {
     browser()->addDirtyField(field);
 }
 
+void Node::cloneInto(Node* target, map<Node*,Node*>* mapping, bool shallow) {
+    if (mapping != NULL)
+        (*mapping)[this] = target;
+    FieldIterator it = fields(FieldIterator::CAN_INIT);
+    while (it.hasNext())
+        it.nextField()->cloneInto(target, mapping, shallow);
+}
+
+Node* Node::clone(map<Node*,Node*>* mapping, bool shallow) {
+    Node* clone = definition->create();
+    cloneInto(clone, mapping, shallow);
+    return clone;
+}
+
 const string& Node::defaultContainerField() {
     static string empty = "";
     return empty;

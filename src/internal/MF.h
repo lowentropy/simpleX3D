@@ -22,7 +22,11 @@
 
 #include "internal/X3DField.h"
 #include "internal/NodeIterator.h"
+#include "internal/types.h"
+
 #include <list>
+#include <map>
+
 using std::list;
 
 #define MAKE_MF(CONST,MF,SF,SFOBJ,KIND) \
@@ -192,6 +196,7 @@ public:
     virtual NodeIterator nodes() = 0;
     virtual void begin(NodeIterator& iter) = 0;
     virtual void next(NodeIterator& iter) = 0;
+    virtual void cloneInto(MFAbstractNode& target, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) = 0;
 
     static const MFAbstractNode& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
@@ -235,6 +240,22 @@ public:
 
     /** @returns MFNODE */
 	INLINE X3DField::Type getType() const { return X3DField::MFNODE; }
+
+    void cloneInto(MFAbstractNode& abstract, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) {
+        MFNode<N>* mf = dynamic_cast<MFNode<N>*>(&abstract);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        mf->clear();
+        list<N*>& source = this->MFBase<N*>::elements;
+        typename list<N*>::iterator it;
+        if (shallow) {
+            for (it = source.begin(); it != source.end(); it++)
+                mf->add(*it);
+        } else {
+            for (it = source.begin(); it != source.end(); it++)
+                mf->add((*it)->clone(mapping, shallow));
+        }
+    }
 
     /**
      * Unwrap a generic value into a list type. This method will

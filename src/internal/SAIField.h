@@ -23,6 +23,7 @@
 #include "internal/X3DField.h"
 #include <string>
 #include <list>
+#include <map>
 
 using std::string;
 using std::list;
@@ -70,7 +71,7 @@ public:
      * 
      * @returns field datatype
      */
-	virtual X3DField::Type getType() const = 0;
+	X3DField::Type getType() const;
 
     /**
      * Get the access type of this field.
@@ -84,7 +85,18 @@ public:
      * 
      * @returns field datatype name
      */
-	virtual string getTypeName() const = 0;
+	const string& getTypeName() const;
+
+    /**
+     * Clone this field by initializing its opposite member in
+     * another node. Depending on the arguments, this may be recursive.
+     *
+     * @param node node containing target field
+     * @param mapping mapping from old node to new node
+     * @param shallow whether clone should stop at first level
+     * @returns target field
+     */
+    SAIField* cloneInto(Node* node, std::map<Node*,Node*>*mapping=NULL, bool shallow=false);
 
     /**
      * High-level field value getter.
@@ -178,12 +190,6 @@ public:
 
     /// Empty constructor.
     BaseField() {}
-
-    /// @returns the data type of the field
-	X3DField::Type getType() const { static TT x; return x.getType(); }
-
-    /// @returns the printable name of the field datatype
-	string getTypeName() const { static TT x; return x.getTypeName(); }
 
 private:
 
