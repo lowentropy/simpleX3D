@@ -40,6 +40,8 @@ public:
     /// @returns native but non-specific pointer to node value
 	virtual Node* operator()() const = 0;
 
+    virtual void set(Node* node) = 0;
+
 protected:
 
     // XXX this is because we can't include Browser.h, but we
@@ -93,6 +95,13 @@ public:
 			throw X3DError("node type mismatch");
 		return v;
 	}
+
+    void set(Node* node) {
+        N* n = dynamic_cast<N*>(node);
+        if (n == NULL)
+            throw X3DError("node type mismatch");
+        value = n;
+    }
 
     /// Low-level assignment operator.
 	INLINE const SFNode<N>& operator=(N* value) { this->value = value; }

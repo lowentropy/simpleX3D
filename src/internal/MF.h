@@ -190,6 +190,8 @@ public:
     virtual void add(Node* node) = 0;
     virtual void clear() = 0;
     virtual NodeIterator nodes() = 0;
+    virtual void begin(NodeIterator& iter) = 0;
+    virtual void next(NodeIterator& iter) = 0;
 
     static const MFAbstractNode& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
@@ -224,6 +226,7 @@ public:
 template <class N>
 class MFNode : public MFNative<N*>, public MFAbstractNode {
 public:
+    typedef typename std::list<N*>::iterator ITER;
 	typedef MFNode<N>& TYPE;
 	typedef const MFNode<N>& CONST_TYPE;
 
@@ -293,7 +296,26 @@ public:
     }
 
     NodeIterator nodes() {
-        return NodeIteratorImpl<N>(this);
+        return NodeIterator(*this);
+    }
+
+    void begin(NodeIterator& iter) {
+        void* container = (void*) &(iter.iter);
+        ITER* it = (ITER*) container;
+        *it = this->MFBase<N*>::elements.begin();
+        if (*it == this->MFBase<N*>::elements.end())
+            iter.current = NULL;
+        else
+            iter.current = **it;
+    }
+
+    void next(NodeIterator& iter) {
+        void* container = (void*) &(iter.iter);
+        ITER* it = (ITER*) container;
+        if (++(*it) == this->MFBase<N*>::elements.end())
+            iter.current = NULL;
+        else
+            iter.current = **it;
     }
 
     bool parse(istream& ss) {

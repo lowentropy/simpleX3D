@@ -34,12 +34,13 @@ void ProtoInst::copyNode(Node* from, Node* to) {
         FieldDef* field = it.nextFieldDef();
         SAIField* fromField = field->getField(from);
         SAIField* toField = field->getField(to);
-        if (field->getType() == X3DField::SFNODE) {
+        if (field->type == X3DField::SFNODE) {
             Node* node = SFNode<Node>::unwrap(fromField->get());
             Node* newNode = node->definition->create();
             copyNode(node, newNode);
-            toField->set(newNode);
-        } else if (field->getType() == X3DField::MFNODE) {
+            SFAbstractNode* wrapper = static_cast<SFAbstractNode*>(&fromField->get());
+            wrapper->set(newNode);
+        } else if (field->type == X3DField::MFNODE) {
             MFAbstractNode& fromList = MFAbstractNode::unwrap(fromField->get());
             MFAbstractNode& toList = MFAbstractNode::unwrap(toField->get());
             NodeIterator it = fromList.nodes();
@@ -47,7 +48,7 @@ void ProtoInst::copyNode(Node* from, Node* to) {
                 Node* node = it.next();
                 Node* newNode = node->definition->create();
                 copyNode(node, newNode);
-                toList->add(newNode);
+                toList.add(newNode);
             }
         }
         // TODO: copy field contents, or call copyNode

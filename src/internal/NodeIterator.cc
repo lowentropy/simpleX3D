@@ -17,33 +17,28 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_NODEITERATOR_H_
-#define _X3D_NODEITERATOR_H_
-
-#include <list>
+#include "internal/NodeIterator.h"
+#include "internal/Node.h"
+#include "internal/types.h"
 
 namespace X3D {
 
-class Node;
-class MFAbstractNode;
-
-class NodeIterator {
-public:
-
-    NodeIterator(MFAbstractNode& list);
-    
-    Node* current;
-    MFAbstractNode& list;
-    char iter[sizeof(std::list<void*>::iterator)];
-
-    bool hasNext();
-    Node* next();
-
-private:
-
-    void advance();
-};
-
+NodeIterator::NodeIterator(MFAbstractNode& list) : list(list) {
+    list.begin(*this);
 }
 
-#endif // #ifndef _X3D_NODEITERATOR_H_
+bool NodeIterator::hasNext() {
+    return current != NULL;
+}
+
+Node* NodeIterator::next() {
+    Node* next = current;
+    advance();
+    return next;
+}
+
+void NodeIterator::advance() {
+    list.next(*this);
+}
+
+}
