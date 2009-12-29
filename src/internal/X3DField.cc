@@ -1,5 +1,5 @@
 #include "internal/X3DField.h"
-#include "internal/types.h"
+#include "internal/MF.h"
 
 namespace X3D {
 

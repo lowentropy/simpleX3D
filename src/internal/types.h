@@ -31,6 +31,5 @@
 #include "internal/SFRotation.h"
 #include "internal/SFString.h"
 #include "internal/SFTime.h"
-#include "internal/MF.h"
 
 #endif // #ifndef _X3D_TYPES_H_

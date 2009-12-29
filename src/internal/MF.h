@@ -20,9 +20,8 @@
 #ifndef _X3D_MFFIELDS_H_
 #define _X3D_MFFIELDS_H_
 
-#include "internal/X3DField.h"
-#include "internal/NodeIterator.h"
 #include "internal/types.h"
+#include "internal/NodeIterator.h"
 
 #include <list>
 #include <map>

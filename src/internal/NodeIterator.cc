@@ -19,7 +19,7 @@
 
 #include "internal/NodeIterator.h"
 #include "internal/Node.h"
-#include "internal/types.h"
+#include "internal/MF.h"
 
 namespace X3D {
 

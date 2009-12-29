@@ -1,3 +1,3 @@
 #! /bin/bash
 
-bin/min -d | grep "-" | wc -l
+bin/min $* -d | grep "-" | wc -l

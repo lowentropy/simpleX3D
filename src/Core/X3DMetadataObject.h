@@ -20,7 +20,7 @@
 #ifndef _X3D_X3DMETADATAOBJECT_H_
 #define _X3D_X3DMETADATAOBJECT_H_
 
-#include "internal/types.h"
+#include "internal/MF.h"
 #include "internal/InOutField.h"
 #include <string>
 #include <map>
