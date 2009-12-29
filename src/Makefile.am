@@ -31,7 +31,8 @@ include_HEADERS = \
 	internal/errors.h \
 	internal/Node.h \
 	internal/Browser.h \
-	internal/types.h \
+	internal/SF.h \
+	internal/MF.h \
     internal/Route.h \
 	internal/InitField.h \
 	internal/InField.h \
@@ -57,7 +58,6 @@ include_HEADERS = \
 	internal/SFString.h \
 	internal/SFTime.h \
 	internal/SFVec.h \
-	internal/MF.h \
     internal/World.h \
     internal/Prototype.h \
     internal/ProtoInst.h \

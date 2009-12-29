@@ -20,7 +20,7 @@
 #ifndef _X3D_MFFIELDS_H_
 #define _X3D_MFFIELDS_H_
 
-#include "internal/types.h"
+#include "internal/SF.h"
 #include "internal/NodeIterator.h"
 
 #include <list>

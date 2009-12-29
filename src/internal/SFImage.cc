@@ -17,7 +17,7 @@
 * along with SimpleX3D. If not, see <http://www.gnu.org/licenses/>.
 */
  
-#include "internal/types.h"
+#include "internal/SF.h"
  
 namespace X3D {
  

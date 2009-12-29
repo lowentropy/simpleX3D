@@ -1,5 +1,6 @@
 *.la
 *.lo
+*.loT
 *.o
 *.so
 *.swp
