@@ -45,7 +45,10 @@ SAIField* SAIField::cloneInto(Node* node, map<Node*,Node*>* mapping, bool shallo
     if (!shallow && (definition->type == X3DField::SFNODE)) {
         SFAbstractNode& wrapper = static_cast<SFAbstractNode&>(target->get());
         Node* source = SFNode<Node>::unwrap(get());
-        wrapper.set(source->clone(mapping, shallow));
+        if (source == NULL)
+            wrapper.set(NULL);
+        else
+            wrapper.set(source->clone(mapping, shallow));
     } else if (!shallow && (definition->type == X3DField::MFNODE)) {
         MFAbstractNode& fromList = MFAbstractNode::unwrap(get());
         MFAbstractNode& toList = MFAbstractNode::unwrap(target->get());

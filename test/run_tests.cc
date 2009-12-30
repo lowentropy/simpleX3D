@@ -44,6 +44,8 @@ Browser* browser() {
 #include "internal/XmlLoadTests.h"
 #include "internal/ParseTests.h"
 #include "internal/DynamicFieldTests.h"
+#include "internal/NodeIteratorTests.h"
+#include "internal/CloneTests.h"
 #include "Core/X3DBindableNodeTests.h"
 #include "Test/TestNodeTests.h"
 #include "Test/TestSuiteTests.h"

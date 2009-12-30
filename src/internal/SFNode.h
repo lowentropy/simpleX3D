@@ -109,6 +109,8 @@ public:
                 string("base type mismatch; expected SFNode") +
                 ", but was " + f.getTypeName());
 		const SFAbstractNode& n = static_cast<const SFAbstractNode&>(f);
+        if (n() == NULL)
+            return NULL;
 		N* v = dynamic_cast<N*>(n());
 		if (v == NULL)
 			throw X3DError("node type mismatch");
@@ -116,10 +118,14 @@ public:
 	}
 
     void set(Node* node) {
-        N* n = dynamic_cast<N*>(node);
-        if (n == NULL)
-            throw X3DError("node type mismatch");
-        value = n;
+        if (node == NULL)
+            value = NULL;
+        else {
+            N* n = dynamic_cast<N*>(node);
+            if (n == NULL)
+                throw X3DError("node type mismatch");
+            value = n;
+        }
     }
 
     /// Low-level assignment operator.
