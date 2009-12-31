@@ -12,7 +12,7 @@ TEST(Cloning, ShouldCloneComplexTree) {
     suite->tests().add(test1);
     suite->tests().add(test2);
     test1->setName("Test1");
-    test1->setName("Test2");
+    test2->setName("Test2");
     test1->continuous(true);
     test2->continuous(false);
     test1->timeout(216);
@@ -28,10 +28,14 @@ TEST(Cloning, ShouldCloneComplexTree) {
     list<TestNode*>& tests = clone->tests().getElements();
     EXPECT_EQ(2, tests.size());
     list<TestNode*>::iterator it = tests.begin();
-    EXPECT_EQ("Test1", (*it)->getName());
-    EXPECT_EQ(true, (*it)->continuous());
-    EXPECT_EQ(216, (*it)->timeout());
-    EXPECT_EQ("Test2", (*it++)->getName());
-    EXPECT_EQ(false, (*it)->continuous());
-    EXPECT_EQ(666, (*it)->timeout());
+    
+    TestNode* test = *it++;
+    EXPECT_EQ("Test1", test->getName());
+    EXPECT_EQ(true, test->continuous());
+    EXPECT_EQ(216, test->timeout());
+
+    test = *it++;
+    EXPECT_EQ("Test2", test->getName());
+    EXPECT_EQ(false, test->continuous());
+    EXPECT_EQ(666, test->timeout());
 }

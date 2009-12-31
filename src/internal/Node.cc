@@ -27,6 +27,8 @@ void Node::queue(SAIField* field) {
 void Node::cloneInto(Node* target, map<Node*,Node*>* mapping, bool shallow) {
     if (mapping != NULL)
         (*mapping)[this] = target;
+    if (!name.empty())
+        target->setName(name);
     FieldIterator it = fields(FieldIterator::CAN_INIT);
     while (it.hasNext())
         it.nextField()->cloneInto(target, mapping, shallow);
