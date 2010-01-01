@@ -41,7 +41,23 @@ void ProtoInst::instantiateFromProto(Node* root) {
         SAIField* toField   = route->toField->definition->getField(toNode);
         routes.push_back(new Route(fromField, toField));
     }
-    // TODO: delete nodes and routes on proto and protoinst destructors
+}
+
+ProtoInst::~ProtoInst() {
+    deleteRoutes();
+    deleteNodes();
+}
+
+void ProtoInst::deleteRoutes() {
+    vector<Route*>::iterator it;
+    for (it = routes.begin(); it != routes.end(); it++)
+        delete *it;
+}
+
+void ProtoInst::deleteNodes() {
+    vector<Node*>::iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+        delete *it;
 }
 
 }

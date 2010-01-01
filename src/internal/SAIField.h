@@ -54,6 +54,7 @@ public:
 
     /// Empty constructor.
     SAIField() {}
+    virtual ~SAIField() {}
 
     /** @returns the name of the field */
     const string& getName() const;

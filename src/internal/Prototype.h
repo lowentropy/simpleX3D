@@ -53,6 +53,8 @@ protected:
 private:
     
     int tempCounter;
+    void deleteRoutes();
+    void deleteNodes();
 
 protected:
 

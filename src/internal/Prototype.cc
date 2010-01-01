@@ -27,15 +27,6 @@ using std::ostringstream;
 
 namespace X3D {
 
-Prototype::~Prototype() {
-    vector<Node*>::iterator n_it;
-    for (n_it = nodes.begin(); n_it != nodes.end(); n_it++)
-        delete *n_it;
-    list<Route*>::iterator r_it;
-    for (r_it = routes.begin(); r_it != routes.end(); r_it++)
-        delete *r_it;
-}
-
 string Prototype::createTempName() {
     ostringstream os;
     os << "_tmp_" << tempCounter++;
@@ -52,9 +43,7 @@ void Prototype::addField(ProtoField* field) {
     field_list.push_back(field);
     fields[field->getName()] = field;
     // TODO
-    // TODO: Prototype should inherit from NodeDef
     // TODO: Prototype should contain fields of FieldDef
-    // TODO: ProtoField should inherit SAIField
     // TODO: should have a component for a source file, such that
     //       all its prototypes exist together
 }
@@ -83,6 +72,23 @@ Prototype* Prototype::create(const string& name, Node* root) {
   Prototype* proto = root->definition->createPrototype(name);
   proto->setRootNode(root);
   return proto;
+}
+
+Prototype::~Prototype() {
+    deleteRoutes();
+    deleteNodes();
+}
+
+void Prototype::deleteRoutes() {
+    list<Route*>::iterator it;
+    for (it = routes.begin(); it != routes.end(); it++)
+        delete *it;
+}
+
+void Prototype::deleteNodes() {
+    vector<Node*>::iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+        delete *it;
 }
 
 }

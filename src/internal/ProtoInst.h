@@ -46,6 +46,7 @@ public:
 
     Prototype* const proto;
     ProtoInst(Prototype* proto) : proto(proto) {}
+    virtual ~ProtoInst();
 
 protected:
 
@@ -54,6 +55,8 @@ protected:
 private:
 
     void copyNode(Node* from, Node* to);
+    void deleteRoutes();
+    void deleteNodes();
 };
 
 template <class N>

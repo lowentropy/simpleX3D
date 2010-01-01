@@ -1,12 +1,10 @@
 #include "internal/Node.h"
 #include "internal/Browser.h"
 
-// XXX
-#include <iostream>
-using std::cout;
-using std::endl;
-
 namespace X3D {
+
+Node::~Node() {
+}
 
 Browser* Node::browser() {
 	return Browser::getSingleton();

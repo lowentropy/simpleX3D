@@ -68,7 +68,7 @@ public:
 	Node() : stage(SETUP), definition(NULL) {}
 
     /// Virtual deconstructor.
-	virtual ~Node() {}
+	virtual ~Node();
     
     const string& getName() const {
         return name;
