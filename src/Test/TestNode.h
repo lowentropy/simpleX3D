@@ -36,6 +36,7 @@ private:
 
 public:
 
+    DefaultInOutField < TestNode, SFString > desc;
     DefaultInOutField < TestNode, SFBool   > continuous;
     DefaultInOutField < TestNode, SFTime   > timeout;
     DefaultOutField   < TestNode, SFBool   > success;

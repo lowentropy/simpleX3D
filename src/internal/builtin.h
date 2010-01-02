@@ -332,10 +332,10 @@ public:
             {
                 ts->inherits("X3DNode");
 
-                // SFString [] name
+                // SFString [] desc
                 ts->createField(
-                    "name", X3DField::SFSTRING, SAIField::INIT_ONLY,
-                    &TestSuite::name);
+                    "desc", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
+                    &TestSuite::desc);
     
                 // MFNode [] tests
                 ts->createField(
@@ -370,6 +370,12 @@ public:
                 test->createNode<TestNode>("Test");
             {
                 tn->inherits("X3DChildNode");
+
+                // SFString [] desc
+                tn->createField(
+                    "desc", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
+                    &TestNode::desc);
+    
 
                 // SFBool [in,out] continuous (false)
                 tn->createField(

@@ -1,5 +1,5 @@
 should generalize node MM and make prototypes, protoinsts, and browser implement it
-shallow clone
+test shallow clone
 get rid of explicit testsuite name
 since specialized fields subclass SAIField, don't put Definition* in there... put it as a base of InField etc.
 test that special fields can be cloned

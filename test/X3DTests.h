@@ -16,7 +16,10 @@ void runX3DTest(const char* filename) {
     list<TestNode*>::iterator it;
     for (it = failed.begin(); it != failed.end(); it++) {
         TestNode* test = *it;
-        cout << "FAILED: " << test->getName() << endl;
+        cout << "FAILED: " << test->getName();
+        if (!test->desc().empty())
+            cout << ": '" << test->desc() << "'";
+        cout << endl;
         list<string>& reasons = test->reasons().getElements();
         list<string>::iterator r_it;
         for (r_it = reasons.begin(); r_it != reasons.end(); r_it++)
@@ -24,7 +27,10 @@ void runX3DTest(const char* filename) {
     }
 
     // check correct num passed/failed
-    EXPECT_EQ(0, suite->numFailed()) << "some tests failed";
+    if (suite->numFailed() > 0)
+        FAIL() << "Tests for '" << suite->desc() << "' failed";
+    else
+        SUCCEED();
 
     // clean up
     delete world;

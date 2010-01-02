@@ -75,6 +75,17 @@ void Expect::set(const X3DField& value) {
     actual = &value;
 }
 
+X3DField& Expect::getSilently() {
+    return *expected;
+}
+
+// XXX setSilently is only called because of cloning,
+// so copy the EXPECTED value, not the ACTUAL. this should
+// really be explicit by way of overloading copyInto (?)
+void Expect::setSilently(const X3DField& value) {
+    *expected = value;
+}
+
 bool Expect::isDirty() const {
     return false;
 }

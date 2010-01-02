@@ -6,7 +6,7 @@ using namespace X3D::Test;
 TEST(Cloning, ShouldCloneComplexTree) {
     // set up the source structure
     TestSuite* suite = browser()->createNode<TestSuite>("TestSuite");
-    suite->name("Root");
+    suite->setName("Root");
     TestNode* test1 = browser()->createNode<TestNode>("Test");
     TestNode* test2 = browser()->createNode<TestNode>("Test");
     suite->tests().add(test1);
@@ -24,7 +24,7 @@ TEST(Cloning, ShouldCloneComplexTree) {
     suite->cloneInto(clone, &mapping, false);
 
     // test the clone
-    EXPECT_EQ("Root", clone->name());
+    EXPECT_EQ("Root", clone->getName());
     list<TestNode*>& tests = clone->tests().getElements();
     EXPECT_EQ(2, tests.size());
     list<TestNode*>::iterator it = tests.begin();

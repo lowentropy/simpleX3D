@@ -108,6 +108,28 @@ public:
     }
 
     /**
+     * Unsafe get() operation. Will never throw an error.
+     *
+     * @returns generic field value
+     */
+    INLINE TT& getSilently() {
+        return value;
+    }
+
+    /**
+     * Unsafe set() operation. Will never throw an error. The value
+     * of the field is set without triggering any events. Additionally,
+     * if the value is a node, the node will not be automatically
+     * realized.
+     *
+     * @param value generic field value to set
+     */
+    INLINE void setSilently(const X3DField& value) {
+        static TT x;
+        this->value = x.unwrap(value);
+    }
+
+    /**
      * Get the native value of the field.
      * Will throw an error if the field's node is not in the SETUP
      * phase.

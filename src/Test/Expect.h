@@ -42,9 +42,11 @@ public:
     SAIField::Access getAccess() const;
     const X3DField& get() const;
     X3DField& get();
+    void set(const X3DField& value);
+    X3DField& getSilently();
+    void setSilently(const X3DField& value);
     X3DField::Type getType() const;
     const string& getTypeName() const;
-    void set(const X3DField& value);
     bool isDirty() const;
     void clearDirty();
     void addIncomingRoute(Route* route);

@@ -99,6 +99,27 @@ public:
     }
 
     /**
+     * Unsafe get() operation. Will never throw an error.
+     *
+     * @returns generic field value
+     */
+    INLINE TT& getSilently() {
+        throw X3DError("can't read input field", node());
+    }
+
+    /**
+     * Unsafe set() operation. Will never throw an error. The value
+     * of the field is set without triggering any events. Additionally,
+     * if the value is a node, the node will not be automatically
+     * realized.
+     *
+     * @param value generic field value to set
+     */
+    INLINE void setSilently(const X3DField& value) {
+        throw X3DError("can't silently set input field", node());
+    }
+
+    /**
      * Send a value to the input event. Will throw an error if
      * the node is not in state REALIZED.
      * 

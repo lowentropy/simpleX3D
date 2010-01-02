@@ -114,11 +114,27 @@ public:
     virtual X3DField& get() = 0;
 
     /**
+     * Returns the field value at any stage.
+     *
+     * @returns generic (wrapped) field value
+     */
+    virtual X3DField& getSilently() = 0;
+
+    /**
      * High-level field value setter.
      * 
      * @param value generic (wrapped) field value
      */
 	virtual void set(const X3DField& value) = 0;
+
+    /**
+     * Sets the field value at any stage and without triggering
+     * any events. This method is not safe to use for fields with
+     * active routes.
+     *
+     * @param value generic (wrapped) field value
+     */
+    virtual void setSilently(const X3DField& value) = 0;
 
     /**
      * When a field has been changed since the last event cascade,
