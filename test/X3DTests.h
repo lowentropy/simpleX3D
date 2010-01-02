@@ -33,6 +33,6 @@ void runX3DTest(const char* filename) {
         SUCCEED();
 
     // clean up
-    delete world;
     browser()->reset();
+    delete world;
 }

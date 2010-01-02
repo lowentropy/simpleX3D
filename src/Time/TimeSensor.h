@@ -39,9 +39,12 @@ public:
     TimeSensor() {}
 
 	/// Period of time for repeated events.
-	class CycleInterval : public InOutField<TimeSensor, SFTime> {
-		void action() {
-			node()->onCycleIntervalChanged(value());
+	class CycleInterval : public DefaultInOutField<TimeSensor, SFTime> {
+		bool filter(double interval) {
+            if (node()->getIsActive() &&
+                    node()->loop() &&
+                    interval < value())
+                node()->predict();
 		}
 	} cycleInterval;
 

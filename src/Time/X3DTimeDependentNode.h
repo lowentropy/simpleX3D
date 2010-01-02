@@ -43,26 +43,60 @@ public:
     X3DTimeDependentNode() {}
 
 	/// if true, node will repeat its cycle
-	class Loop : public InOutField<X3DTimeDependentNode, SFBool> {
-		void action() { node()->onLoopChanged(value()); }
+	class Loop : public DefaultInOutField<X3DTimeDependentNode, SFBool> {
+		bool filter(bool loop) {
+            if (node()->getIsActive() &&
+                    loop)
+                node()->predict();
+            return true;
+        }
 	} loop;
+
+	/// time at which node becomes paused
+	class PauseTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
+        bool filter(double time) {
+            if (!node()->isPaused() &&
+                    node()->getIsActive() &&
+                    time < value())
+                node()->predict();
+            return true;
+        }
+    } pauseTime;
+
+	/// time at which node resumes from pause
+	class ResumeTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
+        bool filter(double time) {
+            if (node()->isPaused() &&
+                    time < value())
+                node()->predict();
+            return true;
+        }
+    } resumeTime;
+
+	/// time at which node begins its cycle
+	class StartTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
+        bool filter(double time) {
+            if (!node()->getIsActive() &&
+                    time < value())
+                node()->predict();
+            return true;
+        }
+    } startTime;
+
+	/// time at which node ends current cycle
+	class StopTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
+        bool filter(double time) {
+            if (node()->getIsActive() &&
+                    time < value())
+                node()->predict();
+            return true;
+        }
+    } stopTime;
 
 	/// when paused, node will freeze state
 	class IsPaused : public OutField<X3DTimeDependentNode, SFBool> {
         void action() { node()->onIsPaused(value()); }
     } isPaused;
-
-	/// time at which node becomes paused
-	DefaultInOutField<X3DTimeDependentNode, SFTime> pauseTime;
-
-	/// time at which node resumes from pause
-	DefaultInOutField<X3DTimeDependentNode, SFTime> resumeTime;
-
-	/// time at which node begins its cycle
-	DefaultInOutField<X3DTimeDependentNode, SFTime> startTime;
-
-	/// time at which node ends current cycle
-	DefaultInOutField<X3DTimeDependentNode, SFTime> stopTime;
 
 	/// time since cycle began
 	DefaultOutField<X3DTimeDependentNode, SFTime> elapsedTime;
@@ -72,9 +106,9 @@ public:
         loop(false);
     }
 
-    virtual void onLoopChanged(bool loop) {} // XXX abstract
     virtual void onIsPaused(bool paused) {} // XXX abstract
     virtual bool getIsActive() { return false; } // XXX abstract
+    virtual void predict() {} // XXX abstract
 
 private:
 
