@@ -72,7 +72,7 @@ public:
      * 
      * @returns field datatype
      */
-	X3DField::Type getType() const;
+	virtual X3DField::Type getType() const;
 
     /**
      * Get the access type of this field.
@@ -86,7 +86,7 @@ public:
      * 
      * @returns field datatype name
      */
-	const string& getTypeName() const;
+	virtual const string& getTypeName() const;
 
     /**
      * Clone this field by initializing its opposite member in

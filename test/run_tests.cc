@@ -34,6 +34,8 @@ Browser* browser() {
 	return Browser::getSingleton();
 }
 
+
+
 // here's the list of tests
 #include "internal/BrowserTests.h"
 #include "internal/SFImageTests.h"
@@ -49,6 +51,10 @@ Browser* browser() {
 #include "Core/X3DBindableNodeTests.h"
 #include "Test/TestNodeTests.h"
 #include "Test/TestSuiteTests.h"
+#include "X3DTests.h"
+
+// here's the xml tests
+TEST(X3D,TimeSensor) { runX3DTest("data/TimeSensor.xml"); }
 
 int main(int argc, char** argv) {
 #ifdef LIBXML_TREE_ENABLED

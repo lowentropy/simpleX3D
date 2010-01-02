@@ -1,10 +1,18 @@
 #include "internal/Route.h"
 
+#include <sstream>
+using std::ostringstream;
+
 namespace X3D {
 
 void Route::checkTypes() {
+    FieldDef* def = toField->definition;
     if (fromField->getType() != toField->getType()) {
-        throw X3DError("route field type mismatch");
+        ostringstream os;
+        os << "route field type mismatch (" <<
+                   "source=" << fromField->getTypeName() << ", " <<
+                   "target=" << toField->getTypeName() << ")";
+        throw X3DError(os.str());
     }
 }
 

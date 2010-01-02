@@ -1,0 +1,12 @@
+<X3D>
+    <Scene>
+        <TimeSensor DEF="ts" startTime="3.14"/>
+        <TestSuite DEF="suite">
+            <Test DEF="TriggerAsync">
+                <expect name="trigger" type="SFTime" value="3.14" testAt="3.14"/>
+            </Test>
+        </TestSuite>
+        <ROUTE fromNode="ts" fromField="cycleTime"
+            toNode="TriggerAsync" toField="trigger"/>
+    </Scene>
+</X3D>

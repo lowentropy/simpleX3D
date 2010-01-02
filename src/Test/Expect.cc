@@ -49,21 +49,21 @@ Expect::~Expect() {
     delete expected;
 }
 
+// unlike in-only, we have a value from the start
+const X3DField& Expect::get() const {
+    return *expected;
+}
+
 X3DField::Type Expect::getType() const {
     return expected->getType();
 }
 
-string Expect::getTypeName() const {
+const string& Expect::getTypeName() const {
     return expected->getTypeName();
 }
 
 SAIField::Access Expect::getAccess() const {
     return SAIField::INPUT_ONLY;
-}
-
-// unlike in-only, we have a value from the start
-const X3DField& Expect::get() const {
-    return *expected;
 }
 
 // unlike in-only, we have a value from the start

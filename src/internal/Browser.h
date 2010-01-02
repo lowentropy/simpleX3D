@@ -162,6 +162,22 @@ public:
         return node;
     }
 
+    /**
+     * Find the first ROOT node which is a descendant of the given type.
+     *
+     * @returns first instance, or NULL if none
+     */
+    template <class N> N* getFirst() {
+        list<Node*>::iterator it;
+        for (it = roots.begin(); it != roots.end(); it++) {
+            Node* node = *it;
+            N* test = dynamic_cast<N*>(node);
+            if (test != NULL)
+                return test;
+        }
+        return NULL;
+    }
+
 	/**
 	 * Templatized node creation. This version of createNode
 	 * will use the constructor of the actual template type,

@@ -35,6 +35,10 @@ public:
     /// Basic constructor.
     Route(SAIField* from, SAIField* to) :
             fromField(from), toField(to) {
+        if (from == NULL)
+            throw X3DError("source field is null");
+        if (to == NULL)
+            throw X3DError("target field is null");
         checkTypes();
     }
 

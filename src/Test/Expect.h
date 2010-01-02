@@ -39,11 +39,11 @@ public:
 
     Expect(TestNode* node, const string& type, const string& name, const string& value);
     virtual ~Expect();
-    X3DField::Type getType() const;
-    string getTypeName() const;
     SAIField::Access getAccess() const;
     const X3DField& get() const;
     X3DField& get();
+    X3DField::Type getType() const;
+    const string& getTypeName() const;
     void set(const X3DField& value);
     bool isDirty() const;
     void clearDirty();
