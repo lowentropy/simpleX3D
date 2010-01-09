@@ -7,6 +7,7 @@
 .deps
 .libs
 doc/html
+doc/grind
 Makefile
 Makefile.in
 aclocal.m4

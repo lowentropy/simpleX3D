@@ -1,0 +1,3 @@
+#!/bin/sh
+cd test
+LD_LIBRARY_PATH=../src/.libs valgrind --tool=memcheck --leak-check=full --log-file=../doc/grind .libs/run_tests
