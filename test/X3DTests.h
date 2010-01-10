@@ -14,23 +14,25 @@ void runX3DTest(const char* filename) {
     // print the failed tests' failure reasons
     list<TestNode*>& failed = suite->failed().getElements();
     list<TestNode*>::iterator it;
+    if (!failed.empty())
+        cout << "Some tests for '" << suite->desc() << "' failed:" << endl;
     for (it = failed.begin(); it != failed.end(); it++) {
         TestNode* test = *it;
-        cout << "FAILED: " << test->getName();
+        cout << "  " << test->getName();
         if (!test->desc().empty())
-            cout << ": '" << test->desc() << "'";
+            cout << ": " << test->desc();
         cout << endl;
         list<string>& reasons = test->reasons().getElements();
         list<string>::iterator r_it;
         for (r_it = reasons.begin(); r_it != reasons.end(); r_it++)
-            cout << '\t' << *r_it << endl;
+            cout << "    " << *r_it << endl;
     }
 
     delete world;
 
     // check correct num passed/failed
     if (suite->numFailed() > 0)
-        FAIL() << "Tests for '" << suite->desc() << "' failed";
+        FAIL();
     else
         SUCCEED();
 
