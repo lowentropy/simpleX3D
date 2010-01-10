@@ -17,8 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/errors.h"
-#include "internal/Node.h"
 #include "internal/NodeDef.h"
 
 namespace X3D {

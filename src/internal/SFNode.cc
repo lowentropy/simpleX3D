@@ -1,4 +1,3 @@
-#include "internal/SFNode.h"
 #include "internal/Browser.h"
 
 namespace X3D {

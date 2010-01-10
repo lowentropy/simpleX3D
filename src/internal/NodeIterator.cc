@@ -17,8 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/NodeIterator.h"
-#include "internal/Node.h"
 #include "internal/MF.h"
 
 namespace X3D {

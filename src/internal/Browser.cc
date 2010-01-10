@@ -18,7 +18,6 @@
  */
 
 #include "internal/Browser.h"
-#include "internal/FieldIterator.h"
 #include "internal/Route.h"
 
 namespace X3D {

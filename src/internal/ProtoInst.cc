@@ -17,7 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/ProtoInst.h"
 #include "internal/Browser.h"
 #include "internal/Route.h"
 

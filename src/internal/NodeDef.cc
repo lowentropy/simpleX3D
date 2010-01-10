@@ -17,9 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/Component.h"
-#include "internal/NodeDef.h"
-#include "internal/Node.h"
 #include "internal/Browser.h"
 
 #include <iostream>

@@ -18,7 +18,6 @@
  */
 
 #include "internal/Component.h"
-#include "internal/Profile.h"
 
 #include <iostream>
 

@@ -18,8 +18,6 @@
  */
 
 #include "internal/NodeDef.h"
-#include "internal/FieldDef.h"
-#include "internal/Node.h"
 
 #include <iostream>
 

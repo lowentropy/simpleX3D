@@ -17,8 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "internal/Prototype.h"
-#include "internal/Node.h"
 #include "internal/NodeDef.h"
 #include "internal/Route.h"
 

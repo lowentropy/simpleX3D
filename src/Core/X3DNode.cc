@@ -17,7 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Core/X3DNode.h"
 #include "internal/Browser.h"
 
 namespace X3D {

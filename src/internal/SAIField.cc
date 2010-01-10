@@ -17,11 +17,7 @@
 * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "internal/SAIField.h"
-#include "internal/FieldDef.h"
-#include "internal/Node.h"
 #include "internal/Route.h"
-#include "internal/SFNode.h"
 #include "internal/MF.h"
 
 using std::map;

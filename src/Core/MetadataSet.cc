@@ -17,8 +17,6 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Core/MetadataSet.h"
-#include "Core/MetadataString.h"
 #include "internal/Browser.h"
 
 namespace X3D {

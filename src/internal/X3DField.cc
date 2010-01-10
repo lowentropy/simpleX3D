@@ -1,4 +1,3 @@
-#include "internal/X3DField.h"
 #include "internal/MF.h"
 
 namespace X3D {
