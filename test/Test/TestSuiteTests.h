@@ -19,18 +19,20 @@ TEST(TestSuite, ExpectShouldFailIfNoEventReceived) {
     EXPECT_EQ(0, suite->numPassed());
     EXPECT_EQ(1, suite->numFailed());
 
-    // get the failed tests
-    TestNode* test = suite->failed().getElements().front();
-    ASSERT_THAT(test, NotNull());
+    if (suite->numFailed() == 1) {
+        // get the failed tests
+        TestNode* test = suite->failed().getElements().front();
+        ASSERT_THAT(test, NotNull());
 
-    // make sure it failed
-    EXPECT_EQ("OnlyTest", test->getName());
-    EXPECT_EQ(false, test->success());
+        // make sure it failed
+        EXPECT_EQ("OnlyTest", test->getName());
+        EXPECT_EQ(false, test->success());
 
-    // make sure the failure reason is correct
-    const list<string>& reasons = test->reasons().getElements();
-    EXPECT_EQ(1, reasons.size());
-    EXPECT_EQ("NeverActivated expected 216, but was never activated", reasons.front());
+        // make sure the failure reason is correct
+        const list<string>& reasons = test->reasons().getElements();
+        EXPECT_EQ(1, reasons.size());
+        EXPECT_EQ("NeverActivated expected 216, but was never activated", reasons.front());
+    }
 
     // clean up
     delete world;

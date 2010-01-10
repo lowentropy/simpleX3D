@@ -87,6 +87,7 @@ public:
             ss << " ";
         ss << message;
         this->message = ss.str();
+        constructError(); // XXX duplicate...
     }
     virtual ~X3DParserError() throw () {}
 };

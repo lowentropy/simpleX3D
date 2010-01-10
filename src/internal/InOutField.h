@@ -195,7 +195,9 @@ public:
         if (!node()->realized())
             throw X3DError("can't send output until realized");
         if (dirty)
-            throw X3DError("already wrote to this field");
+            throw X3DError(
+                string("already wrote to this field: ") +
+                    this->SAIField::getName());
         value.realize();
         this->value = value;
         dirty = true;

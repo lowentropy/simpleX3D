@@ -6,7 +6,10 @@
 
         <!-- define the test behavior -->
         <TestSuite desc='"Time Sensor"'>
-            <Test DEF="Async" desc='"Should fire single asynchronous event"'>
+            <Test DEF="Async"
+                    desc='"Should (fail to) fire single asynchronous event"'
+                    should='"fail"'
+                    failWith='"trigger expected 3.14, but was never activated"'>
                 <expect name="trigger" type="SFTime" value="3.14" testAt="3.14"/>
             </Test>
         </TestSuite>

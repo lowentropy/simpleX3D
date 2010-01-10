@@ -233,8 +233,8 @@ public:
             throw X3DError("node definition was never finished");
         N* node = new N();
         node->definition = this;
-        list<NodeDef*>::iterator it = chain.begin();
-        for (; it != chain.end(); it++)
+        list<NodeDef*>::reverse_iterator it;
+        for (it = chain.rbegin(); it != chain.rend(); it++)
             (*it)->setup(node);
         manage(node);
         // XXX: possibly memory leak if setup methods fail

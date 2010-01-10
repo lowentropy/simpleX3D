@@ -21,6 +21,7 @@
 #define _X3D_TESTSUITE_H_
 
 #include "Test/TestNode.h"
+#include <iostream>
 
 namespace X3D {
 namespace Test {
@@ -32,7 +33,14 @@ public:
     DefaultInOutField<TestSuite, SFString> desc;
     DefaultOutField<TestSuite, MFNode<TestNode> > passed;
     DefaultOutField<TestSuite, MFNode<TestNode> > failed;
-    DefaultOutField<TestSuite, SFInt32> numPassed;
+
+    class NumPassed : public DefaultOutField<TestSuite, SFInt32> {
+        bool filter(int num) {
+            std::cout << "SETTING numPassed: " << num << std::endl;
+            return true;
+        }
+    } numPassed;
+
     DefaultOutField<TestSuite, SFInt32> numFailed;
 
     void setup();

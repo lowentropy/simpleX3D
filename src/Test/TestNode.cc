@@ -1,10 +1,8 @@
 #include "Test/TestNode.h"
 #include "Test/Expect.h"
 
-// XXX
 #include <iostream>
-using std::cout;
-using std::endl;
+#include <sstream>
 
 namespace X3D {
 namespace Test {
@@ -23,6 +21,7 @@ const string& TestNode::defaultContainerField() {
 void TestNode::setup() {
     continuous(false);
     timeout(0);
+    should("pass");
 }
 
 SAIField* TestNode::getField(const string& name) {
@@ -63,16 +62,65 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
 bool TestNode::runTest() {
     string reason;
     map<string,Expect*>::iterator it;
+    list<string> fails;
+
     int passed = 0;
+    bool result;
+    bool shouldPass = (should() == "pass");
+
+    // run the expectations
     for (it = expects.begin(); it != expects.end(); it++) {
-        if (it->second->test(&reason))
-            passed++;
-        else
-            reasons().add(reason);
+        result = it->second->test(&reason);
+        if (shouldPass) {
+            if (result)
+                passed++;
+            else
+                reasons().add(reason);
+        } else if (!result) {
+            fails.push_back(reason);
+        }
     }
-    success(passed == expects.size());
-    if (!success())
+
+    // check expected failures
+    if (!shouldPass) {
+        const list<string>& expected = failWith().getElements();
+        // should have failed but didn't
+        if (fails.empty()) {
+            reasons().add("expected failure(s), but passed instead");
+        // failure reasons were given
+        } else if (!expected.empty()) {
+            // wrong number of failures
+            if (fails.size() != expected.size()) {
+                std::ostringstream os;
+                os << "incorrect number of failures: "
+                   << "expected " << expected.size() << ", "
+                   << "but was " << fails.size();
+                reasons().add(os.str());
+            // check failure reasons
+            } else {
+                list<string>::iterator r_it = fails.begin();
+                list<string>::const_iterator e_it = expected.begin();
+                for (; r_it != fails.end(); r_it++, e_it++) {
+                    if (*e_it != *r_it) {
+                        std::ostringstream os;
+                        os << "failed for wrong reason: "
+                           << "expected '" << *e_it << "', "
+                           << "but was '" << *r_it << "'";
+                        reasons().add(os.str());
+                    }
+                }
+            }
+        }
+    }
+
+    // determine overall success
+    if (reasons().getElements().empty()) {
+        success(true);
+    } else {
+        success(false);
         reasons.changed();
+    }
+
     return success();
 }
 

@@ -387,6 +387,16 @@ public:
                     "timeout", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
                     &TestNode::timeout);
 
+                // SFString [in,out] should (pass)
+                tn->createField(
+                    "should", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
+                    &TestNode::should);
+
+                // MFString [in,out] failWith
+                tn->createField(
+                    "failWith", X3DField::MFSTRING, SAIField::INPUT_OUTPUT,
+                    &TestNode::failWith);
+
                 // SFBool [out] success
                 tn->createField(
                     "success", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,

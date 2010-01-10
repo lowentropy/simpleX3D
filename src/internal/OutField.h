@@ -163,7 +163,9 @@ public:
         if (!node()->realized())
             throw X3DError("can't route event until realized", node());
         if (dirty)
-            throw X3DError("already wrote to this field", node());
+            throw X3DError(
+                string("already wrote to this field: ") +
+                    this->SAIField::getName(), node());
         this->value = value;
         this->value.realize();
         changed();
