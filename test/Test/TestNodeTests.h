@@ -6,8 +6,7 @@ using X3D::Test::Expect;
 TEST(TestNode, ShouldParseNodeWithExpects) {
     // load scene and get components
     World* world;
-    ASSERT_NO_THROW(world = World::read(browser(),
-        "data/TestNodeShouldParseNodeWithExpects.xml"));
+    ASSERT_NO_THROW(world = World::read(browser(), "data/Expects.xml"));
     Node* node = browser()->getNode("test");
     ASSERT_THAT(node, NotNull());
     Expect* e1 = node->getField<Expect>("expect1");
@@ -22,7 +21,6 @@ TEST(TestNode, ShouldParseNodeWithExpects) {
     list.add("baz");
     EXPECT_EQ(X3DField::MFSTRING, e2->get().getType());
     EXPECT_EQ(list, e2->get());
-    // TODO: fields need to be deleting their outgoing routes on destruction
     // TODO: replace complex error message construction with custom types
     //       (like basetypemismatch)
     delete world;

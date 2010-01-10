@@ -1,7 +1,7 @@
 #include "internal/World.h"
 
 TEST(XmlLoad, LoadedSceneShouldHaveCorrectStructure) {
-    World* world = World::read(browser(), "data/foo.xml");
+    World* world = World::read(browser(), "data/Parse.xml");
     Node* a = browser()->getNode("A");
     Node* b = browser()->getNode("B");
     ASSERT_THAT(a, NotNull());

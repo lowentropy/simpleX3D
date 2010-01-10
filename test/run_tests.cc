@@ -50,11 +50,12 @@ Browser* browser() {
 #include "internal/CloneTests.h"
 #include "Core/X3DBindableNodeTests.h"
 #include "Test/TestNodeTests.h"
-#include "Test/TestSuiteTests.h"
+//#include "Test/TestSuiteTests.h"
 #include "X3DTests.h"
 
 // here's the xml tests
-TEST(X3D,TimeSensor) { runX3DTest("data/TimeSensor.xml"); }
+TEST(X3D, TimeSensor) { runX3DTest("data/TimeSensor.xml"); }
+TEST(X3D, TestSuite) { runX3DTest("data/Unactivated.xml"); }
 
 int main(int argc, char** argv) {
 #ifdef LIBXML_TREE_ENABLED

@@ -33,14 +33,7 @@ public:
     DefaultInOutField<TestSuite, SFString> desc;
     DefaultOutField<TestSuite, MFNode<TestNode> > passed;
     DefaultOutField<TestSuite, MFNode<TestNode> > failed;
-
-    class NumPassed : public DefaultOutField<TestSuite, SFInt32> {
-        bool filter(int num) {
-            std::cout << "SETTING numPassed: " << num << std::endl;
-            return true;
-        }
-    } numPassed;
-
+    DefaultOutField<TestSuite, SFInt32> numPassed;
     DefaultOutField<TestSuite, SFInt32> numFailed;
 
     void setup();
