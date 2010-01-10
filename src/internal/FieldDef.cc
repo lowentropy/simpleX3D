@@ -19,6 +19,7 @@
 
 #include "internal/NodeDef.h"
 #include "internal/FieldDef.h"
+#include "internal/Node.h"
 
 #include <iostream>
 
@@ -27,6 +28,13 @@ using std::endl;
 
 namespace X3D {
 
+const string& FieldDef::getNodeName() {
+    return nodeDef->name;
+}
+
+const string& FieldDef::getNodeName(Node* node) {
+    return node->definition->name;
+}
 
 void FieldDef::print() {
     switch (access) {

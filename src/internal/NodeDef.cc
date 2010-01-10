@@ -20,6 +20,7 @@
 #include "internal/Component.h"
 #include "internal/NodeDef.h"
 #include "internal/Node.h"
+#include "internal/Browser.h"
 
 #include <iostream>
 
@@ -32,6 +33,10 @@ NodeDef::~NodeDef() {
     list<FieldDef*>::iterator it;
     for (it = field_list.begin(); it != field_list.end(); it++)
         delete *it;
+}
+
+void NodeDef::manage(Node* node) {
+    Browser::getSingleton()->addNode(node);
 }
 
 FieldDef* NodeDef::getFieldDef(const string& name) {

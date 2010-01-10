@@ -28,15 +28,20 @@ Browser* Browser::_inst;
 Browser::Browser() : profile(new Profile()) {
 	if (_inst == NULL)
 		_inst = this;
-	else
+	else {
+        delete profile;
 		throw X3DError("multiple browser instances!");
+    }
 	Builtin::init(profile);
 }
 
 void Browser::reset() {
 	list<Node*>::iterator it = nodes.begin();
-	for (; it != nodes.end(); it++)
-		delete *it;
+	for (; it != nodes.end(); it++) {
+        Node* node = *it;
+        node->dispose();
+        delete node;
+    }
     nodes.clear();
     persistent.clear();
     roots.clear();
@@ -54,11 +59,12 @@ Node* Browser::createNode(const std::string& name) {
 	NodeDef* def = profile->getNode(name);
 	if (def == NULL)
 		return NULL;
-	Node* node = def->create();
-	if (node == NULL)
-		return NULL;
-	nodes.push_back(node);
-	return node;
+    return def->create();
+}
+
+void Browser::addNode(Node* node) {
+    if (node != NULL)
+        nodes.push_back(node);
 }
 
 void Browser::route() {
@@ -111,8 +117,13 @@ Route* Browser::createRoute(SAIField* fromField, SAIField* toField) const {
         if ((*it)->toField == toField)
             return *it;
     Route* route = new Route(fromField, toField);
-    route->insert();
-    return route;
+    try {
+        route->insert();
+        return route;
+    } catch (X3DError e) {
+        delete route;
+        throw e;
+    }
 }
 
 Route* Browser::createRoute(const string& fromNode, const string& fromField,

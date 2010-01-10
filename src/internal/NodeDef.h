@@ -153,6 +153,11 @@ public:
 protected:
 
     /**
+     * Let the browser manage the memory for this node.
+     */
+    void manage(Node* node);
+
+    /**
      * Create a new prototype definition which is based on this
      * node definition as its interface.
      * 
@@ -231,6 +236,8 @@ public:
         list<NodeDef*>::iterator it = chain.begin();
         for (; it != chain.end(); it++)
             (*it)->setup(node);
+        manage(node);
+        // XXX: possibly memory leak if setup methods fail
         return node;
 	}
 

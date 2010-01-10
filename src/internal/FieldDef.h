@@ -21,6 +21,7 @@
 #define _X3D_FIELDDEF_H_
 
 #include "internal/SAIField.h"
+#include <sstream>
 
 namespace X3D {
 
@@ -88,6 +89,21 @@ public:
      */
     virtual const SAIField* getField(const Node* node) = 0;
 
+    /**
+     * Get the name of the node type to which this field should belong.
+     *
+     * @returns node type name
+     */
+    const string& getNodeName();
+
+    /**
+     * Get the name of the given node's type.
+     *
+     * @param node node to get typename for
+     * @returns node type name
+     */
+    const string& getNodeName(Node* node);
+
     /// @returns true if the field INPUT_ONLY or INPUT_OUTPUT
     bool inputCapable();
 
@@ -142,9 +158,16 @@ public:
      * @returns pointer to field object instance
      */
     virtual SAIField* getField(Node* node) {
+        if (node == NULL)
+            throw X3DError("called getField() on null node");
         N* ptr = dynamic_cast<N*>(node);
-        if (ptr == NULL)
-            throw X3DError("called getField() on node of wrong type");
+        if (ptr == NULL) {
+            std::ostringstream os;
+            os << "called getField() on node of wrong type;"
+               << " expected " << getNodeName()
+               << " but was " << getNodeName(node);
+            throw X3DError(os.str());
+        }
         return &(ptr->*field);
     }
 

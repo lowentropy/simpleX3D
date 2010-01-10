@@ -159,6 +159,8 @@ public:
     virtual void removeOutgoingRoute(Route* route);
     virtual const list<Route*>& getOutgoingRoutes() const;
 
+    void dispose();
+
 private:
 
     // no copy constructor

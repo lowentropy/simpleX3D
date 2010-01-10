@@ -23,19 +23,23 @@
 
 namespace X3D {
 
-const char* X3DError::what() const throw () {
+void X3DError::constructError() {
     std::stringstream ss;
     ss << message;
-    if (node != NULL) {
+    if (node != NULL && node->definition != NULL) {
         ss << " (node: ";
-        const string& type = node->definition->getName();
+        const string& type = node->definition->name;
         const string& name = node->getName();
         ss << type;
         if (!name.empty())
             ss << " \"" << name << '"';
         ss << ")";
     }
-    return ss.str().c_str();
+    fullError = ss.str();
+}
+
+const char* X3DError::what() const throw () {
+    return fullError.c_str();
 }
 
 }

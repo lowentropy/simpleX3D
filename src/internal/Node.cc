@@ -1,9 +1,16 @@
 #include "internal/Node.h"
 #include "internal/Browser.h"
+#include "internal/Route.h"
 
 namespace X3D {
 
 Node::~Node() {
+}
+
+void Node::dispose() {
+    FieldIterator it = fields(FieldIterator::ALL);
+    while (it.hasNext())
+        it.nextField()->dispose();
 }
 
 Browser* Node::browser() {

@@ -52,6 +52,7 @@ TEST(TypeSystem, RealizedInputFieldCallsAction) {
     ASSERT_ANY_THROW(node->testField("foo"));
     node->realize();
     node->testField("foo");
+    delete node;
 }
 
 class InOutNode : public Node {
@@ -77,6 +78,7 @@ TEST(TypeSystem, RealizedInputOutputFieldCallsFilter) {
     ASSERT_EQ(true, node->testField.isDirty()) << "filter should have returned true, marking field dirty";
     node->testField(2);
     ASSERT_EQ(5, node->testField()) << "filter should have returned false, so value should be unchanged";
+    delete node;
 }
 
 // TODO: tests of dynamic field lookup and access
@@ -94,6 +96,7 @@ TEST(TypeSystem, UnrealizedInputFieldShouldNotSet) {
     InFieldNode* node = new InFieldNode();
     node->testField.setNode(node);
     ASSERT_ANY_THROW(node->testField("foo"));
+    delete node;
 }
 /*
 TEST(TypeSystem, UnrealizedOutputFieldShouldNotGet) {

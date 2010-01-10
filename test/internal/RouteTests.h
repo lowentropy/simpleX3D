@@ -42,6 +42,7 @@ TEST(RouteStorage, RemoveRouteShouldUnlistFromFields) {
     Route* route = browser()->createRoute(from, "loop_changed", to, "set_enabled");
     ASSERT_THAT(route, NotNull());
     route->remove();
+    delete route;
     EXPECT_EQ(0, from->getField("loop")->getOutgoingRoutes().size());
     EXPECT_EQ(0, to->getField("enabled")->getIncomingRoutes().size());
     browser()->reset();
@@ -69,6 +70,7 @@ TEST(RouteStorage, InsertShouldFailIfRouteExists) {
     route->remove();
     Route* other = browser()->createRoute(from, "loop_changed", to, "set_enabled");
     EXPECT_ANY_THROW(route->insert());
+    delete route;
     browser()->reset();
 }
 

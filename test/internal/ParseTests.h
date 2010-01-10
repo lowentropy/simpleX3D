@@ -241,6 +241,7 @@ TEST(ParseTests, NodeShouldSucceedWithNullValue) {
     stringstream ss("NULL");
     EXPECT_EQ(true, n.parse(ss));
     EXPECT_EQ(NULL, n());
+    delete ts;
 }
 
 TEST(ParseTests, NodeShouldSucceedWithNamedNode) {

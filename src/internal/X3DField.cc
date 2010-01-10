@@ -152,7 +152,7 @@ X3DField* X3DField::create(const string& typeName) {
     	INSERT_TYPE_CON(MFVec4f)
     }
     if (!constructorMap.count(typeName))
-        throw new X3DError(string("invalid field type: ") + typeName);
+        throw X3DError(string("invalid field type: ") + typeName);
     return constructorMap[typeName]();
 }
 

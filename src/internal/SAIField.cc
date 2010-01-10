@@ -40,6 +40,21 @@ const string& SAIField::getName() const {
     return definition->name;
 }
 
+void deleteRoutes(const list<Route*>& routes) {
+    while (!routes.empty()) {
+        Route* route = routes.front();
+        route->remove();
+        delete route;
+    }
+}
+
+void SAIField::dispose() {
+    if (definition->inputCapable())
+        deleteRoutes(getIncomingRoutes());
+    if (definition->outputCapable())
+        deleteRoutes(getOutgoingRoutes());
+}
+
 SAIField* SAIField::cloneInto(Node* node, map<Node*,Node*>* mapping, bool shallow) {
     SAIField* target = definition->getField(node);
     if (!shallow && (definition->type == X3DField::SFNODE)) {

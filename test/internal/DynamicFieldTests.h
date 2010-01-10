@@ -1,9 +1,15 @@
 TEST(DynamicFields, CreateFieldByNameShouldMakeCorrectType) {
-    EXPECT_EQ(X3DField::SFBOOL, X3DField::create("SFBool")->getType());
-    EXPECT_EQ(X3DField::SFVEC3D, X3DField::create("SFVec3d")->getType());
-    EXPECT_EQ(X3DField::MFSTRING, X3DField::create("MFString")->getType());
-    EXPECT_EQ(X3DField::SFNODE, X3DField::create("SFNode")->getType());
-    EXPECT_EQ(X3DField::MFNODE, X3DField::create("MFNode")->getType());
+    X3DField* field;
+    EXPECT_EQ(X3DField::SFBOOL, (field = X3DField::create("SFBool"))->getType());
+    delete field;
+    EXPECT_EQ(X3DField::SFVEC3D, (field = X3DField::create("SFVec3d"))->getType());
+    delete field;
+    EXPECT_EQ(X3DField::MFSTRING, (field = X3DField::create("MFString"))->getType());
+    delete field;
+    EXPECT_EQ(X3DField::SFNODE, (field = X3DField::create("SFNode"))->getType());
+    delete field;
+    EXPECT_EQ(X3DField::MFNODE, (field = X3DField::create("MFNode"))->getType());
+    delete field;
 }
 
 TEST(DynamicFields, CreateBadFieldNameShouldThrowError) {

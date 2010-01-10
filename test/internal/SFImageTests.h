@@ -52,11 +52,16 @@ TEST(SFImage, ShouldThrowWhenAccessingOutOfBoundsCoord) {
  
 TEST(SFImage, ShouldAllowOnlyCorrectComponentsValues) {
 	SFImage* image;
-	ASSERT_NO_THROW(image = new SFImage(0,0,0)); // empty, default
+	ASSERT_NO_THROW(image = new SFImage(0,0,0));
+    delete image;
 	ASSERT_NO_THROW(image = new SFImage(1,1,1));
+    delete image;
 	ASSERT_NO_THROW(image = new SFImage(1,1,2));
+    delete image;
 	ASSERT_NO_THROW(image = new SFImage(1,1,3));
+    delete image;
 	ASSERT_NO_THROW(image = new SFImage(1,1,4));
+    delete image;
 	ASSERT_ANY_THROW(image = new SFImage(1,1,0));
 	ASSERT_ANY_THROW(image = new SFImage(1,1,5));
 }

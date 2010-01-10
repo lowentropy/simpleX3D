@@ -69,7 +69,9 @@ public:
 
     /// Virtual deconstructor.
 	virtual ~Node();
-    
+
+    void dispose();
+
     const string& getName() const {
         return name;
     }

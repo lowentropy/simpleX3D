@@ -42,12 +42,20 @@ class Node;
  */
 class X3DError : public std::exception {
 protected:
+    string fullError;
     string message;
     const Node* node;
 public:
-    X3DError() : message("<no message set>"), node(NULL) {}
-	X3DError(const std::string& message) : message(message), node(NULL) {}
-	X3DError(const std::string& message, const Node* node) : message(message), node(node) {}
+    X3DError() : message("<no message set>"), node(NULL) {
+        constructError();
+    }
+	X3DError(const std::string& message) : message(message), node(NULL) {
+        constructError();
+    }
+	X3DError(const std::string& message, const Node* node) : message(message), node(node) {
+        constructError();
+    }
+    void constructError();
     virtual ~X3DError() throw () {}
     const char* what() const throw ();
 };

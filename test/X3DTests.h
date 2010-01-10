@@ -26,6 +26,8 @@ void runX3DTest(const char* filename) {
             cout << '\t' << *r_it << endl;
     }
 
+    delete world;
+
     // check correct num passed/failed
     if (suite->numFailed() > 0)
         FAIL() << "Tests for '" << suite->desc() << "' failed";
@@ -34,5 +36,4 @@ void runX3DTest(const char* filename) {
 
     // clean up
     browser()->reset();
-    delete world;
 }

@@ -94,6 +94,14 @@ public:
 	Node* createNode(const std::string& name);
 
     /**
+     * Tell the browser to manage the memory for the given ndoe.
+     * The node will not be automatically persisted.
+     *
+     * @param node node to garbage collect
+     */
+    void addNode(Node* node);
+
+    /**
      * Clear the scene graph and free all resources.
      */
     void reset();
@@ -195,7 +203,6 @@ public:
 		N* node = def->create<N>();
 		if (node == NULL)
             throw X3DError("node creation failed");
-		nodes.push_back(node);
 		return node;
 	}
 

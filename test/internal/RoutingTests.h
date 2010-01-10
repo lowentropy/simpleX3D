@@ -87,7 +87,7 @@ TEST_F(RoutingTests, ManuallyRouteOutToIn) {
     RouteTestNode* to = browser()->createNode<RouteTestNode>("RouteTestNode");
     from->realize();
     to->realize();
-    browser()->createRoute(from, "testOut", to, "testIn");
+    Route* route = browser()->createRoute(from, "testOut", to, "testIn");
     EXPECT_EQ("", from->inValue);
     EXPECT_EQ("", from->outValue);
     EXPECT_EQ("", to->inValue);
