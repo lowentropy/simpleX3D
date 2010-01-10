@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd test
+LD_LIBRARY_PATH=../src/.libs .libs/run_tests
