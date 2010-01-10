@@ -41,10 +41,13 @@ public:
 	/// Period of time for repeated events.
 	class CycleInterval : public DefaultInOutField<TimeSensor, SFTime> {
 		bool filter(double interval) {
+            if (interval == value())
+                return false;
             if (node()->getIsActive() &&
                     node()->loop() &&
                     interval < value())
                 node()->predict();
+            return true;
 		}
 	} cycleInterval;
 
@@ -59,7 +62,7 @@ public:
 
     /// Setup function called on instantiation.
     virtual void setup() {
-        cycleInterval(1);
+        cycleInterval.value = 1;
     }
 
     /// callback for the cycleInterval_changed event

@@ -45,6 +45,8 @@ public:
 	/// if true, node will repeat its cycle
 	class Loop : public DefaultInOutField<X3DTimeDependentNode, SFBool> {
 		bool filter(bool loop) {
+            if (loop == value())
+                return false;
             if (node()->getIsActive() &&
                     loop)
                 node()->predict();
@@ -55,6 +57,8 @@ public:
 	/// time at which node becomes paused
 	class PauseTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
+            if (time == value())
+                return false;
             if (!node()->isPaused() &&
                     node()->getIsActive() &&
                     time < value())
@@ -66,6 +70,8 @@ public:
 	/// time at which node resumes from pause
 	class ResumeTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
+            if (time == value())
+                return false;
             if (node()->isPaused() &&
                     time < value())
                 node()->predict();
@@ -86,6 +92,8 @@ public:
 	/// time at which node ends current cycle
 	class StopTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
+            if (time == value())
+                return false;
             if (node()->getIsActive() &&
                     time < value())
                 node()->predict();
@@ -103,7 +111,7 @@ public:
 
     /// Setup function called on node instantiation.
     void setup() {
-        loop(false);
+        loop.value = false;
     }
 
     virtual void onIsPaused(bool paused) {} // XXX abstract
