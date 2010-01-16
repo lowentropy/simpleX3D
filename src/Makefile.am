@@ -23,7 +23,8 @@ libsimpleX3D_la_SOURCES = \
 	Core/MetadataString.cc \
     Test/TestSuite.cc \
     Test/TestNode.cc \
-    Test/Expect.cc
+    Test/Expect.cc \
+	Time/TimeSensor.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \

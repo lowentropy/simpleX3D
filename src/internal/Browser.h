@@ -65,6 +65,12 @@ private:
 	/// singleton instance
 	static Browser* _inst;
 
+    /// simulation time
+    double simTime;
+    
+    /// next time to wake up
+    double wakeupTime;
+
 public:
 
 	/// profile supported by the browser
@@ -102,6 +108,13 @@ public:
     void addNode(Node* node);
 
     /**
+     * Gets the current simulation tick time.
+     *
+     * @returns simulation time
+     */
+    double now();
+
+    /**
      * Clear the scene graph and free all resources.
      */
     void reset();
@@ -111,6 +124,17 @@ public:
      * the cascade is complete.
      */
     void route();
+
+    /**
+     * Tell the browser to wake up at this time at the latest.
+     * The browser may wake up any time before this, but must wake
+     * up at least once before or at this time. This call is ignored
+     * unless the browser is in simulation mode (as opposed to real-time
+     * mode, where the browser simply wakes up as often as possible).
+     *
+     * @param time next time to wake up
+     */
+    void wake(double time);
 
 	/**
 	 * Make the given node persistent, so that it will not be

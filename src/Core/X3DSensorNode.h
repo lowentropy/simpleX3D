@@ -60,6 +60,10 @@ public:
         enabled(true);
     }
 
+    /// Evaluate the sensor.
+    virtual void evaluate() { throw X3DError("ABSTRACT"); }
+        
+
 private:
 
     // no copy constructor

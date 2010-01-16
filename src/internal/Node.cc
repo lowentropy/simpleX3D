@@ -16,6 +16,10 @@ Browser* Node::browser() {
 	return Browser::getSingleton();
 }
 
+double Node::now() {
+    return Browser::getSingleton()->now();
+}
+
 SAIField* Node::getField(const string& name) {
     return definition->getField(name, this);
 }

@@ -180,6 +180,13 @@ public:
 	Browser* browser();
 
     /**
+     * Return the current simulation tick time.
+     *
+     * @returns simulation time
+     */
+    double now();
+
+    /**
      * Queue a field for routing.
      * FIXME this is not an ideal calling scenario.
      * 

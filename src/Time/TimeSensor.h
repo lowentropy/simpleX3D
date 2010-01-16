@@ -65,7 +65,23 @@ public:
         cycleInterval.value = 1;
     }
 
+    /// Predict next wakeup time.
+    virtual void predict();
+
+    /// Evaluate the sensor
+    virtual void evaluate();
+
 private:
+
+    double last;
+
+    void tick();
+    void frac();
+    void start();
+    void stop();
+    void pause();
+    void resume();
+    void cycle();
 
     // no copy constructor
     TimeSensor(const TimeSensor& node) { throw X3DError("COPY CONSTRUCTOR"); }

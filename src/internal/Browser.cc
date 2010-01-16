@@ -54,6 +54,15 @@ Browser::~Browser() {
 	delete profile;
 }
 
+double Browser::now() {
+    return simTime;
+}
+
+void Browser::wake(double time) {
+    if (time < wakeupTime)
+        wakeupTime = time;
+}
+
 Node* Browser::createNode(const std::string& name) {
 	NodeDef* def = profile->getNode(name);
 	if (def == NULL)
