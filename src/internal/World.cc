@@ -119,8 +119,68 @@ void World::parseMeta(xmlNode* xml) {
     xmlFree(content);
 }
 
+string World::getXmlAttr(xmlNode* xml, const string& name, const string& desc) {
+    xmlChar* name = xmlGetProp(xml, (xmlChar*) name.str());
+    if (name == NULL)
+        throw X3DParserError(desc + " missing", filename, xml);
+    string value = (char*) name;
+    xmlFree(name);
+    return value;
+}
+
 void World::parseProtoDeclare(xmlNode* xml) {
-    throw X3DParserError("prototyping not supported", filename, xml);
+    // set up new prototype object
+    string name = getXmlAttr(xml, "name", "prototype name");
+    bool haveInterface = false, haveBody = false;
+    Prototype* proto = new Prototype(name);
+    try {
+        // parse declaration contents
+        for (xmlNode* child = xml->children; child != NULL; child = child->next) {
+            if (child->type != XML_ELEMENT_NODE)
+                continue;
+            // single optional interface block
+            if (!strcmp("ProtoInterface", (char*) child->name)) {
+                if (haveInterface)
+                    throw X3DParserError("only one ProtoInterface allowed",
+                        filename, child);
+                parseProtoInterface(child, proto);
+                haveInterface = true;
+            // single required interface block
+            } else if (!strcmp("ProtoBody", (char*) child->name)) {
+                if (haveBody)
+                    throw X3DParserError("only one ProtoBody allowed",
+                        filename, child);
+                parseProtoBody(child, proto);
+                haveBody = true;
+            }
+            // require body
+            if (!haveBody)
+                throw X3DParserError("ProtoBody section required", filename, xml);
+        }
+    } catch (X3DError e) {
+        delete proto;
+        throw e;
+    }
+    // add the prototype to global scope
+    browser->addPrototype(proto);
+}
+
+void World::parseProtoInterface(xmlNode* xml, Prototype* proto) {
+    for (xmlNode* child = xml->children; child != NULL; child = child->next) {
+        if (child->type != XML_ELEMENT_NODE)
+            continue;
+        if (strcmp("field", (char*) child->name))
+            throw X3DParserError("only fields allowed here", filename, child);
+        string name = getXmlAttr(xml, "name", "proto-field name");
+        string typeName = getXmlAttr(xml, "type", "proto-field type");
+        string accessName = getXmlAttr(xml, "accessType", "proto-field access type");
+        X3DField::Type type = X3DField::getType(typeName);
+        SAIField::Access access = SAIField::getAccess(accessName);
+        proto->addField(new FieldDef(proto, type, access));
+    }
+}
+
+void World::parseProtoBody(xmlNode* xml, Prototype* proto) {
     // TODO
 }
 

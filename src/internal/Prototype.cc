@@ -50,10 +50,6 @@ void Prototype::addConnection(Route* route) {
     // TODO
 }
 
-void Prototype::addInternalRoute(Route* route) {
-    // TODO
-}
-
 void Prototype::addRoute(const string& fromNode, const string& fromField,
                          const string& toNode, const string& toField) {
     if (!defs.count(fromNode))
