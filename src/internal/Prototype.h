@@ -20,8 +20,10 @@
 #ifndef _X3D_PROTOTYPE_H_
 #define _X3D_PROTOTYPE_H_
 
+#include "internal/ProtoFieldDef.h"
 #include "internal/ProtoField.h"
 #include "internal/ProtoInst.h"
+#include "internal/Connect.h"
 
 #include <list>
 #include <vector>
@@ -79,7 +81,11 @@ public:
 
 public:
 
-    static Prototype* create(const string& name, Node* root);
+    static Prototype* create(
+            const string& name,
+            vector<Node*>& body,
+            vector<Connect>& connects,
+            vector<ProtoFieldDef*>& fields);
 };
 
 template <class N>

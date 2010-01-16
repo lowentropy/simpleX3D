@@ -71,7 +71,8 @@ void World::parseHead(xmlNode* xml) {
     }
 }
 
-void World::parseScene(xmlNode* xml, Node* node) {
+void World::parseScene(xmlNode* xml, Node* node,
+        vector<Node*>* nodes, vector<Connect>* connects) {
     for (xmlNode* child = xml->children; child != NULL; child = child->next) {
         if (child->type != XML_ELEMENT_NODE)
             continue;
@@ -89,8 +90,10 @@ void World::parseScene(xmlNode* xml, Node* node) {
             parseImport(child);
         } else if (!strcmp("EXPORT", (char*) child->name)) {
             parseExport(child);
+        } else if (!strcmp("IS", (char*) child->name)) {
+            parseConnects(child, node, connects);
         } else {
-            parseNode(child, node);
+            parseNode(child, node, nodes);
         }
     }
 }
@@ -119,8 +122,8 @@ void World::parseMeta(xmlNode* xml) {
     xmlFree(content);
 }
 
-string World::getXmlAttr(xmlNode* xml, const string& name, const string& desc) {
-    xmlChar* name = xmlGetProp(xml, (xmlChar*) name.str());
+string World::getXmlAttr(xmlNode* xml, const string& attr, const string& desc) {
+    xmlChar* name = xmlGetProp(xml, (xmlChar*) attr.c_str());
     if (name == NULL)
         throw X3DParserError(desc + " missing", filename, xml);
     string value = (char*) name;
@@ -128,44 +131,59 @@ string World::getXmlAttr(xmlNode* xml, const string& name, const string& desc) {
     return value;
 }
 
+/**
+ * Parse a prototype declaration.
+ * The idea here is that we can't instantiate the prototype yet because
+ * it's templatized to the root node of the body. So first we collect fields
+ * from the interface and nodes (including IS statements) from the body,
+ * then we take the first node and use it to construct the prototype, adding
+ * the fields and body nodes.
+ */
 void World::parseProtoDeclare(xmlNode* xml) {
-    // set up new prototype object
+    // set up collectors for prototype contents
     string name = getXmlAttr(xml, "name", "prototype name");
-    bool haveInterface = false, haveBody = false;
-    Prototype* proto = new Prototype(name);
-    try {
-        // parse declaration contents
-        for (xmlNode* child = xml->children; child != NULL; child = child->next) {
-            if (child->type != XML_ELEMENT_NODE)
-                continue;
-            // single optional interface block
-            if (!strcmp("ProtoInterface", (char*) child->name)) {
-                if (haveInterface)
-                    throw X3DParserError("only one ProtoInterface allowed",
-                        filename, child);
-                parseProtoInterface(child, proto);
-                haveInterface = true;
-            // single required interface block
-            } else if (!strcmp("ProtoBody", (char*) child->name)) {
-                if (haveBody)
-                    throw X3DParserError("only one ProtoBody allowed",
-                        filename, child);
-                parseProtoBody(child, proto);
-                haveBody = true;
-            }
-            // require body
-            if (!haveBody)
-                throw X3DParserError("ProtoBody section required", filename, xml);
+    xmlNodePtr body=NULL, interface=NULL;
+
+    // parse declaration contents
+    for (xmlNode* child = xml->children; child != NULL; child = child->next) {
+        if (child->type != XML_ELEMENT_NODE)
+            continue;
+        // single optional interface block
+        if (!strcmp("ProtoInterface", (char*) child->name)) {
+            if (interface != NULL)
+                throw X3DParserError(
+                        "only one ProtoInterface allowed", filename, child);
+            interface = child;
+        // single required interface block
+        } else if (!strcmp("ProtoBody", (char*) child->name)) {
+            if (body != NULL)
+                throw X3DParserError(
+                        "only one ProtoBody allowed", filename, child);
+            body = child;
         }
-    } catch (X3DError e) {
-        delete proto;
-        throw e;
     }
-    // add the prototype to global scope
-    browser->addPrototype(proto);
+
+    // require body
+    if (body == NULL)
+        throw X3DParserError("ProtoBody section required", filename, xml);
+
+    // get the body nodes
+    vector<Node*> bodyNodes;
+    vector<Connect> connects;
+    parseProtoBody(body, bodyNodes, connects);
+
+    // get the fields
+    vector<ProtoFieldDef*> fields;
+    if (interface != NULL)
+        parseProtoInterface(interface, fields);
+
+    // make the prototype and add to global scope
+    // TODO: create a scope class to hold named objects
+    Prototype* proto = Prototype::create(name, bodyNodes, connects, fields);
+    //browser->addPrototype(proto);
 }
 
-void World::parseProtoInterface(xmlNode* xml, Prototype* proto) {
+void World::parseProtoInterface(xmlNode* xml, vector<ProtoFieldDef*>& fields) {
     for (xmlNode* child = xml->children; child != NULL; child = child->next) {
         if (child->type != XML_ELEMENT_NODE)
             continue;
@@ -176,12 +194,15 @@ void World::parseProtoInterface(xmlNode* xml, Prototype* proto) {
         string accessName = getXmlAttr(xml, "accessType", "proto-field access type");
         X3DField::Type type = X3DField::getType(typeName);
         SAIField::Access access = SAIField::getAccess(accessName);
-        proto->addField(new FieldDef(proto, type, access));
+        // TODO
+        //X3DField* value = parseFieldValue(child, "value");
+        //fields.push_back(new ProtoFieldDef(type, access, value));
     }
 }
 
-void World::parseProtoBody(xmlNode* xml, Prototype* proto) {
-    // TODO
+void World::parseProtoBody(
+        xmlNode* xml, vector<Node*>& body, vector<Connect>& connects) {
+    parseScene(xml, NULL, &body, &connects);
 }
 
 void World::parseExternProtoDeclare(xmlNode* xml) {
@@ -216,7 +237,22 @@ void World::parseRoute(xmlNode* xml) {
     xmlFree(toField);
 }
 
-void World::parseNode(xmlNode* xml, Node* parent) {
+void World::parseConnects(xmlNode* xml, Node* node, vector<Connect>* connects) {
+    if (connects == NULL)
+        throw X3DParserError("<IS> not allowed here", filename, xml);
+    for (xmlNode* child = xml->children; child != NULL; child = child->next) {
+        if (child->type != XML_ELEMENT_NODE)
+            continue;
+        if (strcmp("connect", (char*) child->name))
+            throw X3DParserError("expected <connect>", filename, child);
+        string nodeField = getXmlAttr(child, "nodeField", "node field");
+        string protoField = getXmlAttr(child, "protoField", "interface field");
+        connects->push_back(Connect(node, nodeField, protoField));
+    }
+}
+
+void World::parseNode(xmlNode* xml, Node* parent,
+        vector<Node*>* nodes, vector<Connect>* connects) {
     Node* node = NULL;
     string field;
     // if it's a USE, then look up the node and use that
@@ -263,9 +299,11 @@ void World::parseNode(xmlNode* xml, Node* parent) {
             }
             xmlFree(value);
         }
-        parseScene(xml, node);
+        parseScene(xml, node, NULL, connects);
     }
-    if (parent == NULL) {
+    if (nodes != NULL) {
+        nodes->push_back(node);
+    } else if (parent == NULL) {
         browser->addRoot(node);
     } else {
         if (field.empty()) {

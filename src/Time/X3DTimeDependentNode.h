@@ -82,8 +82,9 @@ public:
 	/// time at which node begins its cycle
 	class StartTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            if (!node()->getIsActive() &&
-                    time < value())
+            if (node()->getIsActive())
+                return false;
+            if (time < value())
                 node()->predict();
             return true;
         }

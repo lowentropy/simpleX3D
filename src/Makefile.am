@@ -62,6 +62,8 @@ include_HEADERS = \
     internal/Prototype.h \
     internal/ProtoInst.h \
     internal/ProtoField.h \
+	internal/ProtoFieldDef.h \
+	internal/Connect.h \
     internal/metadata.h \
 	Core/X3DNode.h \
 	Core/X3DChildNode.h \

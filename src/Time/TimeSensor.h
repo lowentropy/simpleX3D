@@ -65,9 +65,6 @@ public:
         cycleInterval.value = 1;
     }
 
-    /// callback for the cycleInterval_changed event
-    virtual void onCycleIntervalChanged(double interval) {} // XXX: abstract
-
 private:
 
     // no copy constructor

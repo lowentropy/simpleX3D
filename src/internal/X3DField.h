@@ -41,10 +41,6 @@ namespace X3D {
  * !=, and the native-value access operator().
  */
 class X3DField {
-private:
-    typedef X3DField* (*TypeCon)();
-    static std::map<string, TypeCon> constructorMap;
-
 public:
 
     /// enumeration identifying x3d type
@@ -93,8 +89,18 @@ public:
 		MFVEC4F
 	} Type;
 
+private:
+
+    typedef X3DField* (*TypeCon)();
+    static std::map<string, TypeCon> constructorMap;
+    static std::map<string, Type> typeMap;
+
+public:
+
     /// string representation of x3d type names
     static const string typeNames[];
+
+    static Type getType(const string& typeName);
 
     /// convert enumeration to string for type names
     static const string& getTypeName(Type type);

@@ -82,6 +82,15 @@ public:
     virtual Access getAccess() const = 0;
 
     /**
+     * Get access level from string name. Used
+     * in prototype and script fields.
+     *
+     * @param name name of access level
+     * @returns actual access level enum
+     */
+    static Access getAccess(const string& name);
+
+    /**
      * Get the name of the datatype of this field. XXX: deprecated
      * 
      * @returns field datatype name

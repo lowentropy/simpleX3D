@@ -21,6 +21,8 @@
 #define _X3D_WORLD_H_
 
 #include "internal/Browser.h"
+#include "internal/ProtoFieldDef.h"
+
 #include <string>
 #include <libxml/parser.h>
 #include <libxml/tree.h>
@@ -58,16 +60,23 @@ public:
 
 protected:
 
+    string getXmlAttr(xmlNode* xml, const string& name, const string& desc);
+
     void parseRoot(xmlNode* xml);
     void parseHead(xmlNode* xml);
-    void parseScene(xmlNode* xml, Node* node);
+    void parseScene(xmlNode* xml, Node* node,
+            vector<Node*>* nodes=NULL, vector<Connect>* connects=NULL);
     void parseComponent(xmlNode* xml);
     void parseMeta(xmlNode* xml);
     void parseProtoDeclare(xmlNode* xml);
     void parseExternProtoDeclare(xmlNode* xml);
     void parseProtoInstance(xmlNode* xml, Node* parent);
+    void parseProtoInterface(xmlNode* xml, vector<ProtoFieldDef*>& fields);
+    void parseProtoBody(xmlNode* xml, vector<Node*>& nodes, vector<Connect>& connects);
     void parseRoute(xmlNode* xml);
-    void parseNode(xmlNode* xml, Node* parent);
+    void parseNode(xmlNode* xml, Node* parent,
+            vector<Node*>* nodes=NULL, vector<Connect>* connects=NULL);
+    void parseConnects(xmlNode* xml, Node* node, vector<Connect>* connects);
     void parseImport(xmlNode* xml);
     void parseExport(xmlNode* xml);
 };

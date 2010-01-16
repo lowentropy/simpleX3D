@@ -62,10 +62,18 @@ void Prototype::addRoute(const string& fromNode, const string& fromField,
     routes.push_back(route);
 }
 
-Prototype* Prototype::create(const string& name, Node* root) {
-  Prototype* proto = root->definition->createPrototype(name);
-  proto->setRootNode(root);
-  return proto;
+Prototype* Prototype::create(
+        const string& name,
+        vector<Node*>& body,
+        vector<Connect>& connects,
+        vector<ProtoFieldDef*>& fields) {
+    // TODO
+    /*
+    Prototype* proto = root->definition->createPrototype(name);
+    proto->setRootNode(root);
+    return proto;
+    */
+    return NULL;
 }
 
 Prototype::~Prototype() {

@@ -24,6 +24,18 @@ using std::map;
 
 namespace X3D {
 
+SAIField::Access SAIField::getAccess(const string& name) {
+    if (name == "initOnly")
+        return SAIField::INIT_ONLY;
+    else if (name == "inputOnly")
+        return SAIField::INPUT_ONLY;
+    else if (name == "outputOnly")
+        return SAIField::OUTPUT_ONLY;
+    else if (name == "inputOuypuy")
+        return SAIField::INPUT_OUTPUT;
+    throw X3DError(string("invalid access name: ") + name);
+}
+
 X3DField::Type SAIField::getType() const {
     return definition->type;
 }
