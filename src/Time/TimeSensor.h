@@ -43,10 +43,8 @@ public:
 		bool filter(double interval) {
             if (interval == value())
                 return false;
-            if (node()->getIsActive() &&
-                    node()->loop() &&
-                    interval < value())
-                node()->predict();
+            if (node()->getIsActive())
+                return false;
             return true;
 		}
 	} cycleInterval;
@@ -62,6 +60,7 @@ public:
 
     /// Setup function called on instantiation.
     virtual void setup() {
+        isActive.value = false;
         cycleInterval.value = 1;
     }
 
@@ -70,6 +69,9 @@ public:
 
     /// Evaluate the sensor
     virtual void evaluate();
+
+    /// Enable or disable the time sensor.
+    virtual void setEnabled(bool enabled);
 
 private:
 

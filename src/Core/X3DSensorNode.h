@@ -37,28 +37,25 @@ public:
 	
 	/// Whether sensor is enabled. Precondition for #isActive.
 	class Enabled : public DefaultInOutField<X3DSensorNode, SFBool> {
-		void action() {
-			node()->onEnabled(value());
-		}
-	} enabled;
+        bool filter(bool enabled) {
+            if (enabled == value())
+                return false;
+            value = enabled;
+            node()->setEnabled(enabled);
+            return true;
+        }
+    } enabled;
 
 	/// Whether sensor is currently active.
-	class IsActive : public OutField<X3DSensorNode, SFBool> {
-		void action() {
-			node()->onIsActive(value());
-		}
-	} isActive;
-
-	/// Callback for #enabled output event.
-	virtual void onEnabled(bool enabled) {};
-
-	/// Callback for #isActive output event.
-	virtual void onIsActive(bool active) {};
+	DefaultOutField<X3DSensorNode, SFBool> isActive;
 
     /// Setup function called on instantiation.
     void setup() {
-        enabled(true);
+        enabled.value = true;
     }
+
+    /// Enable or disable the sensor.
+    virtual void setEnabled(bool enabled) { throw X3DError("ABSTRACT"); }
 
     /// Evaluate the sensor.
     virtual void evaluate() { throw X3DError("ABSTRACT"); }

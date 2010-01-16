@@ -52,6 +52,16 @@ void TimeSensor::tick() {
     frac();
 }
 
+void TimeSensor::setEnabled(bool enabled) {
+    if (enabled) {
+        evaluate();
+    } else {
+        if (isActive() && !isPaused())
+            tick();
+        isActive(false);
+    }
+}
+
 void TimeSensor::evaluate() {
     if (!enabled())
         return;
@@ -99,16 +109,19 @@ void TimeSensor::start() {
     last = now();
     startTime(last);
     cycleTime(last);
+    isActive(true);
     frac();
 }
 
 void TimeSensor::stop() {
     stopTime(now());
+    isActive(false);
 }
 
 void TimeSensor::resume() {
     last = now();
     resumeTime(last);
+    isPaused(false);
     elapsedTime.changed();
     frac();
 }

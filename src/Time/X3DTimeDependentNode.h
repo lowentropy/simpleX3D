@@ -42,70 +42,49 @@ public:
 
     X3DTimeDependentNode() {}
 
+    // TODO: the spec says that events like startTime_changed and
+    // resumeTime_changed will output even when enabled is false.
+    // Which would be okay, but when enabled is true, these events
+    // are supposed to be generated only when this event actually
+    // occurs. When do we generated them if enabled is false?
+
 	/// if true, node will repeat its cycle
-	class Loop : public DefaultInOutField<X3DTimeDependentNode, SFBool> {
-		bool filter(bool loop) {
-            if (loop == value())
-                return false;
-            if (node()->getIsActive() &&
-                    loop)
-                node()->predict();
-            return true;
-        }
-	} loop;
+    DefaultInOutField<X3DTimeDependentNode, SFBool> loop;
 
 	/// time at which node becomes paused
 	class PauseTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            if (time == value())
-                return false;
-            if (!node()->isPaused() &&
-                    node()->getIsActive() &&
-                    time < value())
-                node()->predict();
-            return true;
+            value = time;
+            return false;
         }
     } pauseTime;
 
 	/// time at which node resumes from pause
 	class ResumeTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            if (time == value())
-                return false;
-            if (node()->isPaused() &&
-                    time < value())
-                node()->predict();
-            return true;
+            value = time;
+            return false;
         }
     } resumeTime;
 
 	/// time at which node begins its cycle
 	class StartTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            if (node()->getIsActive())
-                return false;
-            if (time < value())
-                node()->predict();
-            return true;
+            value = time;
+            return false;
         }
     } startTime;
 
 	/// time at which node ends current cycle
 	class StopTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            if (time == value())
-                return false;
-            if (node()->getIsActive() &&
-                    time < value())
-                node()->predict();
-            return true;
+            value = time;
+            return false;
         }
     } stopTime;
 
 	/// when paused, node will freeze state
-	class IsPaused : public OutField<X3DTimeDependentNode, SFBool> {
-        void action() { node()->onIsPaused(value()); }
-    } isPaused;
+	DefaultOutField<X3DTimeDependentNode, SFBool> isPaused;
 
 	/// time since cycle began
 	DefaultOutField<X3DTimeDependentNode, SFTime> elapsedTime;
@@ -115,7 +94,6 @@ public:
         loop.value = false;
     }
 
-    virtual void onIsPaused(bool paused) {} // XXX abstract
     virtual bool getIsActive() { return false; } // XXX abstract
     virtual void predict() {} // XXX abstract
 

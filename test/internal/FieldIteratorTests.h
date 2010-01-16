@@ -61,11 +61,14 @@ TEST(FieldIterator, TimeSensorHasDirtyFields) {
     ts->getField("enabled")->set(SFBool(false));   // order of these two
     ts->getField("loop")->set(SFBool(true));       //   is switched.
     ts->getField("cycleInterval")->set(SFTime(1)); // this one is unchanged
+    // isActive will fire after this, since node gets disabled
     FieldIterator it = ts->fields(FieldIterator::DIRTY);
     ASSERT_EQ(true, it.hasNext()) << "too few fields returned";
-    EXPECT_EQ("loop", it.nextFieldDef()->name);
+    EXPECT_EQ("loop", it.nextFieldDef()->name) << "first should be loop";
     ASSERT_EQ(true, it.hasNext()) << "too few fields returned";
-    EXPECT_EQ("enabled", it.nextFieldDef()->name);
+    EXPECT_EQ("enabled", it.nextFieldDef()->name) << "second should be enabled";
+    ASSERT_EQ(true, it.hasNext()) << "too few fields returned";
+    EXPECT_EQ("isActive", it.nextFieldDef()->name) << "third should be isActive";
     EXPECT_EQ(false, it.hasNext()) << "too many fields returned";
     browser()->reset();
 }
