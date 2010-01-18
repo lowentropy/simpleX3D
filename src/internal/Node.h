@@ -206,6 +206,18 @@ public:
      * @returns whether special parsing was performed
      */
     virtual bool parseSpecial(xmlNode* xml, const string& filename);
+
+    /// Returns whether node requires evaluate()
+    virtual bool isSensor() const;
+
+    /// Returns whether node requires predict()
+    virtual bool isTimer() const;
+
+    /// Evaluate as a sensor.
+    virtual void evaluate();
+
+    /// Predict as a timer.
+    virtual void predict();
 };
 
 }

@@ -45,7 +45,7 @@ public:
 	INLINE SFInt32(int x) : value(x) {}
 
     /// @returns native integer value
-	INLINE int operator()() { return value; }
+	INLINE int operator()() const { return value; }
 
     INLINE int operator++() { return ++value; }
 
@@ -65,13 +65,18 @@ public:
 	}
 
     /// Low-level assignment operator.
-	INLINE const SFInt32& operator=(int x) { value = x; return *this; }
+	INLINE SFInt32& operator=(int x) { value = x; return *this; }
 
     /// High-level assignment operator.
-	INLINE const SFInt32& operator=(const SFInt32& f) {
+	INLINE SFInt32& operator=(const SFInt32& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFInt32& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

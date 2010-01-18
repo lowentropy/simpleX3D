@@ -73,6 +73,9 @@ public:
     /// Enable or disable the time sensor.
     virtual void setEnabled(bool enabled);
 
+    /// We actually have a field for this now.
+    bool getIsActive() const;
+
 private:
 
     double last;

@@ -197,18 +197,6 @@ public:
 	}
 
 	/**
-	 * Vector assignment.
-	 * 
-	 * @param v vector to assign from
-	 * @returns reference to this
-	 */
-	template <typename U> SFVec2<T>& operator=(const SFVec2<U>& v) {
-		x = v.x;
-		y = v.y;
-		return *this;
-	}
-
-	/**
 	 * Vector in-place addition.
 	 * 
 	 * @param v vector to add
@@ -276,6 +264,11 @@ public:
 
     void print(ostream& os) const {
         os << x << ' ' << y;
+    }
+
+    SFVec2<T>& operator=(const SFVec2<T>& v) {
+        x = v.x;
+        y = v.y;
     }
 };
 
@@ -466,19 +459,6 @@ public:
 	}
 
 	/**
-	 * Vector assignment.
-	 * 
-	 * @param v vector to assign from
-	 * @returns reference to this
-	 */
-	template <typename U> SFVec3<T>& operator=(const SFVec3<U>& v) {
-		x = v.x;
-		y = v.y;
-		z = v.z;
-		return *this;
-	}
-
-	/**
 	 * Vector in-place addition.
 	 * 
 	 * @param v vector to add
@@ -527,7 +507,11 @@ public:
 	 * @returns reference to this
 	 */
 	template <typename U> SFVec3<T>& operator*=(const SFMatrix3<U>& m) {
-		return this->operator=(*this * m);
+        SFVec3<T> v = *this * m;
+        x = v.x;
+        y = v.y;
+        z = v.z;
+        return *this;
 	}
 
 	/**
@@ -594,6 +578,12 @@ public:
 
     void print(ostream& os) const {
         os << x << ' ' << y << ' ' << z;
+    }
+
+    SFVec3<T>& operator=(const SFVec3<T>& v) {
+        x = v.x;
+        y = v.y;
+        z = v.z;
     }
 };
 
@@ -750,20 +740,6 @@ public:
 	}
 
 	/**
-	 * Vector assignment.
-	 * 
-	 * @param v vector to assign from
-	 * @returns reference to this
-	 */
-	template <typename U> SFVec4<T>& operator=(const SFVec4<U>& v) {
-		x = v.x;
-		y = v.y;
-		z = v.z;
-		w = v.w;
-		return *this;
-	}
-
-	/**
 	 * Vector in-place addition.
 	 * 
 	 * @param v vector to add
@@ -827,7 +803,12 @@ public:
 	 * @returns reference to this
 	 */
 	template <typename U> SFVec4<T>& operator*=(const SFMatrix4<U>& m) {
-		return this->operator=(*this * m);
+        SFVec4<T> v = *this * m;
+        x = v.x;
+        y = v.y;
+        z = v.z;
+        w = v.w;
+        return *this;
 	}
 
     /**
@@ -852,6 +833,12 @@ public:
 
     void print(ostream& os) const {
         os << x << ' ' << y << ' ' << z << ' ' << w;
+    }
+
+    SFVec4<T>& operator=(const SFVec4<T>& v) {
+        x = v.x;
+        y = v.y;
+        z = v.z;
     }
 };
 
@@ -927,6 +914,12 @@ public:
      */
     bool operator!=(const X3DField& f) const {
         return this->SFVec2<float>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFVec2f& operator()(const X3DField& f) {
+        this->SFVec2<float>::operator=(unwrap(f));
+        return *this;
     }
 };
 
@@ -1010,6 +1003,12 @@ public:
     bool operator!=(const X3DField& f) const {
         return this->SFVec2<double>::operator!=(unwrap(f));
     }
+
+    /// High-level assignment operator
+    SFVec2d& operator()(const X3DField& f) {
+        this->SFVec2<double>::operator=(unwrap(f));
+        return *this;
+    }
 };
 
 /// 3d vector of floats
@@ -1085,6 +1084,12 @@ public:
      */
     bool operator!=(const X3DField& f) const {
         return this->SFVec3<float>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFVec3f& operator()(const X3DField& f) {
+        this->SFVec3<float>::operator=(unwrap(f));
+        return *this;
     }
 };
 
@@ -1169,6 +1174,12 @@ public:
     bool operator!=(const X3DField& f) const {
         return this->SFVec3<double>::operator!=(unwrap(f));
     }
+
+    /// High-level assignment operator
+    SFVec3d& operator()(const X3DField& f) {
+        this->SFVec3<double>::operator=(unwrap(f));
+        return *this;
+    }
 };
 
 /// 4d vector of floats
@@ -1245,6 +1256,12 @@ public:
      */
     bool operator!=(const X3DField& f) const {
         return this->SFVec4<float>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFVec4f& operator()(const X3DField& f) {
+        this->SFVec4<float>::operator=(unwrap(f));
+        return *this;
     }
 };
 
@@ -1329,6 +1346,12 @@ public:
      */
     bool operator!=(const X3DField& f) const {
         return this->SFVec4<double>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFVec4d& operator()(const X3DField& f) {
+        this->SFVec4<double>::operator=(unwrap(f));
+        return *this;
     }
 };
 

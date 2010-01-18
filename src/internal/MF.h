@@ -58,6 +58,9 @@ public:\
     INLINE bool operator!=(const X3DField& value) const { \
         return this->MFBase<SF>::operator!=(unwrap(value)); \
     } \
+    MF& operator()(const X3DField& value) { \
+        throw X3DError("list assignment not supported"); \
+    } \
     bool parse(istream& ss) { \
         SFOBJ x; \
         ss >> std::ws; \
@@ -374,6 +377,10 @@ public:
 
     bool operator!=(const X3DField& f) const {
         return this->MFBase<N*>::operator!=(unwrap(f));
+    }
+
+    MFNode<N>& operator()(const X3DField& f) {
+        throw new X3DError("list assignment not supported");
     }
 };
 

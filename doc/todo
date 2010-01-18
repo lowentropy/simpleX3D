@@ -1,12 +1,6 @@
 take out get/set silently... use .value
-remove node deletion from proto stuff
 test shallow clone
+
 since specialized fields subclass SAIField, don't put Definition* in there... put it as a base of InField etc.
+expects and other special fields are going to get messed up by dispose and cloning
 test that special fields can be cloned
-when we have real node gc, this is how routes get deleted:
-    mark nodes
-    iterate routes
-        if source marked but not target, remove from target incoming
-        if target marked but not source, remove from source outgoing
-        if source or target marked, delete
-    sweep nodes

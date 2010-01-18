@@ -55,7 +55,7 @@ Browser* browser() {
 
 // here's the xml tests
 TEST(X3D, TimeSensor) { runX3DTest("data/TimeSensor.xml"); }
-TEST(X3D, TestSuite) { runX3DTest("data/Unactivated.xml"); }
+TEST(X3D, Unactivated) { runX3DTest("data/Unactivated.xml"); }
 
 int main(int argc, char** argv) {
 #ifdef LIBXML_TREE_ENABLED

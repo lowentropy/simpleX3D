@@ -148,7 +148,15 @@ public:
      *
      * @param i the image to copy
      */
-    const SFImage& operator=(const SFImage& i);
+    SFImage& operator=(const SFImage& i);
+
+    /**
+     * High-level assignment operator.
+     *
+     * @param f field to assign from
+     * @returns reference to this
+     */
+    SFImage& operator()(const X3DField& f);
 
     /**
      * Generic comparison operator.

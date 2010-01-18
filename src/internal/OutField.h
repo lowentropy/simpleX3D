@@ -160,6 +160,10 @@ public:
      * @param value native value to set
      */
     INLINE void operator()(CT value) {
+        send(value);
+    }
+
+    INLINE void send(CT value) {
         if (!node()->realized())
             throw X3DError("can't route event until realized", node());
         if (dirty)

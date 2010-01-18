@@ -18,38 +18,32 @@
  */
 
 #include "internal/Browser.h"
-#include "Time/TimeSensor.h"
+
+#include <iostream>
+using std::cout;
+using std::endl;
 
 namespace X3D {
 namespace Time {
 
 void TimeSensor::predict() {
     double next = -1;
-    if (!enabled())
+    if (!enabled()) {
         return;
-    else if (isPaused())
+    } else if (isPaused()) {
         next = resumeTime();
-    else if (!isActive()) {
+    } else if (!isActive()) {
         if (startTime() > now())
             next = startTime();
     } else {
         next = cycleTime() + cycleInterval();
-        if (stopTime() > now())
-            if (stopTime() < next)
-                next = stopTime();
-        if (pauseTime() > now())
-            if (pauseTime() < next)
-                next = pauseTime();
+        if (stopTime() > now() && stopTime() < next)
+            next = stopTime();
+        if (pauseTime() > now() && pauseTime() < next)
+            next = pauseTime();
     }
     if (next > now())
         browser()->wake(next);
-}
-
-void TimeSensor::tick() {
-    time(now());
-    elapsedTime(elapsedTime.value() + now() - last);
-    last = now();
-    frac();
 }
 
 void TimeSensor::setEnabled(bool enabled) {
@@ -96,39 +90,44 @@ void TimeSensor::evaluate() {
     } else if (cycleOver) {
         cycle();
     }
+}
 
-    predict();
+void TimeSensor::tick() {
+    time.send(now());
+    elapsedTime.send(elapsedTime() + now() - last);
+    // cout << "TICK: " << last << " -> " << now() << ": " << elapsedTime() << endl;
+    last = now();
+    frac();
 }
 
 void TimeSensor::pause() {
-    pauseTime(now());
-    isPaused(true);
+    pauseTime.send(now());
+    isPaused.send(true);
 }
 
 void TimeSensor::start() {
     last = now();
-    startTime(last);
-    cycleTime(last);
-    isActive(true);
-    frac();
+    startTime.send(last);
+    cycleTime.send(last);
+    isActive.send(true);
+    tick();
 }
 
 void TimeSensor::stop() {
-    stopTime(now());
-    isActive(false);
+    stopTime.send(now());
+    isActive.send(false);
 }
 
 void TimeSensor::resume() {
     last = now();
-    resumeTime(last);
-    isPaused(false);
-    elapsedTime.changed();
-    frac();
+    resumeTime.send(last);
+    isPaused.send(false);
+    tick();
 }
 
 void TimeSensor::cycle() {
     if (loop()) {
-        cycleTime(now());
+        cycleTime.send(now());
     } else {
         stop();
     }
@@ -139,7 +138,11 @@ void TimeSensor::frac() {
     frac -= (double) (int) frac;
     if (frac == 0 && now() > startTime())
         frac = 1;
-    fraction_changed(frac);
+    fraction_changed.send(frac);
+}
+
+bool TimeSensor::getIsActive() const {
+    return isActive.value();
 }
 
 }}

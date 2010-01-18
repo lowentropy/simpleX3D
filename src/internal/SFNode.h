@@ -129,13 +129,18 @@ public:
     }
 
     /// Low-level assignment operator.
-	INLINE const SFNode<N>& operator=(N* value) { this->value = value; }
+	INLINE SFNode<N>& operator=(N* value) { this->value = value; }
 
     /// High-level assignment operator.
-	INLINE const SFNode<N>& operator=(const SFNode<N>& f) {
+	INLINE SFNode<N>& operator=(const SFNode<N>& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFNode<N>& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

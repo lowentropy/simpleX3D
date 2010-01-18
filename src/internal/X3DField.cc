@@ -157,6 +157,11 @@ X3DField::Type X3DField::getType(const string& typeName) {
     return typeMap[typeName];
 }
 
+// XXX this is duuuuuuumb
+X3DField* X3DField::create(Type type) {
+    return create(getTypeName(type));
+}
+
 X3DField* X3DField::create(const string& typeName) {
     if (constructorMap.empty()) {
     	INSERT_TYPE_CON(SFBool)

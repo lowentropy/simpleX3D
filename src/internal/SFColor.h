@@ -86,10 +86,15 @@ public:
 	 * 
 	 * @param c color to copy from
 	 */
-	INLINE const SFColor& operator=(const SFColor& c) {
+	INLINE SFColor& operator=(const SFColor& c) {
 		r = c.r; g = c.g; b = c.b;
 		return *this;
 	}
+
+    /// High-level generic assignment operator
+    SFColor& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
 	/**
 	 * Full constructor.
@@ -240,7 +245,7 @@ public:
 	 * 
 	 * @param c color to copy from, and set alpha to 1.0
 	 */
-	INLINE const SFColorRGBA& operator=(const SFColor& c) {
+	INLINE SFColorRGBA& operator=(const SFColor& c) {
 		r = c.r; g = c.g; b = c.b; a = 1;
 		return *this;
 	}
@@ -250,10 +255,15 @@ public:
 	 * 
 	 * @param c color to copy from.
 	 */
-	INLINE const SFColorRGBA& operator=(const SFColorRGBA& c) {
+	INLINE SFColorRGBA& operator=(const SFColorRGBA& c) {
 		r = c.r; g = c.g; b = c.b; a = c.a;
 		return *this;
 	}
+
+    /// High-level generic assignment operator
+    SFColorRGBA& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
 	/**
 	 * Full constructor.

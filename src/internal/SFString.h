@@ -71,16 +71,21 @@ public:
 	}
 
     /// Low-level assignment operator
-	INLINE const SFString& operator=(const string& x) {
+	INLINE SFString& operator=(const string& x) {
 		value = x;
 		return *this;
 	}
 
     /// High-level assignment operator
-	INLINE const SFString& operator=(const SFString& f) {
+	INLINE SFString& operator=(const SFString& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFString& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

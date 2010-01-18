@@ -45,7 +45,7 @@ public:
 	INLINE SFBool(bool x) : value(x) {}
 
     /// Low-level value access.
-	INLINE bool operator()() { return value; }
+	INLINE bool operator()() const { return value; }
 
     /// Unwraps generic value.
 	INLINE static bool unwrap(const X3DField& f) {
@@ -57,13 +57,18 @@ public:
 	}
 
     /// Low-level assignment operator
-	INLINE const SFBool& operator=(bool x) { value = x; return *this; }
+	INLINE SFBool& operator=(bool x) { value = x; return *this; }
 
     /// High-level assignment operator
-	INLINE const SFBool& operator=(const SFBool& f) {
+	INLINE SFBool& operator=(const SFBool& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFBool& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

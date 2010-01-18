@@ -45,7 +45,7 @@ public:
 	INLINE SFDouble(double x) : value(x) {}
 
     /// @returns native value
-	INLINE double operator()() { return value; }
+	INLINE double operator()() const { return value; }
 
     /// Unwrap generic SFDouble value
 	INLINE static double unwrap(const X3DField& f) {
@@ -57,13 +57,18 @@ public:
 	}
 
     /// Low-level assignment operator
-	INLINE const SFDouble& operator=(double x) { value = x; return *this; }
+	INLINE SFDouble& operator=(double x) { value = x; return *this; }
 
     /// High-level assignment operator
-	INLINE const SFDouble& operator=(const SFDouble& f) {
+	INLINE SFDouble& operator=(const SFDouble& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level generic assignment operator
+    SFDouble& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

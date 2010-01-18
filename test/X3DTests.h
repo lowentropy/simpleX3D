@@ -28,14 +28,15 @@ void runX3DTest(const char* filename) {
             cout << "    " << *r_it << endl;
     }
 
+    int numFailed = suite->numFailed();
+
+    // clean up
     delete world;
+    browser()->reset();
 
     // check correct num passed/failed
-    if (suite->numFailed() > 0)
+    if (numFailed > 0)
         FAIL();
     else
         SUCCEED();
-
-    // clean up
-    browser()->reset();
 }

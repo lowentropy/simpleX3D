@@ -46,7 +46,7 @@ public:
 	INLINE SFTime(double x) : value(x) {}
 
     /// @returns native time value (as double)
-	INLINE double operator()() { return value; }
+	INLINE double operator()() const { return value; }
 
     /// Unwrap generic time field (as double)
 	INLINE static double unwrap(const X3DField& f) {
@@ -58,13 +58,18 @@ public:
 	}
 
     /// Low-level assignment operator.
-	INLINE const SFTime& operator=(double x) { value = x; return *this; }
+	INLINE SFTime& operator=(double x) { value = x; return *this; }
 
     /// High-level assignment operator.
-	INLINE const SFTime& operator=(const SFTime& f) {
+	INLINE SFTime& operator=(const SFTime& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFTime& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

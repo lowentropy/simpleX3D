@@ -79,6 +79,9 @@ private:
 
     /// Make sure from and to field types are the same
     void checkTypes();
+
+    /// Log a route firing event with the given value
+    void logEvent(const X3DField& value) const;
 };
 
 }

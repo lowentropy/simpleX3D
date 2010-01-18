@@ -45,7 +45,7 @@ public:
 	INLINE SFFloat(float x) : value(x) {}
 
     /// @returns native value
-	INLINE float operator()() { return value; }
+	INLINE float operator()() const { return value; }
 
     /// Unwrap generic SFFloat value
 	INLINE static float unwrap(const X3DField& f) {
@@ -57,13 +57,18 @@ public:
 	}
 
     /// Low-level assignment operator
-	INLINE const SFFloat& operator=(float x) { value = x; return *this; }
+	INLINE SFFloat& operator=(float x) { value = x; return *this; }
 
     /// High-level assignment operator
-	INLINE const SFFloat& operator=(const SFFloat& f) {
+	INLINE SFFloat& operator=(const SFFloat& f) {
 		value = f.value;
 		return *this;
 	}
+
+    /// High-level generic assignment operator
+    SFFloat& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }

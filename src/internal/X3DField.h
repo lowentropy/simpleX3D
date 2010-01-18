@@ -124,6 +124,7 @@ public:
      */
 	virtual Type getType() const = 0;
 
+    virtual X3DField& operator()(const X3DField& f) = 0;
     virtual bool operator==(const X3DField& f) const = 0;
     virtual bool operator!=(const X3DField& f) const = 0;
 
@@ -159,6 +160,15 @@ public:
      * @returns new instance of field container
      */
     static X3DField* create(const string& typeName);
+
+    /**
+     * Create a new x3dfield.
+     * The memory for the field is the responsibility of the caller.
+     * 
+     * @param type type of x3d field
+     * @returns new instance of field container
+     */
+    static X3DField* create(Type type);
 };
 
 std::ostream& operator<<(std::ostream& os, const X3DField& f);

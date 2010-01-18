@@ -1,5 +1,26 @@
+/*
+ * Copyright 2009 Nathan Matthews <lowentropy@gmail.com>
+ *
+ * This file is part of SimpleX3D.
+ * 
+ * SimpleX3D is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * SimpleX3D is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "internal/Browser.h"
 #include "Test/Expect.h"
 
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 
@@ -46,8 +67,15 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
         throw X3DParserError("missing expect type", filename, xml);
     // get the value (optional)
     char* value = (char*) xmlGetProp(xml, (xmlChar*) "value");
+    // get the testAt
+    double testAt = -1;
+    char* testAtStr = (char*) xmlGetProp(xml, (xmlChar*) "testAt");
+    if (testAtStr != NULL) {
+        testAt = atof(testAtStr);
+        xmlFree(testAtStr); // TODO: better parsing? yes?
+    }
     // create the expectation field
-    Expect* expect = new Expect(this, type, name, value ? value : "");
+    Expect* expect = new Expect(this, type, name, value ? value : "", testAt);
     // clean up some memory
     if (value != NULL)
         xmlFree((xmlChar*) value);
@@ -62,6 +90,10 @@ bool TestNode::runTest() {
     string reason;
     map<string,Expect*>::iterator it;
     list<string> fails;
+
+    // run the simulation to completion
+    while (browser()->simulate())
+        ; // cout << "TICK: " << browser()->now() << endl;
 
     int passed = 0;
     bool result;
@@ -121,6 +153,17 @@ bool TestNode::runTest() {
     }
 
     return success();
+}
+
+bool TestNode::isTimer() const {
+    return true;
+}
+
+void TestNode::predict() {
+    // predictions for expects
+    map<string,Expect*>::iterator it;
+    for (it = expects.begin(); it != expects.end(); it++)
+        it->second->predict();
 }
 
 }}

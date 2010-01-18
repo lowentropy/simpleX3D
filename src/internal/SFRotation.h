@@ -66,13 +66,18 @@ public:
 	}
 
     /// Native assignment operator.
-	INLINE const SFRotation& operator=(const SFRotation& r) {
+	INLINE SFRotation& operator=(const SFRotation& r) {
         x = r.x;
         y = r.y;
         z = r.z;
         a = r.a;
 		return *this;
 	}
+
+    /// High-level assignment operator
+    SFRotation& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 
     /// @returns native rotation value
 	INLINE SFRotation& operator()() {

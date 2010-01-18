@@ -96,7 +96,7 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix3<T>& operator=(const SFMatrix3<U>& m) {
+	SFMatrix3<T>& operator=(const SFMatrix3<T>& m) {
 		return this->operator=(m.array());
 	}
 
@@ -292,7 +292,7 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix4<T>& operator=(const SFMatrix4<U>& m) {
+	SFMatrix4<T>& operator=(const SFMatrix4<T>& m) {
 		return this->operator=(m.array());
 	}
 
@@ -502,6 +502,11 @@ public:
     bool operator!=(const X3DField& f) const {
         return this->SFMatrix3<float>::operator!=(unwrap(f));
     }
+
+    /// High-level assignment operator
+    SFMatrix3f& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 };
 
 /// 3x3 Matrix of doubles
@@ -575,6 +580,11 @@ public:
     bool operator!=(const X3DField& f) const {
         return this->SFMatrix3<double>::operator!=(unwrap(f));
     }
+
+    /// High-level assignment operator
+    SFMatrix3d& operator()(const X3DField& f) {
+        return *this = unwrap(f);
+    }
 };
 
 /// 4x4 Matrix of floats
@@ -640,6 +650,11 @@ public:
     /// Generic comparison operator.
     bool operator!=(const X3DField& f) const {
         return this->SFMatrix4<float>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFMatrix4f& operator()(const X3DField& f) {
+        return *this = unwrap(f);
     }
 };
 
@@ -713,6 +728,11 @@ public:
     /// Generic comparison operator.
     bool operator!=(const X3DField& f) const {
         return this->SFMatrix4<double>::operator!=(unwrap(f));
+    }
+
+    /// High-level assignment operator
+    SFMatrix4d& operator()(const X3DField& f) {
+        return *this = unwrap(f);
     }
 };
 

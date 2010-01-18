@@ -57,9 +57,8 @@ public:
     /// Enable or disable the sensor.
     virtual void setEnabled(bool enabled) { throw X3DError("ABSTRACT"); }
 
-    /// Evaluate the sensor.
-    virtual void evaluate() { throw X3DError("ABSTRACT"); }
-        
+    /// We are a sensor
+    bool isSensor() const { return true; }
 
 private:
 

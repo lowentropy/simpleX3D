@@ -57,7 +57,7 @@ public:
     virtual ~SAIField() {}
 
     /** @returns the name of the field */
-    const string& getName() const;
+    virtual const string& getName() const;
 
     /**
      * Get a pointer to the node which owns this field. Subclasses

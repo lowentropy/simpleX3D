@@ -2,20 +2,38 @@
     <Scene>
 
         <!-- set up the test elements -->
-        <TimeSensor DEF="ts" startTime="3.14"/>
+        <TimeSensor DEF='ts' startTime='2' cycleInterval='2'/>
 
         <!-- define the test behavior -->
-        <TestSuite desc='"Time Sensor"'>
-            <Test DEF="Async"
-                    desc='"Should (fail to) fire single asynchronous event"'
-                    should='"fail"'
-                    failWith='"trigger expected 3.14, but was never activated"'>
-                <expect name="trigger" type="SFTime" value="3.14" testAt="3.14"/>
+        <TestSuite desc='"TimeSensor"'>
+            <Test DEF='test' desc='"Should get events from timesensor"'>
+
+                <expect name='time' type='SFTime' value='3.14' testAt='3.14'/>
+                <expect name='start' type='SFTime' value='2'/>
+                <expect name='stop' type='SFTime' value='4'/>
+                <expect name='frac' type='SFFloat' value='0.5' testAt='3'/>
+                <!--<expect name='elapsed' type='SFTime' value='2'/>-->
+
             </Test>
         </TestSuite>
 
         <!-- route scene to tests -->
-        <ROUTE fromNode="ts" fromField="cycleTime"
-            toNode="Async" toField="trigger"/>
+
+        <ROUTE fromNode='ts' fromField='time'
+               toNode='test' toField='time'/>
+
+        <ROUTE fromNode='ts' fromField='startTime'
+               toNode='test' toField='start'/>
+
+        <ROUTE fromNode='ts' fromField='stopTime'
+               toNode='test' toField='stop'/>
+
+        <ROUTE fromNode='ts' fromField='fraction_changed'
+               toNode='test' toField='frac'/>
+
+        <!--
+        <ROUTE fromNode='ts' fromField='elapsedTime'
+               toNode='test' toField='elapsed'/>
+        -->
     </Scene>
 </X3D>

@@ -177,9 +177,7 @@ public:
             }
             this->value = value;
             this->value.realize();
-            dirty = true;
-            node()->queue(this);
-            action();
+            changed();
         }
     }
 
@@ -198,9 +196,21 @@ public:
             throw X3DError(
                 string("already wrote to this field: ") +
                     this->SAIField::getName());
-        value.realize();
         this->value = value;
-        dirty = true;
+        changed();
+    }
+
+    /**
+     * Manually set whether the field should be considered dirty.
+     * 
+     * @param value whether field is changed
+     */
+    void changed(bool value=true) {
+        if (value && !dirty) {
+            node()->queue(this);
+            action();
+        }
+        dirty = value;
     }
 
     /**
@@ -212,17 +222,6 @@ public:
      * @returns whether value has changed
      */
     virtual bool filter(CT value) { return !(dirty || (this->value() == value)); }
-
-    /**
-     * Manually sets the dirty value of the field. This can be useful if,
-     * for instance, the field value has changed externally in some way
-     * the field itself cannot monitor.
-     * 
-     * @param value new value for dirty
-     */
-    void changed(bool value=true) {
-        dirty = value;
-    }
 
     /**
      * Return whether field has been marked dirty since last event cascade.

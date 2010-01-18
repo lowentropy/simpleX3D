@@ -24,7 +24,7 @@ namespace X3D {
 #define COLOR2CHAR(x) ((unsigned char) ((x) * 255))
 #define CHAR2COLOR(x) (((float) x) / 255)
  
-const SFImage& SFImage::operator=(const SFImage& i) {
+SFImage& SFImage::operator=(const SFImage& i) {
     if (i.width != width || i.height != height || i.components != components)
         throw X3DError("mismatched image properties in =");
     setBytes(i.bytes);
@@ -40,6 +40,10 @@ bool SFImage::operator!=(const SFImage& i) const {
     if (i.width != width || i.height != height || i.components != components)
         return true;
     return 0 != memcmp(bytes, i.bytes, size);
+}
+
+SFImage& SFImage::operator()(const X3DField& f) {
+    return *this = unwrap(f);
 }
  
 SFImage::SFImage(int width, int height, int components) {

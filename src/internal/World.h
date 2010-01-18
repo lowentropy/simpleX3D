@@ -21,7 +21,6 @@
 #define _X3D_WORLD_H_
 
 #include "internal/Browser.h"
-#include "internal/ProtoFieldDef.h"
 
 #include <string>
 #include <libxml/parser.h>

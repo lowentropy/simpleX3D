@@ -17,19 +17,30 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "internal/Browser.h"
 #include "Test/Expect.h"
+
 #include <sstream>
+#include <iostream>
+using std::cout;
+using std::endl;
 
 namespace X3D {
 namespace Test {
 
 Expect::Expect(
-        TestNode* node, const string& type, const string& name, const string& value)
-            : NodeField<TestNode>(node), name(name), actual(NULL) {
+        TestNode* node, const string& type, const string& name, const string& value,
+        double testAt)
+            : NodeField<TestNode>(node), name(name), actual(NULL), testAt(testAt) {
     expected = X3DField::create(type);
     std::stringstream ss(value);
     if (!expected->parse(ss))
         throw X3DError(string("invalid field value: ") + value);
+}
+
+void Expect::predict() {
+    if (testAt >= 0 && node->now() < testAt)
+        Browser::getSingleton()->wake(testAt);
 }
 
 bool Expect::test(string* reason) {
@@ -46,6 +57,8 @@ bool Expect::test(string* reason) {
 }
 
 Expect::~Expect() {
+    if (actual != NULL)
+        delete actual;
     delete expected;
 }
 
@@ -62,6 +75,10 @@ const string& Expect::getTypeName() const {
     return expected->getTypeName();
 }
 
+const string& Expect::getName() const {
+    return name;
+}
+
 SAIField::Access Expect::getAccess() const {
     return SAIField::INPUT_ONLY;
 }
@@ -72,7 +89,14 @@ X3DField& Expect::get() {
 }
 
 void Expect::set(const X3DField& value) {
-    actual = &value;
+    if (testAt < 0) {
+        if (actual == NULL)
+            actual = X3DField::create(value.getType());
+        (*actual)(value);
+    } else if (actual == NULL && node->now() >= testAt) {
+        actual = X3DField::create(value.getType());
+        (*actual)(value);
+    }
 }
 
 X3DField& Expect::getSilently() {

@@ -94,8 +94,10 @@ public:
         loop.value = false;
     }
 
-    virtual bool getIsActive() { return false; } // XXX abstract
-    virtual void predict() {} // XXX abstract
+    virtual bool getIsActive() const { throw X3DError("ABSTRACT"); }
+
+    /// we're a timer
+    bool isTimer() const { return true; }
 
 private:
 

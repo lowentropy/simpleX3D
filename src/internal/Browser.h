@@ -24,6 +24,8 @@
 #include <list>
 
 using std::list;
+using namespace X3D::Core;
+using namespace X3D::Time;
 
 namespace X3D {
 
@@ -53,6 +55,12 @@ private:
 	/// root scene nodes
 	list<Node*> roots;
 
+    /// list of sensor nodes
+    list<Node*> sensors;
+
+    /// list of time-dependent nodes
+    list<Node*> timers;
+
     /// fields which need to be routed
     vector<SAIField*> dirtyFields;
 
@@ -70,6 +78,9 @@ private:
     
     /// next time to wake up
     double wakeupTime;
+
+    /// whether simulation has started
+    bool started;
 
 public:
 
@@ -124,6 +135,15 @@ public:
      * the cascade is complete.
      */
     void route();
+
+    /**
+     * Take one simulation step by proceeding to the next scheduled
+     * time. If the simulation is complete (there is no more secheduled
+     * activity), this function returns false.
+     *
+     * @returns whether simulation can continue
+     */
+    bool simulate();
 
     /**
      * Tell the browser to wake up at this time at the latest.

@@ -20,6 +20,10 @@
 #include "internal/Browser.h"
 #include "internal/Route.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
+
 namespace X3D {
 
 Browser* Browser::_inst;
@@ -32,6 +36,8 @@ Browser::Browser() : profile(new Profile()) {
 		throw X3DError("multiple browser instances!");
     }
 	Builtin::init(profile);
+    wakeupTime = simTime = -1;
+    started = false;
 }
 
 void Browser::reset() {
@@ -47,6 +53,8 @@ void Browser::reset() {
     dirtyFields.clear();
     firedFields.clear();
     defs.clear();
+    sensors.clear();
+    timers.clear();
 }
 
 Browser::~Browser() {
@@ -54,20 +62,54 @@ Browser::~Browser() {
 	delete profile;
 }
 
+bool Browser::simulate() {
+    // quit if no more events
+    if (!started) {
+        simTime = 0;
+    } else {
+        if (wakeupTime <= simTime)
+            return false;
+        simTime = wakeupTime;
+        wakeupTime = -1;
+    }
+    started = true;
+    // cout << "TICK: " << simTime << endl;
+    // evaluate all sensors
+    list<Node*>::iterator it;
+    for (it = sensors.begin(); it != sensors.end(); it++)
+        (*it)->evaluate();
+    // route cascade
+    route();
+    // predict for all time-dependent nodes
+    for (it = timers.begin(); it != timers.end(); it++)
+        (*it)->predict();
+    return true;
+}
+
 double Browser::now() {
     return simTime;
 }
 
 void Browser::wake(double time) {
-    if (time < wakeupTime)
+    if (time <= simTime)
+        return;
+    if (time < wakeupTime || wakeupTime < 0) {
+        // cout << "WAKE: " << time << endl;
         wakeupTime = time;
+    }
 }
 
 Node* Browser::createNode(const std::string& name) {
+    // TODO: when deleting nodes, remove them from their special lists
 	NodeDef* def = profile->getNode(name);
 	if (def == NULL)
 		return NULL;
-    return def->create();
+    Node* node = def->create();
+    if (node->isSensor())
+        sensors.push_back(node);
+    if (node->isTimer())
+        timers.push_back(node);
+    return node;
 }
 
 void Browser::addNode(Node* node) {
