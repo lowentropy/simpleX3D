@@ -54,6 +54,9 @@ private:
 	/// root scene nodes
 	list<Node*> roots;
 
+    /// sensors which have recently been created
+    vector<X3DSensorNode*> newSensors;
+
     /// timers
     list<X3DTimeDependentNode*> timers;
 

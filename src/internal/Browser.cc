@@ -36,7 +36,6 @@ Browser::Browser() : profile(new Profile()) {
 		throw X3DError("multiple browser instances!");
     }
 	Builtin::init(profile);
-    wakeupTime = simTime = -1;
     started = false;
 }
 
@@ -53,6 +52,7 @@ void Browser::reset() {
     dirtyFields.clear();
     firedFields.clear();
     defs.clear();
+    newSensors.clear();
     timers.clear();
     while (!events.empty())
         events.pop();
@@ -64,38 +64,39 @@ Browser::~Browser() {
 }
 
 bool Browser::simulate() {
-    // quit if no more events
-    if (!started) {
-        simTime = 0;
-        started = true;
-    } else {
-        if (wakeupTime <= simTime)
-            return false;
-        simTime = wakeupTime;
-        wakeupTime = -1;
-    }
 
-    cout << "TICK: " << simTime << endl;
+    // initialize new sensors
+    vector<X3DSensorNode*>::iterator s_it;
+    for (s_it = newSensors.begin(); s_it != newSensors.end(); s_it++)
+        (*s_it)->initSensor();
+    newSensors.clear();
+
+    // quit if no more events
+    if (events.empty())
+        return false;
+
+    // advance time
+    simTime = events.top().time;
+    // cout << "TICK: " << simTime << endl;
 
     // run the cascade to completion
-    do {
-        // evaluate all scheduled nodes
-        while (!events.empty() && events.top().time <= simTime) {
-            X3DSensorNode* node = events.top().node;
-            events.pop();
-            if (node != NULL)
-                node->evaluate();
-        }
-        // route from evaluated nodes, and possibly repeat
-        route();
-        if (!events.empty() && events.top().time <= simTime)
-            continue;
-        // find the next node needing to tick
-        list<X3DTimeDependentNode*>::iterator it;
-        for (it = timers.begin(); it != timers.end(); it++)
-            if ((*it)->tick())
-                continue;
-    } while (false);
+    retry:
+    // evaluate all scheduled nodes
+    while (!events.empty() && events.top().time <= simTime) {
+        X3DSensorNode* node = events.top().node;
+        events.pop();
+        if (node != NULL)
+            node->evaluate();
+    }
+    // route from evaluated nodes, and possibly repeat
+    route();
+    if (!events.empty() && events.top().time <= simTime)
+        goto retry;
+    // find the next node needing to tick
+    list<X3DTimeDependentNode*>::iterator t_it;
+    for (t_it = timers.begin(); t_it != timers.end(); t_it++)
+        if ((*t_it)->tick())
+            goto retry;
     
     endRoute();
 
@@ -112,8 +113,6 @@ void Browser::wake(double time) {
 
 void Browser::schedule(double time, X3DSensorNode* node) {
     events.push(Event(time, node));
-    if (time < wakeupTime || wakeupTime < 0)
-        wakeupTime = time;
 }
 
 Node* Browser::createNode(const std::string& name) {
@@ -124,7 +123,7 @@ Node* Browser::createNode(const std::string& name) {
     X3DSensorNode* sensor = dynamic_cast<X3DSensorNode*>(node);
     X3DTimeDependentNode* timer = dynamic_cast<X3DTimeDependentNode*>(node);
     if (sensor != NULL)
-        sensor->initSensor();
+        newSensors.push_back(sensor);
     if (timer != NULL)
         timers.push_back(timer);
     return node;
@@ -173,10 +172,12 @@ Route* Browser::createRoute(Node* fromNode, const string& fromFieldName,
                             Node* toNode, const string& toFieldName) const {
     SAIField* fromField = fromNode->getField(fromFieldName);
     if (fromField == NULL)
-        throw X3DError("couldn't find source field");
+        throw X3DError(
+            string("couldn't find source field: ") + fromFieldName);
     SAIField* toField = toNode->getField(toFieldName);
     if (toField == NULL)
-        throw X3DError("couldn't find target field");
+        throw X3DError(
+            string("couldn't find target field: ") + toFieldName);
     return createRoute(fromField, toField);
 }
 

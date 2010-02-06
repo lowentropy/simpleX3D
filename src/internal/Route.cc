@@ -43,7 +43,7 @@ void Route::activate() const {
     if (!fromField->isDirty())
         return;
     const X3DField& value = fromField->get();
-    logEvent(value);
+    //logEvent(value);
     toField->set(value);
 }
 

@@ -59,10 +59,7 @@ public:
 	DefaultOutField<TimeSensor, SFTime> time;
 
     /// Setup function called on instantiation.
-    virtual void setup() {
-        isActive.value = false;
-        cycleInterval.value = 1;
-    }
+    virtual void setup();
 
     /// Initialize the timesensor.
     void initSensor();
@@ -81,16 +78,19 @@ public:
 
 private:
 
-    // elapsed (not counting pause) since cycle event
+    /// elapsed (not counting pause) since cycle event
     double elapsed;
 
-    // last tick time
+    /// last tick time
     double last;
 
-    // next scheduled evaluation time
+    /// next scheduled evaluation time
     double next;
 
-    // no copy constructor
+    /// network sort of four elements
+    void sortEvents(double* times, int* indexes);
+
+    /// no copy constructor
     TimeSensor(const TimeSensor& node) { throw X3DError("COPY CONSTRUCTOR"); }
 };
 

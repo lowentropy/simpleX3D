@@ -27,32 +27,17 @@ using std::endl;
 namespace X3D {
 namespace Time {
 
+void TimeSensor::setup() {
+    isActive.value = false;
+    cycleInterval.value = 1;
+    last = -1;
+}
+
 void TimeSensor::wake(double time) {
     if (time < next || next < 0) {
         browser()->schedule(time, this);
         next = time;
     }
-}
-
-#define swap(type,a,b) do { \
-    type __tmp = a; \
-    a = b; \
-    b = __tmp; \
-} while (false)
-
-template <typename A, typename B>
-static void bubblesort(A* list, B* idx, int len) {
-    bool swaps;
-    do {
-        swaps = false;
-        for (int i = 0; i < len-1; i++) {
-            if (list[i] > list[i+1]) {
-                swap(A, list[i], list[i+1]);
-                swap(B, idx[i], idx[i+1]);
-                swaps = true;
-            }
-        }
-    } while (swaps);
 }
 
 void TimeSensor::initSensor() {
@@ -100,10 +85,14 @@ void TimeSensor::evaluate() {
         _stop   ? stop   : DBL_MAX,
         _pause  ? pause  : DBL_MAX,
         _resume ? resume : DBL_MAX };
-    bubblesort(times, order, 4);
+
+    sortEvents(times, order);
+    bool ticked = last >= tick;
 
     // process sorted events
     for (int i = 0; i < 3; i++) {
+        if (times[i] <= last)
+            continue;
         if (times[i] == DBL_MAX)
             break;
         switch (order[i]) {
@@ -143,7 +132,7 @@ void TimeSensor::evaluate() {
     // advance internal clock
     double dt = tick - last;
     elapsed += dt;
-    
+
     // check for cycle ending
     bool _cycle = elapsed >= cycleInterval();
     if (_cycle && !loop() && active) {
@@ -159,14 +148,18 @@ void TimeSensor::evaluate() {
     if (_paused)
         isPaused(paused);
 
+    // return if we already ticked
+    if (ticked)
+        return;
+
     // kick the ticker
-    if (!active || paused) {
+    if ((!active && !_active) || (paused && !_paused)) {
         last = tick;
         return;
     }
 
     // output continuous events
-    if (_cycle) {
+    if (_cycle || (_active && active)) {
         cycleTime.send(tick);
         elapsed = 0;
     }
@@ -174,7 +167,7 @@ void TimeSensor::evaluate() {
     elapsedTime.send(elapsedTime() + dt);
 
     // schedule cycle event
-    if (last == tick || _cycle)
+    if (active && (last == tick || _cycle))
         wake(tick + cycleInterval() - elapsed);
 
     // fraction
@@ -188,7 +181,9 @@ void TimeSensor::evaluate() {
 }
 
 bool TimeSensor::tick() {
-    if (last == now())
+    if (last >= now())
+        return false;
+    if (!isActive() || isPaused())
         return false;
     double dt = now() - last;
     elapsed += dt;
@@ -210,12 +205,14 @@ bool TimeSensor::getIsActive() const {
     if (DATA[A] > DATA[B]) { \
         double __d; int __i; \
         __d = DATA[A]; DATA[A] = DATA[B]; DATA[B] = __d; \
-        __i = INDX[A]; INDX[A] = INDX[B]; INDX[B] = __i;  TimeSensor::sortEvents(double* times, int* indexes) {
-    compare(times, indexes, 0, 2);
-    compare(times, indexes, 1, 3);
-    compare(times, indexes, 0, 1);
-    compare(times, indexes, 2, 3);
-    compare(times, indexes, 1, 2);
+        __i = INDX[A]; INDX[A] = INDX[B]; INDX[B] = __i; }
+
+void TimeSensor::sortEvents(double* times, int* indexes) {
+    COMPARE(times, indexes, 0, 2);
+    COMPARE(times, indexes, 1, 3);
+    COMPARE(times, indexes, 0, 1);
+    COMPARE(times, indexes, 2, 3);
+    COMPARE(times, indexes, 1, 2);
 }
 
 }}
