@@ -27,6 +27,7 @@
 #include "Core/WorldInfo.h"
 #include "Time/TimeSensor.h"
 #include "Test/TestSuite.h"
+#include "Interpolation/X3DInterpolatorNode.h"
 
 namespace X3D {
 
@@ -53,9 +54,7 @@ public:
 				core->createNode<X3DNode>("X3DNode", true);
 			{
 				// SFNode [in,out] metadata NULL [X3DMetadataObject]
-				node->createField(
-					"metadata", X3DField::SFNODE, SAIField::INPUT_OUTPUT,
-					&X3DNode::metadata);
+				node->createField("metadata", &X3DNode::metadata);
                 node->finish();
 			}
 
@@ -74,19 +73,13 @@ public:
 				bind->inherits("X3DChildNode");
 
 				// SFBool [in] set_bind
-				bind->createField(
-					"set_bind", X3DField::SFBOOL, SAIField::INPUT_ONLY,
-					&X3DBindableNode::set_bind);
+				bind->createField("set_bind", &X3DBindableNode::set_bind);
 
 				// SFTime [out] bindTime
-				bind->createField(
-					"bindTime", X3DField::SFTIME, SAIField::OUTPUT_ONLY,
-					&X3DBindableNode::bindTime);
+				bind->createField("bindTime", &X3DBindableNode::bindTime);
 
 				// SFBool [out] isBound
-				bind->createField(
-					"isBound", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
-					&X3DBindableNode::isBound);
+				bind->createField("isBound", &X3DBindableNode::isBound);
 
                 bind->finish();
 			}
@@ -104,14 +97,10 @@ public:
 				core->createNode<X3DMetadataObject>("X3DMetadataObject", true);
 			{
 				// SFString [in,out] name ""
-				meta_obj->createField(
-					"name", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-					&X3DMetadataObject::name);
+				meta_obj->createField("name", &X3DMetadataObject::name);
 
 				// SFString [in,out] reference ""
-				meta_obj->createField(
-					"reference", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-					&X3DMetadataObject::reference);
+				meta_obj->createField("reference", &X3DMetadataObject::reference);
 
                 meta_obj->finish();
 			}
@@ -131,14 +120,10 @@ public:
 				sensor->inherits("X3DChildNode");
 
 				// SFBool [in,out] enabled TRUE
-				sensor->createField(
-					"enabled", X3DField::SFBOOL, SAIField::INPUT_OUTPUT,
-					&X3DSensorNode::enabled);
+				sensor->createField("enabled", &X3DSensorNode::enabled);
 
 				// SFBool [out] isActive
-				sensor->createField(
-					"isActive", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
-					&X3DSensorNode::isActive);
+				sensor->createField("isActive", &X3DSensorNode::isActive);
 
                 sensor->finish();
 			}
@@ -151,9 +136,7 @@ public:
 				meta_double->inherits("X3DMetadataObject");
 
 				// X3DField::MFDouble [in,out] value []
-				meta_double->createField(
-					"value", X3DField::MFDOUBLE, SAIField::INPUT_OUTPUT,
-					&MetadataDouble::value);
+				meta_double->createField("value", &MetadataDouble::value);
 
                 meta_double->finish();
 			}
@@ -166,9 +149,7 @@ public:
 				meta_float->inherits("X3DMetadataObject");
 
 				// X3DField::MFFloat [in,out] value []
-				meta_float->createField(
-					"value", X3DField::MFFLOAT, SAIField::INPUT_OUTPUT,
-					&MetadataFloat::value);
+				meta_float->createField("value", &MetadataFloat::value);
 
                 meta_float->finish();
 			}
@@ -181,9 +162,7 @@ public:
 				meta_int->inherits("X3DMetadataObject");
 
 				// X3DField::MFInteger [in,out] value []
-				meta_int->createField(
-					"value", X3DField::MFINT32, SAIField::INPUT_OUTPUT,
-					&MetadataInteger::value);
+				meta_int->createField("value", &MetadataInteger::value);
 
                 meta_int->finish();
 			}
@@ -196,9 +175,7 @@ public:
 				meta_set->inherits("X3DMetadataObject");
 
 				// X3DField::MFNode [in,out] value [] [X3DMetadataObject]
-				meta_set->createField(
-					"value", X3DField::MFNODE, SAIField::INPUT_OUTPUT,
-					&MetadataSet::value);
+				meta_set->createField("value", &MetadataSet::value);
 
                 meta_set->finish();
 			}
@@ -211,9 +188,7 @@ public:
 				meta_str->inherits("X3DMetadataObject");
 
 				// X3DField::MFString [in,out] value []
-				meta_str->createField(
-					"value", X3DField::MFSTRING, SAIField::INPUT_OUTPUT,
-					&MetadataString::value);
+				meta_str->createField("value", &MetadataString::value);
 
                 meta_str->finish();
 			}
@@ -225,14 +200,10 @@ public:
 				world->inherits("X3DInfoNode");
 				
 				// X3DField::MFString [] info []
-				world->createField(
-					"info", X3DField::MFSTRING, SAIField::INIT_ONLY,
-					&WorldInfo::info);
+				world->createField("info", &WorldInfo::info);
 
 				// SFString [] title ""
-				world->createField(
-					"title", X3DField::SFSTRING, SAIField::INIT_ONLY,
-					&WorldInfo::title);
+				world->createField("title", &WorldInfo::title);
 
                 world->finish();
 			}
@@ -248,46 +219,30 @@ public:
                 dep->inherits("X3DChildNode");
 
 				// SFBool [in,out] loop FALSE
-				dep->createField(
-					"loop", X3DField::SFBOOL, SAIField::INPUT_OUTPUT,
-					&X3DTimeDependentNode::loop);
+				dep->createField("loop", &X3DTimeDependentNode::loop);
 
 				// SFTime [in,out] pauseTime 0
-				dep->createField(
-					"pauseTime", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-					&X3DTimeDependentNode::pauseTime);
+				dep->createField("pauseTime", &X3DTimeDependentNode::pauseTime);
 
 				// SFTime [in,out] resumeTime 0
-				dep->createField(
-					"resumeTime", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-					&X3DTimeDependentNode::resumeTime);
+				dep->createField("resumeTime", &X3DTimeDependentNode::resumeTime);
 
 				// SFTime [in,out] startTime 0
-				dep->createField(
-					"startTime", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-					&X3DTimeDependentNode::startTime);
+				dep->createField("startTime", &X3DTimeDependentNode::startTime);
 
 				// SFTime [in,out] stopTime 0
-				dep->createField(
-					"stopTime", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-					&X3DTimeDependentNode::stopTime);
+				dep->createField("stopTime", &X3DTimeDependentNode::stopTime);
 
 				// SFTime [out] elapsedTime
-				dep->createField(
-					"elapsedTime", X3DField::SFTIME, SAIField::OUTPUT_ONLY,
-					&X3DTimeDependentNode::elapsedTime);
+				dep->createField("elapsedTime", &X3DTimeDependentNode::elapsedTime);
 
 				// SFBool [out] isActive
                 /* // NOTE: conflicts with X3DSensorNode::isActive
-				dep->createField(
-					"isActive", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
-					&X3DTimeDependentNode::isActive);
+				dep->createField("isActive", &X3DTimeDependentNode::isActive);
                 */
 
 				// SFBool [out] isPaused
-				dep->createField(
-					"isPaused", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
-					&X3DTimeDependentNode::isPaused);
+				dep->createField("isPaused", &X3DTimeDependentNode::isPaused);
 
                 dep->finish();
 			}
@@ -299,24 +254,16 @@ public:
                 ts->inherits("X3DSensorNode");
 
 				// SFTime [in,out] cycleInterval 1
-				ts->createField(
-					"cycleInterval", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-					&TimeSensor::cycleInterval);
+				ts->createField("cycleInterval", &TimeSensor::cycleInterval);
 
 				// SFTime [out] cycleTime
-				ts->createField(
-					"cycleTime", X3DField::SFTIME, SAIField::OUTPUT_ONLY,
-					&TimeSensor::cycleTime);
+				ts->createField("cycleTime", &TimeSensor::cycleTime);
 
 				// SFFloat [out] fraction_changed
-				ts->createField(
-					"fraction_changed", X3DField::SFFLOAT, SAIField::OUTPUT_ONLY,
-					&TimeSensor::fraction_changed);
+				ts->createField("fraction_changed", &TimeSensor::fraction_changed);
 
 				// SFTime [out] time
-				ts->createField(
-					"time", X3DField::SFTIME, SAIField::OUTPUT_ONLY,
-					&TimeSensor::time);
+				ts->createField("time", &TimeSensor::time);
 
                 ts->finish();
 			}
@@ -333,34 +280,22 @@ public:
                 ts->inherits("X3DNode");
 
                 // SFString [] desc
-                ts->createField(
-                    "desc", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-                    &TestSuite::desc);
+                ts->createField("desc", &TestSuite::desc);
     
                 // MFNode [] tests
-                ts->createField(
-                    "tests", X3DField::MFNODE, SAIField::INIT_ONLY,
-                    &TestSuite::tests);
+                ts->createField("tests", &TestSuite::tests);
 
                 // MFNode [out] passed
-                ts->createField(
-                    "passed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
-                    &TestSuite::passed);
+                ts->createField("passed", &TestSuite::passed);
 
                 // MFNode [out] failed
-                ts->createField(
-                    "failed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
-                    &TestSuite::failed);
+                ts->createField("failed", &TestSuite::failed);
 
                 // SFInt32 [out] numPassed
-                ts->createField(
-                    "numPassed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
-                    &TestSuite::numPassed);
+                ts->createField("numPassed", &TestSuite::numPassed);
 
                 // SFInt32 [out] numFailed
-                ts->createField(
-                    "numFailed", X3DField::MFNODE, SAIField::OUTPUT_ONLY,
-                    &TestSuite::numFailed);
+                ts->createField("numFailed", &TestSuite::numFailed);
 
                 ts->finish();
             }
@@ -372,42 +307,46 @@ public:
                 tn->inherits("X3DChildNode");
 
                 // SFString [] desc
-                tn->createField(
-                    "desc", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-                    &TestNode::desc);
+                tn->createField("desc", &TestNode::desc);
     
 
                 // SFBool [in,out] continuous (false)
-                tn->createField(
-                    "continuous", X3DField::SFBOOL, SAIField::INPUT_OUTPUT,
-                    &TestNode::continuous);
+                tn->createField("continuous", &TestNode::continuous);
 
                 // SFTime [in,out] timeout (0)
-                tn->createField(
-                    "timeout", X3DField::SFTIME, SAIField::INPUT_OUTPUT,
-                    &TestNode::timeout);
+                tn->createField("timeout", &TestNode::timeout);
 
                 // SFString [in,out] should (pass)
-                tn->createField(
-                    "should", X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-                    &TestNode::should);
+                tn->createField("should", &TestNode::should);
 
                 // MFString [in,out] failWith
-                tn->createField(
-                    "failWith", X3DField::MFSTRING, SAIField::INPUT_OUTPUT,
-                    &TestNode::failWith);
+                tn->createField("failWith", &TestNode::failWith);
 
                 // SFBool [out] success
-                tn->createField(
-                    "success", X3DField::SFBOOL, SAIField::OUTPUT_ONLY,
-                    &TestNode::success);
+                tn->createField("success", &TestNode::success);
 
                 // MFString [out] reasons
-                tn->createField(
-                    "reasons", X3DField::MFSTRING, SAIField::OUTPUT_ONLY,
-                    &TestNode::reasons);
+                tn->createField("reasons", &TestNode::reasons);
 
                 tn->finish();
+            }
+        }
+		// Interpolation component
+		Component* interp = profile->createComponent("Interpolation");
+        {
+			using namespace X3D::Interpolation;
+
+            // X3DInterpolatorNode
+			NodeDefImpl<X3DInterpolatorNode>* in =
+				interp->createNode<X3DInterpolatorNode>("X3DInterpolatorNode", true);
+            {
+                in->inherits("X3DChildNode");
+
+                in->createField("set_fraction", &X3DInterpolatorNode::set_fraction);
+
+                in->createField("key", &X3DInterpolatorNode::key);
+
+                in->finish();
             }
         }
 	} // end of profile

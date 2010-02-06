@@ -72,7 +72,7 @@ public:
      * 
      * @returns field datatype
      */
-	virtual X3DField::Type getType() const;
+	virtual X3DField::Type getType() const = 0;
 
     /**
      * Get the access type of this field.
@@ -218,6 +218,11 @@ public:
 
     /// Empty constructor.
     BaseField() {}
+
+    INLINE X3DField::Type getType() const {
+        static TT x;
+        return x.getType();
+    }
 
 private:
 

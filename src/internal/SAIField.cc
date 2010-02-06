@@ -36,12 +36,8 @@ SAIField::Access SAIField::getAccess(const string& name) {
     throw X3DError(string("invalid access name: ") + name);
 }
 
-X3DField::Type SAIField::getType() const {
-    return definition->type;
-}
-
 const string& SAIField::getTypeName() const {
-    return X3DField::getTypeName(definition->type);
+    return X3DField::getTypeName(getType());
 }
 
 const string& SAIField::getName() const {

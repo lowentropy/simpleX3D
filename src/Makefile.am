@@ -84,6 +84,7 @@ include_HEADERS = \
     Time/TimeSensor.h \
     Test/TestSuite.h \
     Test/TestNode.h \
-    Test/Expect.h
+    Test/Expect.h \
+	Interpolation/X3DInterpolatorNode.h
 
 # s/^.*or: \([^:]*\):.*$/    \1 \\/

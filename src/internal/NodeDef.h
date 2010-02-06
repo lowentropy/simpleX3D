@@ -310,12 +310,13 @@ public:
      * should not have to be specified manually.
      * 
      * @param name base name of field
-     * @param type field data type
-     * @param access field access level
      * @param ptr node class pointer to field declaration
      * @returns new field definition
      */
-	template <typename T> FieldDef* createField(const string& name, X3DField::Type type, SAIField::Access access, T N::*ptr) {
+	template <typename T> FieldDef* createField(const string& name, T N::*ptr) {
+        static N node;
+        X3DField::Type type = (node.*ptr).getType();
+        SAIField::Access access = (node.*ptr).getAccess();
         SAIField N::*field = (SAIField N::*) ptr;
 		FieldDef* def = new FieldDefImpl<N>(this, name, type, access, field);
 		addField(def);

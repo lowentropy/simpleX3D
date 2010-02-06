@@ -62,21 +62,11 @@ public:
             Component* test = browser()->profile->createComponent("RouteTests");
             NodeDefImpl<RouteTestNode>* def =
                 test->createNode<RouteTestNode>("RouteTestNode");
-            def->createField("testIn",
-                X3DField::SFSTRING, SAIField::INPUT_ONLY,
-                &RouteTestNode::testIn);
-            def->createField("testOut",
-                X3DField::SFSTRING, SAIField::OUTPUT_ONLY,
-                &RouteTestNode::testOut);
-            def->createField("testInOut",
-                X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-                &RouteTestNode::testInOut);
-            def->createField("customIn",
-                X3DField::SFSTRING, SAIField::INPUT_ONLY,
-                &RouteTestNode::customIn);
-            def->createField("countingInOut",
-                X3DField::SFSTRING, SAIField::INPUT_OUTPUT,
-                &RouteTestNode::countingInOut);
+            def->createField("testIn", &RouteTestNode::testIn);
+            def->createField("testOut", &RouteTestNode::testOut);
+            def->createField("testInOut", &RouteTestNode::testInOut);
+            def->createField("customIn", &RouteTestNode::customIn);
+            def->createField("countingInOut", &RouteTestNode::countingInOut);
             def->finish();
         }
     }
