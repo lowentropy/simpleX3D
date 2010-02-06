@@ -206,4 +206,16 @@ bool TimeSensor::getIsActive() const {
     return isActive.value();
 }
 
+#define COMPARE(DATA,INDX,A,B) \
+    if (DATA[A] > DATA[B]) { \
+        double __d; int __i; \
+        __d = DATA[A]; DATA[A] = DATA[B]; DATA[B] = __d; \
+        __i = INDX[A]; INDX[A] = INDX[B]; INDX[B] = __i;  TimeSensor::sortEvents(double* times, int* indexes) {
+    compare(times, indexes, 0, 2);
+    compare(times, indexes, 1, 3);
+    compare(times, indexes, 0, 1);
+    compare(times, indexes, 2, 3);
+    compare(times, indexes, 1, 2);
+}
+
 }}
