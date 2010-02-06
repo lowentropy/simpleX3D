@@ -53,8 +53,9 @@ void Browser::reset() {
     dirtyFields.clear();
     firedFields.clear();
     defs.clear();
-    sensors.clear();
     timers.clear();
+    while (!events.empty())
+        events.pop();
 }
 
 Browser::~Browser() {
@@ -66,23 +67,38 @@ bool Browser::simulate() {
     // quit if no more events
     if (!started) {
         simTime = 0;
+        started = true;
     } else {
         if (wakeupTime <= simTime)
             return false;
         simTime = wakeupTime;
         wakeupTime = -1;
     }
-    started = true;
-    // cout << "TICK: " << simTime << endl;
-    // evaluate all sensors
-    list<Node*>::iterator it;
-    for (it = sensors.begin(); it != sensors.end(); it++)
-        (*it)->evaluate();
-    // route cascade
-    route();
-    // predict for all time-dependent nodes
-    for (it = timers.begin(); it != timers.end(); it++)
-        (*it)->predict();
+
+    cout << "TICK: " << simTime << endl;
+
+    // run the cascade to completion
+    do {
+        // evaluate all scheduled nodes
+        while (!events.empty() && events.top().time <= simTime) {
+            X3DSensorNode* node = events.top().node;
+            events.pop();
+            if (node != NULL)
+                node->evaluate();
+        }
+        // route from evaluated nodes, and possibly repeat
+        route();
+        if (!events.empty() && events.top().time <= simTime)
+            continue;
+        // find the next node needing to tick
+        list<X3DTimeDependentNode*>::iterator it;
+        for (it = timers.begin(); it != timers.end(); it++)
+            if ((*it)->tick())
+                continue;
+    } while (false);
+    
+    endRoute();
+
     return true;
 }
 
@@ -91,24 +107,26 @@ double Browser::now() {
 }
 
 void Browser::wake(double time) {
-    if (time <= simTime)
-        return;
-    if (time < wakeupTime || wakeupTime < 0) {
-        // cout << "WAKE: " << time << endl;
+    schedule(time, NULL);
+}
+
+void Browser::schedule(double time, X3DSensorNode* node) {
+    events.push(Event(time, node));
+    if (time < wakeupTime || wakeupTime < 0)
         wakeupTime = time;
-    }
 }
 
 Node* Browser::createNode(const std::string& name) {
-    // TODO: when deleting nodes, remove them from their special lists
 	NodeDef* def = profile->getNode(name);
 	if (def == NULL)
 		return NULL;
     Node* node = def->create();
-    if (node->isSensor())
-        sensors.push_back(node);
-    if (node->isTimer())
-        timers.push_back(node);
+    X3DSensorNode* sensor = dynamic_cast<X3DSensorNode*>(node);
+    X3DTimeDependentNode* timer = dynamic_cast<X3DTimeDependentNode*>(node);
+    if (sensor != NULL)
+        sensor->initSensor();
+    if (timer != NULL)
+        timers.push_back(timer);
     return node;
 }
 
@@ -123,7 +141,9 @@ void Browser::route() {
     for (int i = 0; i < dirtyFields.size(); i++)
         routeFrom(dirtyFields[i]);
     dirtyFields.clear();
-    // now clear all dirty flags
+}
+
+void Browser::endRoute() {
     for (int i = 0; i < firedFields.size(); i++)
         firedFields[i]->clearDirty();
     firedFields.clear();

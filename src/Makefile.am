@@ -39,6 +39,7 @@ include_HEADERS = \
 	internal/InField.h \
 	internal/OutField.h \
 	internal/InOutField.h \
+	internal/Event.h \
     internal/Profile.h \
     internal/Component.h \
     internal/NodeDef.h \

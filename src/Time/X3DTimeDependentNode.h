@@ -42,44 +42,54 @@ public:
 
     X3DTimeDependentNode() {}
 
-    // TODO: the spec says that events like startTime_changed and
-    // resumeTime_changed will output even when enabled is false.
-    // Which would be okay, but when enabled is true, these events
-    // are supposed to be generated only when this event actually
-    // occurs. When do we generated them if enabled is false?
-
 	/// if true, node will repeat its cycle
     DefaultInOutField<X3DTimeDependentNode, SFBool> loop;
 
 	/// time at which node becomes paused
 	class PauseTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            value = time;
-            return false;
+            if (time == value())
+                return false;
+            if (node()->isPaused())
+                return false; // XXX this is not explicitly stated...
+            node()->wake(time);
+            return true;
         }
     } pauseTime;
 
 	/// time at which node resumes from pause
 	class ResumeTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
-        bool filter(double time) {
-            value = time;
-            return false;
+        bool filter(double time) { // XXX nor is this...
+            if (time == value())
+                return false;
+            if (node()->isPaused() && time <= node()->pauseTime())
+                return false;
+            node()->wake(time);
+            return true;
         }
     } resumeTime;
 
 	/// time at which node begins its cycle
 	class StartTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            value = time;
-            return false;
+            if (time == value())
+                return false;
+            if (node()->getIsActive())
+                return false;
+            node()->wake(time);
+            return true;
         }
     } startTime;
 
 	/// time at which node ends current cycle
 	class StopTime : public DefaultInOutField<X3DTimeDependentNode, SFTime> {
         bool filter(double time) {
-            value = time;
-            return false;
+            if (time == value())
+                return false;
+            if (node()->getIsActive() && time <= node()->startTime())
+                return false;
+            node()->wake(time);
+            return true;
         }
     } stopTime;
 
@@ -93,11 +103,10 @@ public:
     void setup() {
         loop.value = false;
     }
-
+    
+    virtual void wake(double time) { throw X3DError("ABSTRACT"); }
     virtual bool getIsActive() const { throw X3DError("ABSTRACT"); }
-
-    /// we're a timer
-    bool isTimer() const { return true; }
+    virtual bool tick() { throw X3DError("ABSTRACT"); }
 
 private:
 

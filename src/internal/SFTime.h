@@ -83,6 +83,14 @@ public:
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFTime& t) const { return value != t.value; }
 
+    /// Imprecise generic comparison
+    INLINE bool equals(const X3DField& f) const { return equals(unwrap(f)); }
+
+    /// Imprecise comparison
+    INLINE bool equals(const SFTime& f) const {
+        return X3DField::float_close(value, f.value);
+    }
+
     bool parse(istream& is) {
         double d;
         is >> d;

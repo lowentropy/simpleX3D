@@ -21,9 +21,12 @@
 #define _X3D_BROWSER_H_
 
 #include "internal/builtin.h"
+#include "internal/Event.h"
 #include <list>
+#include <queue>
 
 using std::list;
+using std::priority_queue;
 using namespace X3D::Core;
 using namespace X3D::Time;
 
@@ -31,17 +34,13 @@ namespace X3D {
 
 /**
  * This is the main X3D instance class. The browser controls
- * type registration, scene memory management (TODO), and
- * the execution model. It implements the X3D SAI (TODO).
+ * type registration, and the execution model.
+ * It implements the X3D SAI (TODO).
  * 
  * Feel free to subclass the browser if you really need to
  * change how routing or memory management works, but keep
  * in mind that you should still attempt to support third-
  * party plugins.
- *
- * TODO: the browser shoudl either have a reference to ALL nodes or
- * to only ANCHORED nodes, but currently prototypes are breaking this
- * pattern.
  */
 class Browser {
 private:
@@ -55,11 +54,11 @@ private:
 	/// root scene nodes
 	list<Node*> roots;
 
-    /// list of sensor nodes
-    list<Node*> sensors;
+    /// timers
+    list<X3DTimeDependentNode*> timers;
 
-    /// list of time-dependent nodes
-    list<Node*> timers;
+    /// event queue
+    priority_queue<Event> events;
 
     /// fields which need to be routed
     vector<SAIField*> dirtyFields;
@@ -137,6 +136,11 @@ public:
     void route();
 
     /**
+     * Clear up fields from routing. Ends the cascade.
+     */
+    void endRoute();
+
+    /**
      * Take one simulation step by proceeding to the next scheduled
      * time. If the simulation is complete (there is no more secheduled
      * activity), this function returns false.
@@ -155,6 +159,19 @@ public:
      * @param time next time to wake up
      */
     void wake(double time);
+
+    /**
+     * Schedule an event to activate the given sensor at some point
+     * in the future. The browser may wake up at any time before this,
+     * and is not guaranteed to schedule events before or at the given
+     * time. The sensor must be able to handle an arbitrary gap between
+     * the time it was scheduled to be activated and the actual activation
+     * time.
+     *
+     * @param time time sensor would like to be evaluated at
+     * @param node node to schedule for evaluation
+     */
+    void schedule(double time, X3DSensorNode* node);
 
 	/**
 	 * Make the given node persistent, so that it will not be

@@ -82,6 +82,14 @@ public:
     /// Native comparison operator (not equal)
     INLINE bool operator!=(const SFFloat& b) const { return value != b.value; }
 
+    /// Imprecise generic comparison
+    INLINE bool equals(const X3DField& f) const { return equals(unwrap(f)); }
+
+    /// Imprecise comparison
+    INLINE bool equals(const SFFloat& f) const {
+        return X3DField::float_close(value, f.value);
+    }
+
     bool parse(istream& is) {
         float f;
         is >> f;

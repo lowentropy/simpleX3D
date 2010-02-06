@@ -36,7 +36,7 @@ namespace Time {
 class TimeSensor: public X3DTimeDependentNode, public X3DSensorNode {
 public:
 
-    TimeSensor() {}
+    TimeSensor() : next(-1) {}
 
 	/// Period of time for repeated events.
 	class CycleInterval : public DefaultInOutField<TimeSensor, SFTime> {
@@ -64,29 +64,31 @@ public:
         cycleInterval.value = 1;
     }
 
-    /// Predict next wakeup time.
-    virtual void predict();
+    /// Initialize the timesensor.
+    void initSensor();
 
     /// Evaluate the sensor
-    virtual void evaluate();
+    void evaluate();
 
-    /// Enable or disable the time sensor.
-    virtual void setEnabled(bool enabled);
+    /// Schedule waking at given time, unless already scheduled to wake up before this.
+    void wake(double time);
+
+    /// Tick the continuous events
+    bool tick();
 
     /// We actually have a field for this now.
     bool getIsActive() const;
 
 private:
 
+    // elapsed (not counting pause) since cycle event
+    double elapsed;
+
+    // last tick time
     double last;
 
-    void tick();
-    void frac();
-    void start();
-    void stop();
-    void pause();
-    void resume();
-    void cycle();
+    // next scheduled evaluation time
+    double next;
 
     // no copy constructor
     TimeSensor(const TimeSensor& node) { throw X3DError("COPY CONSTRUCTOR"); }

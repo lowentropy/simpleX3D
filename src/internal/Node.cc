@@ -57,20 +57,4 @@ bool Node::parseSpecial(xmlNode* xml, const string& filename) {
     return false;
 }
 
-bool Node::isSensor() const {
-    return false;
-}
-
-bool Node::isTimer() const {
-    return false;
-}
-
-void Node::evaluate() {
-    throw X3DError("ABSTRACT");
-}
-
-void Node::predict() {
-    throw X3DError("ABSTRACT");
-}
-
 }

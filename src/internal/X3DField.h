@@ -124,9 +124,46 @@ public:
      */
 	virtual Type getType() const = 0;
 
+    /**
+     * Generic assignment operator.
+     *
+     * @params f field to assign from
+     * @returns reference to this
+     */
     virtual X3DField& operator()(const X3DField& f) = 0;
+
+    /**
+     * Generic comparison operator. Throws an error if field is
+     * wrong type.
+     *
+     * @params f field to compare to
+     * @returns whether values are equal
+     */
     virtual bool operator==(const X3DField& f) const = 0;
+
+    /**
+     * Generic comparison operator. Throws an error if field is
+     * wrong type.
+     *
+     * @params f field to compare to
+     * @returns whether values are inequal
+     */
     virtual bool operator!=(const X3DField& f) const = 0;
+
+    /**
+     * Generic imprecise comparison operator. For values including
+     * floating points, this comparison should just be "close enough".
+     *
+     * @params f field to compare to
+     * @returns whether values are close
+     */
+    virtual bool equals(const X3DField& f) const;
+
+    /**
+     * Compare two floating point values to see if they're close.
+     * This function should work on a large range of values.
+     */
+    static bool float_close(double u, double v);
 
     /**
      * Modify the value of the field by parsing from an input stream.

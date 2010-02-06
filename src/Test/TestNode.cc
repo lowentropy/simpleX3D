@@ -28,9 +28,6 @@ namespace X3D {
 namespace Test {
 
 TestNode::~TestNode() {
-    map<string,Expect*>::const_iterator it;
-    for (it = expects.begin(); it != expects.end(); it++)
-        delete it->second;
 }
 
 const string& TestNode::defaultContainerField() {
@@ -42,6 +39,10 @@ void TestNode::setup() {
     continuous(false);
     timeout(0);
     should("pass");
+    // predictions for expects
+    map<string,Expect*>::iterator it;
+    for (it = expects.begin(); it != expects.end(); it++)
+        it->second->predict();
 }
 
 SAIField* TestNode::getField(const string& name) {
@@ -83,6 +84,7 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     xmlFree((xmlChar*) name);
     // add the expect
     expects[expect->name] = expect;
+    expect->predict();
     return true;
 }
 
@@ -153,17 +155,6 @@ bool TestNode::runTest() {
     }
 
     return success();
-}
-
-bool TestNode::isTimer() const {
-    return true;
-}
-
-void TestNode::predict() {
-    // predictions for expects
-    map<string,Expect*>::iterator it;
-    for (it = expects.begin(); it != expects.end(); it++)
-        it->second->predict();
 }
 
 }}

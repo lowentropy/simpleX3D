@@ -47,7 +47,7 @@ bool Expect::test(string* reason) {
     std::stringstream ss;
     if (actual == NULL) {
         ss << name << " expected " << *expected << ", but was never activated";
-    } else if (*expected != *actual) {
+    } else if (!expected->equals(*actual)) {
         ss << name << " expected " << *expected << ", but was actually " << *actual;
     } else {
         return true;

@@ -1,4 +1,5 @@
 #include "internal/MF.h"
+#include <cmath>
 
 namespace X3D {
 
@@ -106,6 +107,10 @@ MAKE_TYPE_CON(MFVec4f)
 
 static X3DField* newSFNode() { return new SFNode<Node>(); }
 static X3DField* newMFNode() { return new MFNode<Node>(); }
+
+bool X3DField::equals(const X3DField& field) const {
+    return *this == field;
+}
 
 X3DField::Type X3DField::getType(const string& typeName) {
     if (typeMap.empty()) {
@@ -215,6 +220,16 @@ X3DField* X3DField::create(const string& typeName) {
 std::ostream& operator<<(std::ostream& os, const X3DField& f) {
     f.print(os);
     return os;
+}
+
+bool X3DField::float_close(double u, double v) {
+    double d = fabs(u - v);
+    if (d < 1e-150)
+        return true;
+    double av = fabs(v);
+    double m = fabs(u);
+    if (av > m) m = av;
+    return (d / m) < 1e-8;
 }
 
 }
