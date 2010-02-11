@@ -97,7 +97,9 @@ public:
 	 * sending false to #set_bind.
 	 */
 	virtual ~X3DBindableNode() {
-		set_bind(false);
+	//	set_bind(false);
+    //	TODO: move this to a dispose()... local static
+    //	instances will get their destructor called
 	}
 
 	/// The stack for bindable nodes is just an STL list.

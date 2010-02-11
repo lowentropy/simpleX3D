@@ -313,6 +313,8 @@ public:
      * @param ptr node class pointer to field declaration
      * @returns new field definition
      */
+    // TODO: create a chunk of junk memory to point to via templatized node
+    // pointer, so that static read-only lookups don't segfault
 	template <typename T> FieldDef* createField(const string& name, T N::*ptr) {
         static N node;
         X3DField::Type type = (node.*ptr).getType();

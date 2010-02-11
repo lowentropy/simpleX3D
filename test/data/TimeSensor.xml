@@ -17,6 +17,7 @@
                 <expect name='cycle' type='SFTime' value='2' testAt='2'/>
                 <expect name='next' type='SFTime' value='5'/>
                 <expect name='mid' type='SFBool' value='false' testAt='3'/>
+
             </Test>
         </TestSuite>
 
