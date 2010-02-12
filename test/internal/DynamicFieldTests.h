@@ -4,11 +4,11 @@ TEST(DynamicFields, CreateFieldByNameShouldMakeCorrectType) {
     delete field;
     EXPECT_EQ(X3DField::SFVEC3D, (field = X3DField::create("SFVec3d"))->getType());
     delete field;
-    EXPECT_EQ(X3DField::MFSTRING, (field = X3DField::create("MFString"))->getType());
+    EXPECT_EQ(X3DField::MFSTRING, (field = X3DField::create("MFStringArray"))->getType());
     delete field;
     EXPECT_EQ(X3DField::SFNODE, (field = X3DField::create("SFNode"))->getType());
     delete field;
-    EXPECT_EQ(X3DField::MFNODE, (field = X3DField::create("MFNode"))->getType());
+    EXPECT_EQ(X3DField::MFNODE, (field = X3DField::create("MFNodeSet"))->getType());
     delete field;
 }
 

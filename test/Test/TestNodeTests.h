@@ -6,7 +6,7 @@ using X3D::Test::Expect;
 TEST(TestNode, ShouldParseNodeWithExpects) {
     // load scene and get components
     World* world;
-    ASSERT_NO_THROW(world = World::read(browser(), "data/Expects.xml"));
+    world = World::read(browser(), "data/Expects.xml");
     Node* node = browser()->getNode("test");
     ASSERT_THAT(node, NotNull());
     Expect* e1 = node->getField<Expect>("expect1");
@@ -15,7 +15,7 @@ TEST(TestNode, ShouldParseNodeWithExpects) {
     ASSERT_THAT(e2, NotNull());
     EXPECT_EQ(X3DField::SFINT32, e1->get().getType());
     EXPECT_EQ(SFInt32(216), e1->get());
-    MFString list;
+    MFStringArray list;
     list.add("foo");
     list.add("bar");
     list.add("baz");

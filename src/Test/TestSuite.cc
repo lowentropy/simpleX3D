@@ -41,8 +41,8 @@ void TestSuite::signal() {
 
 void TestSuite::runTests() {
     reset();
-    list<TestNode*> tests = this->tests.value.getElements();
-    list<TestNode*>::iterator it;
+    MFNodeList<TestNode> tests = this->tests.value;
+    MFNodeList<TestNode>::iterator it;
     for (it = tests.begin(); it != tests.end(); it++) {
         if ((*it)->runTest()) {
             passed().add(*it);

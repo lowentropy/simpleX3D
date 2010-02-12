@@ -14,7 +14,6 @@ libsimpleX3D_la_SOURCES = \
     internal/FieldDef.cc \
     internal/SAIField.cc \
     internal/FieldIterator.cc \
-    internal/NodeIterator.cc \
     internal/World.cc \
     internal/Prototype.cc \
     internal/ProtoInst.cc \

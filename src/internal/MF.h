@@ -21,7 +21,6 @@
 #define _X3D_MFFIELDS_H_
 
 #include "internal/SF.h"
-#include "internal/NodeIterator.h"
 
 #include <list>
 #include <map>
@@ -40,6 +39,8 @@ public:
     virtual void setEnd(void* ptr) const = 0;
     virtual void advance(void* ptr) = 0;
     virtual void advance(void* ptr) const = 0;
+    virtual bool compare(void* a, void *b) = 0;
+    virtual bool compare(void* a, void *b) const = 0;
     virtual R get(void* ptr) = 0;
     virtual C get(void* ptr) const = 0;
 };
@@ -50,11 +51,11 @@ public:
     // non-const iterator
     class iterator {
     private:
-        const MFEnumerable<R,C>* mf;
+        MFEnumerable<R,C>* mf;
         char iter[sizeof(std::list<void*>::const_iterator)];
     public:
         iterator() {}
-        iterator(const MFEnumerable<R,C>* mf, bool end) : mf(mf) {
+        iterator(MFEnumerable<R,C>* mf, bool end) : mf(mf) {
             if (end)
                 mf->setEnd((void*) iter);
             else
@@ -63,20 +64,25 @@ public:
         R operator*() {
             return mf->get((void*) iter);
         }
-        iterator operator++() {
+        T* operator->() {
+            return &(mf->get((void*) iter));
+        }
+        iterator operator++(int unused) {
             iterator it = *this;
             mf->advance((void*) iter);
             return it;
         }
-        iterator operator++(int unused) {
+        iterator operator++() {
             mf->advance((void*) iter);
             return *this;
         }
         bool operator==(const iterator& it) const {
             return !memcmp(iter, it.iter, sizeof(iter));
+            //return mf->compare((void*) iter, (void*) it.iter);
         }
         bool operator!=(const iterator& it) const {
             return memcmp(iter, it.iter, sizeof(iter));
+            //return !mf->compare((void*) iter, (void*) it.iter);
         }
     };
     // const iterator
@@ -95,26 +101,33 @@ public:
         C operator*() {
             return mf->get((void*) iter);
         }
-        const_iterator operator++() {
+        const T* operator->() {
+            return &(mf->get((void*) iter));
+        }
+        const_iterator operator++(int unused) {
             const_iterator it = *this;
             mf->advance((void*) iter);
             return it;
         }
-        const_iterator operator++(int unused) {
+        const_iterator operator++() {
             mf->advance((void*) iter);
             return *this;
         }
         bool operator==(const const_iterator& it) const {
             return !memcmp(iter, it.iter, sizeof(iter));
+            //return mf->compare((void*) iter, (void*) it.iter);
         }
         bool operator!=(const const_iterator& it) const {
             return memcmp(iter, it.iter, sizeof(iter));
+            //return !mf->compare((void*) iter, (void*) it.iter);
         }
     };
     // virtual functions
     virtual void add(C elem) = 0;
     virtual void clear() = 0;
     virtual void print(ostream& os) const = 0;
+    virtual bool empty() const = 0;
+    virtual int size() const = 0;
     // constructor
     MF() {}
     // iterators
@@ -128,12 +141,6 @@ public:
     // contracts
     INLINE MF<S,T,R,C>& operator()() { return *this; }
     INLINE const MF<S,T,R,C>& operator()() const { return *this; }
-    INLINE bool operator==(const X3DField& value) const {
-        throw X3DError("NOT IMPLEMENTED");
-    }
-    INLINE bool operator!=(const X3DField& value) const {
-        throw X3DError("NOT IMPLEMENTED");
-    }
     MF<S,T,R,C>& operator()(const X3DField& value) {
         throw X3DError("direct list assignment not supported");
     }
@@ -142,6 +149,7 @@ public:
         const_iterator it;
         for (it = mf.begin(); it != mf.end(); it++)
             add(*it);
+        return *this;
     }
     // parse list
     bool parse(istream& ss) {
@@ -168,56 +176,59 @@ template <class S, typename T, typename R, typename C>
 class MFBasic : public MF<S,T,R,C> {
 public:
     typedef MF<S,T,R,C> parent;
-    virtual void clear() = 0;
-    static INLINE const MFBasic<S,T,R,C>& unwrap(const X3DField& value) {
-        static S sf;
-        if (value.getType() != sf.getMFType())
-            throw X3DError(
-                string("base type mismatch; expected ") +
-                sf.getMFTypeName() + ", but was " +
-                value.getTypeName());
-        return static_cast<const MFBasic<S,T,R,C>&>(value);
-    }
     void print(ostream& os) const {
         typename parent::const_iterator it;
         for (it = parent::begin(); it != parent::end(); it++)
             os << *it << ",";
     }
-    const MFBasic<S,T,R,C>& operator=(const X3DField& field) {
-        *this = unwrap(field);
-        return *this;
-    }
-    const MFBasic<S,T,R,C>& operator=(const MF<S,T,R,C>& mf) {
-        clear();
-        typename parent::const_iterator it;
-        for (it = mf.begin(); it != mf.end(); it++)
-            add(*it);
-    }
 };
 
-template <class N>
-class MFNode : public MF<SFNode<N>, N*, N*, N*> {
+/**
+ * This abstract class exists so that you can access arbitrary
+ * fields which you know to be MFNode<?>.
+ */
+class MFAbstractNode {
 public:
-    typedef MF<SFNode<N>,N*,N*,N*> parent;
-    virtual void clear() = 0;
-    /**
-     * Unwrap a generic value into a list type. This method will
-     * only succeed if the generic value is an MFNode list of the
-     * exact same root node type.
-     * 
-     * @param f generic value
-     * @returns native list type
-     */
-	static INLINE const MFNode<N>& unwrap(const X3DField& f) {
+
+    virtual void cloneInto(MFAbstractNode& target, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) = 0;
+
+    virtual void addNode(Node* node) = 0;
+
+    static const MFAbstractNode& unwrap(const X3DField& f) {
 		if (f.getType() != X3DField::MFNODE)
 			throw X3DError(
                 string("base type mismatch; expected MFNode") + \
                 ", but was " + f.getTypeName()); \
-		const MFNode<N>* mf = dynamic_cast<const MFNode<N>*>(&f);
+        const MFAbstractNode* mf = dynamic_cast<const MFAbstractNode*>(&f);
         if (mf == NULL)
-            throw X3DError("node type mismatch");
+            throw X3DError(
+                string("list type mismatch; not a node list"));
         return *mf;
-	}
+    }
+
+    static MFAbstractNode& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+        MFAbstractNode* mf = dynamic_cast<MFAbstractNode*>(&f);
+        if (mf == NULL)
+            throw X3DError(
+                string("list type mismatch; not a node list"));
+        return *mf;
+    }
+};
+
+template <class N>
+class MFNode : public MF<SFNode<N>, N*, N*, N*>, public MFAbstractNode {
+public:
+    typedef MF<SFNode<N>,N*,N*,N*> parent;
+    void addNode(Node* node) {
+        N* n = dynamic_cast<N*>(node);
+        if (n == NULL)
+            throw X3DError("node type mismatch");
+        this->add(n); // XXX problem spot...
+    }
     void print(ostream& os) const {
         SFNode<N> sf;
         typename parent::const_iterator it;
@@ -226,27 +237,33 @@ public:
             os << sf << ", ";
         }
     }
-    const MFNode<N>& operator=(const X3DField& field) {
-        *this = unwrap(field);
-        return *this;
-    }
-    const MFNode<N>& operator=(const MFNode<N>& mf) {
-        clear();
-        typename MFNode<N>::const_iterator it;
-        for (it = mf.begin(); it != mf.end(); it++)
-            add(*it);
+    void cloneInto(MFAbstractNode& abstract, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) {
+        MFNode<N>* mf = dynamic_cast<MFNode<N>*>(&abstract);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        mf->clear();
+        typename parent::iterator it;
+        if (shallow) {
+            for (it = parent::begin(); it != parent::end(); it++)
+                mf->add(*it);
+        } else {
+            for (it = parent::begin(); it != parent::end(); it++)
+                mf->add(SFNode<N>::clone(*it, mapping, shallow));
+        }
     }
 };
 
 #define MF_ITER_IMPL(R,C) \
     void setBegin(void* ptr) { *((ITER*) ptr) = elements.begin(); } \
-    void setBegin(void* ptr) const { *((CONST_ITER*) ptr) = elements.end(); } \
-    void setEnd(void* ptr) { *((ITER*) ptr) = elements.begin(); } \
+    void setBegin(void* ptr) const { *((CONST_ITER*) ptr) = elements.begin(); } \
+    void setEnd(void* ptr) { *((ITER*) ptr) = elements.end(); } \
     void setEnd(void* ptr) const { *((CONST_ITER*) ptr) = elements.end(); } \
     void advance(void* ptr) { (*((ITER*) ptr))++; } \
     void advance(void* ptr) const { (*((CONST_ITER*) ptr))++; } \
-    R get(void* ptr) { return *(*((ITER*) ptr))++; } \
-    C get(void* ptr) const { return *(*((CONST_ITER*) ptr))++; }
+    bool compare(void* a, void* b) { return *((ITER*) a) == *((ITER*) b); } \
+    bool compare(void* a, void* b) const { return *((CONST_ITER*) a) == *((CONST_ITER*) b); } \
+    R get(void* ptr) { return **((ITER*) ptr); } \
+    C get(void* ptr) const { return **((CONST_ITER*) ptr); }
 
 template <class S, typename T, typename R, typename C>
 class MFList : public MFBasic<S,T,R,C> {
@@ -260,11 +277,44 @@ public:
     MF_ITER_IMPL(R,C)
     virtual void add(C elem) { elements.push_back(elem); }
     virtual void clear() { elements.clear(); }
+    virtual bool empty() const { return elements.empty(); }
+    virtual int size() const { return elements.size(); }
     INLINE bool operator==(const MFList<S,T,R,C>& mf) const {
         return elements == mf.elements;
     }
     INLINE bool operator!=(const MFList<S,T,R,C>& mf) const {
         return elements != mf.elements;
+    }
+    INLINE bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    INLINE bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+    INLINE MFList<S,T,R,C>& operator()() { return *this; }
+    INLINE const MFList<S,T,R,C>& operator()() const { return *this; }
+    const MFList<S,T,R,C>& operator()(const MFBasic<S,T,R,C>& mf) {
+        return *this = mf;
+    }
+    const MFList<S,T,R,C>& operator=(const MFBasic<S,T,R,C>& mf) {
+        clear();
+        typename MF<S,T,R,C>::const_iterator it;
+        for (it = mf.begin(); it != mf.end(); it++)
+            add(*it);
+        return *this;
+    }
+    static INLINE const MFList<S,T,R,C>& unwrap(const X3DField& value) {
+        static S sf;
+        if (value.getType() != sf.getMFType())
+            throw X3DError(
+                string("base type mismatch; expected ") +
+                sf.getMFTypeName() + ", but was " +
+                value.getTypeName());
+        const MFList<S,T,R,C>* mf = dynamic_cast<const MFList<S,T,R,C>*>(&value);
+        if (mf == NULL)
+            throw X3DError(
+                "list type mismatch; expected list, but was array");
+        return *mf;
     }
 };
 
@@ -280,11 +330,44 @@ public:
     MF_ITER_IMPL(R,C)
     virtual void add(C elem) { elements.push_back(elem); }
     virtual void clear() { elements.clear(); }
+    virtual bool empty() const { return elements.empty(); }
+    virtual int size() const { return elements.size(); }
     INLINE bool operator==(const MFArray<S,T,R,C>& mf) const {
         return elements == mf.elements;
     }
     INLINE bool operator!=(const MFArray<S,T,R,C>& mf) const {
         return elements != mf.elements;
+    }
+    INLINE bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    INLINE bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+    INLINE MFArray<S,T,R,C>& operator()() { return *this; }
+    INLINE const MFArray<S,T,R,C>& operator()() const { return *this; }
+    const MFArray<S,T,R,C>& operator()(const MFBasic<S,T,R,C>& mf) {
+        return *this = mf;
+    }
+    const MFArray<S,T,R,C>& operator=(const MFBasic<S,T,R,C>& mf) {
+        clear();
+        typename MF<S,T,R,C>::const_iterator it;
+        for (it = mf.begin(); it != mf.end(); it++)
+            add(*it);
+        return *this;
+    }
+    static INLINE const MFArray<S,T,R,C>& unwrap(const X3DField& value) {
+        static S sf;
+        if (value.getType() != sf.getMFType())
+            throw X3DError(
+                string("base type mismatch; expected ") +
+                sf.getMFTypeName() + ", but was " +
+                value.getTypeName());
+        const MFArray<S,T,R,C>* mf = dynamic_cast<const MFArray<S,T,R,C>*>(&value);
+        if (mf == NULL)
+            throw X3DError(
+                "list type mismatch; expected array, but was list");
+        return *mf;
     }
 };
 
@@ -298,14 +381,54 @@ public:
     typedef MFNodeList<N>& TYPE;
     typedef const MFNodeList<N>& CONST_TYPE;
     MF_ITER_IMPL(N*, N*)
-    virtual void add(N* elem) { elements.push_back(elem); }
+    virtual void add(N* elem) {
+        if (elem != NULL)
+            elem->realize();
+        elements.push_back(elem);
+    }
     virtual void clear() { elements.clear(); }
+    virtual bool empty() const { return elements.empty(); }
+    virtual int size() const { return elements.size(); }
     INLINE bool operator==(const MFNodeList<N>& mf) const {
         return elements == mf.elements;
     }
     INLINE bool operator!=(const MFNodeList<N>& mf) const {
         return elements != mf.elements;
     }
+    INLINE bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    INLINE bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+    INLINE MFNodeList<N>& operator()() { return *this; }
+    INLINE const MFNodeList<N>& operator()() const { return *this; }
+    const MFNodeList<N>& operator()(const MFNode<N>& mf) {
+        return *this = mf;
+    }
+    const MFNodeList<N>& operator=(const X3DField& field) {
+        return *this = unwrap(field);
+    }
+    const MFNodeList<N>& operator=(const MFNode<N>& mf) {
+        clear();
+        typename MFNode<N>::const_iterator it;
+        for (it = mf.begin(); it != mf.end(); it++)
+            add(*it);
+        return *this;
+    }
+	static INLINE const MFNodeList<N>& unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+		const MFNode<N>* mf = dynamic_cast<const MFNode<N>*>(&f);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        const MFNodeList<N>* mflist = dynamic_cast<const MFNodeList<N>*>(mf);
+        if (mflist == NULL)
+            throw X3DError("list type mismatch");
+        return *mflist;
+	}
 };
 
 template <class N>
@@ -318,14 +441,54 @@ public:
     typedef MFNodeSet<N>& TYPE;
     typedef const MFNodeSet<N>& CONST_TYPE;
     MF_ITER_IMPL(N*, N*)
-    virtual void add(N* elem) { elements.insert(elem); }
+    virtual void add(N* elem) {
+        if (elem != NULL)
+            elem->realize();
+        elements.insert(elem);
+    }
     virtual void clear() { elements.clear(); }
+    virtual bool empty() const { return elements.empty(); }
+    virtual int size() const { return elements.size(); }
     INLINE bool operator==(const MFNodeSet<N>& mf) const {
         return elements == mf.elements;
     }
     INLINE bool operator!=(const MFNodeSet<N>& mf) const {
         return elements != mf.elements;
     }
+    INLINE bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    INLINE bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+    INLINE MFNodeSet<N>& operator()() { return *this; }
+    INLINE const MFNodeSet<N>& operator()() const { return *this; }
+    const MFNodeSet<N>& operator()(const MFNode<N>& mf) {
+        return *this = mf;
+    }
+    const MFNodeSet<N>& operator=(const X3DField& field) {
+        return *this = unwrap(field);
+    }
+    const MFNodeSet<N>& operator=(const MFNode<N>& mf) {
+        clear();
+        typename MFNode<N>::const_iterator it;
+        for (it = mf.begin(); it != mf.end(); it++)
+            add(*it);
+        return *this;
+    }
+	static INLINE const MFNodeSet<N>& unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+		const MFNode<N>* mf = dynamic_cast<const MFNode<N>*>(&f);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        const MFNodeSet<N>* mfset = dynamic_cast<const MFNodeSet<N>*>(mf);
+        if (mfset == NULL)
+            throw X3DError("list type mismatch");
+        return *mfset;
+	}
 };
 
 template <class N>
@@ -338,14 +501,54 @@ public:
     typedef MFNodeArray<N>& TYPE;
     typedef const MFNodeArray<N>& CONST_TYPE;
     MF_ITER_IMPL(N*, N*)
-    virtual void add(N* elem) { elements.push_back(elem); }
+    virtual void add(N* elem) {
+        if (elem != NULL)
+            elem->realize();
+        elements.push_back(elem);
+    }
     virtual void clear() { elements.clear(); }
+    virtual bool empty() const { return elements.empty(); }
+    virtual int size() const { return elements.size(); }
     INLINE bool operator==(const MFNodeArray<N>& mf) const {
         return elements == mf.elements;
     }
     INLINE bool operator!=(const MFNodeArray<N>& mf) const {
         return elements != mf.elements;
     }
+    INLINE bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    INLINE bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+    INLINE MFNodeArray<N>& operator()() { return *this; }
+    INLINE const MFNodeArray<N>& operator()() const { return *this; }
+    const MFNodeArray<N>& operator()(const MFNode<N>& mf) {
+        return *this = mf;
+    }
+    const MFNodeArray<N>& operator=(const X3DField& field) {
+        return *this = unwrap(field);
+    }
+    const MFNodeArray<N>& operator=(const MFNode<N>& mf) {
+        clear();
+        typename MFNode<N>::const_iterator it;
+        for (it = mf.begin(); it != mf.end(); it++)
+            add(*it);
+        return *this;
+    }
+	static INLINE const MFNodeArray<N>& unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+		const MFNode<N>* mf = dynamic_cast<const MFNode<N>*>(&f);
+        if (mf == NULL)
+            throw X3DError("node type mismatch");
+        const MFNodeArray<N>* mfarr = dynamic_cast<const MFNodeArray<N>*>(mf);
+        if (mfarr == NULL)
+            throw X3DError("list type mismatch");
+        return *mfarr;
+	}
 };
 
 #define DEFINE_MF_NATIVE(NAME,TYPE) \
@@ -379,100 +582,6 @@ DEFINE_MF_REF(Vec3d,SFVec3d)
 DEFINE_MF_REF(Vec4f,SFVec4f)
 DEFINE_MF_REF(Vec4d,SFVec4d)
 
-/**
- * This abstract class exists so that you can access arbitrary
- * fields which you know to be MFNode<?>.
- */
-/*
-class MFAbstractNode {
-public:
-
-    virtual void cloneInto(MFAbstractNode& target, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) = 0;
-
-    static const MFAbstractNode& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::MFNODE)
-			throw X3DError(
-                string("base type mismatch; expected MFNode") + \
-                ", but was " + f.getTypeName()); \
-        const MFAbstractNode* mf = dynamic_cast<const MFAbstractNode*>(&f);
-        if (mf == NULL)
-            throw X3DError(
-                string("list type mismatch; not a node list"));
-        return *mf;
-    }
-    static MFAbstractNode& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::MFNODE)
-			throw X3DError(
-                string("base type mismatch; expected MFNode") + \
-                ", but was " + f.getTypeName()); \
-        MFAbstractNode* mf = dynamic_cast<MFAbstractNode*>(&f);
-        if (mf == NULL)
-            throw X3DError(
-                string("list type mismatch; not a node list"));
-        return *mf;
-    }
-};
-*/
-/*
-
-    void cloneInto(MFAbstractNode& abstract, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) {
-        MFNode<N>* mf = dynamic_cast<MFNode<N>*>(&abstract);
-        if (mf == NULL)
-            throw X3DError("node type mismatch");
-        mf->clear();
-        list<N*>& source = this->MFBase<N*>::elements;
-        typename list<N*>::iterator it;
-        if (shallow) {
-            for (it = source.begin(); it != source.end(); it++)
-                mf->add(*it);
-        } else {
-            for (it = source.begin(); it != source.end(); it++)
-                mf->add((*it)->clone(mapping, shallow));
-        }
-    }
-
-    void begin(NodeIterator& iter) {
-        void* container = (void*) &(iter.iter);
-        ITER* it = (ITER*) container;
-        *it = this->MFBase<N*>::elements.begin();
-        if (*it == this->MFBase<N*>::elements.end())
-            iter.current = NULL;
-        else
-            iter.current = **it;
-    }
-
-    void next(NodeIterator& iter) {
-        void* container = (void*) &(iter.iter);
-        ITER* it = (ITER*) container;
-        if (++(*it) == this->MFBase<N*>::elements.end())
-            iter.current = NULL;
-        else
-            iter.current = **it;
-    }
-
-        SFNode<N> sf;
-        typename list<N*>::const_iterator it;
-        for (   it = MFBase<N*>::elements.begin();
-                it != MFBase<N*>::elements.end();
-                it++) {
-            sf = *it;
-            os << sf << ", ";
-        }
-    }
-
-    bool operator==(const X3DField& f) const {
-        return this->MFBase<N*>::operator==(unwrap(f));
-    }
-
-    bool operator!=(const X3DField& f) const {
-        return this->MFBase<N*>::operator!=(unwrap(f));
-    }
-
-    MFNode<N>& operator()(const X3DField& f) {
-        throw new X3DError("list assignment not supported");
-    }
-};
-*/
 
 }
 

@@ -8,6 +8,7 @@ TEST(ParseTests, IntParseShouldSucceedOnGoodString) {
     stringstream ss("216\t");
     EXPECT_EQ(true, x.parse(ss));
     EXPECT_EQ(216, x());
+    browser()->reset();
 }
 
 TEST(ParseTests, IntParseShouldSucceedOnNegativeString) {
@@ -15,18 +16,21 @@ TEST(ParseTests, IntParseShouldSucceedOnNegativeString) {
     stringstream ss(" -216");
     EXPECT_EQ(true, x.parse(ss));
     EXPECT_EQ(-216, x());
+    browser()->reset();
 }
 
 TEST(ParseTests, IntShouldFailOnEmptyString) {
     SFInt32 x;
     stringstream ss("");
     EXPECT_EQ(false, x.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, IntShouldFailOnBadString) {
     SFInt32 x;
     stringstream ss("foo");
     EXPECT_EQ(false, x.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, VecShouldSucceedOnIntString) {
@@ -34,6 +38,7 @@ TEST(ParseTests, VecShouldSucceedOnIntString) {
     stringstream ss("1 2 3");
     EXPECT_EQ(true, v.parse(ss));
     EXPECT_EQ(SFVec3d(1,2,3), v);
+    browser()->reset();
 }
 
 TEST(ParseTests, VecShouldSucceedOnFloatString) {
@@ -41,24 +46,28 @@ TEST(ParseTests, VecShouldSucceedOnFloatString) {
     stringstream ss("1.23 \t 2e3 -3.0123123\n\n\n\n\n-0");
     EXPECT_EQ(true, v.parse(ss));
     EXPECT_EQ(SFVec4f(1.23,2e3,-3.0123123,0.0), v);
+    browser()->reset();
 }
 
 TEST(ParseTests, VecShouldFailWithCommas) {
     SFVec3f v;
     stringstream ss("1, 2, 3");
     EXPECT_EQ(false, v.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, VecShouldFailWithTooFewArguments) {
     SFVec3f v;
     stringstream ss("1 2");
     EXPECT_EQ(false, v.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, VecShouldFailWithNonNumberArguments) {
     SFVec2f v;
     stringstream ss("foo 33.3");
     EXPECT_EQ(false, v.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, Matrix3ShouldSucceedInGeneralCase) {
@@ -67,6 +76,7 @@ TEST(ParseTests, Matrix3ShouldSucceedInGeneralCase) {
     double arr[] = {1, 2, 3, 4, -3.561, 1234, -512, 123, 3e-12};
     EXPECT_EQ(true, m.parse(ss));
     EXPECT_EQ(SFMatrix3d(arr), m);
+    browser()->reset();
 }
 
 TEST(ParseTests, Matrix4ShouldSucceedInGeneralCase) {
@@ -75,6 +85,7 @@ TEST(ParseTests, Matrix4ShouldSucceedInGeneralCase) {
     double arr[] = {1, 2, 3, 124111, 4, -3.561, 1234, 0, -512, 123, 3e-12, 2.0, 1, 2, 3, 4};
     EXPECT_EQ(true, m.parse(ss));
     EXPECT_EQ(SFMatrix4d(arr), m);
+    browser()->reset();
 }
 
 TEST(ParseTests, FloatShouldSuceedOnIntegerString) {
@@ -82,6 +93,7 @@ TEST(ParseTests, FloatShouldSuceedOnIntegerString) {
     stringstream ss("-216");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(-216, f());
+    browser()->reset();
 }
 
 TEST(ParseTests, FloatShouldSuceedOnComplexFloatString) {
@@ -89,6 +101,7 @@ TEST(ParseTests, FloatShouldSuceedOnComplexFloatString) {
     stringstream ss("-123.456e-42");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(-123.456e-42, f());
+    browser()->reset();
 }
 
 TEST(ParseTests, FloatShouldSucceedWithExtraZeros) {
@@ -96,6 +109,7 @@ TEST(ParseTests, FloatShouldSucceedWithExtraZeros) {
     stringstream ss("00123.456000");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(123.456, f());
+    browser()->reset();
 }
 
 // XXX this should really fail, but that would require peeking at
@@ -114,6 +128,7 @@ TEST(ParseTests, FloatShouldFailWithUnmixedNonNumber) {
     SFFloat f;
     stringstream ss("f123");
     EXPECT_EQ(false, f.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, DoubleShouldSuceedOnIntegerString) {
@@ -121,6 +136,7 @@ TEST(ParseTests, DoubleShouldSuceedOnIntegerString) {
     stringstream ss("-216");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(-216, f());
+    browser()->reset();
 }
 
 TEST(ParseTests, DoubleShouldSuceedOnComplexDoubleString) {
@@ -128,6 +144,7 @@ TEST(ParseTests, DoubleShouldSuceedOnComplexDoubleString) {
     stringstream ss("-123.456e-42");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(-123.456e-42, f());
+    browser()->reset();
 }
 
 TEST(ParseTests, DoubleShouldSucceedWithExtraZeros) {
@@ -135,6 +152,7 @@ TEST(ParseTests, DoubleShouldSucceedWithExtraZeros) {
     stringstream ss("00123.456000");
     EXPECT_EQ(true, f.parse(ss));
     EXPECT_FLOAT_EQ(123.456, f());
+    browser()->reset();
 }
 
 // XXX this should really fail, but that would require peeking at
@@ -153,6 +171,7 @@ TEST(ParseTests, DoubleShouldFailWithUnmixedNonNumber) {
     SFDouble f;
     stringstream ss("f123");
     EXPECT_EQ(false, f.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, BoolShouldSucceedWithLowercase) {
@@ -163,6 +182,7 @@ TEST(ParseTests, BoolShouldSucceedWithLowercase) {
     stringstream sfalse("false");
     EXPECT_EQ(true, b.parse(sfalse));
     EXPECT_EQ(false, b());
+    browser()->reset();
 }
 
 TEST(ParseTests, BoolShouldFailWithMixedCase) {
@@ -171,6 +191,7 @@ TEST(ParseTests, BoolShouldFailWithMixedCase) {
     EXPECT_EQ(false, b.parse(strue));
     stringstream sfalse("fAlSe");
     EXPECT_EQ(false, b.parse(sfalse));
+    browser()->reset();
 }
 
 TEST(ParseTests, TimeShouldParseAnywayBecauseItsJustADouble) {
@@ -178,6 +199,7 @@ TEST(ParseTests, TimeShouldParseAnywayBecauseItsJustADouble) {
     stringstream ss("123.456");
     EXPECT_EQ(true, t.parse(ss));
     EXPECT_FLOAT_EQ(123.456, t());
+    browser()->reset();
 }
 
 TEST(ParseTests, ColorShouldSucceedIfInBounds) {
@@ -185,12 +207,14 @@ TEST(ParseTests, ColorShouldSucceedIfInBounds) {
     stringstream ss("0.3 0.4 1");
     EXPECT_EQ(true, c.parse(ss));
     EXPECT_EQ(SFColor(0.3,0.4,1), c);
+    browser()->reset();
 }
 
 TEST(ParseTests, ColorShouldFailIfOutOfBounds) {
     SFColor c;
     stringstream ss("0.3 0.4 1.1");
     EXPECT_EQ(false, c.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, ColorRGBAShouldSucceedIfInBounds) {
@@ -198,12 +222,14 @@ TEST(ParseTests, ColorRGBAShouldSucceedIfInBounds) {
     stringstream ss("0.3 0.4 0 1");
     EXPECT_EQ(true, c.parse(ss));
     EXPECT_EQ(SFColorRGBA(0.3,0.4,0,1), c);
+    browser()->reset();
 }
 
 TEST(ParseTests, ColorRGBAShouldFailIfOutOfBounds) {
     SFColorRGBA c;
     stringstream ss("0.3 0.4 0.2 -0.5");
     EXPECT_EQ(false, c.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, RotationShouldSucceedInGeneralCase) {
@@ -211,6 +237,7 @@ TEST(ParseTests, RotationShouldSucceedInGeneralCase) {
     stringstream ss("1 2 3 4");
     EXPECT_EQ(true, r.parse(ss));
     EXPECT_EQ(SFRotation(1,2,3,4), r);
+    browser()->reset();
 }
 
 TEST(ParseTests, StringShouldSuceedIfWellFormed) {
@@ -220,12 +247,14 @@ TEST(ParseTests, StringShouldSuceedIfWellFormed) {
     ss >> std::ws;
     EXPECT_EQ(true, ss.eof());
     EXPECT_EQ("foo adsgk ads' adsf \n\t", s());
+    browser()->reset();
 }
 
 TEST(ParseTests, StringShouldFailIfMissingLeadingQuote) {
     SFString s;
     stringstream ss("adf asd\"");
     EXPECT_EQ(false, s.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, StringShouldFailIfMissingTrailingQuote) {
@@ -233,6 +262,7 @@ TEST(ParseTests, StringShouldFailIfMissingTrailingQuote) {
     stringstream ss("\"asdlkfads");
     EXPECT_EQ(false, s.parse(ss));
     EXPECT_EQ("foo", s());
+    browser()->reset();
 }
 
 TEST(ParseTests, NodeShouldSucceedWithNullValue) {
@@ -242,6 +272,7 @@ TEST(ParseTests, NodeShouldSucceedWithNullValue) {
     EXPECT_EQ(true, n.parse(ss));
     EXPECT_EQ(NULL, n());
     delete ts;
+    browser()->reset();
 }
 
 TEST(ParseTests, NodeShouldSucceedWithNamedNode) {
@@ -251,12 +282,14 @@ TEST(ParseTests, NodeShouldSucceedWithNamedNode) {
     stringstream ss("parse_tests_foo");
     EXPECT_EQ(true, n.parse(ss));
     EXPECT_EQ(node, n());
+    browser()->reset();
 }
 
 TEST(ParseTests, NodeShouldFailWithUnknwonNode) {
     SFNode<TimeSensor> n;
     stringstream ss("googlyfoozit");
     EXPECT_ANY_THROW(n.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, NodeShouldFailWithWrongNodeType) {
@@ -265,6 +298,7 @@ TEST(ParseTests, NodeShouldFailWithWrongNodeType) {
     SFNode<TimeSensor> n;
     stringstream ss("parse_tests_bar");
     EXPECT_ANY_THROW(n.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, ImageShouldSucceedWithMixedDecimalModes) {
@@ -278,6 +312,7 @@ TEST(ParseTests, ImageShouldSucceedWithMixedDecimalModes) {
     EXPECT_EQ(0xa3, img.array()[1]);
     EXPECT_EQ(11, img.array()[2]);
     EXPECT_EQ(0, img.array()[3]);
+    browser()->reset();
 }
 
 TEST(ParseTests, ImageShouldSucceedWithMultipleChannels) {
@@ -289,36 +324,44 @@ TEST(ParseTests, ImageShouldSucceedWithMultipleChannels) {
     EXPECT_EQ(2, img.getComponents());
     EXPECT_EQ(0x12, img.array()[0]);
     EXPECT_EQ(0x34, img.array()[1]);
+    browser()->reset();
 }
 
 TEST(ParseTests, ImageShouldFailWithNotEnoughPixels) {
     SFImage img(0,0,0);
     stringstream ss("2 2 1 216 0xa3 11");
     EXPECT_EQ(false, img.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, ImageShouldFailIfPixelOutOfBounds) {
     SFImage img(0,0,0);
     stringstream ss("2 2 1 216 0xa3 1111");
     EXPECT_EQ(false, img.parse(ss));
+    browser()->reset();
 }
 
 TEST(ParseTests, MFVecShouldSucceedInGeneralCase) {
-    MFVec3f mf;
+    MFVec3fArray mf;
     stringstream ss("1 2 3  \n, 4 5 6, 7 8 9 , ");
     EXPECT_EQ(true, mf.parse(ss));
-    EXPECT_EQ(3, mf.getElements().size());
-    list<SFVec3f>::const_iterator it;
+    EXPECT_EQ(3, mf.size());
+    MFVec3f::iterator it;
     int i = 1;
-    for (it = mf.getElements().begin(); it != mf.getElements().end(); it++) {
+    for (it = mf.begin(); it != mf.end(); it++) {
+        if (i > 9)
+            break;
         EXPECT_FLOAT_EQ((float) i++, it->x);
         EXPECT_FLOAT_EQ((float) i++, it->y);
         EXPECT_FLOAT_EQ((float) i++, it->z);
     }
+    EXPECT_TRUE(mf.end() == it);
+    browser()->reset();
 }
 
 TEST(ParseTests, MFVecShouldFailOnLeadingComma) {
-    MFVec3f mf;
+    MFVec3fArray mf;
     stringstream ss(",1 2 3  \n, 4 5 6, 7 8 9 , ");
     EXPECT_EQ(false, mf.parse(ss));
+    browser()->reset();
 }

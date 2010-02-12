@@ -59,7 +59,7 @@ const string& X3DField::getTypeName() const {
 X3DField::Type X3DField::getMFType() const {
     int sf = (int) getType();
     if (sf < 21)
-        sf = 21;
+        sf += 21;
     return (X3DField::Type) sf;
 }
 
@@ -214,7 +214,7 @@ X3DField* X3DField::create(const string& typeName) {
     	INSERT_TYPE_CON(MFMatrix3fList) /*INSERT_TYPE_CON(MFMatrix3fSet)*/ INSERT_TYPE_CON(MFMatrix3fArray)
     	INSERT_TYPE_CON(MFMatrix4dList) /*INSERT_TYPE_CON(MFMatrix4dSet)*/ INSERT_TYPE_CON(MFMatrix4dArray)
     	INSERT_TYPE_CON(MFMatrix4fList) /*INSERT_TYPE_CON(MFMatrix4fSet)*/ INSERT_TYPE_CON(MFMatrix4fArray)
-    	INSERT_TYPE_CON(MFNodeList) /*INSERT_TYPE_CON(MFNodeSet)*/ INSERT_TYPE_CON(MFNodeArray)
+    	INSERT_TYPE_CON(MFNodeList) INSERT_TYPE_CON(MFNodeSet) INSERT_TYPE_CON(MFNodeArray)
     	INSERT_TYPE_CON(MFRotationList) /*INSERT_TYPE_CON(MFRotationSet)*/ INSERT_TYPE_CON(MFRotationArray)
     	INSERT_TYPE_CON(MFStringList) /*INSERT_TYPE_CON(MFStringSet)*/ INSERT_TYPE_CON(MFStringArray)
     	INSERT_TYPE_CON(MFTimeList) /*INSERT_TYPE_CON(MFTimeSet)*/ INSERT_TYPE_CON(MFTimeArray)

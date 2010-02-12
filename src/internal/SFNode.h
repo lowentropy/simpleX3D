@@ -192,6 +192,10 @@ public:
         }
     }
 
+    static N* clone(N* node, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) {
+        return dynamic_cast<N*>(node->clone(mapping, shallow));
+    }
+
 };
 
 }

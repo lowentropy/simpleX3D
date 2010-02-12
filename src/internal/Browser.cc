@@ -65,6 +65,14 @@ Browser::~Browser() {
 
 bool Browser::simulate() {
 
+    // realize root nodes
+    if (!started) {
+        list<Node*>::iterator r_it;
+        for (r_it = roots.begin(); r_it != roots.end(); r_it++)
+            (*r_it)->realize();
+        started = true;
+    }
+
     // initialize new sensors
     vector<X3DSensorNode*>::iterator s_it;
     for (s_it = newSensors.begin(); s_it != newSensors.end(); s_it++)

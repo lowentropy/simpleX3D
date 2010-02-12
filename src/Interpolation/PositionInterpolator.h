@@ -8,7 +8,7 @@ namespace Interpolation {
 
 class PositionInterpolator : public X3DInterpolatorNode {
 
-    DefaultInOutField<PositionInterpolator, MFVec3f> keyValue;
+    DefaultInOutField<PositionInterpolator, MFVec3fArray> keyValue;
 
     OutField<PositionInterpolator, SFVec3f> value_changed;
 

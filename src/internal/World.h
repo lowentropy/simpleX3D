@@ -45,7 +45,7 @@ public:
             const string& filename,
 			const string& version,
 			const string& profile,
-			const MFString& meta) :
+			const MFStringArray& meta) :
 		browser(browser),
         filename(filename),
 		version(version),

@@ -25,9 +25,9 @@ TEST(Cloning, ShouldCloneComplexTree) {
 
     // test the clone
     EXPECT_EQ("Root", clone->getName());
-    list<TestNode*>& tests = clone->tests().getElements();
+    MFNode<TestNode>& tests = clone->tests();
     EXPECT_EQ(2, tests.size());
-    list<TestNode*>::iterator it = tests.begin();
+    MFNode<TestNode>::iterator it = tests.begin();
     
     TestNode* test = *it++;
     EXPECT_EQ("Test1", test->getName());

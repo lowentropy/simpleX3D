@@ -26,7 +26,7 @@ World::~World() {
 }
 
 World* World::read(Browser* browser, const char* filename) {
-    World* world = new World(browser, filename, "", "", MFString());
+    World* world = new World(browser, filename, "", "", MFStringArray());
     xmlDoc* doc;
     doc = xmlReadFile(filename, NULL, 0);
     if (doc == NULL)
@@ -317,10 +317,10 @@ void World::parseNode(xmlNode* xml, Node* parent,
         if (sai == NULL)
             throw X3DParserError(
                 string("invalid container field: ") + field, filename, xml);
-        MFAbstractNode::unwrap(sai->get()).add(node);
+        MFAbstractNode::unwrap(sai->get()).addNode(node);
         // XXX
         if (!node->realized())
-            throw new X3DParserError("should've realized...", filename, xml);
+            throw X3DParserError("should've realized...", filename, xml);
     }
 }
 

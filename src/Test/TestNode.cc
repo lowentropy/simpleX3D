@@ -116,7 +116,7 @@ bool TestNode::runTest() {
 
     // check expected failures
     if (!shouldPass) {
-        const list<string>& expected = failWith().getElements();
+        const MFString& expected = failWith();
         // should have failed but didn't
         if (fails.empty()) {
             reasons().add("expected failure(s), but passed instead");
@@ -132,7 +132,7 @@ bool TestNode::runTest() {
             // check failure reasons
             } else {
                 list<string>::iterator r_it = fails.begin();
-                list<string>::const_iterator e_it = expected.begin();
+                MFStringList::const_iterator e_it = expected.begin();
                 for (; r_it != fails.end(); r_it++, e_it++) {
                     if (*e_it != *r_it) {
                         std::ostringstream os;
@@ -147,7 +147,7 @@ bool TestNode::runTest() {
     }
 
     // determine overall success
-    if (reasons().getElements().empty()) {
+    if (reasons().empty()) {
         success(true);
     } else {
         success(false);

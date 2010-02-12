@@ -34,7 +34,7 @@ public:
         }
     } set_fraction;
 
-    DefaultInOutField<X3DInterpolatorNode, MFFloat> key;
+    DefaultInOutField<X3DInterpolatorNode, MFFloatArray> key;
 
     void setup() {
     }
