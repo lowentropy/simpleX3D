@@ -1,0 +1,81 @@
+<X3D>
+    <Scene>
+        
+        <TimeSensor DEF='ts' startTime='0' cycleInterval='1' loop='false'/>
+
+        <PositionInterpolator DEF='open'
+            key='0 1' keyValue='0 1 2, 1 3 0'/>
+
+        <PositionInterpolator DEF='ends'
+            key='0.6 0.7' keyValue='0 0 0, 1 1 1'/>
+
+        <PositionInterpolator DEF='skew'
+            key='0 0.5 1' keyValue='0 0 0, 0.4 0.4 0.4, 1 1 1'/>
+
+        <TestSuite desc='"Interpolation"'>
+            <Test DEF='test' desc='"PositionInterpolator"'>
+
+                <expect name='open.a' type='SFVec3f'
+                    value='0 1 2' testAt='0.0'/>
+                <expect name='open.b' type='SFVec3f'
+                    value='0.5 2 1' testAt='0.5'/>
+                <expect name='open.c' type='SFVec3f'
+                    value='1 3 0' testAt='1.0'/>
+
+                <expect name='ends.a' type='SFVec3f'
+                    value='0 0 0' testAt='0.1'/>
+                <expect name='ends.b' type='SFVec3f'
+                    value='0.5 0.5 0.5' testAt='0.65'/>
+                <expect name='ends.c' type='SFVec3f'
+                    value='1 1 1' testAt='0.9'/>
+
+                <expect name='skew.a' type='SFVec3f'
+                    value='0.2 0.2 0.2' testAt='0.25'/>
+                <expect name='skew.b' type='SFVec3f'
+                    value='0.4 0.4 0.4' testAt='0.5'/>
+                <expect name='skew.c' type='SFVec3f'
+                    value='0.7 0.7 0.7' testAt='0.75'/>
+            </Test>
+        </TestSuite>
+
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='open'   toField='set_fraction'/>
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='ends'   toField='set_fraction'/>
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='skew'   toField='set_fraction'/>
+
+        <ROUTE
+            fromNode='open' fromField='value_changed'
+              toNode='test' toField='open.a'/>
+        <ROUTE
+            fromNode='open' fromField='value_changed'
+              toNode='test' toField='open.b'/>
+        <ROUTE
+            fromNode='open' fromField='value_changed'
+              toNode='test' toField='open.c'/>
+
+        <ROUTE
+            fromNode='ends' fromField='value_changed'
+              toNode='test' toField='ends.a'/>
+        <ROUTE
+            fromNode='ends' fromField='value_changed'
+              toNode='test' toField='ends.b'/>
+        <ROUTE
+            fromNode='ends' fromField='value_changed'
+              toNode='test' toField='ends.c'/>
+
+        <ROUTE
+            fromNode='skew' fromField='value_changed'
+              toNode='test' toField='skew.a'/>
+        <ROUTE
+            fromNode='skew' fromField='value_changed'
+              toNode='test' toField='skew.b'/>
+        <ROUTE
+            fromNode='skew' fromField='value_changed'
+              toNode='test' toField='skew.c'/>
+    </Scene>
+</X3D>

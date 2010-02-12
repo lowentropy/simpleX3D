@@ -22,4 +22,5 @@ include_HEADERS = \
 	data/Parse.xml \
 	data/Expects.xml \
 	data/TimeSensor.xml \
-	data/Unactivated.xml
+	data/Unactivated.xml \
+	data/Interpolate.xml

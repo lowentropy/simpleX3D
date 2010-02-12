@@ -1,5 +1,10 @@
 #include "internal/MF.h"
+
 #include <cmath>
+#include <iostream>
+
+using std::cout;
+using std::endl;
 
 namespace X3D {
 
@@ -242,7 +247,7 @@ bool X3DField::float_close(double u, double v) {
     double av = fabs(v);
     double m = fabs(u);
     if (av > m) m = av;
-    return (d / m) < 1e-8;
+    return (d / m) < 1e-6;
 }
 
 }

@@ -17,6 +17,7 @@ libsimpleX3D_la_SOURCES = \
     internal/World.cc \
     internal/Prototype.cc \
     internal/ProtoInst.cc \
+	internal/builtin.cc \
 	Core/X3DNode.cc \
 	Core/MetadataSet.cc \
 	Core/MetadataString.cc \

@@ -19,7 +19,11 @@
 
 #include "Interpolation/PositionInterpolator.h"
 #include <vector>
+#include <iostream>
+
 using std::vector;
+using std::cout;
+using std::endl;
 
 namespace X3D {
 namespace Interpolation {
@@ -41,15 +45,19 @@ void PositionInterpolator::setFraction(float fraction) {
         int high = size - 1;
         while (low < high - 1) {
             int mid = low + ((high - low) / 2);
-            if (keys[mid] > fraction)
+            if (keys[mid] >= fraction)
                 high = mid;
             else if (keys[mid+1] < fraction)
                 low = mid + 1;
+            else {
+                low = mid;
+                break;
+            }
         }
-        float a = fraction - keys[low];
-        float b = keys[low+1] - fraction;
+        float a = keys[low], b = keys[low+1];
         SFVec3f &lo = values[low], &hi = values[low+1];
-        value = (hi - lo) * a / (a + b) + lo;
+        SFVec3f diff = hi - lo;
+        value = lo + (diff / (b - a)) * (fraction - a);
     }
     value_changed.send(value);
 }

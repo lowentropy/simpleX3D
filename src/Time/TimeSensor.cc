@@ -18,9 +18,11 @@
  */
 
 #include "internal/Browser.h"
-#include <float.h>
+#include "Time/TimeSensor.h"
 
+#include <float.h>
 #include <iostream>
+
 using std::cout;
 using std::endl;
 
@@ -31,6 +33,7 @@ void TimeSensor::setup() {
     isActive.value = false;
     cycleInterval.value = 1;
     last = -1;
+    next = -1;
 }
 
 void TimeSensor::wake(double time) {
@@ -67,7 +70,7 @@ void TimeSensor::evaluate() {
     bool _resume = resume <= tick;
 
     // eliminate redundant pairs
-    if (_start && _stop && start <= stop)
+    if (_start && _stop && start < stop)
         _start = _stop = false;
     if (_pause && _resume && pause <= resume)
         _pause = _resume = false;

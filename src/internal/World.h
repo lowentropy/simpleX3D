@@ -21,6 +21,7 @@
 #define _X3D_WORLD_H_
 
 #include "internal/Browser.h"
+#include "Core/WorldInfo.h"
 
 #include <string>
 #include <libxml/parser.h>

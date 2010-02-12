@@ -20,12 +20,18 @@
 #ifndef _X3D_BROWSER_H_
 #define _X3D_BROWSER_H_
 
-#include "internal/builtin.h"
+#include "Core/X3DSensorNode.h"
+#include "Time/X3DTimeDependentNode.h"
+#include "internal/Profile.h"
 #include "internal/Event.h"
+#include "internal/NodeDef.h"
+#include "internal/builtin.h"
 #include <list>
 #include <queue>
+#include <vector>
 
 using std::list;
+using std::vector;
 using std::priority_queue;
 using namespace X3D::Core;
 using namespace X3D::Time;

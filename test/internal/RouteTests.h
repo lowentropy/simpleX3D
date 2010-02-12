@@ -1,3 +1,4 @@
+#include "internal/Component.h"
 #include "internal/Route.h"
 #include "internal/Browser.h"
 

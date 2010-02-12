@@ -39,7 +39,7 @@ Expect::Expect(
 }
 
 void Expect::predict() {
-    if (testAt >= 0 && node->now() < testAt)
+    if (testAt >= 0)
         Browser::getSingleton()->wake(testAt);
 }
 

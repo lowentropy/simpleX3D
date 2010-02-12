@@ -85,7 +85,7 @@ bool Browser::simulate() {
 
     // advance time
     simTime = events.top().time;
-    // cout << "TICK: " << simTime << endl;
+    //cout << "***** " << simTime << " ***** " << endl;
 
     // run the cascade to completion
     retry:

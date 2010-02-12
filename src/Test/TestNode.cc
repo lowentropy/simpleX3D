@@ -39,10 +39,6 @@ void TestNode::setup() {
     continuous(false);
     timeout(0);
     should("pass");
-    // predictions for expects
-    map<string,Expect*>::iterator it;
-    for (it = expects.begin(); it != expects.end(); it++)
-        it->second->predict();
 }
 
 SAIField* TestNode::getField(const string& name) {

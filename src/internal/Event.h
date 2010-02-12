@@ -30,9 +30,9 @@ class Event {
 public:
 
     double time;
-    X3DSensorNode* node;
+    Core::X3DSensorNode* node;
 
-    Event(double time, X3DSensorNode* node)
+    Event(double time, Core::X3DSensorNode* node)
         : time(time), node(node) {}
 
     bool operator<(const Event& event) const {

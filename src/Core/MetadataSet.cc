@@ -18,6 +18,8 @@
  */
 
 #include "internal/Browser.h"
+#include "Core/MetadataString.h"
+#include "Core/MetadataSet.h"
 
 namespace X3D {
 namespace Core {

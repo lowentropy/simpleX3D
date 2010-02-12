@@ -21,10 +21,14 @@
 #define _X3D_SFVEC_H_
 
 #include "internal/X3DField.h"
+
 #include <string.h>
 #include <math.h>
+#include <iostream>
 
 using std::string;
+using std::cout;
+using std::endl;
 
 namespace X3D {
 
@@ -72,6 +76,9 @@ public:
     }
     bool operator!=(const X3DField& field) const {
         return *this != unwrap(field);
+    }
+    bool equals(const X3DField& field) const {
+        return this->equals(unwrap(field));
     }
 
 public:
@@ -162,6 +169,17 @@ public:
      */
     bool operator==(const SFVec2<T,S>& v) const {
         return (x == v.x) && (y == v.y);
+    }
+
+    /**
+     * Soft comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    bool equals(const SFVec2<T,S>& v) const {
+        return X3DField::float_close(x, v.x)
+            && X3DField::float_close(y, v.y);
     }
 
     /**
@@ -341,6 +359,9 @@ public:
     bool operator!=(const X3DField& field) const {
         return *this != unwrap(field);
     }
+    bool equals(const X3DField& field) const {
+        return this->equals(unwrap(field));
+    }
 
 public:
 	T x; ///< X coordinate
@@ -432,6 +453,18 @@ public:
      */
     bool operator==(const SFVec3<T,S>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z);
+    }
+
+    /**
+     * Soft comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    bool equals(const SFVec3<T,S>& v) const {
+        return X3DField::float_close(x, v.x)
+            && X3DField::float_close(y, v.y)
+            && X3DField::float_close(z, v.z);
     }
 
     /**
@@ -689,6 +722,9 @@ public:
     bool operator!=(const X3DField& field) const {
         return *this != unwrap(field);
     }
+    bool equals(const X3DField& field) const {
+        return this->equals(unwrap(field));
+    }
 
 public:
 	T x; ///< X coordinate
@@ -748,6 +784,19 @@ public:
      */
     bool operator==(const SFVec4<T,S>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z) && (w == v.w);
+    }
+
+    /**
+     * Soft comparison operator.
+     * 
+     * @param v vector to compare to
+     * @returns whether vectors are equal
+     */
+    bool equals(const SFVec4<T,S>& v) const {
+        return X3DField::float_close(x, v.x)
+            && X3DField::float_close(y, v.y)
+            && X3DField::float_close(z, v.z)
+            && X3DField::float_close(w, v.w);
     }
 
     /**

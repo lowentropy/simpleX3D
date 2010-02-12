@@ -18,6 +18,7 @@
  */
 
 #include "internal/Browser.h"
+#include "internal/Component.h"
 
 #include <iostream>
 
