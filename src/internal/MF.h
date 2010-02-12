@@ -282,7 +282,8 @@ private:
     typedef typename std::list<T>::const_iterator CONST_ITER;
     std::list<T> elements;
 public:
-    typedef MFList<S>& TYPE;
+    typedef MFList<S> TYPE;
+    typedef MFList<S>& REF_TYPE;
     typedef const MFList<S>& CONST_TYPE;
     MF_ITER_IMPL
     std::list<T>& list() { return elements; }
@@ -340,7 +341,8 @@ private:
     typedef typename std::vector<T>::const_iterator CONST_ITER;
     std::vector<T> elements;
 public:
-    typedef MFArray<S>& TYPE;
+    typedef MFArray<S> TYPE;
+    typedef MFArray<S>& REF_TYPE;
     typedef const MFArray<S>& CONST_TYPE;
     MF_ITER_IMPL
     std::vector<T>& array() { return elements; }
@@ -399,7 +401,8 @@ private:
     typedef typename std::list<N*>::const_iterator CONST_ITER;
     std::list<N*> elements;
 public:
-    typedef MFNodeList<N>& TYPE;
+    typedef MFNodeList<N> TYPE;
+    typedef MFNodeList<N>& REF_TYPE;
     typedef const MFNodeList<N>& CONST_TYPE;
     MF_ITER_IMPL
     std::list<N*>& list() { return elements; }
@@ -465,7 +468,8 @@ private:
     typedef typename std::set<N*>::const_iterator CONST_ITER;
     std::set<N*> elements;
 public:
-    typedef MFNodeSet<N>& TYPE;
+    typedef MFNodeSet<N> TYPE;
+    typedef MFNodeSet<N>& REF_TYPE;
     typedef const MFNodeSet<N>& CONST_TYPE;
     MF_ITER_IMPL
     std::set<N*>& set() { return elements; }
@@ -531,7 +535,8 @@ private:
     typedef typename std::vector<N*>::const_iterator CONST_ITER;
     std::vector<N*> elements;
 public:
-    typedef MFNodeArray<N>& TYPE;
+    typedef MFNodeArray<N> TYPE;
+    typedef MFNodeArray<N>& REF_TYPE;
     typedef const MFNodeArray<N>& CONST_TYPE;
     MF_ITER_IMPL
     std::vector<N*>& array() { return elements; }
