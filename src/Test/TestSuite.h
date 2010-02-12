@@ -29,10 +29,10 @@ namespace Test {
 class TestSuite : public Core::X3DNode {
 public:
     
-    InitField<TestSuite, MFNode<TestNode> > tests;
+    InitField<TestSuite, MFNodeList<TestNode> > tests;
     DefaultInOutField<TestSuite, SFString> desc;
-    DefaultOutField<TestSuite, MFNode<TestNode> > passed;
-    DefaultOutField<TestSuite, MFNode<TestNode> > failed;
+    DefaultOutField<TestSuite, MFNodeList<TestNode> > passed;
+    DefaultOutField<TestSuite, MFNodeList<TestNode> > failed;
     DefaultOutField<TestSuite, SFInt32> numPassed;
     DefaultOutField<TestSuite, SFInt32> numFailed;
 

@@ -38,7 +38,7 @@ public:
 	InitField<WorldInfo, SFString> title;
 
 	/// Arbitrary strings providing global metadata
-	InitField<WorldInfo, MFString> info;
+	InitField<WorldInfo, MFStringList> info;
 
     /// Setup stuff
     void setup() {}

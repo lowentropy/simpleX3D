@@ -33,7 +33,7 @@ public:
     void setup() {}
 
 	/// metadata value (last written to value_changed)
-	DefaultInOutField<MetadataInteger, MFInt32> value;
+	DefaultInOutField<MetadataInteger, MFInt32List> value;
 };
 
 }} // namespace X3D::Core

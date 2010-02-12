@@ -74,6 +74,13 @@ public:
 		return *this;
 	}
 
+    /**
+     * Sorting operator (for MFRotation)
+     */
+    bool operator<(const SFRotation& r) const {
+        return this < &r;
+    }
+
     /// High-level assignment operator
     SFRotation& operator()(const X3DField& f) {
         return *this = unwrap(f);

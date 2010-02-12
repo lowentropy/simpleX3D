@@ -33,7 +33,7 @@ class MetadataSet : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value, a list of other metadata (last written to value_changed)
-	DefaultInOutField<MetadataSet, MFNode<X3DMetadataObject> > value;
+	DefaultInOutField<MetadataSet, MFNodeSet<X3DMetadataObject> > value;
 
     /// Setup stuff
     void setup() {}

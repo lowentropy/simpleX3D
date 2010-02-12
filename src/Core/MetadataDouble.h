@@ -30,7 +30,7 @@ class MetadataDouble : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to output field)
-	DefaultInOutField<MetadataDouble, MFDouble> value;
+	DefaultInOutField<MetadataDouble, MFDoubleList> value;
 
     /// Setup stuff
     void setup() {}

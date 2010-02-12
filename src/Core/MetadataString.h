@@ -30,7 +30,7 @@ class MetadataString : public X3DNode, public X3DMetadataObject {
 public:
 
 	/// metadata value (last written to value_changed)
-	DefaultInOutField<MetadataString, MFString> value;
+	DefaultInOutField<MetadataString, MFStringList> value;
 
     /// Setup stuff
     void setup() {}

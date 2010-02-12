@@ -64,6 +64,13 @@ public:
 	 */
 	template <typename U> SFVec2(U x, U y) : x(x), y(y) {}
 
+    /**
+     * Sorting operator (for MFVec2X)
+     */
+    template <typename U> bool operator<(const SFVec2<U>& v) const {
+        return this < &v;
+    }
+
 	/**
 	 * Array accessor (mutable version).
 	 * 
@@ -304,6 +311,13 @@ public:
 	 * @param z Z coordinate
 	 */
 	template <typename U> SFVec3(U x, U y, U z) : x(x), y(y), z(z) {}
+
+    /**
+     * Sorting operator (for MFVec3X)
+     */
+    template <typename U> bool operator<(const SFVec3<U>& v) const {
+        return this < &v;
+    }
 
 	/**
 	 * Array accessor (mutable version).
@@ -632,6 +646,13 @@ public:
 	 * @param w W coordinate
 	 */
 	template <typename U> SFVec4(U x, U y, U z, U w) : x(x), y(y), z(z), w(w) {}
+
+    /**
+     * Sorting operator (for MFVec4X)
+     */
+    template <typename U> bool operator<(const SFVec4<U>& v) const {
+        return this < &v;
+    }
 
 	/**
 	 * Array accessor (mutable version).

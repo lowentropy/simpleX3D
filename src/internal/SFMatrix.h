@@ -76,6 +76,13 @@ public:
 	 */
 	const T& operator[](int index) const { return data[index]; }
 
+    /**
+     * Sorting operator (for MFMatrix3X)
+     */
+    template <typename U> bool operator<(const SFMatrix3<U>& m) const {
+        return this < &m;
+    }
+
 	/**
 	 * Array access (mutable version).
 	 * 
@@ -271,6 +278,13 @@ public:
 	 * @returns const pointer into the array elements
 	 */
 	const T& operator[](int index) const { return data[index]; }
+
+    /**
+     * Sorting operator (for MFMatrix4X)
+     */
+    template <typename U> bool operator<(const SFMatrix4<U>& m) const {
+        return this < &m;
+    }
 
 	/**
 	 * Array access (mutable version).
