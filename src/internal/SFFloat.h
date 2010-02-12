@@ -30,6 +30,7 @@ namespace X3D {
 class SFFloat : public X3DField {
 public:
 	typedef float TYPE;
+	typedef float REF_TYPE;
 	typedef float CONST_TYPE;
 
     /// native stored value

@@ -29,8 +29,8 @@ using std::string;
 namespace X3D {
 
 // forward declarations
-template <typename T> class SFMatrix3;
-template <typename T> class SFMatrix4;
+template <typename T, X3DField::Type S> class SFMatrix3;
+template <typename T, X3DField::Type S> class SFMatrix4;
 
 /**
  * 2-Dimensional vector.
@@ -43,8 +43,37 @@ template <typename T> class SFMatrix4;
  * 2D vectors do not have matrix operations, as there are no 2x2 matrices in
  * the X3D spec.
  */
-template <typename T>
+template <typename T, X3DField::Type S>
 class SFVec2 : public X3DField {
+public:
+
+    typedef SFVec2<T,S> TYPE;
+    typedef SFVec2<T,S>& REF_TYPE;
+    typedef const SFVec2<T,S>& CONST_TYPE;
+    
+    X3DField::Type getType() const { return S; }
+    static const SFVec2<T,S>& unwrap(const X3DField& field) {
+        if (field.getType() != S)
+            throw new X3DError(
+                string("invalid type; expected ") +
+                X3DField::getTypeName(S) + ", but was " +
+                field.getTypeName());
+        return *static_cast<const SFVec2<T,S>*>(&field);
+    }
+    const SFVec2<T,S>& operator()() const {
+        return *this;
+    }
+    SFVec2<T,S>& operator()(const X3DField& field) {
+        *this = unwrap(field);
+        return *this;
+    }
+    bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -63,13 +92,6 @@ public:
 	 * @param y Y coordinate
 	 */
 	template <typename U> SFVec2(U x, U y) : x(x), y(y) {}
-
-    /**
-     * Sorting operator (for MFVec2X)
-     */
-    template <typename U> bool operator<(const SFVec2<U>& v) const {
-        return this < &v;
-    }
 
 	/**
 	 * Array accessor (mutable version).
@@ -109,12 +131,12 @@ public:
 	 * 
 	 * @returns normalized vector
 	 */
-	SFVec2<T> normal() const {
+	SFVec2<T,S> normal() const {
 		T m = mag();
 		if (m != 0.0)
 			return *this / m;
 		else
-			return SFVec2<T>();
+			return SFVec2<T,S>();
 	}
 
 	/** 
@@ -125,7 +147,7 @@ public:
 	 * 
 	 * @returns reference to this
 	 */
-	SFVec2<T>& normalize() {
+	SFVec2<T,S>& normalize() {
 		T m = mag();
 		if (m != 0.0)
 			*this /= m;
@@ -138,7 +160,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are equal
      */
-    template <typename U> bool operator==(const SFVec2<U>& v) const {
+    bool operator==(const SFVec2<T,S>& v) const {
         return (x == v.x) && (y == v.y);
     }
 
@@ -148,7 +170,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are not equal
      */
-    template <typename U> bool operator!=(const SFVec2<U>& v) const {
+    bool operator!=(const SFVec2<T,S>& v) const {
         return (x != v.x) || (y != v.y);
     }
 
@@ -158,8 +180,8 @@ public:
 	 * @param v vector to add to
 	 * @returns vector sum
 	 */
-	template <typename U> SFVec2<T> operator+(const SFVec2<U>& v) const {
-		return SFVec2<T>(x + v.x, y + v.y);
+	SFVec2<T,S> operator+(const SFVec2<T,S>& v) const {
+		return SFVec2<T,S>(x + v.x, y + v.y);
 	}
 
 	/**
@@ -168,8 +190,8 @@ public:
 	 * @param v vector to subtract
 	 * @returns vector difference
 	 */
-	template <typename U> SFVec2<T> operator-(const SFVec2<U>& v) const {
-		return SFVec2<T>(x - v.x, y - v.y);
+	SFVec2<T,S> operator-(const SFVec2<T,S>& v) const {
+		return SFVec2<T,S>(x - v.x, y - v.y);
 	}
 
 	/**
@@ -178,8 +200,8 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec2<T> operator*(U s) const {
-		return SFVec2<T>(x * s, y * s);
+	template <typename U> SFVec2<T,S> operator*(U s) const {
+		return SFVec2<T,S>(x * s, y * s);
 	}
 
 	/**
@@ -188,8 +210,8 @@ public:
 	 * @param s scalar to divide by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec2<T> operator/(U s) const {
-		return SFVec2<T>(x / s, y / s);
+	template <typename U> SFVec2<T,S> operator/(U s) const {
+		return SFVec2<T,S>(x / s, y / s);
 	}
 
 	/**
@@ -199,7 +221,7 @@ public:
 	 * 
 	 * @returns vector dot product.
 	 */
-	template <typename U> T operator*(SFVec2<U>& v) const {
+	T operator*(SFVec2<T,S>& v) const {
 		return (x * v.x) + (y * v.y);
 	}
 
@@ -209,7 +231,7 @@ public:
 	 * @param v vector to add
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec2<T>& operator+=(const SFVec2<U>& v) {
+	SFVec2<T,S>& operator+=(const SFVec2<T,S>& v) {
 		x += v.x;
 		y += v.y;
 		return *this;
@@ -221,7 +243,7 @@ public:
 	 * @param v vector to subtract
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec2<T>& operator-=(const SFVec2<U>& v) {
+	SFVec2<T,S>& operator-=(const SFVec2<T,S>& v) {
 		x -= v.x;
 		y -= v.y;
 		return *this;
@@ -233,7 +255,7 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec2<T>& operator*=(U s) {
+	template <typename U> SFVec2<T,S>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		return *this;
@@ -245,7 +267,7 @@ public:
 	 * @param s scalar to divide by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec2<T>& operator/=(U s) {
+	template <typename U> SFVec2<T,S>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		return *this;
@@ -273,7 +295,7 @@ public:
         os << x << ' ' << y;
     }
 
-    SFVec2<T>& operator=(const SFVec2<T>& v) {
+    SFVec2<T,S>& operator=(const SFVec2<T,S>& v) {
         x = v.x;
         y = v.y;
     }
@@ -289,8 +311,37 @@ public:
  * 
  * 3D vectors define matrix operations and a cross-product operator.
  */
-template <typename T>
+template <typename T, X3DField::Type S>
 class SFVec3 : public X3DField {
+public:
+
+    typedef SFVec3<T,S> TYPE;
+    typedef SFVec3<T,S>& REF_TYPE;
+    typedef const SFVec3<T,S>& CONST_TYPE;
+    
+    X3DField::Type getType() const { return S; }
+    static const SFVec3<T,S>& unwrap(const X3DField& field) {
+        if (field.getType() != S)
+            throw new X3DError(
+                string("invalid type; expected ") +
+                X3DField::getTypeName(S) + ", but was " +
+                field.getTypeName());
+        return *static_cast<const SFVec3<T,S>*>(&field);
+    }
+    const SFVec3<T,S>& operator()() const {
+        return *this;
+    }
+    SFVec3<T,S>& operator()(const X3DField& field) {
+        *this = unwrap(field);
+        return *this;
+    }
+    bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -311,13 +362,6 @@ public:
 	 * @param z Z coordinate
 	 */
 	template <typename U> SFVec3(U x, U y, U z) : x(x), y(y), z(z) {}
-
-    /**
-     * Sorting operator (for MFVec3X)
-     */
-    template <typename U> bool operator<(const SFVec3<U>& v) const {
-        return this < &v;
-    }
 
 	/**
 	 * Array accessor (mutable version).
@@ -357,12 +401,12 @@ public:
 	 * 
 	 * @returns normalized vector
 	 */
-	SFVec3<T> norm() const {
+	SFVec3<T,S> norm() const {
 		T m = mag();
 		if (m != 0.0)
 			return *this / m;
 		else
-			return SFVec3<T>();
+			return SFVec3<T,S>();
 	}
 
 	/** 
@@ -373,7 +417,7 @@ public:
 	 * 
 	 * @returns reference to this
 	 */
-	SFVec3<T>& normalize() {
+	SFVec3<T,S>& normalize() {
 		T m = mag();
 		if (m != 0.0)
 			*this /= m;
@@ -386,7 +430,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are equal
      */
-    template <typename U> bool operator==(const SFVec3<U>& v) const {
+    bool operator==(const SFVec3<T,S>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z);
     }
 
@@ -396,7 +440,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are not equal
      */
-    template <typename U> bool operator!=(const SFVec3<U>& v) const {
+    bool operator!=(const SFVec3<T,S>& v) const {
         return (x != v.x) || (y != v.y) || (z != v.z);
     }
 
@@ -406,8 +450,8 @@ public:
 	 * @param v vector to add to
 	 * @returns vector sum
 	 */
-	template <typename U> SFVec3<T> operator+(const SFVec3<U>& v) const {
-		return SFVec3<T>(x + v.x, y + v.y, z + v.z);
+	SFVec3<T,S> operator+(const SFVec3<T,S>& v) const {
+		return SFVec3<T,S>(x + v.x, y + v.y, z + v.z);
 	}
 
 	/**
@@ -416,8 +460,8 @@ public:
 	 * @param v vector to subtract
 	 * @returns vector difference
 	 */
-	template <typename U> SFVec3<T> operator-(const SFVec3<U>& v) const {
-		return SFVec3<T>(x - v.x, y - v.y, z - v.z);
+	SFVec3<T,S> operator-(const SFVec3<T,S>& v) const {
+		return SFVec3<T,S>(x - v.x, y - v.y, z - v.z);
 	}
 
 	/**
@@ -426,8 +470,8 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec3<T> operator*(U s) const {
-		return SFVec3<T>(x * s, y * s, z * s);
+	template <typename U> SFVec3<T,S> operator*(U s) const {
+		return SFVec3<T,S>(x * s, y * s, z * s);
 	}
 
 	/**
@@ -436,8 +480,8 @@ public:
 	 * @param s scalar to divide by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec3<T> operator/(U s) const {
-		return SFVec3<T>(x / s, y / s, z / s);
+	template <typename U> SFVec3<T,S> operator/(U s) const {
+		return SFVec3<T,S>(x / s, y / s, z / s);
 	}
 
 	/**
@@ -449,10 +493,10 @@ public:
 	 * @param m SFMatrix3 to multiply by
 	 * @returns result of matrix multiplication
 	 */
-	template <typename U> SFVec3<T> operator*(const SFMatrix3<U>& m) const {
-		SFVec3<T> v;
+	SFVec3<T,S> operator*(const SFMatrix3<T,S>& m) const {
+		SFVec3<T,S> v;
 		const T* p1 = &x;
-		const U* p2 = m.array();
+		const T* p2 = m.array();
 		for (int i = 0; i < 3; i++, p1++) {
 			v.x += *p1 * *p2++;
 			v.y += *p1 * *p2++;
@@ -468,7 +512,7 @@ public:
 	 * 
 	 * @returns vector dot product.
 	 */
-	template <typename U> T operator*(SFVec3<U>& v) const {
+	T operator*(SFVec3<T,S>& v) const {
 		return (x * v.x) + (y * v.y) + (z * v.z);
 	}
 
@@ -478,7 +522,7 @@ public:
 	 * @param v vector to add
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec3<T>& operator+=(const SFVec3<U>& v) {
+	SFVec3<T,S>& operator+=(const SFVec3<T,S>& v) {
 		x += v.x;
 		y += v.y;
 		z += v.z;
@@ -491,7 +535,7 @@ public:
 	 * @param v vector to subtract
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec3<T>& operator-=(const SFVec3<U>& v) {
+	SFVec3<T,S>& operator-=(const SFVec3<T,S>& v) {
 		x -= v.x;
 		y -= v.y;
 		z -= v.z;
@@ -504,7 +548,7 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec3<T>& operator*=(U s) {
+	template <typename U> SFVec3<T,S>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		z *= s;
@@ -520,8 +564,8 @@ public:
 	 * @param m SFMatrix3 to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec3<T>& operator*=(const SFMatrix3<U>& m) {
-        SFVec3<T> v = *this * m;
+	SFVec3<T,S>& operator*=(const SFMatrix3<T,S>& m) {
+        SFVec3<T,S> v = *this * m;
         x = v.x;
         y = v.y;
         z = v.z;
@@ -534,7 +578,7 @@ public:
 	 * @param s scalar to divide by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec3<T>& operator/=(U s) {
+	template <typename U> SFVec3<T,S>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		z /= s;
@@ -563,8 +607,8 @@ public:
 	 * @param v other vector in cross-product
 	 * @returns result of cross-product
 	 */
-	template <typename U> SFVec3<T> operator^(const SFVec3<U>& v) const {
-		return SFVec3<T>(
+	SFVec3<T,S> operator^(const SFVec3<T,S>& v) const {
+		return SFVec3<T,S>(
 			y * v.z - z * v.y,
 			z * v.x - x * v.z,
 			x * v.y - y * v.x
@@ -594,7 +638,7 @@ public:
         os << x << ' ' << y << ' ' << z;
     }
 
-    SFVec3<T>& operator=(const SFVec3<T>& v) {
+    SFVec3<T,S>& operator=(const SFVec3<T,S>& v) {
         x = v.x;
         y = v.y;
         z = v.z;
@@ -615,8 +659,37 @@ public:
  * 
  * SFVec4 defines matrix operations with SFMatrix4.
  */
-template <typename T>
+template <typename T, X3DField::Type S>
 class SFVec4 : public X3DField {
+public:
+
+    typedef SFVec4<T,S> TYPE;
+    typedef SFVec4<T,S>& REF_TYPE;
+    typedef const SFVec4<T,S>& CONST_TYPE;
+    
+    X3DField::Type getType() const { return S; }
+    static const SFVec4<T,S>& unwrap(const X3DField& field) {
+        if (field.getType() != S)
+            throw new X3DError(
+                string("invalid type; expected ") +
+                X3DField::getTypeName(S) + ", but was " +
+                field.getTypeName());
+        return *static_cast<const SFVec4<T,S>*>(&field);
+    }
+    const SFVec4<T,S>& operator()() const {
+        return *this;
+    }
+    SFVec4<T,S>& operator()(const X3DField& field) {
+        *this = unwrap(field);
+        return *this;
+    }
+    bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+
 public:
 	T x; ///< X coordinate
 	T y; ///< Y coordinate
@@ -635,7 +708,7 @@ public:
 	 * 
 	 * @param v SFVec4 to copy from
 	 */
-	template <typename U> SFVec4(const SFVec4<U> v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
+	SFVec4(const SFVec4<T,S>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
 
 	/**
 	 * Full constructor.
@@ -646,13 +719,6 @@ public:
 	 * @param w W coordinate
 	 */
 	template <typename U> SFVec4(U x, U y, U z, U w) : x(x), y(y), z(z), w(w) {}
-
-    /**
-     * Sorting operator (for MFVec4X)
-     */
-    template <typename U> bool operator<(const SFVec4<U>& v) const {
-        return this < &v;
-    }
 
 	/**
 	 * Array accessor (mutable version).
@@ -680,7 +746,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are equal
      */
-    template <typename U> bool operator==(const SFVec4<U>& v) const {
+    bool operator==(const SFVec4<T,S>& v) const {
         return (x == v.x) && (y == v.y) && (z == v.z) && (w == v.w);
     }
 
@@ -690,7 +756,7 @@ public:
      * @param v vector to compare to
      * @returns whether vectors are not equal
      */
-    template <typename U> bool operator!=(const SFVec4<U>& v) const {
+    bool operator!=(const SFVec4<T,S>& v) const {
         return (x != v.x) || (y != v.y) || (z != v.z) || (w != v.w);
     }
 
@@ -700,8 +766,8 @@ public:
 	 * @param v vector to add to
 	 * @returns vector sum
 	 */
-	template <typename U> SFVec4<T> operator+(const SFVec4<U>& v) const {
-		return SFVec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
+	SFVec4<T,S> operator+(const SFVec4<T,S>& v) const {
+		return SFVec4<T,S>(x + v.x, y + v.y, z + v.z, w + v.w);
 	}
 
 	/**
@@ -710,8 +776,8 @@ public:
 	 * @param v vector to subtract
 	 * @returns vector difference
 	 */
-	template <typename U> SFVec4<T> operator-(const SFVec4<U>& v) const {
-		return SFVec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
+	SFVec4<T,S> operator-(const SFVec4<T,S>& v) const {
+		return SFVec4<T,S>(x - v.x, y - v.y, z - v.z, w - v.w);
 	}
 
 	/**
@@ -722,8 +788,8 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec4<T> operator*(U s) const {
-		return SFVec4<T>(x * s, y * s, z * s, w);
+	template <typename U> SFVec4<T,S> operator*(U s) const {
+		return SFVec4<T,S>(x * s, y * s, z * s, w);
 	}
 
 	/**
@@ -734,8 +800,8 @@ public:
 	 * @param s scalar to divide by
 	 * @returns scaled vector
 	 */
-	template <typename U> SFVec4<T> operator/(U s) const {
-		return SFVec4<T>(x / s, y / s, z / s, w);
+	template <typename U> SFVec4<T,S> operator/(U s) const {
+		return SFVec4<T,S>(x / s, y / s, z / s, w);
 	}
 
 	/**
@@ -747,10 +813,10 @@ public:
 	 * @param m SFMatrix4 to multiply by
 	 * @returns result of matrix multiplication
 	 */
-	template <typename U> SFVec4<T> operator*(const SFMatrix4<U>& m) const {
-		SFVec4<T> v(0,0,0,0);
+	SFVec4<T,S> operator*(const SFMatrix4<T,S>& m) const {
+		SFVec4<T,S> v(0,0,0,0);
 		const T* p1 = &x;
-		const U* p2 = m.array();
+		const T* p2 = m.array();
 		for (int i = 0; i < 4; i++, p1++) {
 			v.x += *p1 * *p2++;
 			v.y += *p1 * *p2++;
@@ -766,7 +832,7 @@ public:
 	 * @param v vector to add
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec4<T>& operator+=(const SFVec4<U>& v) {
+	SFVec4<T,S>& operator+=(const SFVec4<T,S>& v) {
 		x += v.x;
 		y += v.y;
 		z += v.z;
@@ -780,7 +846,7 @@ public:
 	 * @param v vector to subtract
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec4<T>& operator-=(const SFVec4<U>& v) {
+	SFVec4<T,S>& operator-=(const SFVec4<T,S>& v) {
 		x -= v.x;
 		y -= v.y;
 		z -= v.z;
@@ -794,7 +860,7 @@ public:
 	 * @param s scalar to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec4<T>& operator*=(U s) {
+	template <typename U> SFVec4<T,S>& operator*=(U s) {
 		x *= s;
 		y *= s;
 		z *= s;
@@ -807,7 +873,7 @@ public:
 	 * @param s scalar to divide by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec4<T>& operator/=(U s) {
+	template <typename U> SFVec4<T,S>& operator/=(U s) {
 		x /= s;
 		y /= s;
 		z /= s;
@@ -823,8 +889,8 @@ public:
 	 * @param m SFMatrix4 to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFVec4<T>& operator*=(const SFMatrix4<U>& m) {
-        SFVec4<T> v = *this * m;
+	SFVec4<T,S>& operator*=(const SFMatrix4<T,S>& m) {
+        SFVec4<T,S> v = *this * m;
         x = v.x;
         y = v.y;
         z = v.z;
@@ -856,525 +922,19 @@ public:
         os << x << ' ' << y << ' ' << z << ' ' << w;
     }
 
-    SFVec4<T>& operator=(const SFVec4<T>& v) {
+    SFVec4<T,S>& operator=(const SFVec4<T,S>& v) {
         x = v.x;
         y = v.y;
         z = v.z;
     }
 };
 
-/// 2d vector of floats
-class SFVec2f : public SFVec2<float> {
-public:
-	typedef SFVec2f& TYPE;
-	typedef const SFVec2f& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0).
-	 */
-	SFVec2f() : SFVec2<float>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec2 to copy from
-	 */
-	SFVec2f(const SFVec2f& v) : SFVec2<float>(v.x, v.y) {}
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 */
-	template <typename U> SFVec2f(U x, U y) : SFVec2<float>(x, y) {}
-
-    /// @returns SFVEC2F
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC2F; }
-
-    /// Unwrap generic vector field
-	static INLINE const SFVec2f& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC2F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec2f") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec2f&>(f);
-	}
-
-    /// Unwrap generic vector field
-	static INLINE SFVec2f& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC2F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec2f") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec2f&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec2f& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const { 
-        return this->SFVec2<float>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec2<float>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec2f& operator()(const X3DField& f) {
-        this->SFVec2<float>::operator=(unwrap(f));
-        return *this;
-    }
-};
-
-/// 2d vector of doubles
-class SFVec2d : public SFVec2<double> {
-public:
-	typedef SFVec2d& TYPE;
-	typedef const SFVec2d& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0).
-	 */
-	SFVec2d() : SFVec2<double>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec2 to copy from
-	 */
-	SFVec2d(const SFVec2f& v) : SFVec2<double>(v.x, v.y) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec2 to copy from
-	 */
-	SFVec2d(const SFVec2d& v) : SFVec2<double>(v.x, v.y) {}
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 */
-	template <typename U> SFVec2d(U x, U y) : SFVec2<double>(x, y) {}
-
-    /// @returns SFVEC2D
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC2D; }
-
-    /// Unwrap generic vector field
-	static INLINE const SFVec2d& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC2D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec2d") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec2d&>(f);
-	}
-
-    /// Unwrap generic vector field
-	static INLINE SFVec2d& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC2D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec2d") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec2d&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec2d& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const {
-        return this->SFVec2<double>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec2<double>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec2d& operator()(const X3DField& f) {
-        this->SFVec2<double>::operator=(unwrap(f));
-        return *this;
-    }
-};
-
-/// 3d vector of floats
-class SFVec3f : public SFVec3<float> {
-public:
-	typedef SFVec3f& TYPE;
-	typedef const SFVec3f& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0,0).
-	 */
-	SFVec3f() : SFVec3<float>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec3 to copy from
-	 */
-	SFVec3f(const SFVec3f& v) : SFVec3<float>(v.x, v.y, v.z) {};
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 * @param z Z coordinate
-	 */
-	template <typename U> SFVec3f(U x, U y, U z) : SFVec3<float>(x, y) {}
-
-    /// @returns SFVEC3F
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC3F; }
-
-    /// Unwrap generic vector field
-	static INLINE const SFVec3f& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC3F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec3f") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec3f&>(f);
-	}
-
-    /// Unwrap generic vector field
-	static INLINE SFVec3f& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC3F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec3f") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec3f&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec3f& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const {
-        return this->SFVec3<float>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec3<float>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec3f& operator()(const X3DField& f) {
-        this->SFVec3<float>::operator=(unwrap(f));
-        return *this;
-    }
-};
-
-/// 3d vector of doubles
-class SFVec3d : public SFVec3<double> {
-public:
-	typedef SFVec3d& TYPE;
-	typedef const SFVec3d& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0,0).
-	 */
-	SFVec3d() : SFVec3<double>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec3 to copy from
-	 */
-	SFVec3d(const SFVec3f& v) : SFVec3<double>(v.x, v.y, v.z) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec3 to copy from
-	 */
-	SFVec3d(const SFVec3d& v) : SFVec3<double>(v.x, v.y, v.z) {}
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 * @param z Z coordinate
-	 */
-	template <typename U> SFVec3d(U x, U y, U z) : SFVec3<double>(x, y, z) {}
-
-    /// @returns SFVEC3D
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC3D; }
-
-    /// Unwrap generic vector field.
-	static const SFVec3d& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC3D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec3d") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec3d&>(f);
-	}
-
-    /// Unwrap generic vector field.
-	static SFVec3d& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC3D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec3d") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec3d&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec3d& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const {
-        return this->SFVec3<double>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec3<double>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec3d& operator()(const X3DField& f) {
-        this->SFVec3<double>::operator=(unwrap(f));
-        return *this;
-    }
-};
-
-/// 4d vector of floats
-class SFVec4f : public SFVec4<float> {
-public:
-	typedef SFVec4f& TYPE;
-	typedef const SFVec4f& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0,0,1).
-	 */
-	SFVec4f() : SFVec4<float>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec4 to copy from
-	 */
-	SFVec4f(const SFVec4f& v) : SFVec4<float>(v.x, v.y, v.z, v.w) {}
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 * @param z Z coordinate
-	 * @param w W coordinate
-	 */
-	template <typename U> SFVec4f(U x, U y, U z, U w) : SFVec4<float>(x,y,z,w) {}
-
-    /// @returns SFVEC4F
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC4F; }
-
-    /// Unwrap generic vector field
-	static INLINE const SFVec4f& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC4F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec4f") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec4f&>(f);
-	}
-
-    /// Unwrap generic vector field
-	static INLINE SFVec4f& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC4F)
-			throw X3DError(
-                string("base type mismatch; expected SFVec4f") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec4f&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec4f& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const {
-        return this->SFVec4<float>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec4<float>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec4f& operator()(const X3DField& f) {
-        this->SFVec4<float>::operator=(unwrap(f));
-        return *this;
-    }
-};
-
-/// 4d vector of doubles
-class SFVec4d : public SFVec4<double> {
-public:
-	typedef SFVec4d& TYPE;
-	typedef const SFVec4d& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * Default value is (0,0,0,1).
-	 */
-	SFVec4d() : SFVec4<double>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec4 to copy from
-	 */
-	SFVec4d(const SFVec4f& v) : SFVec4<double>(v.x, v.y, v.z, v.w) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param v SFVec4 to copy from
-	 */
-	SFVec4d(const SFVec4d& v) : SFVec4<double>(v.x, v.y, v.z, v.w) {}
-
-	/**
-	 * Full constructor.
-	 * 
-	 * @param x X coordinate
-	 * @param y Y coordinate
-	 * @param z Z coordinate
-	 * @param w W coordinate
-	 */
-	template <typename U> SFVec4d(U x, U y, U z, U w) : SFVec4<double>(x,y,z,w) {}
-
-    /// @returns SFVEC4D
-	INLINE X3DField::Type getType() const { return X3DField::SFVEC4D; }
-
-    /// Unwrap generic vector field.
-	static INLINE const SFVec4d& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFVEC4D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec4d") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFVec4d&>(f);
-	}
-
-    /// Unwrap generic vector field.
-	static INLINE SFVec4d& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFVEC4D)
-			throw X3DError(
-                string("base type mismatch; expected SFVec4d") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFVec4d&>(f);
-	}
-
-    /// @returns native vector value
-    INLINE SFVec4d& operator()() {
-        return *this;
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are equal.
-     */
-    bool operator==(const X3DField& f) const {
-        return this->SFVec4<double>::operator==(unwrap(f));
-    }
-
-    /**
-     * Generic comparison operator.
-     * 
-     * @param f field to compare to
-     * @returns whether vectors are not equal.
-     */
-    bool operator!=(const X3DField& f) const {
-        return this->SFVec4<double>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFVec4d& operator()(const X3DField& f) {
-        this->SFVec4<double>::operator=(unwrap(f));
-        return *this;
-    }
-};
+typedef SFVec2<float,X3DField::SFVEC2F> SFVec2f;
+typedef SFVec2<double,X3DField::SFVEC2D> SFVec2d;
+typedef SFVec3<float,X3DField::SFVEC3F> SFVec3f;
+typedef SFVec3<double,X3DField::SFVEC3D> SFVec3d;
+typedef SFVec4<float,X3DField::SFVEC4F> SFVec4f;
+typedef SFVec4<double,X3DField::SFVEC4D> SFVec4d;
 
 }
 

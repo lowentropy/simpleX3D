@@ -30,9 +30,11 @@
 
 namespace X3D {
 
-template <typename R, typename C>
+template <class S>
 class MFEnumerable : public X3DField {
 public:
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     virtual void setBegin(void* ptr) = 0;
     virtual void setBegin(void* ptr) const = 0;
     virtual void setEnd(void* ptr) = 0;
@@ -45,17 +47,22 @@ public:
     virtual C get(void* ptr) const = 0;
 };
 
-template <class S, typename T, typename R, typename C>
-class MF : public MFEnumerable<R,C> {
+template <class S>
+class MF : public MFEnumerable<S> {
 public:
+    
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
+
     // non-const iterator
     class iterator {
     private:
-        MFEnumerable<R,C>* mf;
+        MFEnumerable<S>* mf;
         char iter[sizeof(std::list<void*>::const_iterator)];
     public:
         iterator() {}
-        iterator(MFEnumerable<R,C>* mf, bool end) : mf(mf) {
+        iterator(MFEnumerable<S>* mf, bool end) : mf(mf) {
             if (end)
                 mf->setEnd((void*) iter);
             else
@@ -88,11 +95,11 @@ public:
     // const iterator
     class const_iterator {
     private:
-        const MFEnumerable<R,C>* mf;
+        const MFEnumerable<S>* mf;
         char iter[sizeof(std::list<void*>::const_iterator)];
     public:
         const_iterator() {}
-        const_iterator(const MFEnumerable<R,C>* mf, bool end) : mf(mf) {
+        const_iterator(const MFEnumerable<S>* mf, bool end) : mf(mf) {
             if (end)
                 mf->setEnd((void*) iter);
             else
@@ -139,12 +146,12 @@ public:
     INLINE X3DField::Type getType() const { static S s; return s.getMFType(); }
     INLINE string getTypeName() const { static S s; return s.getMFTypeName(); }
     // contracts
-    INLINE MF<S,T,R,C>& operator()() { return *this; }
-    INLINE const MF<S,T,R,C>& operator()() const { return *this; }
-    MF<S,T,R,C>& operator()(const X3DField& value) {
+    INLINE MF<S>& operator()() { return *this; }
+    INLINE const MF<S>& operator()() const { return *this; }
+    MF<S>& operator()(const X3DField& value) {
         throw X3DError("direct list assignment not supported");
     }
-    const MF<S,T,R,C>& operator=(const MF<S,T,R,C>& mf) {
+    const MF<S>& operator=(const MF<S>& mf) {
         clear();
         const_iterator it;
         for (it = mf.begin(); it != mf.end(); it++)
@@ -172,10 +179,10 @@ public:
     }
 };
 
-template <class S, typename T, typename R, typename C>
-class MFBasic : public MF<S,T,R,C> {
+template <class S>
+class MFBasic : public MF<S> {
 public:
-    typedef MF<S,T,R,C> parent;
+    typedef MF<S> parent;
     void print(ostream& os) const {
         typename parent::const_iterator it;
         for (it = parent::begin(); it != parent::end(); it++)
@@ -220,9 +227,9 @@ public:
 };
 
 template <class N>
-class MFNode : public MF<SFNode<N>, N*, N*, N*>, public MFAbstractNode {
+class MFNode : public MF<SFNode<N> >, public MFAbstractNode {
 public:
-    typedef MF<SFNode<N>,N*,N*,N*> parent;
+    typedef MF<SFNode<N> > parent;
     void addNode(Node* node) {
         N* n = dynamic_cast<N*>(node);
         if (n == NULL)
@@ -253,7 +260,7 @@ public:
     }
 };
 
-#define MF_ITER_IMPL(R,C) \
+#define MF_ITER_IMPL \
     void setBegin(void* ptr) { *((ITER*) ptr) = elements.begin(); } \
     void setBegin(void* ptr) const { *((CONST_ITER*) ptr) = elements.begin(); } \
     void setEnd(void* ptr) { *((ITER*) ptr) = elements.end(); } \
@@ -265,24 +272,29 @@ public:
     R get(void* ptr) { return **((ITER*) ptr); } \
     C get(void* ptr) const { return **((CONST_ITER*) ptr); }
 
-template <class S, typename T, typename R, typename C>
-class MFList : public MFBasic<S,T,R,C> {
+template <class S>
+class MFList : public MFBasic<S> {
 private:
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     typedef typename std::list<T>::iterator ITER;
     typedef typename std::list<T>::const_iterator CONST_ITER;
     std::list<T> elements;
 public:
-    typedef MFList<S,T,R,C>& TYPE;
-    typedef const MFList<S,T,R,C>& CONST_TYPE;
-    MF_ITER_IMPL(R,C)
+    typedef MFList<S>& TYPE;
+    typedef const MFList<S>& CONST_TYPE;
+    MF_ITER_IMPL
+    std::list<T>& list() { return elements; }
+    const std::list<T>& list() const { return elements; }
     virtual void add(C elem) { elements.push_back(elem); }
     virtual void clear() { elements.clear(); }
     virtual bool empty() const { return elements.empty(); }
     virtual int size() const { return elements.size(); }
-    INLINE bool operator==(const MFList<S,T,R,C>& mf) const {
+    INLINE bool operator==(const MFList<S>& mf) const {
         return elements == mf.elements;
     }
-    INLINE bool operator!=(const MFList<S,T,R,C>& mf) const {
+    INLINE bool operator!=(const MFList<S>& mf) const {
         return elements != mf.elements;
     }
     INLINE bool operator==(const X3DField& field) const {
@@ -291,26 +303,26 @@ public:
     INLINE bool operator!=(const X3DField& field) const {
         return *this != unwrap(field);
     }
-    INLINE MFList<S,T,R,C>& operator()() { return *this; }
-    INLINE const MFList<S,T,R,C>& operator()() const { return *this; }
-    const MFList<S,T,R,C>& operator()(const MFBasic<S,T,R,C>& mf) {
+    INLINE MFList<S>& operator()() { return *this; }
+    INLINE const MFList<S>& operator()() const { return *this; }
+    const MFList<S>& operator()(const MFBasic<S>& mf) {
         return *this = mf;
     }
-    const MFList<S,T,R,C>& operator=(const MFBasic<S,T,R,C>& mf) {
+    const MFList<S>& operator=(const MFBasic<S>& mf) {
         clear();
-        typename MF<S,T,R,C>::const_iterator it;
+        typename MF<S>::const_iterator it;
         for (it = mf.begin(); it != mf.end(); it++)
             add(*it);
         return *this;
     }
-    static INLINE const MFList<S,T,R,C>& unwrap(const X3DField& value) {
+    static INLINE const MFList<S>& unwrap(const X3DField& value) {
         static S sf;
         if (value.getType() != sf.getMFType())
             throw X3DError(
                 string("base type mismatch; expected ") +
                 sf.getMFTypeName() + ", but was " +
                 value.getTypeName());
-        const MFList<S,T,R,C>* mf = dynamic_cast<const MFList<S,T,R,C>*>(&value);
+        const MFList<S>* mf = dynamic_cast<const MFList<S>*>(&value);
         if (mf == NULL)
             throw X3DError(
                 "list type mismatch; expected list, but was array");
@@ -318,24 +330,29 @@ public:
     }
 };
 
-template <class S, typename T, typename R, typename C>
-class MFArray : public MFBasic<S,T,R,C> {
+template <class S>
+class MFArray : public MFBasic<S> {
 private:
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     typedef typename std::vector<T>::iterator ITER;
     typedef typename std::vector<T>::const_iterator CONST_ITER;
     std::vector<T> elements;
 public:
-    typedef MFArray<S,T,R,C>& TYPE;
-    typedef const MFArray<S,T,R,C>& CONST_TYPE;
-    MF_ITER_IMPL(R,C)
+    typedef MFArray<S>& TYPE;
+    typedef const MFArray<S>& CONST_TYPE;
+    MF_ITER_IMPL
+    std::vector<T>& array() { return elements; }
+    const std::vector<T>& array() const { return elements; }
     virtual void add(C elem) { elements.push_back(elem); }
     virtual void clear() { elements.clear(); }
     virtual bool empty() const { return elements.empty(); }
     virtual int size() const { return elements.size(); }
-    INLINE bool operator==(const MFArray<S,T,R,C>& mf) const {
+    INLINE bool operator==(const MFArray<S>& mf) const {
         return elements == mf.elements;
     }
-    INLINE bool operator!=(const MFArray<S,T,R,C>& mf) const {
+    INLINE bool operator!=(const MFArray<S>& mf) const {
         return elements != mf.elements;
     }
     INLINE bool operator==(const X3DField& field) const {
@@ -344,26 +361,26 @@ public:
     INLINE bool operator!=(const X3DField& field) const {
         return *this != unwrap(field);
     }
-    INLINE MFArray<S,T,R,C>& operator()() { return *this; }
-    INLINE const MFArray<S,T,R,C>& operator()() const { return *this; }
-    const MFArray<S,T,R,C>& operator()(const MFBasic<S,T,R,C>& mf) {
+    INLINE MFArray<S>& operator()() { return *this; }
+    INLINE const MFArray<S>& operator()() const { return *this; }
+    const MFArray<S>& operator()(const MFBasic<S>& mf) {
         return *this = mf;
     }
-    const MFArray<S,T,R,C>& operator=(const MFBasic<S,T,R,C>& mf) {
+    const MFArray<S>& operator=(const MFBasic<S>& mf) {
         clear();
-        typename MF<S,T,R,C>::const_iterator it;
+        typename MF<S>::const_iterator it;
         for (it = mf.begin(); it != mf.end(); it++)
             add(*it);
         return *this;
     }
-    static INLINE const MFArray<S,T,R,C>& unwrap(const X3DField& value) {
+    static INLINE const MFArray<S>& unwrap(const X3DField& value) {
         static S sf;
         if (value.getType() != sf.getMFType())
             throw X3DError(
                 string("base type mismatch; expected ") +
                 sf.getMFTypeName() + ", but was " +
                 value.getTypeName());
-        const MFArray<S,T,R,C>* mf = dynamic_cast<const MFArray<S,T,R,C>*>(&value);
+        const MFArray<S>* mf = dynamic_cast<const MFArray<S>*>(&value);
         if (mf == NULL)
             throw X3DError(
                 "list type mismatch; expected array, but was list");
@@ -374,13 +391,19 @@ public:
 template <class N>
 class MFNodeList : public MFNode<N> {
 private:
+    typedef SFNode<N> S;
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     typedef typename std::list<N*>::iterator ITER;
     typedef typename std::list<N*>::const_iterator CONST_ITER;
     std::list<N*> elements;
 public:
     typedef MFNodeList<N>& TYPE;
     typedef const MFNodeList<N>& CONST_TYPE;
-    MF_ITER_IMPL(N*, N*)
+    MF_ITER_IMPL
+    std::list<N*>& list() { return elements; }
+    const std::list<N*>& list() const { return elements; }
     virtual void add(N* elem) {
         if (elem != NULL)
             elem->realize();
@@ -434,13 +457,19 @@ public:
 template <class N>
 class MFNodeSet : public MFNode<N> {
 private:
+    typedef SFNode<N> S;
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     typedef typename std::set<N*>::iterator ITER;
     typedef typename std::set<N*>::const_iterator CONST_ITER;
     std::set<N*> elements;
 public:
     typedef MFNodeSet<N>& TYPE;
     typedef const MFNodeSet<N>& CONST_TYPE;
-    MF_ITER_IMPL(N*, N*)
+    MF_ITER_IMPL
+    std::set<N*>& set() { return elements; }
+    const std::set<N*>& set() const { return elements; }
     virtual void add(N* elem) {
         if (elem != NULL)
             elem->realize();
@@ -494,13 +523,19 @@ public:
 template <class N>
 class MFNodeArray : public MFNode<N> {
 private:
+    typedef SFNode<N> S;
+    typedef typename S::TYPE T;
+    typedef typename S::REF_TYPE R;
+    typedef typename S::CONST_TYPE C;
     typedef typename std::vector<N*>::iterator ITER;
     typedef typename std::vector<N*>::const_iterator CONST_ITER;
     std::vector<N*> elements;
 public:
     typedef MFNodeArray<N>& TYPE;
     typedef const MFNodeArray<N>& CONST_TYPE;
-    MF_ITER_IMPL(N*, N*)
+    MF_ITER_IMPL
+    std::vector<N*>& array() { return elements; }
+    const std::vector<N*>& array() const { return elements; }
     virtual void add(N* elem) {
         if (elem != NULL)
             elem->realize();
@@ -551,37 +586,31 @@ public:
 	}
 };
 
-#define DEFINE_MF_NATIVE(NAME,TYPE) \
-    typedef MF<SF##NAME,TYPE,TYPE,TYPE> MF##NAME; \
-    typedef MFList<SF##NAME,TYPE,TYPE,TYPE> MF##NAME##List; \
-    typedef MFArray<SF##NAME,TYPE,TYPE,TYPE> MF##NAME##Array;
+#define DEFINE_MF(NAME) \
+    typedef MF<SF##NAME> MF##NAME; \
+    typedef MFList<SF##NAME> MF##NAME##List; \
+    typedef MFArray<SF##NAME> MF##NAME##Array;
 
-#define DEFINE_MF_REF(NAME,CLASS) \
-    typedef MF<SF##NAME,CLASS,CLASS&,const CLASS&> MF##NAME; \
-    typedef MFList<SF##NAME,CLASS,CLASS&,const CLASS&> MF##NAME##List; \
-    typedef MFArray<SF##NAME,CLASS,CLASS&,const CLASS&> MF##NAME##Array;
-
-DEFINE_MF_NATIVE(Bool,bool)
-DEFINE_MF_REF(Color,SFColor)
-DEFINE_MF_REF(ColorRGBA,SFColorRGBA)
-DEFINE_MF_NATIVE(Double,double)
-DEFINE_MF_NATIVE(Float,float)
-DEFINE_MF_REF(Image,SFImage)
-DEFINE_MF_NATIVE(Int32,int)
-DEFINE_MF_REF(Rotation,SFRotation)
-DEFINE_MF_REF(Matrix3f,SFMatrix3f)
-DEFINE_MF_REF(Matrix3d,SFMatrix3d)
-DEFINE_MF_REF(Matrix4f,SFMatrix4f)
-DEFINE_MF_REF(Matrix4d,SFMatrix4d)
-DEFINE_MF_REF(String,std::string)
-DEFINE_MF_NATIVE(Time,double)
-DEFINE_MF_REF(Vec2f,SFVec2f)
-DEFINE_MF_REF(Vec2d,SFVec2d)
-DEFINE_MF_REF(Vec3f,SFVec3f)
-DEFINE_MF_REF(Vec3d,SFVec3d)
-DEFINE_MF_REF(Vec4f,SFVec4f)
-DEFINE_MF_REF(Vec4d,SFVec4d)
-
+DEFINE_MF(Bool)
+DEFINE_MF(Color)
+DEFINE_MF(ColorRGBA)
+DEFINE_MF(Double)
+DEFINE_MF(Float)
+DEFINE_MF(Image)
+DEFINE_MF(Int32)
+DEFINE_MF(Rotation)
+DEFINE_MF(Matrix3f)
+DEFINE_MF(Matrix3d)
+DEFINE_MF(Matrix4f)
+DEFINE_MF(Matrix4d)
+DEFINE_MF(String)
+DEFINE_MF(Time)
+DEFINE_MF(Vec2f)
+DEFINE_MF(Vec2d)
+DEFINE_MF(Vec3f)
+DEFINE_MF(Vec3d)
+DEFINE_MF(Vec4f)
+DEFINE_MF(Vec4d)
 
 }
 

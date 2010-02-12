@@ -30,6 +30,7 @@ namespace X3D {
 class SFInt32 : public X3DField {
 public:
 	typedef int TYPE;
+	typedef int REF_TYPE;
 	typedef int CONST_TYPE;
 
     /// native stored value

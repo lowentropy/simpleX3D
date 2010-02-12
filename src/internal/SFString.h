@@ -34,7 +34,9 @@ namespace X3D {
  */
 class SFString : public X3DField {
 public:
-	typedef string& TYPE;
+
+	typedef string TYPE;
+	typedef string& REF_TYPE;
 	typedef const string& CONST_TYPE;
     
     /// native stored value

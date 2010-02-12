@@ -23,7 +23,8 @@ libsimpleX3D_la_SOURCES = \
     Test/TestSuite.cc \
     Test/TestNode.cc \
     Test/Expect.cc \
-	Time/TimeSensor.cc
+	Time/TimeSensor.cc \
+	Interpolation/PositionInterpolator.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \
@@ -84,6 +85,7 @@ include_HEADERS = \
     Test/TestSuite.h \
     Test/TestNode.h \
     Test/Expect.h \
-	Interpolation/X3DInterpolatorNode.h
+	Interpolation/X3DInterpolatorNode.h \
+	Interpolation/PositionInterpolator.h
 
 # s/^.*or: \([^:]*\):.*$/    \1 \\/

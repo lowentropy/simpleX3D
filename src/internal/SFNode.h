@@ -79,6 +79,7 @@ template <class N>
 class SFNode : public SFAbstractNode {
 public:
 	typedef N* TYPE;
+	typedef N* REF_TYPE;
     typedef N* CONST_TYPE;
 
     /// pointer to actual node value
@@ -92,6 +93,11 @@ public:
 
     /// @returns native pointer value
 	INLINE N* operator()() const { return value; }
+
+    INLINE SFNode<N>& operator()(const X3DField& f) {
+        *this = unwrap(f);
+        return *this;
+    }
 
     /**
      * Unwrap a generic field value containing a node.
@@ -129,18 +135,13 @@ public:
     }
 
     /// Low-level assignment operator.
-	INLINE SFNode<N>& operator=(N* value) { this->value = value; }
+	INLINE const SFNode<N>& operator=(N* value) { this->value = value; }
 
     /// High-level assignment operator.
-	INLINE SFNode<N>& operator=(const SFNode<N>& f) {
+	INLINE const SFNode<N>& operator=(const SFNode<N>& f) {
 		value = f.value;
 		return *this;
 	}
-
-    /// High-level assignment operator
-    SFNode<N>& operator()(const X3DField& f) {
-        return *this = unwrap(f);
-    }
 
     /// Generic comparison operator (equal)
     INLINE bool operator==(const X3DField& f) const { return value == unwrap(f); }
@@ -190,10 +191,6 @@ public:
                 throw X3DError("node has no DEF name");
             os << name;
         }
-    }
-
-    static N* clone(N* node, std::map<Node*,Node*>* mapping=NULL, bool shallow=false) {
-        return dynamic_cast<N*>(node->clone(mapping, shallow));
     }
 
 };

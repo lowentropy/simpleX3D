@@ -52,7 +52,7 @@ namespace X3D {
 template <class N, class TT>
 class InOutField : public BaseField<N,TT> {
 private:
-    typedef typename TT::TYPE T;
+    typedef typename TT::REF_TYPE T;
     typedef typename TT::CONST_TYPE CT;
 
     /// whether field value has been modified since last event cascade

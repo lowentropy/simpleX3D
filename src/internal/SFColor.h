@@ -40,7 +40,8 @@ public:
 
 	// X3DField stuff
 
-	typedef SFColor& TYPE;
+	typedef SFColor TYPE;
+	typedef SFColor& REF_TYPE;
     typedef const SFColor& CONST_TYPE;
 
     /// @returns SFCOLOR
@@ -205,7 +206,8 @@ public:
 
 	// X3DField stuff 
 
-	typedef SFColorRGBA& TYPE;
+	typedef SFColorRGBA TYPE;
+	typedef SFColorRGBA& REF_TYPE;
 	typedef const SFColorRGBA& CONST_TYPE;
 
     /// @returns SFCOLORRGBA

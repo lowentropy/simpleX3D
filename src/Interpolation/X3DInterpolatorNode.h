@@ -25,7 +25,7 @@
 namespace X3D {
 namespace Interpolation {
 
-class X3DInterpolatorNode : public X3DChildNode {
+class X3DInterpolatorNode : public X3D::Core::X3DChildNode {
 public:
 
     class SetFraction : public InField<X3DInterpolatorNode, SFFloat> {

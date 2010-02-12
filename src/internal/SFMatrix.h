@@ -37,8 +37,38 @@ namespace X3D {
  * 
  * The matrix elements are packed in row-major order.
  */
-template <typename T>
+template <typename T, X3DField::Type S>
 class SFMatrix3 : public X3DField {
+public:
+
+    typedef SFMatrix3<T,S> TYPE;
+    typedef SFMatrix3<T,S>& REF_TYPE;
+    typedef const SFMatrix3<T,S>& CONST_TYPE;
+
+    X3DField::Type getType() const { return S; }
+    static const SFMatrix3<T,S>& unwrap(const X3DField& field) {
+        if (field.getType() != S)
+            throw new X3DError(
+                string("invalid type; expected ") +
+                X3DField::getTypeName(S) + ", but was " +
+                field.getTypeName());
+        return *static_cast<const SFMatrix3<T,S>*>(&field);
+    }
+    const SFMatrix3<T,S>& operator()() const {
+        return *this;
+    }
+    SFMatrix3<T,S>& operator()(const X3DField& field) {
+        *this = unwrap(field);
+        return *this;
+    }
+    bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+
+
 private:
 	T data[9]; ///< private element array
 
@@ -79,7 +109,7 @@ public:
     /**
      * Sorting operator (for MFMatrix3X)
      */
-    template <typename U> bool operator<(const SFMatrix3<U>& m) const {
+    bool operator<(const SFMatrix3<T,S>& m) const {
         return this < &m;
     }
 
@@ -103,7 +133,7 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	SFMatrix3<T>& operator=(const SFMatrix3<T>& m) {
+	SFMatrix3<T,S>& operator=(const SFMatrix3<T,S>& m) {
 		return this->operator=(m.array());
 	}
 
@@ -113,7 +143,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are equal
      */
-    template <typename U> bool operator==(const SFMatrix3<U>& m) const {
+    bool operator==(const SFMatrix3<T,S>& m) const {
         for (int i = 0; i < 9; i++)
             if (data[i] != m.data[i])
                 return false;
@@ -126,7 +156,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are not equal
      */
-    template <typename U> bool operator!=(const SFMatrix3<U>& m) const {
+    bool operator!=(const SFMatrix3<T,S>& m) const {
         for (int i = 0; i < 9; i++)
             if (data[i] != m.data[i])
                 return true;
@@ -141,10 +171,10 @@ public:
 	 * 
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFVec3<T> operator*(const SFVec3<U>& v) const {
-		SFVec3<T> w;
+	SFVec3<T,S> operator*(const SFVec3<T,S>& v) const {
+		SFVec3<T,S> w;
 		const T* p1 = data;
-		const U* p2 = &v.x;
+		const T* p2 = &v.x;
 		for (int i = 0; i < 3; i++, p1++, p2++) {
 			p2 = &v.x;
 			w.x += *(p1+0) * *p2;
@@ -160,9 +190,9 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFMatrix3<T> operator*(const SFMatrix3<U>& m) const {
+	SFMatrix3<T,S> operator*(const SFMatrix3<T,S>& m) const {
 		const T* a = data;
-		const U* b = m.array();
+		const T* b = m.array();
 		T c[9] = {
 			a[0]*b[0] + a[1]*b[3] + a[2]*b[6],
 			a[0]*b[1] + a[1]*b[4] + a[2]*b[7],
@@ -174,7 +204,7 @@ public:
 			a[6]*b[1] + a[7]*b[4] + a[8]*b[7],
 			a[6]*b[2] + a[7]*b[5] + a[8]*b[8]
 		};
-		return SFMatrix3<T>(c);
+		return SFMatrix3<T,S>(c);
 	}
 
 	/**
@@ -183,9 +213,9 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix3<T>& operator*=(const SFMatrix3<U>& m) {
+	SFMatrix3<T,S>& operator*=(const SFMatrix3<T,S>& m) {
 		const T* a = data;
-		const U* b = m.array();
+		const T* b = m.array();
 		T c[9] = {
 			a[0]*b[0] + a[1]*b[3] + a[2]*b[6],
 			a[0]*b[1] + a[1]*b[4] + a[2]*b[7],
@@ -224,7 +254,7 @@ private:
      * @param a new array of matrix data
      * @returns self-reference
      */
-	template <typename U> SFMatrix3<T>& operator=(U* a) {
+	template <typename U> SFMatrix3<T,S>& operator=(U* a) {
 		T* p = data;
 		for (int i = 0; i < 9; i++)
 			*p++ = *a++;
@@ -242,8 +272,37 @@ private:
  * 
  * The matrix elements are packed in row-major order.
  */
-template <typename T>
+template <typename T, X3DField::Type S>
 class SFMatrix4 : public X3DField {
+public:
+
+    typedef SFMatrix4<T,S> TYPE;
+    typedef SFMatrix4<T,S>& REF_TYPE;
+    typedef const SFMatrix4<T,S>& CONST_TYPE;
+
+    X3DField::Type getType() const { return S; }
+    static const SFMatrix4<T,S>& unwrap(const X3DField& field) {
+        if (field.getType() != S)
+            throw new X3DError(
+                string("invalid type; expected ") +
+                X3DField::getTypeName(S) + ", but was " +
+                field.getTypeName());
+        return *static_cast<const SFMatrix4<T,S>*>(&field);
+    }
+    const SFMatrix4<T,S>& operator()() const {
+        return *this;
+    }
+    SFMatrix4<T,S>& operator()(const X3DField& field) {
+        *this = unwrap(field);
+        return *this;
+    }
+    bool operator==(const X3DField& field) const {
+        return *this == unwrap(field);
+    }
+    bool operator!=(const X3DField& field) const {
+        return *this != unwrap(field);
+    }
+
 private:
 	T data[16]; ///< private element array
 public:
@@ -282,7 +341,7 @@ public:
     /**
      * Sorting operator (for MFMatrix4X)
      */
-    template <typename U> bool operator<(const SFMatrix4<U>& m) const {
+    bool operator<(const SFMatrix4<T,S>& m) const {
         return this < &m;
     }
 
@@ -306,7 +365,7 @@ public:
 	 * @param m matrix to assign from
 	 * @returns reference to this
 	 */
-	SFMatrix4<T>& operator=(const SFMatrix4<T>& m) {
+	SFMatrix4<T,S>& operator=(const SFMatrix4<T,S>& m) {
 		return this->operator=(m.array());
 	}
 
@@ -316,7 +375,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are equal
      */
-    template <typename U> bool operator==(const SFMatrix4<U>& m) const {
+    bool operator==(const SFMatrix4<T,S>& m) const {
         for (int i = 0; i < 16; i++)
             if (data[i] != m.data[i])
                 return false;
@@ -329,7 +388,7 @@ public:
      * @param m matrix to compare to
      * @returns whether matrices are not equal
      */
-    template <typename U> bool operator!=(const SFMatrix4<U>& m) const {
+    bool operator!=(const SFMatrix4<T,S>& m) const {
         for (int i = 0; i < 16; i++)
             if (data[i] != m.data[i])
                 return true;
@@ -344,10 +403,10 @@ public:
 	 * 
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFVec4<T> operator*(const SFVec4<U>& v) const {
-		SFVec4<T> w(0, 0, 0, 0);
+	SFVec4<T,S> operator*(const SFVec4<T,S>& v) const {
+		SFVec4<T,S> w(0, 0, 0, 0);
 		const T* p1 = data;
-		const U* p2 = &v.x;
+		const T* p2 = &v.x;
 		for (int i = 0; i < 4; i++, p1++, p2++) {
 			w.x += *(p1+0) * *p2;
 			w.y += *(p1+4) * *p2;
@@ -363,9 +422,9 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns result of multiplication
 	 */
-	template <typename U> SFMatrix4<T> operator*(const SFMatrix4<U>& m) const {
+	SFMatrix4<T,S> operator*(const SFMatrix4<T,S>& m) const {
 		const T* a = data;
-		const U* b = m.array();
+		const T* b = m.array();
 		T c[16] = {
 			a[ 0]*b[ 0] + a[ 1]*b[ 4] + a[ 2]*b[ 8] + a[ 3]*b[12],
 			a[ 0]*b[ 1] + a[ 1]*b[ 5] + a[ 2]*b[ 9] + a[ 3]*b[13],
@@ -384,7 +443,7 @@ public:
 			a[12]*b[ 2] + a[13]*b[ 6] + a[14]*b[10] + a[15]*b[14],
 			a[12]*b[ 3] + a[13]*b[ 7] + a[14]*b[11] + a[15]*b[15]
 		};
-		return SFMatrix3<T>(c);
+		return SFMatrix3<T,S>(c);
 	}
 
 	/**
@@ -393,9 +452,9 @@ public:
 	 * @param m matrix to multiply by
 	 * @returns reference to this
 	 */
-	template <typename U> SFMatrix4<T>& operator*=(const SFMatrix4<U>& m) {
+	SFMatrix4<T,S>& operator*=(const SFMatrix4<T,S>& m) {
 		const T* a = data;
-		const U* b = m.array();
+		const T* b = m.array();
 		T c[16] = {
 			a[ 0]*b[ 0] + a[ 1]*b[ 4] + a[ 2]*b[ 8] + a[ 3]*b[12],
 			a[ 0]*b[ 1] + a[ 1]*b[ 5] + a[ 2]*b[ 9] + a[ 3]*b[13],
@@ -425,7 +484,7 @@ private:
      * @param a new array of matrix data
      * @returns self-reference
      */
-	template <typename U> SFMatrix4<T>& operator=(U* a) {
+	template <typename U> SFMatrix4<T,S>& operator=(U* a) {
 		T* p = data;
 		for (int i = 0; i < 16; i++)
 			*p++ = *a++;
@@ -451,304 +510,10 @@ public:
 
 };
 
-/// 3x3 Matrix of floats
-class SFMatrix3f : public SFMatrix3<float> {
-public:
-
-	typedef SFMatrix3f& TYPE;
-	typedef const SFMatrix3f& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * The default value for any matrix dimension is its identity matrix.
-	 */ 
-	SFMatrix3f() : SFMatrix3<float>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-  SFMatrix3f(const SFMatrix3f& m) : SFMatrix3<float>(m.array()) {}
-
-	/**
-	 * Array constructor.
-	 * 
-	 * Copy the elements of the given array directly into the matrix.
-	 * 
-	 * @param a array of matrix elements
-	 */
-	template <typename U> SFMatrix3f(U* a) : SFMatrix3<float>(a) {}
-
-    /// @returns SFMATRIX3F
-	INLINE X3DField::Type getType() const { return X3DField::SFMATRIX3F; }
-
-    /// Unwrap generic matrix value.
-	static INLINE const SFMatrix3f& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX3F)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix3f") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFMatrix3f&>(f);
-	}
-
-    /// Unwrap generic matrix value.
-	static INLINE SFMatrix3f& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX3F)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix3f") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFMatrix3f&>(f);
-	}
-
-    /// @returns native matrix value
-    INLINE SFMatrix3f& operator()() {
-        return *this;
-    }
-
-    /// Generic comparison operator.
-    bool operator==(const X3DField& f) const {
-        return this->SFMatrix3<float>::operator==(unwrap(f));
-    }
-
-    /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const {
-        return this->SFMatrix3<float>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFMatrix3f& operator()(const X3DField& f) {
-        return *this = unwrap(f);
-    }
-};
-
-/// 3x3 Matrix of doubles
-class SFMatrix3d : public SFMatrix3<double> {
-public:
-	typedef SFMatrix3d& TYPE;
-	typedef const SFMatrix3d& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * The default value for any matrix dimension is its identity matrix.
-	 */ 
-	SFMatrix3d() : SFMatrix3<double>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	SFMatrix3d(const SFMatrix3f& m) : SFMatrix3<double>(m.array()) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	SFMatrix3d(const SFMatrix3d& m) : SFMatrix3<double>(m.array()) {}
-
-	/**
-	 * Array constructor.
-	 * 
-	 * Copy the elements of the given array directly into the matrix.
-	 * 
-	 * @param a array of matrix elements
-	 */
-	template <typename U> SFMatrix3d(U* a) : SFMatrix3<double>(a) {}
-
-    /// @returns SFMATRIX3D
-	INLINE X3DField::Type getType() const { return X3DField::SFMATRIX3D; }
-
-    /// Unwrap generic matrix value.
-	static INLINE const SFMatrix3d& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX3D)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix3d") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFMatrix3d&>(f);
-	}
-
-    /// Unwrap generic matrix value.
-	static INLINE SFMatrix3d& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX3D)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix3d") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFMatrix3d&>(f);
-	}
-
-    /// @returns native matrix value
-    INLINE SFMatrix3d& operator()() {
-        return *this;
-    }
-
-    /// Generic comparison operator.
-    bool operator==(const X3DField& f) const {
-        return this->SFMatrix3<double>::operator==(unwrap(f));
-    }
-
-    /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const {
-        return this->SFMatrix3<double>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFMatrix3d& operator()(const X3DField& f) {
-        return *this = unwrap(f);
-    }
-};
-
-/// 4x4 Matrix of floats
-class SFMatrix4f : public SFMatrix4<float> {
-public:
-	typedef SFMatrix4f& TYPE;
-	typedef const SFMatrix4f& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * The default value for any matrix dimension is its identity matrix.
-	 */ 
-	SFMatrix4f() : SFMatrix4<float>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	SFMatrix4f(const SFMatrix4f& m) : SFMatrix4<float>(m.array()) {}
-
-	/**
-	 * Array constructor.
-	 * 
-	 * Copy the elements of the given array directly into the matrix.
-	 * 
-	 * @param a array of matrix elements
-	 */
-	template <typename U> SFMatrix4f(U* a) : SFMatrix4<float>(a) {}
-
-    /// @returns SFMATRIX4F
-	INLINE X3DField::Type getType() const { return X3DField::SFMATRIX4F; }
-
-    /// Unwrap generic matrix value
-	static INLINE const SFMatrix4f& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX4F)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix4f") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFMatrix4f&>(f);
-	}
-
-    /// Unwrap generic matrix value
-	static INLINE SFMatrix4f& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX4F)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix4f") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFMatrix4f&>(f);
-	}
-
-    /// @returns native matrix value
-    INLINE SFMatrix4f& operator()() {
-        return *this;
-    }
-
-    /// Generic comparison operator.
-    bool operator==(const X3DField& f) const {
-        return this->SFMatrix4<float>::operator==(unwrap(f));
-    }
-
-    /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const {
-        return this->SFMatrix4<float>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFMatrix4f& operator()(const X3DField& f) {
-        return *this = unwrap(f);
-    }
-};
-
-/// 4x4 Matrix of doubles
-class SFMatrix4d : public SFMatrix4<double> {
-public:
-	typedef SFMatrix4d& TYPE;
-	typedef const SFMatrix4d& CONST_TYPE;
-
-	/**
-	 * Default constructor.
-	 * 
-	 * The default value for any matrix dimension is its identity matrix.
-	 */ 
-	SFMatrix4d() : SFMatrix4<double>() {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	SFMatrix4d(const SFMatrix4f& m) : SFMatrix4<double>(m.array()) {}
-
-	/**
-	 * Copy constructor.
-	 * 
-	 * @param m matrix to copy from
-	 */
-	SFMatrix4d(const SFMatrix4d& m) : SFMatrix4<double>(m.array()) {}
-
-	/**
-	 * Array constructor.
-	 * 
-	 * Copy the elements of the given array directly into the matrix.
-	 * 
-	 * @param a array of matrix elements
-	 */
-	template <typename U> SFMatrix4d(U* a) : SFMatrix4<double>(a) {}
-
-    /// @returns SFMATRIX4D
-	INLINE X3DField::Type getType() const { return X3DField::SFMATRIX4D; }
-
-    /// Unwrap generic matrix value
-	static INLINE const SFMatrix4d& unwrap(const X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX4D)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix4d") +
-                ", but was " + f.getTypeName());
-		return static_cast<const SFMatrix4d&>(f);
-	}
-
-    /// Unwrap generic matrix value
-	static INLINE SFMatrix4d& unwrap(X3DField& f) {
-		if (f.getType() != X3DField::SFMATRIX4D)
-			throw X3DError(
-                string("base type mismatch; expected SFMatrix4d") +
-                ", but was " + f.getTypeName());
-		return static_cast<SFMatrix4d&>(f);
-	}
-
-    /// @returns native matrix value
-    INLINE SFMatrix4d& operator()() {
-        return *this;
-    }
-
-    /// Generic comparison operator.
-    bool operator==(const X3DField& f) const {
-        return this->SFMatrix4<double>::operator==(unwrap(f));
-    }
-
-    /// Generic comparison operator.
-    bool operator!=(const X3DField& f) const {
-        return this->SFMatrix4<double>::operator!=(unwrap(f));
-    }
-
-    /// High-level assignment operator
-    SFMatrix4d& operator()(const X3DField& f) {
-        return *this = unwrap(f);
-    }
-};
+typedef SFMatrix3<float,X3DField::SFMATRIX3F> SFMatrix3f;
+typedef SFMatrix3<double,X3DField::SFMATRIX3D> SFMatrix3d;
+typedef SFMatrix4<float,X3DField::SFMATRIX4F> SFMatrix4f;
+typedef SFMatrix4<double,X3DField::SFMATRIX4D> SFMatrix4d;
 
 }
 

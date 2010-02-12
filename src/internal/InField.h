@@ -41,7 +41,7 @@ namespace X3D {
 template <class N, class TT>
 class InField : public BaseField<N,TT> {
 private:
-    typedef typename TT::TYPE T;
+    typedef typename TT::REF_TYPE T;
     typedef typename TT::CONST_TYPE CT;
 
 protected:

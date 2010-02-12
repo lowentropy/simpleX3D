@@ -51,7 +51,8 @@ public:
 
 	// X3DField stuff
 
-	typedef SFImage& TYPE;
+	typedef SFImage TYPE;
+	typedef SFImage& REF_TYPE;
 	typedef const SFImage& CONST_TYPE;
 
     /// @returns SFIMAGE

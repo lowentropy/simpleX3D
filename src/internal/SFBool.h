@@ -30,6 +30,7 @@ namespace X3D {
 class SFBool : public X3DField {
 public:
 	typedef bool TYPE;
+	typedef bool REF_TYPE;
     typedef bool CONST_TYPE;
 
     /// native stored value

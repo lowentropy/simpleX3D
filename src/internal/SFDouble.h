@@ -30,6 +30,7 @@ namespace X3D {
 class SFDouble : public X3DField {
 public:
 	typedef double TYPE;
+	typedef double REF_TYPE;
 	typedef double CONST_TYPE;
 
     /// native stored value

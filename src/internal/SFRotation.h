@@ -41,7 +41,8 @@ public:
 
 	// X3DField stuff
 
-	typedef SFRotation& TYPE;
+	typedef SFRotation TYPE;
+	typedef SFRotation& REF_TYPE;
 	typedef const SFRotation& CONST_TYPE;
 
     /// @returns SFROTATION
