@@ -108,6 +108,12 @@ public:
     /// get string representation of this value's type
     const string& getTypeName() const;
 
+    /// get the MF version of this SF type name
+    const string& getMFTypeName() const;
+
+    /// get the MF version of this SF type
+    Type getMFType() const;
+
     /// Empty constructor.
 	X3DField() {}
 

@@ -36,13 +36,13 @@ private:
 
 public:
 
-    DefaultInOutField < TestNode, SFString > desc;
-    DefaultInOutField < TestNode, SFBool   > continuous;
-    DefaultInOutField < TestNode, SFTime   > timeout;
-    DefaultInOutField < TestNode, SFString > should;
-    DefaultInOutField < TestNode, MFString > failWith;
-    DefaultOutField   < TestNode, SFBool   > success;
-    DefaultOutField   < TestNode, MFString > reasons;
+    DefaultInOutField < TestNode, SFString      > desc;
+    DefaultInOutField < TestNode, SFBool        > continuous;
+    DefaultInOutField < TestNode, SFTime        > timeout;
+    DefaultInOutField < TestNode, SFString      > should;
+    DefaultInOutField < TestNode, MFStringArray > failWith;
+    DefaultOutField   < TestNode, SFBool        > success;
+    DefaultOutField   < TestNode, MFStringArray > reasons;
 
     class Run : public InField<TestNode, SFBool> {
         void action(bool unused) {

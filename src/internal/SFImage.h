@@ -87,6 +87,13 @@ public:
 	 */
 	explicit SFImage() { SFImage(0,0,0); }
 
+    /**
+     * Sorting operator (for MFImage).
+     */
+    INLINE bool operator<(const SFImage& c) const {
+        return this < &c;
+    }
+
 	/**
      * Accessor for #width.
 	 * 

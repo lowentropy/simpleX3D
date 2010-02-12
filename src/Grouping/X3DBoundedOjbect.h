@@ -17,25 +17,22 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_METADATAFLOAT_H_
-#define _X3D_METADATAFLOAT_H_
-
-#include "Core/X3DMetadataObject.h"
+#ifndef _X3D_X3DBOUNDEDOBJECT_H_
+#define _X3D_X3DBOUNDEDOBJECT_H_
 
 namespace X3D {
-namespace Core {
+namespace Grouping {
 
-/** Metadata value containing a list of floats (MFFloat). */
-class MetadataFloat : public X3DNode, public X3DMetadataObject {
+class X3DBoundedObject {
 public:
 
-    /// Setup stuff
-    void setup() {}
-	
-	/// metadata value (last written to value_changed)
-	DefaultInOutField<MetadataFloat, MFFloatList> value;
+    InitField<X3DBoundedObject, SFVec3f> bboxCenter;
+
+    InitField<X3DBoundedObject, SFVec3f> bboxSize;
+
+    void setup();
 };
 
-}} // namespace X3D::Core
+}}
 
-#endif // #ifndef _X3D_METADATAFLOAT_H_
+#endif // #ifndef _X3D_X3DBOUNDEDOBJECT_H_

@@ -81,6 +81,13 @@ public:
 	 */
 	SFColor(const SFColor& c) { *this = c; }
 
+    /**
+     * Sorting operator (for MFColor).
+     */
+    INLINE bool operator<(const SFColor& c) const {
+        return this < &c;
+    }
+
 	/**
 	 * Equals operator
 	 * 
@@ -232,6 +239,13 @@ public:
      * @param c color to copy from
 	 */
 	SFColorRGBA(const SFColor& c) { *this = c; }
+
+    /**
+     * Sorting operator (for MFColorRGBA).
+     */
+    INLINE bool operator<(const SFColorRGBA& c) const {
+        return this < &c;
+    }
 
 	/**
 	 * Copy constructor.

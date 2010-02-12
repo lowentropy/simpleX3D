@@ -17,25 +17,29 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_METADATAFLOAT_H_
-#define _X3D_METADATAFLOAT_H_
-
-#include "Core/X3DMetadataObject.h"
+#include Grouping/X3DGroupingNode.h
 
 namespace X3D {
-namespace Core {
+namespace Grouping {
 
-/** Metadata value containing a list of floats (MFFloat). */
-class MetadataFloat : public X3DNode, public X3DMetadataObject {
-public:
+void X3DGroupingNode::setup() {
+}
 
-    /// Setup stuff
-    void setup() {}
-	
-	/// metadata value (last written to value_changed)
-	DefaultInOutField<MetadataFloat, MFFloatList> value;
-};
+void X3DGroupingNode::add(const MFNode<vector, X3DChildNode>& nodes) {
+    set<X3DChildNode*>& children = this->children.internal();
+    const vector<X3DChildNode*>& list = nodes.internal();
+    vector<X3DChildNode*>::const_iterator it;
+    for (it = list.begin(); it != list.end(); it++)
+        children.insert(*it);
+}
 
-}} // namespace X3D::Core
+void X3DGroupingNode::remove(const MFNode<vector, X3DChildNode>& nodes) {
+    list<X3DChildNode*>& children = this->children.getList();
+    const list<X3DChildNode*>& list = nodes.getList();
+    list<X3DChildNode*>::const_iterator it;
+    for (it = list.begin(); it != list.end(); it++)
+        children.remove(*it);
+}
 
-#endif // #ifndef _X3D_METADATAFLOAT_H_
+}}
+
