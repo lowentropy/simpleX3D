@@ -54,30 +54,26 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     // if it's not an expect declaration, we're not interested
     if (strcmp("expect", (char*) xml->name))
         return false;
-    // get the expect type (required)
-    char* type = (char*) xmlGetProp(xml, (xmlChar*) "type");
-    if (type == NULL)
-        throw X3DParserError("missing expect type", filename, xml);
-    // get the expect name (required)
-    char* name = (char*) xmlGetProp(xml, (xmlChar*) "name");
-    if (name == NULL)
-        throw X3DParserError("missing expect type", filename, xml);
-    // get the value (optional)
+    // get the expect field (required)
+    char* field = (char*) xmlGetProp(xml, (xmlChar*) "field");
+    if (field == NULL)
+        throw X3DParserError("missing expect field", filename, xml);
+    // get the value (required)
     char* value = (char*) xmlGetProp(xml, (xmlChar*) "value");
-    // get the testAt
-    double testAt = -1;
-    char* testAtStr = (char*) xmlGetProp(xml, (xmlChar*) "testAt");
-    if (testAtStr != NULL) {
-        testAt = atof(testAtStr);
-        xmlFree(testAtStr); // TODO: better parsing? yes?
-    }
+    if (value == NULL)
+        throw X3DParserError("missing expect value", filename, xml);
+    // get the time (required)
+    double time = -1;
+    char* timeStr = (char*) xmlGetProp(xml, (xmlChar*) "time");
+    if (timeStr == NULL)
+        throw X3DParserError("missing expect time", filename, xml);
+    time = atof(timeStr);
     // create the expectation field
-    Expect* expect = new Expect(this, type, name, value ? value : "", testAt);
+    Expect* expect = new Expect(this, field, value, time);
     // clean up some memory
-    if (value != NULL)
-        xmlFree((xmlChar*) value);
-    xmlFree((xmlChar*) type);
-    xmlFree((xmlChar*) name);
+    xmlFree((xmlChar*) value);
+    xmlFree((xmlChar*) field);
+    xmlFree((xmlChar*) timeStr);
     // add the expect
     expects[expect->name] = expect;
     expect->predict();

@@ -29,9 +29,8 @@ namespace X3D {
 namespace Test {
 
 Expect::Expect(
-        TestNode* node, const string& type, const string& name, const string& value,
-        double testAt)
-            : NodeField<TestNode>(node), name(name), actual(NULL), testAt(testAt) {
+        TestNode* node, const string& field, const string& value, double time)
+            : NodeField<TestNode>(node), field(field), actual(NULL), time(time) {
     expected = X3DField::create(type);
     std::stringstream ss(value);
     if (!expected->parse(ss))
@@ -39,8 +38,8 @@ Expect::Expect(
 }
 
 void Expect::predict() {
-    if (testAt >= 0)
-        Browser::getSingleton()->wake(testAt);
+    Browser* browser = Browser::getSingleton();
+    Browser::getSingleton()->wake(testAt);
 }
 
 bool Expect::test(string* reason) {

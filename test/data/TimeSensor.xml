@@ -9,14 +9,14 @@
         <TestSuite desc='"TimeSensor"'>
             <Test DEF='test' desc='"Should get events from timesensor"'>
 
-                <expect name='time' type='SFTime' value='3.14' testAt='3.14'/>
-                <expect name='start' type='SFBool' value='true' testAt='2'/>
-                <expect name='stop' type='SFTime' value='4'/>
-                <expect name='frac' type='SFFloat' value='0.5' testAt='3'/>
-                <expect name='elapsed' type='SFTime' value='2' testAt='4'/>
-                <expect name='cycle' type='SFTime' value='2' testAt='2'/>
-                <expect name='next' type='SFTime' value='5'/>
-                <expect name='mid' type='SFBool' value='false' testAt='3'/>
+                <expect field='ts.time' value='3.14' time='3.14'/>
+                <expect field='next.cycleTime' value='5' time='5'/>
+                <expect field='next.isActive' value='false' time='3'/>
+                <expect field='ts.isActive' value='true' time='2'/>
+                <expect field='ts.cycleTime' value='4' time='4'/>
+                <expect field='ts.fraction_changed' value='0.5' time='3'/>
+                <expect field='ts.elapsedTime' value='2' time='4'/>
+                <expect field='ts.cycleTime' value='2' time='2'/>
 
             </Test>
         </TestSuite>
@@ -24,28 +24,5 @@
         <!-- route first timer to second -->
         <ROUTE fromNode='ts' fromField='cycleTime'
                toNode='next' toField='startTime'/>
-        <ROUTE fromNode='next' fromField='cycleTime'
-               toNode='test' toField='next'/>
-        <ROUTE fromNode='next' fromField='isActive'
-               toNode='test' toField='mid'/>
-
-        <!-- raw time event -->
-        <ROUTE fromNode='ts' fromField='time'
-               toNode='test' toField='time'/>
-
-        <!-- start and stop events -->
-        <ROUTE fromNode='ts' fromField='isActive'
-               toNode='test' toField='start'/>
-        <ROUTE fromNode='ts' fromField='cycleTime'
-               toNode='test' toField='stop'/>
-
-        <!-- cycle events -->
-        <ROUTE fromNode='ts' fromField='fraction_changed'
-               toNode='test' toField='frac'/>
-        <ROUTE fromNode='ts' fromField='elapsedTime'
-               toNode='test' toField='elapsed'/>
-        <ROUTE fromNode='ts' fromField='cycleTime'
-               toNode='test' toField='cycle'/>
-
     </Scene>
 </X3D>

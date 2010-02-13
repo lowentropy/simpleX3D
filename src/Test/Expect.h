@@ -32,13 +32,13 @@ private:
     X3DField* expected;
     X3DField* actual;
     list<Route*> routes;
-    double testAt;
+    double time;
 
 public:
 
     const string name;
 
-    Expect(TestNode* node, const string& type, const string& name, const string& value, double testAt);
+    Expect(TestNode* node, const string& field, const string& value, double time);
     virtual ~Expect();
     SAIField::Access getAccess() const;
     const X3DField& get() const;
@@ -48,7 +48,6 @@ public:
     void setSilently(const X3DField& value);
     X3DField::Type getType() const;
     const string& getTypeName() const;
-    const string& getName() const;
     bool isDirty() const;
     void clearDirty();
     void addIncomingRoute(Route* route);
