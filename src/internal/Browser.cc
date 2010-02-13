@@ -64,51 +64,65 @@ Browser::~Browser() {
 }
 
 bool Browser::simulate() {
+    initRoots();
+    initSensors();
+    if (events.empty())
+        return false;
+    advanceTime();
+    do {
+        do {
+            processEvents();
+        } while (haveEvents());
+    } while (haveTimers());
+    endRoute();
+    return true;
+}
 
-    // realize root nodes
-    if (!started) {
-        list<Node*>::iterator r_it;
-        for (r_it = roots.begin(); r_it != roots.end(); r_it++)
-            (*r_it)->realize();
-        started = true;
-    }
+void Browser::initRoots() {
+    if (started)
+        return;
+    list<Node*>::iterator r_it;
+    for (r_it = roots.begin(); r_it != roots.end(); r_it++)
+        (*r_it)->realize();
+    started = true;
+}
 
-    // initialize new sensors
+void Browser::initSensors() {
     vector<X3DSensorNode*>::iterator s_it;
     for (s_it = newSensors.begin(); s_it != newSensors.end(); s_it++)
         (*s_it)->initSensor();
     newSensors.clear();
+}
 
-    // quit if no more events
+void Browser::advanceTime() {
+    simTime = events.top().time;
+}
+
+bool Browser::haveEvents() {
     if (events.empty())
         return false;
+    return events.top().time <= simTime;
+}
 
-    // advance time
-    simTime = events.top().time;
-    //cout << "***** " << simTime << " ***** " << endl;
-
-    // run the cascade to completion
-    retry:
-    // evaluate all scheduled nodes
-    while (!events.empty() && events.top().time <= simTime) {
-        X3DSensorNode* node = events.top().node;
-        events.pop();
-        if (node != NULL)
-            node->evaluate();
-    }
-    // route from evaluated nodes, and possibly repeat
+void Browser::processEvents() {
+    while (haveEvents())
+        processNextEvent();
     route();
-    if (!events.empty() && events.top().time <= simTime)
-        goto retry;
-    // find the next node needing to tick
-    list<X3DTimeDependentNode*>::iterator t_it;
-    for (t_it = timers.begin(); t_it != timers.end(); t_it++)
-        if ((*t_it)->tick())
-            goto retry;
-    
-    endRoute();
+}
 
-    return true;
+void Browser::processNextEvent() {
+    X3DSensorNode* node = events.top().node;
+    if (node != NULL)
+        node->evaluate();
+    events.pop();
+}
+
+bool Browser::haveTimers() {
+    list<X3DTimeDependentNode*>::iterator it;
+    for (it = timers.begin(); it != timers.end(); it++)
+        if ((*it)->tick())
+            return true;
+    return false;
 }
 
 double Browser::now() {

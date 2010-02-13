@@ -159,6 +159,42 @@ public:
     bool simulate();
 
     /**
+     * Set the state of every root node to realized.
+     */
+    void initRoots();
+
+    /**
+     * Initialize all sensors added since the last event cascade.
+     */
+    void initSensors();
+
+    /**
+     * Set simulation time to the next scheduled event time.
+     */
+    void advanceTime();
+
+    /**
+     * @returns whether another event should occur in this frame.
+     */
+    bool haveEvents();
+
+    /**
+     * Evaluate all pending events for this frame.
+     */
+    void processEvents();
+
+    /**
+     * Evaluate the next chronological event.
+     */
+    void processNextEvent();
+
+    /**
+     * If any timer has not ticked in this frame, call tick and return true.
+     * If all timers have already ticked, return false.
+     */
+    bool haveTimers();
+
+    /**
      * Tell the browser to wake up at this time at the latest.
      * The browser may wake up any time before this, but must wake
      * up at least once before or at this time. This call is ignored
