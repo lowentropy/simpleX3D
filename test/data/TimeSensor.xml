@@ -5,6 +5,10 @@
         <TimeSensor DEF='ts' startTime='2' cycleInterval='2'/>
         <TimeSensor DEF='next' startTime='10000'/>
 
+        <!-- route first timer to second -->
+        <ROUTE fromNode='ts' fromField='cycleTime'
+               toNode='next' toField='startTime'/>
+
         <!-- define the test behavior -->
         <TestSuite desc='"TimeSensor"'>
             <Test DEF='test' desc='"Should get events from timesensor"'>
@@ -20,9 +24,5 @@
 
             </Test>
         </TestSuite>
-
-        <!-- route first timer to second -->
-        <ROUTE fromNode='ts' fromField='cycleTime'
-               toNode='next' toField='startTime'/>
     </Scene>
 </X3D>

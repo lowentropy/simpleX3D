@@ -1,6 +1,9 @@
 <X3D>
     <Scene>
+        <!-- this timer is never paused -->
         <TimeSensor DEF='ts'/>
+
+        <!-- so make sure the pauseTime field never activates -->
         <TestSuite DEF="suite">
             <Test DEF="NeverActivated"
                     desc='"Should fail due to never being activated"'

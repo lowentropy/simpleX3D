@@ -1,16 +1,32 @@
 <X3D>
     <Scene>
-        
+
+        <!-- cycles from 0 to 1 -->
         <TimeSensor DEF='ts' startTime='0' cycleInterval='1' loop='false'/>
 
+        <!-- simple iteration on interval [0,1] -->
         <PositionInterpolator DEF='open'
-            key='0 1' keyValue='0 1 2, 1 3 0'/>
+                 key='0,     1'
+            keyValue='0 1 2, 1 3 0'/>
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='open'   toField='set_fraction'/>
 
+        <!-- tests that fractions outside key range use first/last values -->
         <PositionInterpolator DEF='ends'
-            key='0.6 0.7' keyValue='0 0 0, 1 1 1'/>
+                 key='0.6,   0.7'
+            keyValue='0 0 0, 1 1 1'/>
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='ends'   toField='set_fraction'/>
 
+        <!-- test a piecewise linear interpolation -->
         <PositionInterpolator DEF='skew'
-            key='0 0.5 1' keyValue='0 0 0, 0.4 0.4 0.4, 1 1 1'/>
+                 key='0,     0.5,         1'
+            keyValue='0 0 0, 0.4 0.4 0.4, 1 1 1'/>
+        <ROUTE
+            fromNode='ts' fromField='fraction_changed'
+              toNode='skew'   toField='set_fraction'/>
 
         <TestSuite desc='"Interpolation"'>
             <Test desc='"PositionInterpolator"'>
@@ -28,14 +44,5 @@
             </Test>
         </TestSuite>
 
-        <ROUTE
-            fromNode='ts' fromField='fraction_changed'
-              toNode='open'   toField='set_fraction'/>
-        <ROUTE
-            fromNode='ts' fromField='fraction_changed'
-              toNode='ends'   toField='set_fraction'/>
-        <ROUTE
-            fromNode='ts' fromField='fraction_changed'
-              toNode='skew'   toField='set_fraction'/>
     </Scene>
 </X3D>
