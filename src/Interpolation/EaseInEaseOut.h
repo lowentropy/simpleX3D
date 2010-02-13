@@ -17,37 +17,24 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Interpolation/PositionInterpolator.h"
-#include <vector>
-#include <iostream>
+#ifndef _X3D_EASEINEASEOUT_H_
+#define _X3D_EASEINEASEOUT_H_
 
-using std::vector;
-using std::cout;
-using std::endl;
+#include "Interpolation/X3DInterpolatorNode.h"
 
 namespace X3D {
 namespace Interpolation {
 
-bool PositionInterpolator::outputIsDirty() {
-    return value_changed.isDirty();
-}
-
-void PositionInterpolator::setFraction(float fraction, int index) {
-    vector<float>& keys = key().array();
-    vector<SFVec3f>& values = keyValue().array();
-    int size = keys.size();
-    SFVec3f value;
-    if (index < 0) {
-        value = values[0];
-    } else if (index == size-1) {
-        value = values[size-1];
-    } else {
-        float a = keys[index], b = keys[index+1];
-        SFVec3f &lo = values[index], &hi = values[index+1];
-        SFVec3f diff = hi - lo;
-        value = lo + (diff / (b - a)) * (fraction - a);
-    }
-    value_changed.send(value);
-}
+class EaseInEaseOut : public X3DInterpolatorNode {
+public:
+    DefaultInOutField<EaseInEaseOut, MFVec2fArray> easeInEaseOut;
+    DefaultOutField<EaseInEaseOut, SFFloat> modifiedFraction_changed;
+    void setup() {}
+protected:
+    bool outputIsDirty();
+    virtual void setFraction(float fraction, int index);
+};
 
 }}
+
+#endif // #ifndef _X3D_EASEINEASEOUT_H_

@@ -27,15 +27,15 @@ class X3DGroupingNode : public X3DChildNode, public X3DBoundedObject {
 public:
 
     class AddChildren : 
-        public InField<X3DGroupingNode, MFNode<vector, X3DChildNode> > {
-        void action(const MFNode<vector, X3DChildNode>& nodes) {
+        public InField<X3DGroupingNode, MFNode<X3DChildNode> > {
+        void action(const MFNode<X3DChildNode>& nodes) {
             node()->add(nodes);
         }
     } addChildren;
 
     class RemoveChildren :
-        public InField<X3DGroupingNode, MFNode<vector, X3DChildNode> > {
-        void action(const MFNode<vector, X3DChildNode>& nodes) {
+        public InField<X3DGroupingNode, MFNode<X3DChildNode> > {
+        void action(const MFNode<X3DChildNode>& nodes) {
             node()->remove(nodes);
         }
     } removeChildren;
@@ -46,8 +46,8 @@ public:
 
 protected:
 
-    void add(const MFNode<vector, X3DChildNode>& nodes);
-    void remove(const MFNode<vector, X3DChildNode>& nodes);
+    void add(const MFNode<X3DChildNode>& nodes);
+    void remove(const MFNode<X3DChildNode>& nodes);
 };
 
 }}

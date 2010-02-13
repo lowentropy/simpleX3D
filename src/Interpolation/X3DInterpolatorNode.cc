@@ -59,7 +59,7 @@ int X3DInterpolatorNode::findKeyIndex(float fraction) {
 void X3DInterpolatorNode::setFraction(float fraction) {
     if (fraction == lastFraction)
         return;
-    if (getField("value_changed")->isDirty())
+    if (outputIsDirty())
         return;
     lastFraction = fraction;
     int index = findKeyIndex(fraction);

@@ -26,7 +26,8 @@ libsimpleX3D_la_SOURCES = \
     Test/Expect.cc \
 	Time/TimeSensor.cc \
 	Interpolation/X3DInterpolatorNode.cc \
-	Interpolation/PositionInterpolator.cc
+	Interpolation/PositionInterpolator.cc \
+	Interpolation/EaseInEaseOut.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \
@@ -88,4 +89,5 @@ include_HEADERS = \
     Test/TestNode.h \
     Test/Expect.h \
 	Interpolation/X3DInterpolatorNode.h \
-	Interpolation/PositionInterpolator.h
+	Interpolation/PositionInterpolator.h \
+	Interpolation/EaseInEaseOut.h

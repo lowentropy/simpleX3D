@@ -11,6 +11,8 @@ public:
     DefaultInOutField<PositionInterpolator, MFVec3fArray> keyValue;
     DefaultOutField<PositionInterpolator, SFVec3f> value_changed;
     void setup() {}
+protected:
+    bool outputIsDirty();
     virtual void setFraction(float fraction, int index);
 };
 

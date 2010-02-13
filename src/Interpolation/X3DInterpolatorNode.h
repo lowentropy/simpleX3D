@@ -50,9 +50,8 @@ public:
 
 protected:
 
-    virtual void setFraction(float fraction, int index) {
-        throw X3DError("ABSTRACT");
-    }
+    virtual void setFraction(float fraction, int index) { throw X3DError("ABSTRACT"); }
+    virtual bool outputIsDirty() { throw X3DError("ABSTRACT"); }
     virtual int findKeyIndex(float fraction);
 
 };

@@ -46,15 +46,15 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     // if it's not an expect declaration, we're not interested
     if (strcmp("expect", (char*) xml->name))
         return false;
-    // get the expect field (required)
+    // get the field id
     char* field = (char*) xmlGetProp(xml, (xmlChar*) "field");
     if (field == NULL)
         throw X3DParserError("missing expect field", filename, xml);
-    // get the value (required)
+    // get the value
     char* value = (char*) xmlGetProp(xml, (xmlChar*) "value");
     if (value == NULL)
         throw X3DParserError("missing expect value", filename, xml);
-    // get the time (required)
+    // get the time
     double time = -1;
     char* timeStr = (char*) xmlGetProp(xml, (xmlChar*) "time");
     if (timeStr == NULL)

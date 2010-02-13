@@ -17,37 +17,40 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "Interpolation/PositionInterpolator.h"
+#include "Interpolation/EaseInEaseOut.h"
 #include <vector>
-#include <iostream>
-
 using std::vector;
-using std::cout;
-using std::endl;
 
 namespace X3D {
 namespace Interpolation {
 
-bool PositionInterpolator::outputIsDirty() {
-    return value_changed.isDirty();
+bool EaseInEaseOut::outputIsDirty() {
+    return modifiedFraction_changed.isDirty();
 }
 
-void PositionInterpolator::setFraction(float fraction, int index) {
+void EaseInEaseOut::setFraction(float fraction, int index) {
     vector<float>& keys = key().array();
-    vector<SFVec3f>& values = keyValue().array();
-    int size = keys.size();
-    SFVec3f value;
-    if (index < 0) {
-        value = values[0];
-    } else if (index == size-1) {
-        value = values[size-1];
+    vector<SFVec2f>& ease = easeInEaseOut().array();
+    float lo = keys[index], hi = keys[index+1];
+    float u = (fraction - lo) / (hi - lo);
+    float e_out = ease[index].y;
+    float e_in = ease[index+1].x;
+    float sum = e_in + e_out;
+    float value;
+    if (sum < 0) {
+        value = u;
     } else {
-        float a = keys[index], b = keys[index+1];
-        SFVec3f &lo = values[index], &hi = values[index+1];
-        SFVec3f diff = hi - lo;
-        value = lo + (diff / (b - a)) * (fraction - a);
+        float t = 1.0 / (2.0 - sum);
+        if (u < e_out) {
+            value = (t / e_out) * u * u;
+        } else if (u < 1.0 - e_in) {
+            value = t * (2.0 * u - e_out);
+        } else {
+            float u1 = 1.0 - u;
+            value = 1.0 - (t * u1 * u1) / e_in;
+        }
     }
-    value_changed.send(value);
+    modifiedFraction_changed.send(value);
 }
 
 }}
