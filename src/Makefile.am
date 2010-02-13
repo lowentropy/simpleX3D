@@ -25,6 +25,7 @@ libsimpleX3D_la_SOURCES = \
     Test/TestNode.cc \
     Test/Expect.cc \
 	Time/TimeSensor.cc \
+	Interpolation/X3DInterpolatorNode.cc \
 	Interpolation/PositionInterpolator.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
@@ -88,5 +89,3 @@ include_HEADERS = \
     Test/Expect.h \
 	Interpolation/X3DInterpolatorNode.h \
 	Interpolation/PositionInterpolator.h
-
-# s/^.*or: \([^:]*\):.*$/    \1 \\/

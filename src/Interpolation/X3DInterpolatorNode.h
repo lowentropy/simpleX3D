@@ -26,6 +26,11 @@ namespace X3D {
 namespace Interpolation {
 
 class X3DInterpolatorNode : public X3D::Core::X3DChildNode {
+private:
+
+    float lastFraction;
+    int lastKeyIndex;
+
 public:
 
     class SetFraction : public InField<X3DInterpolatorNode, SFFloat> {
@@ -37,10 +42,19 @@ public:
     DefaultInOutField<X3DInterpolatorNode, MFFloatArray> key;
 
     void setup() {
+        lastFraction = -1;
+        lastKeyIndex = 0;
     }
 
-    /// The fraction has changed; generate interpolation
-    virtual void setFraction(float fraction) { throw X3DError("ABSTRACT"); }
+    void setFraction(float fraction);
+
+protected:
+
+    virtual void setFraction(float fraction, int index) {
+        throw X3DError("ABSTRACT");
+    }
+    virtual int findKeyIndex(float fraction);
+
 };
 
 }

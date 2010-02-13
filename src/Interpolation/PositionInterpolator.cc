@@ -28,34 +28,18 @@ using std::endl;
 namespace X3D {
 namespace Interpolation {
 
-void PositionInterpolator::setFraction(float fraction) {
-    if (value_changed.isDirty())
-        return;
-    SFVec3f value;
-    vector<float> keys = key().array();
-    vector<SFVec3f> values = keyValue().array();
+void PositionInterpolator::setFraction(float fraction, int index) {
+    vector<float>& keys = key().array();
+    vector<SFVec3f>& values = keyValue().array();
     int size = keys.size();
-
-    if (fraction <= keys[0]) {
+    SFVec3f value;
+    if (index < 0) {
         value = values[0];
-    } else if (fraction >= keys[size-1]) {
+    } else if (index == size-1) {
         value = values[size-1];
     } else {
-        int low = 0;
-        int high = size - 1;
-        while (low < high - 1) {
-            int mid = low + ((high - low) / 2);
-            if (keys[mid] >= fraction)
-                high = mid;
-            else if (keys[mid+1] < fraction)
-                low = mid + 1;
-            else {
-                low = mid;
-                break;
-            }
-        }
-        float a = keys[low], b = keys[low+1];
-        SFVec3f &lo = values[low], &hi = values[low+1];
+        float a = keys[index], b = keys[index+1];
+        SFVec3f &lo = values[index], &hi = values[index+1];
         SFVec3f diff = hi - lo;
         value = lo + (diff / (b - a)) * (fraction - a);
     }

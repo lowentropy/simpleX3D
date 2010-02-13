@@ -8,14 +8,10 @@ namespace Interpolation {
 
 class PositionInterpolator : public X3DInterpolatorNode {
 public:
-
     DefaultInOutField<PositionInterpolator, MFVec3fArray> keyValue;
-
     DefaultOutField<PositionInterpolator, SFVec3f> value_changed;
-
     void setup() {}
-
-    void setFraction(float fraction);
+    virtual void setFraction(float fraction, int index);
 };
 
 }}
