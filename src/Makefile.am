@@ -29,6 +29,8 @@ libsimpleX3D_la_SOURCES = \
 	Interpolation/PositionInterpolator.cc \
 	Interpolation/PositionInterpolator2D.cc \
 	Interpolation/ScalarInterpolator.cc \
+	Interpolation/CoordinateInterpolator.cc \
+	Interpolation/CoordinateInterpolator2D.cc \
 	Interpolation/EaseInEaseOut.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
@@ -94,4 +96,6 @@ include_HEADERS = \
 	Interpolation/PositionInterpolator.h \
 	Interpolation/PositionInterpolator2D.h \
 	Interpolation/ScalarInterpolator.h \
+	Interpolation/CoordinateInterpolator.h \
+	Interpolation/CoordinateInterpolator2D.h \
 	Interpolation/EaseInEaseOut.h
