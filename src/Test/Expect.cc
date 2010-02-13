@@ -31,23 +31,35 @@ namespace Test {
 Expect::Expect(
         TestNode* node, const string& field, const string& value, double time)
             : NodeField<TestNode>(node), field(field), actual(NULL), time(time) {
-    expected = X3DField::create(type);
+    Browser* browser = Browser::getSingleton();
+    size_t splitPos = field.find('.');
+    if (splitPos == string::npos)
+        throw X3DError("invalid node.field identifier");
+    string nodeName = field.substr(0, splitPos);
+    string fieldName = field.substr(splitPos+1, field.size()-splitPos-1);
+    Node* from = browser->getNode(nodeName);
+    if (from == NULL)
+        throw X3DError(string("source node not found: ") + nodeName);
+    SAIField* fromField = from->getField(fieldName);
+    if (fromField == NULL)
+        throw X3DError(string("source field not found: ") + fieldName);
+    expected = X3DField::create(fromField->getType());
     std::stringstream ss(value);
     if (!expected->parse(ss))
         throw X3DError(string("invalid field value: ") + value);
+    browser->createRoute(fromField, this);
 }
 
 void Expect::predict() {
-    Browser* browser = Browser::getSingleton();
-    Browser::getSingleton()->wake(testAt);
+    Browser::getSingleton()->wake(time);
 }
 
 bool Expect::test(string* reason) {
     std::stringstream ss;
     if (actual == NULL) {
-        ss << name << " expected " << *expected << ", but was never activated";
+        ss << field << " should be " << *expected << ", but was never activated";
     } else if (!expected->equals(*actual)) {
-        ss << name << " expected " << *expected << ", but was actually " << *actual;
+        ss << field << " should be " << *expected << ", but was actually " << *actual;
     } else {
         return true;
     }
@@ -75,7 +87,7 @@ const string& Expect::getTypeName() const {
 }
 
 const string& Expect::getName() const {
-    return name;
+    throw X3DError("Abstract");
 }
 
 SAIField::Access Expect::getAccess() const {
@@ -88,11 +100,7 @@ X3DField& Expect::get() {
 }
 
 void Expect::set(const X3DField& value) {
-    if (testAt < 0) {
-        if (actual == NULL)
-            actual = X3DField::create(value.getType());
-        (*actual)(value);
-    } else if (actual == NULL && node->now() >= testAt) {
+    if (actual == NULL && node->now() >= time) {
         actual = X3DField::create(value.getType());
         (*actual)(value);
     }

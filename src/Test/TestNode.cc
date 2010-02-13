@@ -41,14 +41,6 @@ void TestNode::setup() {
     should("pass");
 }
 
-SAIField* TestNode::getField(const string& name) {
-    if (expects.count(name)) {
-        return expects[name];
-    } else {
-        return this->Node::getField(name);
-    }
-}
-
 bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     // TODO: might call base Script parseSpecial here?
     // if it's not an expect declaration, we're not interested
@@ -75,14 +67,14 @@ bool TestNode::parseSpecial(xmlNode* xml, const string& filename) {
     xmlFree((xmlChar*) field);
     xmlFree((xmlChar*) timeStr);
     // add the expect
-    expects[expect->name] = expect;
+    expects.push_back(expect);
     expect->predict();
     return true;
 }
 
 bool TestNode::runTest() {
     string reason;
-    map<string,Expect*>::iterator it;
+    list<Expect*>::iterator it;
     list<string> fails;
 
     // run the simulation to completion
@@ -95,7 +87,7 @@ bool TestNode::runTest() {
 
     // run the expectations
     for (it = expects.begin(); it != expects.end(); it++) {
-        result = it->second->test(&reason);
+        result = (*it)->test(&reason);
         if (shouldPass) {
             if (result)
                 passed++;

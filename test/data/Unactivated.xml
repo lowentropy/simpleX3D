@@ -1,11 +1,12 @@
 <X3D>
     <Scene>
+        <TimeSensor DEF='ts'/>
         <TestSuite DEF="suite">
             <Test DEF="NeverActivated"
                     desc='"Should fail due to never being activated"'
                     should='"fail"'
-                    failWith='"NeverActivated expected 216, but was never activated"'>
-                <expect name="NeverActivated" type="SFInt32" value="216"/>
+                    failWith='"ts.pauseTime should be 216, but was never activated"'>
+                <expect field="ts.pauseTime" value="216" time="1.618"/>
             </Test>
         </TestSuite>
     </Scene>

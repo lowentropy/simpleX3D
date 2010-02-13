@@ -36,7 +36,7 @@ private:
 
 public:
 
-    const string name;
+    const string field;
 
     Expect(TestNode* node, const string& field, const string& value, double time);
     virtual ~Expect();
@@ -48,6 +48,7 @@ public:
     void setSilently(const X3DField& value);
     X3DField::Type getType() const;
     const string& getTypeName() const;
+    const string& getName() const;
     bool isDirty() const;
     void clearDirty();
     void addIncomingRoute(Route* route);

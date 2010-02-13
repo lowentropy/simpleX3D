@@ -17,10 +17,8 @@ include_HEADERS = \
 	internal/NodeIteratorTests.h \
 	internal/CloneTests.h \
 	Core/X3DBindableNodeTests.h \
-    Test/TestNodeTests.h \
 	X3DTests.h \
 	data/Parse.xml \
-	data/Expects.xml \
 	data/TimeSensor.xml \
 	data/Unactivated.xml \
 	data/Interpolate.xml

@@ -32,7 +32,7 @@ class Expect;
 class TestNode : public X3DChildNode {
 private:
 
-    map<string, Expect*> expects;
+    list<Expect*> expects;
 
 public:
 
@@ -54,7 +54,6 @@ public:
     void setup();
     const string& defaultContainerField();
     virtual bool parseSpecial(xmlNode* xml, const string& filename);
-    virtual SAIField* getField(const string& name);
     bool runTest();
 };
 

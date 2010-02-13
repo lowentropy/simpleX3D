@@ -49,7 +49,6 @@ Browser* browser() {
 #include "internal/NodeIteratorTests.h"
 #include "internal/CloneTests.h"
 #include "Core/X3DBindableNodeTests.h"
-#include "Test/TestNodeTests.h"
 //#include "Test/TestSuiteTests.h"
 #include "X3DTests.h"
 
