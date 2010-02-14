@@ -17,24 +17,19 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _X3D_COORDINATEINTERPOLATOR_H_
-#define _X3D_COORDINATEINTERPOLATOR_H_
+#ifndef _X3D_GROUP_H_
+#define _X3D_GROUP_H_
 
-#include "Interpolation/X3DInterpolatorNode.h"
+#include "Grouping/X3DGroupingNode.h"
 
 namespace X3D {
-namespace Interpolation {
+namespace Grouping {
 
-class CoordinateInterpolator : public X3DInterpolatorNode {
+class Group : public X3DGroupingNode {
 public:
-    DefaultInOutField<CoordinateInterpolator, MFVec3fArray> keyValue;
-    DefaultOutField<CoordinateInterpolator, MFVec3fArray> value_changed;
     void setup() {}
-protected:
-    bool outputIsDirty();
-    virtual void setFraction(float fraction, int index);
 };
 
 }}
 
-#endif // #ifndef _X3D_COORDINATEINTERPOLATOR_H_
+#endif // #ifndef _X3D_GROUP_H_

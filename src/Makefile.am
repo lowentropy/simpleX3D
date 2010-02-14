@@ -102,4 +102,6 @@ include_HEADERS = \
 	Interpolation/CoordinateInterpolator2D.h \
 	Interpolation/EaseInEaseOut.h \
 	Grouping/X3DBoundedObject.h \
-	Grouping/X3DGroupingNode.h
+	Grouping/X3DGroupingNode.h \
+	Grouping/Group.h \
+	Grouping/StaticGroup.h
