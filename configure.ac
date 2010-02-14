@@ -70,6 +70,7 @@ AC_SUBST(GMOCK_LIBS)
 
 AC_CONFIG_FILES([
 	Makefile
+    include/Makefile
     src/Makefile
     test/Makefile
 ])
