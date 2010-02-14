@@ -192,7 +192,7 @@ void World::parseProtoInterface(xmlNode* xml, vector<ProtoFieldDef*>& fields) {
         string name = getXmlAttr(xml, "name", "proto-field name");
         string typeName = getXmlAttr(xml, "type", "proto-field type");
         string accessName = getXmlAttr(xml, "accessType", "proto-field access type");
-        X3DField::Type type = X3DField::getType(typeName);
+        X3DField::Type type = X3DField::getTypeFromName(typeName);
         SAIField::Access access = SAIField::getAccess(accessName);
         // TODO
         //X3DField* value = parseFieldValue(child, "value");

@@ -45,6 +45,9 @@ public:
     typedef const SFColor& CONST_TYPE;
 
     /// @returns SFCOLOR
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFCOLOR; }
+
+    /// @returns SFCOLOR
 	INLINE X3DField::Type getType() const { return X3DField::SFCOLOR; }
 
     /// @returns native SFColor value
@@ -209,6 +212,9 @@ public:
 	typedef SFColorRGBA TYPE;
 	typedef SFColorRGBA& REF_TYPE;
 	typedef const SFColorRGBA& CONST_TYPE;
+
+    /// @returns SFCOLORRGBA
+	INLINE static X3DField::Type getStaticType() { return SFCOLORRGBA; }
 
     /// @returns SFCOLORRGBA
 	INLINE X3DField::Type getType() const { return SFCOLORRGBA; }

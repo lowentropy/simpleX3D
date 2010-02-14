@@ -37,6 +37,9 @@ public:
 	int value;
 
     /// @returns SFINT32
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFINT32; }
+
+    /// @returns SFINT32
 	INLINE X3DField::Type getType() const { return X3DField::SFINT32; }
 
     /// Empty constructor.

@@ -34,6 +34,10 @@ namespace X3D {
  */
 class SFAbstractNode : public X3DField {
 public:
+
+    /// @returns SFNODE
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFNODE; }
+
     /// @returns SFNODE
 	INLINE X3DField::Type getType() const { return X3DField::SFNODE; }
 

@@ -220,8 +220,9 @@ public:
     BaseField() {}
 
     INLINE X3DField::Type getType() const {
-        static TT x;
-        return x.getType();
+        return TT::getStaticType();
+//        static TT x;
+//        return x.getType();
     }
 
 private:

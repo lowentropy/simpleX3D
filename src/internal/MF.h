@@ -143,6 +143,7 @@ public:
     const_iterator begin() const { return const_iterator(this, false); }
     const_iterator end() const { return const_iterator(this, true); }
     // type access
+    INLINE static X3DField::Type getStaticType() { static S s; return s.getMFType(); }
     INLINE X3DField::Type getType() const { static S s; return s.getMFType(); }
     INLINE string getTypeName() const { static S s; return s.getMFTypeName(); }
     // contracts
@@ -229,6 +230,9 @@ public:
 template <class N>
 class MFNode : public MF<SFNode<N> >, public MFAbstractNode {
 public:
+    typedef MFNode<N> TYPE;
+    typedef MFNode<N>& REF_TYPE;
+    typedef const MFNode<N>& CONST_TYPE;
     typedef MF<SFNode<N> > parent;
     void addNode(Node* node) {
         N* n = dynamic_cast<N*>(node);
@@ -257,6 +261,36 @@ public:
             for (it = parent::begin(); it != parent::end(); it++)
                 mf->add(SFNode<N>::clone(*it, mapping, shallow));
         }
+    }
+    static const MFNode<N>& unwrap(const X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+        const MFAbstractNode* mfa = dynamic_cast<const MFAbstractNode*>(&f);
+        if (mfa == NULL)
+            throw X3DError(
+                string("list type mismatch; not a node list"));
+        const MFNode<N>* mf = dynamic_cast<const MFNode<N>*>(mfa);
+        if (mf == NULL)
+            throw X3DError(
+                string("node type mistmatch in MFNode"));
+        return *mf;
+    }
+    static MFNode<N>& unwrap(X3DField& f) {
+		if (f.getType() != X3DField::MFNODE)
+			throw X3DError(
+                string("base type mismatch; expected MFNode") + \
+                ", but was " + f.getTypeName()); \
+        MFAbstractNode* mfa = dynamic_cast<MFAbstractNode*>(&f);
+        if (mfa == NULL)
+            throw X3DError(
+                string("list type mismatch; not a node list"));
+        MFNode<N>* mf = dynamic_cast<MFNode<N>*>(mfa);
+        if (mf == NULL)
+            throw X3DError(
+                string("node type mistmatch in MFNode"));
+        return *mf;
     }
 };
 
@@ -289,6 +323,7 @@ public:
     std::list<T>& list() { return elements; }
     const std::list<T>& list() const { return elements; }
     virtual void add(C elem) { elements.push_back(elem); }
+    virtual void remove(C elem) { elements.remove(elem); }
     virtual void clear() { elements.clear(); }
     virtual bool empty() const { return elements.empty(); }
     virtual int size() const { return elements.size(); }
@@ -412,6 +447,7 @@ public:
             elem->realize();
         elements.push_back(elem);
     }
+    virtual void remove(N* elem) { elements.remove(elem); }
     virtual void clear() { elements.clear(); }
     virtual bool empty() const { return elements.empty(); }
     virtual int size() const { return elements.size(); }
@@ -479,6 +515,7 @@ public:
             elem->realize();
         elements.insert(elem);
     }
+    virtual void remove(N* elem) { elements.erase(elem); }
     virtual void clear() { elements.clear(); }
     virtual bool empty() const { return elements.empty(); }
     virtual int size() const { return elements.size(); }

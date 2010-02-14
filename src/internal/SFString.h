@@ -43,6 +43,9 @@ public:
 	string value;
 
     /// @returns SFSTRING
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFSTRING; }
+
+    /// @returns SFSTRING
 	INLINE X3DField::Type getType() const { return X3DField::SFSTRING; }
 
     /// Empty constructor.

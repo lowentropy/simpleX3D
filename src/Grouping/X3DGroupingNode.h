@@ -20,6 +20,11 @@
 #ifndef _X3D_X3DGROUPINGNODE_H_
 #define _X3D_X3DGROUPINGNODE_H_
 
+#include "Core/X3DChildNode.h"
+#include "Grouping/X3DBoundedObject.h"
+
+using X3D::Core::X3DChildNode;
+
 namespace X3D {
 namespace Grouping {
 
@@ -40,7 +45,7 @@ public:
         }
     } removeChildren;
 
-    DefaultInOutField<X3DGroupingNode, MFNode<set, X3DChildNode> > children;
+    DefaultInOutField<X3DGroupingNode, MFNodeSet<X3DChildNode> > children;
 
     void setup();
 

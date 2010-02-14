@@ -55,7 +55,9 @@ public:
     typedef SFVec2<T,S>& REF_TYPE;
     typedef const SFVec2<T,S>& CONST_TYPE;
     
-    X3DField::Type getType() const { return S; }
+    INLINE static X3DField::Type getStaticType() { return S; }
+    INLINE X3DField::Type getType() const { return S; }
+
     static const SFVec2<T,S>& unwrap(const X3DField& field) {
         if (field.getType() != S)
             throw new X3DError(
@@ -337,7 +339,9 @@ public:
     typedef SFVec3<T,S>& REF_TYPE;
     typedef const SFVec3<T,S>& CONST_TYPE;
     
-    X3DField::Type getType() const { return S; }
+    INLINE static X3DField::Type getStaticType() { return S; }
+    INLINE X3DField::Type getType() const { return S; }
+
     static const SFVec3<T,S>& unwrap(const X3DField& field) {
         if (field.getType() != S)
             throw new X3DError(
@@ -700,7 +704,9 @@ public:
     typedef SFVec4<T,S>& REF_TYPE;
     typedef const SFVec4<T,S>& CONST_TYPE;
     
-    X3DField::Type getType() const { return S; }
+    INLINE static X3DField::Type getStaticType() { return S; }
+    INLINE X3DField::Type getType() const { return S; }
+
     static const SFVec4<T,S>& unwrap(const X3DField& field) {
         if (field.getType() != S)
             throw new X3DError(

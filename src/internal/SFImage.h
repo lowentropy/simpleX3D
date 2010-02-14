@@ -56,6 +56,9 @@ public:
 	typedef const SFImage& CONST_TYPE;
 
     /// @returns SFIMAGE
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFIMAGE; }
+
+    /// @returns SFIMAGE
 	INLINE X3DField::Type getType() const { return X3DField::SFIMAGE; }
 
     /// Unwrap generic SFImage value

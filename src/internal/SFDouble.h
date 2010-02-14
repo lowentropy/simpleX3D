@@ -37,6 +37,9 @@ public:
 	double value;
 
     /// @returns SFDOUBLE
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFDOUBLE; }
+
+    /// @returns SFDOUBLE
 	INLINE X3DField::Type getType() const { return X3DField::SFDOUBLE; }
 
     /// Empty constructor.

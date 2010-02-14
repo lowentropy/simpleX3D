@@ -17,7 +17,9 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include Grouping/X3DGroupingNode.h
+#include "Grouping/X3DGroupingNode.h"
+#include <set>
+using std::set;
 
 namespace X3D {
 namespace Grouping {
@@ -25,20 +27,18 @@ namespace Grouping {
 void X3DGroupingNode::setup() {
 }
 
-void X3DGroupingNode::add(const MFNode<vector, X3DChildNode>& nodes) {
-    set<X3DChildNode*>& children = this->children.internal();
-    const vector<X3DChildNode*>& list = nodes.internal();
-    vector<X3DChildNode*>::const_iterator it;
-    for (it = list.begin(); it != list.end(); it++)
-        children.insert(*it);
+void X3DGroupingNode::add(const MFNode<X3DChildNode>& nodes) {
+    MFNode<X3DChildNode>::const_iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+        children().add(*it);
+    children.changed();
 }
 
-void X3DGroupingNode::remove(const MFNode<vector, X3DChildNode>& nodes) {
-    list<X3DChildNode*>& children = this->children.getList();
-    const list<X3DChildNode*>& list = nodes.getList();
-    list<X3DChildNode*>::const_iterator it;
-    for (it = list.begin(); it != list.end(); it++)
-        children.remove(*it);
+void X3DGroupingNode::remove(const MFNode<X3DChildNode>& nodes) {
+    MFNode<X3DChildNode>::const_iterator it;
+    for (it = nodes.begin(); it != nodes.end(); it++)
+        children().remove(*it);
+    children.changed();
 }
 
 }}

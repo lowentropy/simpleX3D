@@ -37,6 +37,9 @@ public:
 	bool value;
 
     /// @returns SFBOOL
+    INLINE static X3DField::Type getStaticType() { return X3DField::SFBOOL; }
+
+    /// @returns SFBOOL
 	INLINE X3DField::Type getType() const { return X3DField::SFBOOL; }
 
     /// Empty constructor.

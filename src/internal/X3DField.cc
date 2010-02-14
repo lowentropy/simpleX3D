@@ -130,7 +130,7 @@ bool X3DField::equals(const X3DField& field) const {
     return *this == field;
 }
 
-X3DField::Type X3DField::getType(const string& typeName) {
+X3DField::Type X3DField::getTypeFromName(const string& typeName) {
     if (typeMap.empty()) {
     	INSERT_TYPE_MAP(SFBool,SFBOOL)
     	INSERT_TYPE_MAP(SFColor,SFCOLOR)

@@ -100,7 +100,7 @@ public:
     /// string representation of x3d type names
     static const string typeNames[];
 
-    static Type getType(const string& typeName);
+    static Type getTypeFromName(const string& typeName);
 
     /// convert enumeration to string for type names
     static const string& getTypeName(Type type);

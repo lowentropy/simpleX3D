@@ -31,7 +31,9 @@ libsimpleX3D_la_SOURCES = \
 	Interpolation/ScalarInterpolator.cc \
 	Interpolation/CoordinateInterpolator.cc \
 	Interpolation/CoordinateInterpolator2D.cc \
-	Interpolation/EaseInEaseOut.cc
+	Interpolation/EaseInEaseOut.cc \
+	Grouping/X3DBoundedObject.cc \
+	Grouping/X3DGroupingNode.cc
 libsimpleX3D_la_LIBADD = $(DEPS_LIBS)
 include_HEADERS = \
 	internal/X3DField.h \
@@ -98,4 +100,6 @@ include_HEADERS = \
 	Interpolation/ScalarInterpolator.h \
 	Interpolation/CoordinateInterpolator.h \
 	Interpolation/CoordinateInterpolator2D.h \
-	Interpolation/EaseInEaseOut.h
+	Interpolation/EaseInEaseOut.h \
+	Grouping/X3DBoundedObject.h \
+	Grouping/X3DGroupingNode.h

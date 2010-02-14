@@ -94,8 +94,7 @@ public:
      * @param value generic event value
      */
     INLINE void set(const X3DField& value) {
-        static TT x;
-        (*this)(x.unwrap(value));
+        (*this)(TT::unwrap(value));
     }
 
     /**

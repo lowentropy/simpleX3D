@@ -45,7 +45,9 @@ public:
     typedef SFMatrix3<T,S>& REF_TYPE;
     typedef const SFMatrix3<T,S>& CONST_TYPE;
 
-    X3DField::Type getType() const { return S; }
+    INLINE static X3DField::Type getStaticType() { return S; }
+    INLINE X3DField::Type getType() const { return S; }
+
     static const SFMatrix3<T,S>& unwrap(const X3DField& field) {
         if (field.getType() != S)
             throw new X3DError(
@@ -280,7 +282,9 @@ public:
     typedef SFMatrix4<T,S>& REF_TYPE;
     typedef const SFMatrix4<T,S>& CONST_TYPE;
 
-    X3DField::Type getType() const { return S; }
+    INLINE static X3DField::Type getStaticType() { return S; }
+    INLINE X3DField::Type getType() const { return S; }
+
     static const SFMatrix4<T,S>& unwrap(const X3DField& field) {
         if (field.getType() != S)
             throw new X3DError(

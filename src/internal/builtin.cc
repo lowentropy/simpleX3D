@@ -25,6 +25,12 @@
 #include "Time/TimeSensor.h"
 #include "Test/TestSuite.h"
 #include "Interpolation/PositionInterpolator.h"
+#include "Interpolation/PositionInterpolator2D.h"
+#include "Interpolation/CoordinateInterpolator.h"
+#include "Interpolation/CoordinateInterpolator2D.h"
+#include "Interpolation/ScalarInterpolator.h"
+#include "Interpolation/EaseInEaseOut.h"
+#include "Grouping/X3DGroupingNode.h"
 
 #include <string>
 
@@ -345,6 +351,83 @@ void Builtin::init(Profile* profile) {
             pi->createField("keyValue", &PositionInterpolator::keyValue);
             pi->createField("value_changed", &PositionInterpolator::value_changed);
             pi->finish();
+        }
+
+        // PositionInterpolator2D
+        NodeDefImpl<PositionInterpolator2D>* pi2 =
+            interp->createNode<PositionInterpolator2D>("PositionInterpolator2D");
+        {
+            pi2->inherits("X3DInterpolatorNode");
+            pi2->createField("keyValue", &PositionInterpolator2D::keyValue);
+            pi2->createField("value_changed", &PositionInterpolator2D::value_changed);
+            pi2->finish();
+        }
+
+        // CoordinateInterpolator
+        NodeDefImpl<CoordinateInterpolator>* ci =
+            interp->createNode<CoordinateInterpolator>("CoordinateInterpolator");
+        {
+            ci->inherits("X3DInterpolatorNode");
+            ci->createField("keyValue", &CoordinateInterpolator::keyValue);
+            ci->createField("value_changed", &CoordinateInterpolator::value_changed);
+            ci->finish();
+        }
+
+        // CoordinateInterpolator
+        NodeDefImpl<CoordinateInterpolator2D>* ci2 =
+            interp->createNode<CoordinateInterpolator2D>("CoordinateInterpolator2D");
+        {
+            ci2->inherits("X3DInterpolatorNode");
+            ci2->createField("keyValue", &CoordinateInterpolator2D::keyValue);
+            ci2->createField("value_changed", &CoordinateInterpolator2D::value_changed);
+            ci2->finish();
+        }
+
+        // ScalarInterpolator
+        NodeDefImpl<ScalarInterpolator>* si =
+            interp->createNode<ScalarInterpolator>("ScalarInterpolator");
+        {
+            si->inherits("X3DInterpolatorNode");
+            si->createField("keyValue", &ScalarInterpolator::keyValue);
+            si->createField("value_changed", &ScalarInterpolator::value_changed);
+            si->finish();
+        }
+
+        // EaseInEaseOut
+        NodeDefImpl<EaseInEaseOut>* ease =
+            interp->createNode<EaseInEaseOut>("EaseInEaseOut");
+        {
+            ease->inherits("X3DInterpolatorNode");
+            ease->createField("easeInEaseOut", &EaseInEaseOut::easeInEaseOut);
+            ease->createField("modifiedFraction_changed", &EaseInEaseOut::modifiedFraction_changed);
+            ease->finish();
+        }
+    }
+
+    // Grouping component
+    Component* group = profile->createComponent("Grouping");
+    {
+        using namespace Grouping;
+
+        // X3DBoundedObject
+        NodeDefImpl<X3DBoundedObject>* bound =
+            group->createNode<X3DBoundedObject>("X3DBoundedObject");
+        {
+            bound->createField("bboxCenter", &X3DBoundedObject::bboxCenter);
+            bound->createField("bboxSize", &X3DBoundedObject::bboxSize);
+            bound->finish();
+        }
+
+        // X3DGroupingNode
+        NodeDefImpl<X3DGroupingNode>* gn =
+            group->createNode<X3DGroupingNode>("X3DGroupingNode");
+        {
+            gn->inherits("X3DBoundedObject");
+            gn->inherits("X3DChildNode");
+            gn->createField("addChildren", &X3DGroupingNode::addChildren);
+            gn->createField("removeChildren", &X3DGroupingNode::removeChildren);
+            gn->createField("children", &X3DGroupingNode::children);
+            gn->finish();
         }
     }
 }

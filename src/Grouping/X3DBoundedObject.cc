@@ -17,14 +17,14 @@
  * along with SimpleX3D.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include Grouping/X3DBoundedObject.h
+#include "Grouping/X3DBoundedObject.h"
 
 namespace X3D {
 namespace Grouping {
 
 void X3DBoundedObject::setup() {
     bboxCenter.value = SFVec3f(0,0,0);
-    bboxSize.value = SFCVec3f(-1,-1,-1);
+    bboxSize.value = SFVec3f(-1,-1,-1);
 }
 
 }}

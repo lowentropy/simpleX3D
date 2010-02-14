@@ -39,6 +39,9 @@ public:
 	double value;
 
     /// @returns SFTIME
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFTIME; }
+
+    /// @returns SFTIME
 	INLINE X3DField::Type getType() const { return X3DField::SFTIME; }
 
     /// Empty constructor.

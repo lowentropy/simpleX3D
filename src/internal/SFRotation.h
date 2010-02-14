@@ -46,6 +46,9 @@ public:
 	typedef const SFRotation& CONST_TYPE;
 
     /// @returns SFROTATION
+    INLINE static X3DField::Type getStaticType() { return X3DField::SFROTATION; }
+
+    /// @returns SFROTATION
     INLINE X3DField::Type getType() const { return X3DField::SFROTATION; }
 
     /// Unwrap a generic rotation value.

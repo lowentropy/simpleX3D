@@ -37,6 +37,9 @@ public:
 	float value;
 
     /// @returns SFFLOAT
+	INLINE static X3DField::Type getStaticType() { return X3DField::SFFLOAT; }
+
+    /// @returns SFFLOAT
 	INLINE X3DField::Type getType() const { return X3DField::SFFLOAT; }
 
     /// Empty constructor.
