@@ -17,7 +17,6 @@ include_HEADERS = \
     internal/NodeDef.h \
     internal/FieldDef.h \
     internal/FieldIterator.h \
-    internal/NodeIterator.h \
 	internal/builtin.h \
 	internal/SAIField.h \
 	internal/SFBool.h \

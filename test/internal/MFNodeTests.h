@@ -1,7 +1,7 @@
 #include "Core/X3DSensorNode.h"
 #include "Time/TimeSensor.h"
 
-TEST(NodeIterator, IteratorShouldWalkThroughMFNode) {
+TEST(MFNode, IteratorShouldWalkThroughMFNode) {
     MFNodeArray<X3DSensorNode> mf;
     TimeSensor t1, t2, t3;
     mf.add(&t1);

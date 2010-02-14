@@ -14,7 +14,7 @@ include_HEADERS = \
     internal/XmlLoadTests.h \
     internal/ParseTests.h \
 	internal/DynamicFieldTests.h \
-	internal/NodeIteratorTests.h \
+	internal/MFNodeTests.h \
 	internal/CloneTests.h \
 	Core/X3DBindableNodeTests.h \
 	X3DTests.h \
