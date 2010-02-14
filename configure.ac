@@ -71,7 +71,19 @@ AC_SUBST(GMOCK_LIBS)
 AC_CONFIG_FILES([
 	Makefile
     include/Makefile
+    include/internal/Makefile
+    include/Core/Makefile
+    include/Test/Makefile
+    include/Time/Makefile
+    include/Grouping/Makefile
+    include/Interpolation/Makefile
     src/Makefile
+    src/internal/Makefile
+    src/Core/Makefile
+    src/Test/Makefile
+    src/Time/Makefile
+    src/Grouping/Makefile
+    src/Interpolation/Makefile
     test/Makefile
 ])
 AC_OUTPUT
