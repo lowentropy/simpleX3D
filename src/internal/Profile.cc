@@ -39,6 +39,12 @@ Component* Profile::createComponent(const string& name) {
 	return comp;
 }
 
+Component* Profile::getComponent(const string& name) {
+    if (!comp_map.count(name))
+        throw new X3DError(string("no such component: ") + name);
+    return comp_map[name];
+}
+
 void Profile::print() {
 	cout << "PROFILE" << endl;
 	list<Component*>::iterator it = comp_list.begin();

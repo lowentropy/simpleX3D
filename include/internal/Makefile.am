@@ -38,4 +38,6 @@ internal_HEADERS = \
     ProtoField.h \
 	ProtoFieldDef.h \
 	Connect.h \
-    metadata.h
+    metadata.h \
+	Plugin.h \
+	NodeFactory.h

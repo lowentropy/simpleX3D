@@ -75,6 +75,17 @@ public:
 		return def;
 	}
 
+    template <class N> void addFactory(NodeFactory<N>& factory) {
+        list<NodeDef*>::iterator it;
+        for (it = node_list.begin(); it != node_list.end(); it++) {
+            NodeDefImpl<N>* def = dynamic_cast<NodeDefImpl<N>*>(*it);
+            if (def != NULL) {
+                def->addFactory(factory);
+                return;
+            }
+        }
+        throw X3DError("invalid node type");
+    }
 };
 
 }

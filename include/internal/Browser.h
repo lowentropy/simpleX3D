@@ -38,6 +38,8 @@ using namespace X3D::Time;
 
 namespace X3D {
 
+class Plugin;
+
 /**
  * This is the main X3D instance class. The browser controls
  * type registration, and the execution model.
@@ -78,6 +80,9 @@ private:
     /// named nodes
     map<string, Node*> defs;
 
+    /// registered plugins
+    list<Plugin*> plugins;
+
 	/// singleton instance
 	static Browser* _inst;
 
@@ -100,6 +105,12 @@ public:
 
 	/// Default destructor. Cleans up memory.
 	virtual ~Browser();
+
+    /// Register a new plugin
+    Plugin* addPlugin(const string& library);
+
+    /// Remove an existing plugin
+    void removePlugin(Plugin* plugin);
 
 	/**
 	 * Create a new node instance of the given qualified

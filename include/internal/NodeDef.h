@@ -21,6 +21,7 @@
 #define _X3D_NODEDEF_H_
 
 #include "internal/Prototype.h"
+#include "internal/NodeFactory.h"
 #include <map>
 #include <list>
 #include <vector>
@@ -150,6 +151,11 @@ public:
      */
 	virtual Node* create() = 0;
 
+    /**
+     * Remove the given factory.
+     */
+    virtual void removeFactory(const AbstractFactory* abstract) = 0;
+
 protected:
 
     /**
@@ -208,8 +214,13 @@ private:
  */
 template <class N>
 class NodeDefImpl : public NodeDef {
+friend class Browser;
+private:
+
+    /// stack of constructors registered for this type
+    std::list<const NodeFactory<N>*> factories;
+
 public:
-	friend class Browser;
 
     /**
      * Constructor.
@@ -231,7 +242,11 @@ public:
 			throw X3DError("can't instantiate abstract nodes");
         if (!finished)
             throw X3DError("node definition was never finished");
-        N* node = new N();
+        N* node;
+        if (!factories.empty())
+            node = factories.front()->create();
+        else
+            node = new N();
         node->definition = this;
         list<NodeDef*>::reverse_iterator it;
         for (it = chain.rbegin(); it != chain.rend(); it++)
@@ -240,6 +255,20 @@ public:
         // XXX: possibly memory leak if setup methods fail
         return node;
 	}
+
+    void addFactory(const NodeFactory<N>* factory) {
+        factories.push_back(factory);
+    }
+
+    void removeFactory(const AbstractFactory* abstract) {
+        const NodeFactory<N>* factory = dynamic_cast<const NodeFactory<N>*>(abstract);
+        if (factory != NULL)
+            removeFactory(factory);
+    }
+
+    void removeFactory(const NodeFactory<N>* factory) {
+        factories.remove(factory);
+    }
 
     /**
      * Create a new prototype definition which is based on this
@@ -299,7 +328,6 @@ protected:
         for (it = field_list.begin(); it != field_list.end(); it++)
             (static_cast<FieldDefImpl<N>*>(*it))->init(node);
     }
-
 
 public:
 

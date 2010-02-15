@@ -17,4 +17,5 @@ libinternal_la_SOURCES = \
     World.cc \
     Prototype.cc \
     ProtoInst.cc \
+	Plugin.cc \
 	builtin.cc

@@ -65,6 +65,15 @@ public:
 	Component* createComponent(const string& name);
 
     /**
+     * Return a pointer to the named component. If there is no such
+     * component, throw an error.
+     *
+     * @param name name of component
+     * @returns pointer to component definition
+     */
+    Component* getComponent(const string& name);
+
+    /**
      * Find and return a node definition given its canonical name.
      * This function will look in each component.
      * 

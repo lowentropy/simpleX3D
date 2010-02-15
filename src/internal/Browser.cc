@@ -19,6 +19,7 @@
 
 #include "internal/Browser.h"
 #include "internal/Route.h"
+#include "internal/Plugin.h"
 
 #include <iostream>
 using std::cout;
@@ -37,6 +38,25 @@ Browser::Browser() : profile(new Profile()) {
     }
 	Builtin::init(profile);
     started = false;
+}
+
+Plugin* Browser::addPlugin(const string& library) {
+    Plugin* plugin = new Plugin(library);
+    plugin->registerPlugin();
+    plugins.push_back(plugin);
+    return plugin;
+}
+
+void Browser::removePlugin(Plugin* plugin) {
+    list<Plugin*>::iterator it;
+    for (it = plugins.begin(); it != plugins.end(); it++) {
+        if (*it == plugin) {
+            (*it)->remove();
+            plugins.erase(it);
+            delete plugin;
+            break;
+        }
+    }
 }
 
 void Browser::reset() {
