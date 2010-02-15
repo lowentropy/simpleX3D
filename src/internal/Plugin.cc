@@ -50,7 +50,7 @@ void Plugin::registerPlugin() {
 }
 
 void Plugin::remove() {
-    std::list<std::pair<NodeDef*, AbstractFactory*> >::iterator it;
+    std::list<std::pair<NodeDef*, const AbstractFactory*> >::iterator it;
     for (it = factories.begin(); it != factories.end(); it++)
         it->first->removeFactory(it->second);
     dlclose(handle);

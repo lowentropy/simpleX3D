@@ -36,7 +36,7 @@ private:
     string name;
     string library;
     string version;
-    std::list<std::pair<NodeDef*, AbstractFactory*> > factories;
+    std::list<std::pair<NodeDef*, const AbstractFactory*> > factories;
 
 public:
 
@@ -50,7 +50,7 @@ public:
         Browser* browser = Browser::getSingleton();
         Component* comp = browser->profile->getComponent(component);
         NodeDef* def = comp->addFactory(factory);
-        factories.push_back(std::pair<NodeDef*,AbstractFactory*>(def, factory));
+        factories.push_back(std::pair<NodeDef*, const AbstractFactory*>(def, factory));
         return def;
     }
 
