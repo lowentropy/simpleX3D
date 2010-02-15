@@ -32,6 +32,7 @@ namespace X3D {
 class Plugin {
 private:
 
+    void* handle;
     string name;
     string library;
     string version;

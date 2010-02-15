@@ -22,7 +22,6 @@
 namespace X3D {
 
 void Plugin::registerPlugin() {
-    void* handle;
     typedef void (*REGFUN)(Plugin*);
     typedef string (*STRFUN)();
     REGFUN regFun;
@@ -54,6 +53,7 @@ void Plugin::remove() {
     std::list<std::pair<NodeDef*, AbstractFactory*> >::iterator it;
     for (it = factories.begin(); it != factories.end(); it++)
         it->first->removeFactory(it->second);
+    dlclose(handle);
 }
 
 }
